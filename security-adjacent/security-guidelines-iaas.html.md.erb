@@ -1,0 +1,40 @@
+---
+title: Security Guidelines for Your IaaS Provider
+owner: Security
+---
+
+Pivotal Cloud Foundry supports a variety of Infrastructure as a Service (IaaS) providers. Different IaaS providers require different configuration steps to secure user data, identity information, and credentials.
+
+Security requirements can vary broadly based on the unique configuration and infrastructure of each organization. Rather than provide specific guidance that may not apply to all use cases, Pivotal has collected links to IaaS providers' security and identity management documentation. The documents below may help you understand how your IaaS' security requirements impact your PCF deployment.
+
+Pivotal does not endorse these documents for accuracy or guarantee that their contents apply to all PCF installations.
+
+# How to Use This Topic
+
+Find your IaaS provider in the list below. The documentation items linked for each IaaS may help you configure and secure your installation infrastructure.
+
+## Amazon Web Services (AWS)
+[AWS Identity and Access Management guide](http://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)<br />
+This guide is a reference for AWS' Identity and Access Management (IAM) features. If you're new to AWS, start here.<br />
+<br />
+[AWS identity documentation](http://docs.aws.amazon.com/IAM/latest/UserGuide/id.html)<br /> 
+[AWS credential documentation](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html)<br />
+This documentation provides a general definition of IAM terms and provide best practices to help you manage IaaS users and permissions. 
+
+## Google Cloud Platform (GCP)
+[GCP authentication documentation](https://cloud.google.com/docs/authentication)<br />
+This developer-facing documentation explains general authentication guidelines for GCP.
+
+## Microsoft Azure
+[Azure security documentation](https://docs.microsoft.com/en-us/azure/#pivot=services&panel=security)<br />
+This site has documentation on Azure security tools. It provides a general guide to how to manage IaaS users and credentials. 
+
+## OpenStack
+[OpenStack credential configuration](http://docs.openstack.org/developer/openstack-ansible/liberty/install-guide/configure-creds.html)<br />
+[OpenStack credential creation](http://docs.openstack.org/project-install-guide/ec2-api/draft/credentials-creation.html)<br /> 
+[OpenStack deployment configuration](http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/configure.html)<br />
+These documents provide a general reference for OpenStack service credential management. 
+
+## VMware vSphere
+[vSphere Security guide (PDF)](http://pubs.vmware.com/vsphere-65/topic/com.vmware.ICbase/PDF/vsphere-esxi-vcenter-server-65-security-guide.pdf)<br />
+This guide contains best practices for securing and managing a vSphere installation.
