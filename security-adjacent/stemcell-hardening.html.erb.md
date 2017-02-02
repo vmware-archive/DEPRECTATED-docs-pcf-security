@@ -325,9 +325,9 @@ tests)_**
 
         102. The .netrc and .rhosts and .forward files are not used in CF and are not present in any user home directory.
 
-        103. Any group present in the `/etc/passwd` file must also exist in the `/etc/group` file.
+        103. Any group present in the /etc/passwd file must also exist in the /etc/group file.
 
-        104. Users defined in `/etc/password` must have a valid home directory. 
+        104. Users defined in /etc/password must have a valid home directory. 
 
         105. Users must own their home directories.
 
