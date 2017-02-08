@@ -32,12 +32,14 @@ The API returns a successful response, including a new certificate. <pre class="
 This creates a new CA.
 
 1. In the command line terminal, enter the following API call:  
-<pre class="terminal">GET /api/v0/certificate\_authorities</pre> The new CA will display. It will be marked as inactive.
+<pre class="terminal">curl "http<span>s</span>://example.com/api/v0/certificate\_authorities" \ 
+    -X GET \ 
+    -H "Authorization: Bearer YOUR\_UAA\_ACCESS\_TOKEN"</pre> The new CA will display. It will be marked as inactive.
 
 1. In Ops Manager, click **Apply Changes**.
 
 1. In the command line terminal, enter the following API call with an empty request:  
-<pre class="terminal">curl "http<span>s</span>://example.com/api/v0/certificate_authorities/example-cert-guid/activate" \ 
+<pre class="terminal">curl "http<span>s</span>://example.com/api/v0/certificate\_authorities/example-cert-guid/activate" \ 
     -X POST \ 
     -H "Authorization: Bearer YOUR\_UAA\_ACCESS\_TOKEN" \ 
     -H "Content-Type: application/json" \ 
