@@ -18,31 +18,29 @@ Cloud Foundry implements the following measures to mitigate against security thr
 
 ## <a id='system-boundaries'></a>System Boundaries and Access ##
 
-As the image below shows, in a typical deployment of Cloud Foundry, the components run on virtual machines (VMs) that exist within a VLAN. In this configuration, the only access points visible on a public network are a load balancer that maps to one or more Cloud Foundry routers and, optionally, a NAT VM and a jumpbox. Because of the limited number of contact points with the public internet, the surface area for possible security vulnerabilities is minimized.
+As the image below shows, in a typical deployment of Cloud Foundry, the components run on virtual machines (VMs) that exist within a VLAN. In this configuration, the only access points visible on a public network are a load balancer that maps to one or more Cloud Foundry routers and, optionally, a NAT VM and a jumpbox. Because of the limited number of contact points with the public Internet, the surface area for possible security vulnerabilities is minimized.
 
-<p class="note"><strong>Note</strong>: <%=vars.pcf_rec%> recommends that you also install a NAT VM for outbound requests and a Jumpbox to access the BOSH Director, though these access points are optional depending on your network configuration.</p>
+<p class="note"><strong>Note</strong>: <%=vars.pcf_rec%> recommends that you also install a NAT VM for outbound requests and a jumpbox to access the BOSH Director, though these access points are optional depending on your network configuration.</p>
 
-* * * * * * * * * * * * * * * *
-* MISSING IMAGE sysbound1.png *
-* * * * * * * * * * * * * * * *
+<%= image_tag 'sysbound1.png' %>
 
 ### <a id='protocols'></a>Protocols ###
 
-All traffic from the public internet to the Cloud Controller and UAA happens over HTTPS. Inside the boundary of the system, components communicate over a publish-subscribe (pub-sub) message bus [NATS](http://nats.io/), HTTP, and SSL/TLS.
+All traffic from the public Internet to the Cloud Controller and UAA happens over HTTPS. Inside the boundary of the system, components communicate over the [NATS](http://nats.io/) publish-subscribe message bus, HTTP, and SSL/TLS.
 
 ### <a id='bosh'></a>BOSH ###
 
-Operators deploy Cloud Foundry with BOSH. The BOSH Director is the core orchestrating component in BOSH: it controls VM creation and deployment, as well as other software and service lifecycle events. You use HTTPS to ensure secure communication to the BOSH Director.
+Operators deploy Cloud Foundry with BOSH. The BOSH Director is the core orchestrating component in BOSH that controls VM creation and deployment, as well as other software and service lifecycle events. You use HTTPS to ensure secure communication to the BOSH Director.
 
-<p class="note"><strong>Note</strong>: <%=vars.pcf_rec%> recommends that you deploy the BOSH Director on a subnet that is not publicly accessible, and access the BOSH Director from a Jumpbox on the subnet or through VPN.</p>
+<p class="note"><strong>Note</strong>: <%=vars.pcf_rec%> recommends that you deploy the BOSH Director on a subnet that is not publicly accessible, and access the BOSH Director from a jumpbox on the subnet or through VPN.</p>
 
-BOSH includes the following functionality for security:
+BOSH performs the following functions for security:
 
-* Communicates with the VMs it launches over NATS. Because NATS cannot be accessed from outside Cloud Foundry, this ensures that published messages can only originate from a component within your deployment.
+* Communicates over NATS with the VMs it launches. Because NATS cannot be accessed from outside Cloud Foundry, this ensures that published messages can only originate from a component within your deployment.
 
-* Provides an audit trail through the `bosh tasks` command. This command shows all actions that an operator has taken with BOSH.
+* Provides an audit trail through the `bosh tasks recent` command. This command returns a table that shows all BOSH actions taken by an operator.
 
-* Allows you to set up individual login accounts for each operator. BOSH operators have root access.
+* Allows you to create and configure individual login accounts for each operator. BOSH operators have root access.
 
 <p class="note"><strong>Note</strong>: BOSH does not encrypt data stored on BOSH VMs. Your IaaS might encrypt this data.</p>
 
@@ -52,7 +50,7 @@ BOSH includes the following functionality for security:
 
 UAA acts as an [OAuth2](https://oauth.io/) Authorization Server and issues access tokens for applications that request platform resources. The tokens are based on the [JSON Web Token](http://jwt.io/) and are digitally signed by UAA.
 
-Operators can configure the identity store in UAA. If users register an account with the Cloud Foundry platform, UAA acts as the user store and stores user passwords in the UAA database using [bcrypt](http://en.wikipedia.org/wiki/Bcrypt). UAA also supports connecting to external user stores through LDAP and SAML. Once an operator has configured the external user store, such as a corporate Microsoft Active Directory, users can use their LDAP credentials to gain access to the Cloud Foundry platform instead of registering a separate account. Alternatively, operators can use SAML to connect to an external user store and enable single sign-on for users into the Cloud Foundry platform.
+Operators can configure the identity store in UAA. If users register an account with the Cloud Foundry platform, UAA acts as the user store and stores user passwords in the UAA database using [bcrypt](http://en.wikipedia.org/wiki/Bcrypt). UAA also supports connecting to external user stores through LDAP and SAML. Once an operator has configured the external user store, such as a corporate Microsoft Active Directory, users can access the Cloud Foundry platform with their LDAP credentials instead of registering a separate account. Alternatively, operators can use SAML to connect to an external user store and enable single sign-on for users into the Cloud Foundry platform.
 
 ### <a id='rbac'></a>Managing User Access with Role-Based Access Control ###
 
@@ -103,7 +101,7 @@ To help run a secure deployment, <%=vars.pcf_rec%> recommends the following:
 <li>Configure UAA clients and users using a BOSH manifest. Limit and manage these clients and users as you would any other kind of privileged account.</li>
 <li>Deploy within a VLAN that limits network traffic to individual VMs. This reduce the possibility of unauthorized access to the VMs within your BOSH-managed cloud.</li>
 <li>Enable HTTPS for applications and SSL database connections to protect sensitive data transmitted to and from applications.</li>
-<li>Ensure that the Jumpbox is secure, along with the load balancer and NAT VM.</li>
+<li>Ensure that the jumpbox is secure, along with the load balancer and NAT VM.</li>
 <li>Encrypt stored files and data within databases to meet your data security requirements. Deploy using industry standard encryption and the best practices for your language or framework.</li>
 <li>Prohibit promiscuous network interfaces on the trusted network.</li>
 <li>Review and monitor data sharing and security practices with third-party services that you use to provide additional functionality to your application.</li>
