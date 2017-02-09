@@ -25,7 +25,7 @@ for one OS (e.g. all Ubuntu Trusty stemcells) are exactly the same for all infra
 This property of stemcells allows BOSH users to quickly and reliably switch between different 
 infrastructures without worrying about the differences between OS images. The CF BOSH team 
 is responsible for producing and maintaining an official set of stemcells. Cloud Foundry 
-currently supports Ubuntu Trusty and CentOS 6.5 on vSphere, AWS, OpenStack, and vCloud infrastructures.
+currently supports Ubuntu Trusty on vSphere, AWS, OpenStack, Google, and Azure infrastructures.
 
 2. **WHAT IS STEMCELL HARDENING?** Stemcell hardening is the process of securing a stemcell 
 by reducing its surface of vulnerability, which is larger when a system performs more functions; 
