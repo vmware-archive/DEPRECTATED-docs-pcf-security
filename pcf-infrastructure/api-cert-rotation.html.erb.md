@@ -2,23 +2,27 @@
 title: Regenerating and Rotating Non-Configurable TLS/SSL Certificates 
 owner: OpsMan / Security
 ---
-Depending on the requirements of your deployment, you may need to rotate your CA certificates. Certificates can expire or fall out of currency, or your organization's security compliance policies may require you to rotate certificates periodically.
+Depending on the requirements of your deployment, at some point you may need to rotate your CA certificates. Certificates can expire or fall out of currency, or your organization's security compliance policies may require you to rotate certificates periodically.
 
-In a Pivotal Cloud Foundry (PCF) deployment, you can rotate the certificates using API calls in the command line. This API regenerates the certificate authority (CA) associated with a deployment. New certificates generated through this process use SHA-256 encryption.
+Rotate the certificates in your Pivotal Cloud Foundry (PCF) deploying using API calls in the command line. PCF provides different API calls with which to manage certificates and certificate authorities (CAs). New certificates generated through this process use SHA-256 encryption.
+
+These API calls allow you to create new CAs, apply them, and delete old CAs. The process of activating a new CA and rotating it in gives new certificates to the Ops Manager Director. The Ops Manager Director then passes the certificates to other components in your PCF deployment.
+
+Follow the procedures below in order to apply new CAs with minimal risk.
 
 <p class="note"><strong>Note</strong>: These procedures require you to return to Ops Manager and click <strong>Apply Changes</strong> periodically. Clicking <strong>Apply Changes</strong> redeploys the Ops Manager Director and its tiles. If you apply your changes during each procedure, a successful redeploy verifies that the certificate rotation process is proceeding correctly.</p>
 
 ##Creating a New Certificate Authority (CA)
 
-1. Open the command line terminal.
+1. Open the command line.
 
 1. Open a web browser and navigate to Ops Manager.
 
 1. In Ops Manager, click **Apply Changes**. 
 
-1. In the command line terminal, enter the following API call with an empty request:  <pre class="terminal">curl "http<span>s</span>://example.com/api/v0/certificate_authorities/example-cert-guid/activate" \ 
+1. On the command line, enter the following API call with an empty request:  <pre class="terminal">curl "http<span>s</span>://EXAMPLE.com/api/v0/certificate_authorities/EXAMPLE-CERT-GUID/activate" \ 
     -X POST \ 
-    -H "Authorization: Bearer YOUR\_UAA\_ACCESS\_TOKEN" \ 
+    -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \ 
     -H "Content-Type: application/json" \ 
     -d '{}'
 </pre>  
@@ -35,17 +39,17 @@ This creates a new CA.
 
 ##Activating the New CA
 
-1. In the command line terminal, enter the following API call:  
-<pre class="terminal">curl "http<span>s</span>://example.com/api/v0/certificate\_authorities" \ 
+1. On the command line, enter the following API call:  
+<pre class="terminal">curl "http<span>s</span>://EXAMPLE.com/api/v0/certificate\_authorities" \ 
     -X GET \ 
-    -H "Authorization: Bearer YOUR\_UAA\_ACCESS\_TOKEN"</pre> The new CA displays, marked as inactive.
+    -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"</pre> The new CA displays, marked as inactive.
 
 1. In Ops Manager, click **Apply Changes**.
 
-1. In the command line terminal, enter the following API call with an empty request:  
-<pre class="terminal">curl "http<span>s</span>://example.com/api/v0/certificate\_authorities/example-cert-guid/activate" \ 
+1. On the command line, enter the following API call with an empty request:  
+<pre class="terminal">curl "http<span>s</span>://EXAMPLE.com/api/v0/certificate\_authorities/EXAMPLE-CERT-GUID/activate" \ 
     -X POST \ 
-    -H "Authorization: Bearer YOUR\_UAA\_ACCESS\_TOKEN" \ 
+    -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \ 
     -H "Content-Type: application/json" \ 
     -d '{}' 
 </pre> 
@@ -55,10 +59,10 @@ This activates the new CA.
 
 ##Regenerating Non-Configurable Certificates to Apply the New CA
 
-1. In the command line terminal, enter the following API call with an empty request:  
-<pre class="terminal">curl "http<span>s</span>://example.com/api/v0/certificate_authorities/active/regenerate" \ 
+1. On the command line, enter the following API call with an empty request:  
+<pre class="terminal">curl "http<span>s</span>://EXAMPLE.com/api/v0/certificate_authorities/active/regenerate" \ 
     -X POST \ 
-    -H "Authorization: Bearer YOUR\_UAA\_ACCESS\_TOKEN" \ 
+    -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \ 
     -H "Content-Type: application/json" \ 
     -d '{}'
 </pre> 
@@ -70,10 +74,10 @@ This regenerates all non-configurable certificates and applies the new CA to you
 
 ##Deleting the Old CA
 
-1. In the command line terminal, enter the following API call:  
-<pre class="terminal">curl "http<span>s</span>://example.com/api/v0/certificate_authorities/:guid" \ 
+1. On the command line, enter the following API call:  
+<pre class="terminal">curl "http<span>s</span>://EXAMPLE.com/api/v0/certificate_authorities/:guid" \ 
     -X DELETE \ 
-    -H "Authorization: Bearer YOUR\_UAA\_ACCESS\_TOKEN"
+    -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre> 
 The API returns a successful response. 
 <pre class="terminal">HTTP/1.1 200 OK</pre>
