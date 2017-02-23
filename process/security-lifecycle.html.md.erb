@@ -1,0 +1,48 @@
+---
+title: PCF Testing, Release, and Security Lifecycle
+owner: Security
+---
+
+This topic explains how Pivotal’s development practices, automated build tools, and organizational structures work together to create and support stable releases of Pivotal Cloud Foundry (PCF).
+
+## Summary <!-- This used to read "Key Takeaways," but I thought that language was more marketing-facing than documentation-appropriate -->
+* PCF follows a disciplined software development lifecycle that builds in quality and reduces feedback cycle time for teams producing system components. 
+* Every PCF release follows a strict workflow and passes through numerous quality and compliance gates before distribution. 
+* Tests are built into the product from the moment code is added, and run automatically with any code change.
+
+## Release Mechanics
+### Versioning
+Pivotal numbers PCF releases following a [semantic versioning](http://semver.org/) style format, _X.Y.Z_, where _X_ and _Y_ indicate major and minor releases, and _Z_ designates patch releases. Major and minor releases change PCF functionality, while patch releases are backward-compatible security patches or bug fixes.
+
+### Support
+As of PCF 1.8, Pivotal supports each major and minor PCF release for a duration determined as follows:
+
+* Pivotal supports the release for at least 9 months following its first publication date.
+* Pivotal supports the last three major or minor releases, even if this extends coverage beyond 9 months. 
+
+Versions of PCF prior to 1.8 are subject to a different support lifecycle policy. Pivotal projects supporting PCF versions 1.8, 1.7, and 1.6 as follows: 
+
+<table class="nice">
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</table>
