@@ -55,7 +55,30 @@ Support includes maintenance updates and upgrades, bug and security fixes, and t
 ### Patch Releases
 Patch releases are more frequent and less predictable than major/minor releases. The v1.6.x line provides a good example of their frequency. PCF 1.6.1 first posted on October 26, 2015. Through August 2016, 36 additional patches of Elastic Runtime 1.6.x and 18 patches of Ops Manager 1.6.x provided security and bug fixes to customers.
 
-Each release is accompanied by release notes for [Ops Manager](../../pcf-release-notes/opsmanager-rn.html) and Elastic Runtime 
+Each release is accompanied by release notes for [Ops Manager](../../pcf-release-notes/opsmanager-rn.html) and [Elastic Runtime](../../pcf-release-notes/runtime-rn.html) 
 which document the security and bug fixes that they include. If a patch release contains security fixes in core Cloud Foundry code or in packaged dependencies, the release notes call them out using security identifiers from Common Vulnerabilities and Exposures (CVE), Ubuntu Security Notices (USN), and other 3rd party sources. Additionally, [pivotal.io/security](https://pivotal.io/security) maintains a running list of security fixes in PCF and PCF dependencies.
 
 ### Upgrading
+All PCF releases pass through extensive testing that includes automated unit, integration, and acceptance tests on multiple IaaSs. But Pivotal recommends that customers test major and minor releases in a non-production environment first, to gain confidence that they function well. The test environment should be similar to the production environment. The customer should upgrade their production environment soon after they validate the new release on their test environment, to keep all PCF software components up-to-date.
+
+## Release Testing, Integration, and Validation
+
+### Test-Driven Development
+Pivotal’s development process relies on a strict workflow with continuous automated testing and integration. Pivotal R&D does not separate Dev and QE teams. Rather, every Pivot on each engineering team owns quality, and writes tests for all of the software components that they develop, often before writing the component software itself.
+
+With every software change, automated build pipelines trigger these tests for the component itself and for everything it touches. If a new code check-in does not pass its tests or causes a failure elsewhere, it pauses the build pipeline for the entire team, or sometimes all of Pivotal R&D. The resulting social pressure encourages developers to work together to address code issues quickly.
+
+Pivotal applies the following automated testing approaches, scenarios, and frameworks to PCF components and to the release as a whole:
+
+1.<strong>Unit tests</strong>: Development teams writes unit tests to express and validate desired functional behavior of product components. Typical frameworks used are [RSpec](http://rspec.info/) and [Ginkgo](https://onsi.github.io/ginkgo/). These tests are run continuously throughout the development cycle.
+1.<strong>OSS integration tests</strong>: The Release Integration team exercises a full deployment of open-source Cloud Foundry to validate all end-user features. They maintain the [Cloud Foundry Acceptance Test](https://github.com/cloudfoundry/cf-acceptance-tests) (CATs) suite alongside the OSS cf-release, as new features are added and existing features refactored. Cloud Foundry component teams also contribute acceptance test suites at the OSS Integration Test level, to exercise and validate their components’ functional, performance, and integration health.
+1.<strong>PCF integration tests</strong>: The PCF Release Engineering (RelEng) team validates the quality and cross-product integration health of the commercial PCF release. RelEng runs OSS Acceptance Tests against all supported releases on full PCF instances configured to represent diverse real-world customer scenarios on various IaaSs and using both internal and external load balancer, database, blobstore, and user store solutions.
+
+### Additional Pre-Release Gates: Internal, PWS, and Compliance
+In addition to its automated unit and integration testing, Pivotal deploys all upgrades slated for upcoming PCF releases on at-scale test environments. Prior to each Major or Minor commercial release, Pivotal runs the entire Pivotal Cloud Foundry Suite of services on several internally-managed large integration environments that run customer-like data and workloads.
+
+Pivotal also pushes upcoming PCF feature upgrades and patches to its [Pivotal Web Services](http://run.pivotal.io/) platform, where customers continually deploy and host hundreds of mission-critical applications at scale, 24/7. The PWS environment gives Pivotal a continuous source of real-world usage and performance metrics that inform product development teams.
+
+All PCF product teams participate in go-to-market steps for each release, as required for shipping a legally compliant product. Examples include [Open Source License File](https://network.pivotal.io/open-source) attribution and an Export Compliance classification.
+
+## Patch Releases: Security and Bug Fixes
