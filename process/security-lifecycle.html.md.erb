@@ -82,3 +82,20 @@ Pivotal also pushes upcoming PCF feature upgrades and patches to its [Pivotal We
 All PCF product teams participate in go-to-market steps for each release, as required for shipping a legally compliant product. Examples include [Open Source License File](https://network.pivotal.io/open-source) attribution and an Export Compliance classification.
 
 ## Patch Releases: Security and Bug Fixes
+
+### Identifying Security Vulnerabilities
+Pivotal has an established process to track and patch vulnerabilities in software dependencies and PCF software. Additionally, [pivotal.io/security](https://pivotal.io/security) describes a responsible disclosure process for reporting vulnerabilities identified in Pivotal software by 3rd parties.
+
+Pivotal uses multiple methods to identify security vulnerabilities in Pivotal software and dependencies internally:
+
+* Security notifications from [Canonical](http://www.canonical.com/) for their Ubuntu operating system, provided through Pivotal’s commercial relationship with Canonical.
+* Software component scans, several times per day, using 3rd party security software which updates continuously from external security vulnerability sources.
+* Dependency analysis software that identifies and catalogs software dependencies.
+* Security vulnerability notifications from known software dependencies.
+
+Pivotal also monitors externally-reported vulnerabilities from many sources:
+* 3rd party security analysis requested by Pivotal.
+* Cloud Foundry Foundation security notifications from member companies.
+* Customer, prospect and other 3rd party security reports.
+
+When Pivotal discovers a potential security vulnerability in PCF, the security team opens an issue to assess it. If it confirms the vulnerability for Pivotal software, Pivotal identifies and updates affected components for backporting to stable releases, following a target timeline based on the [severity level](../../customizing/pcf-security.html) of the vulnerability.
