@@ -3,6 +3,8 @@ title: Stemcell Hardening FAQ
 owner: Security CONSULT LEGAL BEFORE MAKING ANY CHANGES TO THIS DOC
 ---
 
+<p class="note"><strong>Note</strong>: This document applies to stemcell v3263.</p>
+
 Customers and prospects often ask for details on stemcell hardening, i.e., the process by which 
 we secure Pivotal Cloud Foundry by reducing its vulnerability surface from outside access. 
 This document provides responses to some commonly-asked questions regarding the security configuration enhancements
@@ -334,6 +336,3 @@ tests)_**
         106. All references to user and group names, as well as UID and/or GID identifiers, are self consistent, with no duplicates or orphans allowed. 
 
         107. By default, the shadow group is not used in CF and must be empty.
-
-
-<p class="note"><strong>Note</strong>: This document applies to stemcell v3263.</p>
