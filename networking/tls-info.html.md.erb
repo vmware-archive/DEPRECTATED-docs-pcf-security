@@ -1,11 +1,15 @@
 ---
-title:
+title: TLS Connections in PCF Deployments
 owner: Security
 ---
 
-INTRO
+Pivotal Cloud Foundry (PCF) uses Transport Layer Security (TLS) protocols to secure connections between internal components and customer hardware.
 
-Examples of how TLS connections work in PCF
+Within a PCF deployment, TLS secures connections between components (for example, between the Ops Manager Director and service tiles). PCF components and external hardware, such as customer load balancers, also use TLS connections.
+
+In contrast to prior versions, PCF 1.10 uses a limited set of cipher suites and TLS versions to secure connections. 
+
+The TLS versions and cipher suites PCF supports are in the table below.
 
 <table class="nice">
 <th>PCF version</th>
