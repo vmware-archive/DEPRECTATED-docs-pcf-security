@@ -5,7 +5,7 @@ owner: Security
 
 <strong><%= modified_date %></strong>
 
-This topic explains how Pivotal’s development practices, automated build tools, and organizational structures work together to create and support stable releases of Pivotal Cloud Foundry (PCF).
+This topic explains how Pivotal's development practices, automated build tools, and organizational structures work together to create and support stable releases of Pivotal Cloud Foundry (PCF).
 
 ## Summary 
 * PCF teams building system components receive frequent feedback, which helps to secure code from exposure to vulnerability.
@@ -52,7 +52,7 @@ Versions of PCF prior to 1.8 are subject to a different support lifecycle policy
 </tr>
 </table>
 
-Support includes maintenance updates and upgrades, bug and security fixes, and technical assistance. The [Pivotal Support Policy](https://pivotal.io/support/lifecycle_policy) describes support (“General Support”), technical guidance, and publication phases in more detail. The Pivotal Support Services [Terms and Conditions](https://pivotal.io/support/support_terms_conditions) defines Pivotal support in legal terms.
+Support includes maintenance updates and upgrades, bug and security fixes, and technical assistance. The [Pivotal Support Policy](https://pivotal.io/support/lifecycle_policy) describes support (General Support), technical guidance, and publication phases in more detail. The Pivotal Support Services [Terms and Conditions](https://pivotal.io/support/support_terms_conditions) defines Pivotal support in legal terms.
 
 ### Patch Releases
 Patch releases are more frequent and less predictable than major/minor releases. The v1.6.x line provides a good example of their frequency. PCF 1.6.1 was released on October 26, 2015. Through August 2016, 36 additional patches of Elastic Runtime 1.6.x and 18 patches of Ops Manager 1.6.x provided security and bug fixes to customers.
@@ -68,17 +68,17 @@ All PCF releases pass through extensive test suites that include automated unit,
 This section describes Pivotal's software development processes and explains compliance and regulatory standards to which Pivotal software adheres.
 
 ### Test-Driven Development
-Pivotal’s development process relies on a strict workflow with continuous automated testing. Pivotal R&D does not separate engineering and testing teams. Rather, every Pivot on each engineering team is responsible for ensuring the quality of their code. They write tests for all of the software components that they develop, often before writing the software itself.
+Pivotal's development process relies on a strict workflow with continuous automated testing. Pivotal R&D does not separate engineering and testing teams. Rather, every Pivot on each engineering team is responsible for ensuring the quality of their code. They write tests for all of the software components that they develop, often before writing the software itself.
 
 With every software change, automated build pipelines trigger these tests for the new software component and for everything it touches. If a new code check-in does not pass its tests or causes a failure elsewhere, it pauses the build pipeline for the entire team, or sometimes all of Pivotal R&D. The transparency of this process encourages developers to work together to address code issues quickly.
 
 Pivotal applies the following automated testing approaches, scenarios, and frameworks to PCF components and to the release as a whole:
 
-<ol>
-<li><strong>Unit tests</strong>: Development teams write unit tests to express and validate desired functional behavior of product components. Typical frameworks used are [RSpec](http://rspec.info/) and [Ginkgo](https://onsi.github.io/ginkgo/). These tests run continuously throughout the development cycle.</li>
-<li><strong>OSS integration tests</strong>: The Release Integration team exercises a full deployment of open-source Cloud Foundry to validate all end-user features. They maintain the [Cloud Foundry Acceptance Test](https://github.com/cloudfoundry/cf-acceptance-tests) (CATs) suite alongside the OSS cf-release. Cloud Foundry component teams also contribute acceptance test suites at the OSS Integration Test level. These tests exercise and validate their components’ functional, performance, and integration health.</li>
-<li><strong>PCF integration tests</strong>: The PCF Release Engineering (RelEng) team validates the quality and cross-product integration health of the commercial PCF release. RelEng runs OSS Acceptance Tests against all supported releases. These tests run on full PCF instances configured to represent diverse real-world customer scenarios on various IaaSes and using both internal and external load balancer, database, blobstore, and user store solutions.</li>
-</ol>
+* **Unit tests**: Development teams write unit tests to express and validate desired functional behavior of product components. Typical frameworks used are [RSpec](http://rspec.info/) and [Ginkgo](https://onsi.github.io/ginkgo/). These tests run continuously throughout the development cycle.
+
+* **OSS integration tests**: The Release Integration team exercises a full deployment of open-source Cloud Foundry to validate all end-user features. They maintain the [Cloud Foundry Acceptance Test](https://github.com/cloudfoundry/cf-acceptance-tests) (CATs) suite alongside the OSS cf-release. Cloud Foundry component teams also contribute acceptance test suites at the OSS Integration Test level. These tests exercise and validate their components' functional, performance, and integration health.
+
+* **PCF integration tests**: The PCF Release Engineering (RelEng) team validates the quality and cross-product integration health of the commercial PCF release. RelEng runs OSS Acceptance Tests against all supported releases. These tests run on full PCF instances configured to represent diverse real-world customer scenarios on various IaaSes and using both internal and external load balancer, database, blobstore, and user store solutions.
 
 ### Additional Pre-Release Gates: Internal, PWS, and Compliance
 In addition to its automated unit and integration testing, Pivotal deploys all upgrades slated for upcoming PCF releases on at-scale test environments. Prior to each Major or Minor commercial release, Pivotal runs the entire Pivotal Cloud Foundry Suite of services on several internally-managed large integration environments that run customer-like data and workloads.
@@ -88,14 +88,14 @@ Pivotal also pushes upcoming PCF feature upgrades and patches to its [Pivotal We
 All PCF product teams participate in go-to-market steps for each release, as is often required for shipping a legally compliant product. Examples include [Open Source License File](https://network.pivotal.io/open-source) attribution and an Export Compliance classification.
 
 ## Patch Releases: Security and Bug Fixes
-Pivotal uses established processes to track, disclose, and remediate vulnerabilites in PCF and related dependent components. This section explains how Pivotal identifies vulnerabilities and implements fixes for them.
+Pivotal uses established processes to track, disclose, and remediate vulnerabilities in PCF and related dependent components. This section explains how Pivotal identifies vulnerabilities and implements fixes for them.
 
 ### Identifying Security Vulnerabilities
 Pivotal has an established process to track and patch vulnerabilities in software dependencies and PCF software. Additionally, [pivotal.io/security](https://pivotal.io/security) describes a responsible disclosure process for reporting vulnerabilities identified in Pivotal software by 3rd parties.
 
 Pivotal uses multiple methods to identify security vulnerabilities in Pivotal software and dependencies internally:
 
-* Security notifications from [Canonical](http://www.canonical.com/) for their Ubuntu operating system, provided through Pivotal’s commercial relationship with Canonical.
+* Security notifications from [Canonical](http://www.canonical.com/) for their Ubuntu operating system, provided through Pivotal's commercial relationship with Canonical.
 * Software component scans, several times per day, using 3rd party security software which updates continuously from external security vulnerability sources.
 * Dependency analysis software that identifies and catalogs software dependencies.
 * Security vulnerability notifications from known software dependencies.
