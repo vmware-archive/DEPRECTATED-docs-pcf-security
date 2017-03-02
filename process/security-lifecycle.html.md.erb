@@ -25,17 +25,17 @@ As of PCF 1.8, Pivotal supports each major and minor PCF release according to th
 * Pivotal supports the release for at least 9 months following its first publication date.
 * Pivotal supports the last three major or minor releases, even if this extends coverage beyond 9 months. 
 
-Support includes maintenance updates and upgrades, bug and security fixes, and technical assistance. The [Pivotal Support Policy](https://pivotal.io/support/lifecycle_policy) describes support (General Support), technical guidance, and publication phases in more detail. The Pivotal Support Services [Terms and Conditions](https://pivotal.io/support/support_terms_conditions) defines Pivotal support in legal terms.
+Support includes maintenance updates and upgrades, bug and security fixes, and technical assistance. The [Pivotal Support Policy](https://pivotal.io/support/lifecycle_policy) describes support standards, technical guidance, and publication phases in more detail. The Pivotal Support Services [Terms and Conditions](https://pivotal.io/support/support_terms_conditions) defines Pivotal support in legal terms.
 
 ### Patch Releases
 Patch releases are more frequent and less predictable than major/minor releases. The v1.6.x line provides a good example of their frequency. PCF 1.6.1 was released on October 26, 2015. Through August 2016, 36 additional patches of Elastic Runtime 1.6.x and 18 patches of Ops Manager 1.6.x provided security and bug fixes to customers.
 
-Pivotal identifies security issues using standard nomenclature from Common Vulnerabilities and Exposures (CVE), Ubuntu Security Notices (USN), and other third party sources. Read about security fixes in core Cloud Foundry code or packaged dependencies in the release notes for [Ops Manager](../../pcf-release-notes/opsmanager-rn.html) and [Elastic Runtime](../../pcf-release-notes/runtime-rn.html).
+Pivotal identifies security issues using standard nomenclature from [Common Vulnerabilities and Exposures (CVE)](https://cve.mitre.org/), [Ubuntu Security Notices (USN)](https://www.ubuntu.com/usn/), and other third party sources. Read about security fixes in core Cloud Foundry code or packaged dependencies in the release notes for [Ops Manager](../../pcf-release-notes/opsmanager-rn.html) and [Elastic Runtime](../../pcf-release-notes/runtime-rn.html).
 
-Additionally, [pivotal.io/security](https://pivotal.io/security) maintains a running list of security fixes in PCF and PCF dependencies.
+[Pivotal.io/security](https://pivotal.io/security) maintains a running list of security fixes in PCF and PCF dependencies. Consult that page to see the most recent findings from Pivotal's security team.
 
 ### Upgrading
-All PCF releases pass through extensive test suites that include automated unit, integration, and acceptance tests on multiple IaaSes. But Pivotal recommends that customers test major and minor releases in a non-production environment first. The test environment should be similar to the production environment. Upgrade your production environment as soon as possible after you validate the new release on your test environment.
+All PCF releases pass through extensive test suites that include automated unit, integration, and acceptance tests on multiple IaaSes. Regardless of this extensive testing, Pivotal recommends that you test major and minor releases in a non-production environment before implementing them across your deployment. Upgrade your production environment as soon as possible after you validate the new release on your test environment.
 
 ## Release Testing, Integration, and Validation
 This section describes Pivotal's software development processes and explains compliance and regulatory standards to which Pivotal software adheres.
@@ -66,18 +66,18 @@ Pivotal uses established processes to track, disclose, and remediate vulnerabili
 ### Identifying Security Vulnerabilities
 Pivotal has an established process to track and patch vulnerabilities in software dependencies and PCF software. Additionally, [pivotal.io/security](https://pivotal.io/security) describes a responsible disclosure process for reporting vulnerabilities identified in Pivotal software by 3rd parties.
 
-Pivotal uses multiple methods to identify security vulnerabilities in Pivotal software and dependencies internally:
+Pivotal uses multiple methods to identify security vulnerabilities in Pivotal software and dependencies internally, including:
 
-* Security notifications from [Canonical](http://www.canonical.com/) for their Ubuntu operating system, provided through Pivotal's commercial relationship with Canonical.
-* Software component scans, several times per day, using 3rd party security software which updates continuously from external security vulnerability sources.
-* Dependency analysis software that identifies and catalogs software dependencies.
-* Security vulnerability notifications from known software dependencies.
+* Security notifications from [Canonical](http://www.canonical.com/) for their Ubuntu operating system, provided through Pivotal's commercial relationship with Canonical
+* Software component scans several times per day, using 3rd party security software which updates continuously from external security vulnerability sources
+* Dependency analysis software that identifies and catalogs software dependencies
+* Security vulnerability notifications from known software dependencies
 
-Pivotal also monitors externally-reported vulnerabilities from many sources:
+Pivotal also monitors externally-reported vulnerabilities from many sources, including:
 
-* 3rd party security analysis requested by Pivotal.
-* Cloud Foundry Foundation security notifications from member companies.
-* Customer, prospect and other 3rd party security reports.
+* 3rd party security analysis requested by Pivotal
+* Cloud Foundry Foundation security notifications from member companies
+* Customer, prospect and other 3rd party security reports
 
 When Pivotal discovers a potential security vulnerability in PCF, the security team opens an issue to assess it. If it confirms the vulnerability exists, Pivotal identifies and updates affected components with plans to backport the fix to stable releases. Fixes are implemented on a target timeline based on the [severity level](../../customizing/pcf-security.html) of the vulnerability.
 
