@@ -3,33 +3,45 @@ title: Regenerating and Rotating Non-Configurable TLS/SSL Certificates
 owner: OpsMan
 owner: Security
 ---
-Depending on the requirements of your deployment, at some point you may need to rotate your CA certificates. Certificates can expire or fall out of currency, or your organization's security compliance policies may require you to rotate certificates periodically.
 
-Rotate the certificates in your Pivotal Cloud Foundry (PCF) deploying using API calls in the command line. PCF provides different API calls with which to manage certificates and certificate authorities (CAs). New certificates generated through this process use SHA-256 encryption.
+<style>
+.note.warning {
+    background-color: #fdd;
+    border-color: #fbb
+}
+
+.note.warning:before {
+    color: #f99;
+ }
+</style>
+
+This topic describes how to regenerate and rotate your Certificate Authority (CA) certificates.
+
+<p class="note warning"><strong>Warning</strong>: You must complete the procedures in this topic in the exact order specified below. Otherwise, you risk doing damage to your deployment.</p>
+
+##<a id='overview'></a> Overview
+
+Depending on the requirements of your deployment, you may need to rotate your CA certificates. Certificates can expire or fall out of currency, or your organization's security compliance policies may require you to rotate certificates periodically.
+
+You can rotate the certificates in your Pivotal Cloud Foundry (PCF) deployment using `curl`. PCF provides different API calls with which to manage certificates and CAs. New certificates generated through this process use SHA-256 encryption.
 
 These API calls allow you to create new CAs, apply them, and delete old CAs. The process of activating a new CA and rotating it in gives new certificates to the Ops Manager Director. The Ops Manager Director then passes the certificates to other components in your PCF deployment.
 
-Follow the procedures below in order to apply new CAs with minimal risk.
-
 <p class="note"><strong>Note</strong>: These procedures require you to return to Ops Manager and click <strong>Apply Changes</strong> periodically. Clicking <strong>Apply Changes</strong> redeploys the Ops Manager Director and its tiles. If you apply your changes during each procedure, a successful redeploy verifies that the certificate rotation process is proceeding correctly.</p>
 
-##Creating a New Certificate Authority (CA)
+##<a id='add-new-ca'></a> Step 1: Add a New CA
 
-1. Open the command line.
+1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the following procedures.
 
-1. Open a web browser and navigate to Ops Manager.
-
-1. In Ops Manager, click **Apply Changes**. 
-
-1. On the command line, enter the following API call with an empty request:
+1. Use `curl` to make an API call to create a new CA:
   <pre class="terminal">
-  curl "http<span>s</span>://EXAMPLE.com/api/v0/certificate_authorities/EXAMPLE-CERT-GUID/activate" \ 
+  curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/generate" \ 
     -X POST \ 
     -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \ 
     -H "Content-Type: application/json" \ 
     -d '{}'
 </pre>  
-The API returns a successful response, including a new certificate. <pre class="terminal">HTTP/1.1 200 OK
+If the command succeeds, the API returns a response that includes the new certificate. <pre class="terminal">HTTP/1.1 200 OK
 {
   "guid": "f7bc18f34f2a7a9403c3",
   "issuer": "Pivotal",
@@ -56,52 +68,93 @@ The API returns a successful response, including a new certificate. <pre class="
 	-----END EXAMPLE CERTIFICATE-----
 	"
 }</pre>
-This creates a new CA.
+<br>
+If you don't want to use a Pivotal-generated CA, you can provide your own CA with the following API call:
+    <pre class="terminal">
+    $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \ 
+        -X POST \ 
+        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \ 
+        -H "Content-Type: application/json" \ 
+        -d '{"cert_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwI...", "private_key_pem": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCA..."}'
+    </pre>
 
-##Activating the New CA
-
-1. On the command line, enter the following API call:  
-<pre class="terminal">curl "http<span>s</span>://EXAMPLE.com/api/v0/certificate\_authorities" \ 
+1. Confirm that your new CA has been added by listing all of the root CAs for Ops Manager:
+  <pre class="terminal">
+  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \ 
     -X GET \ 
-    -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"</pre> The new CA displays, marked as inactive.
+    -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+  </pre>
+  <br>
+  The API call returns the following:
+  <pre class="terminal">
+  HTTP/1.1 200 OK
+  {
+    "certificate\_authorities": [
+      {
+        "guid": "f7bc18f34f2a7a9403c3",
+        "issuer": "Pivotal",
+        "created_on": "2017-01-09",
+        "expires_on": "2021-01-09",
+        "active": true,
+        "cert_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
+      }
+    ]
+  }
+  </pre>
+  Record the `guid` of your newly added CA.
 
-1. In Ops Manager, click **Apply Changes**.
+1. Navigate to `https://OPS-MAN-FQDN` in a browser and log in to Ops Manager.
+1. Click **Apply Changes**. When the deploy finishes, continue to the next section.
 
-1. On the command line, enter the following API call with an empty request:  
-<pre class="terminal">curl "http<span>s</span>://EXAMPLE.com/api/v0/certificate\_authorities/EXAMPLE-CERT-GUID/activate" \ 
-    -X POST \ 
-    -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \ 
-    -H "Content-Type: application/json" \ 
-    -d '{}' 
-</pre> 
-The API returns a successful response. 
-<pre class="terminal">HTTP/1.1 200 OK</pre>
-This activates the new CA.
+##<a id='activate-new-ca'></a> Step 2: Activate the New CA
 
-##Regenerating Non-Configurable Certificates to Apply the New CA
+1. Use `curl` to make an API call to activate the new CA, replacing `CERT-GUID` with the GUID of your CA that you retrieved in the previous section:
+  <pre class="terminal">$ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/CERT-GUID/activate" \ 
+      -X POST \ 
+      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \ 
+      -H "Content-Type: application/json" \ 
+      -d '{}' 
+  </pre> 
+  The API returns a successful response:
+  <pre class="terminal">HTTP/1.1 200 OK</pre>
 
-1. On the command line, enter the following API call with an empty request:  
-<pre class="terminal">curl "http<span>s</span>://EXAMPLE.com/api/v0/certificate_authorities/active/regenerate" \ 
+1. List your root CAs to confirm that the new CA is active:
+<pre class="terminal">
+  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \ 
+    -X GET \ 
+    -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+  </pre>
+  Examine the response to ensure that your new CA has `active` set to `true`.
+
+##<a id='regenerate'></a> Step 3: Regenerate Non-Configurable Certificates to Apply the New CA
+
+1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing Ops Manager Director:
+<pre class="terminal">$ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/active/regenerate" \ 
     -X POST \ 
     -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \ 
     -H "Content-Type: application/json" \ 
     -d '{}'
 </pre> 
-The API returns a successful response. 
+The API returns a successful response:
 <pre class="terminal">HTTP/1.1 200 OK</pre>
-This regenerates all non-configurable certificates and applies the new CA to your existing Ops Manager Director.
 
-1. In Ops Manager, click **Apply Changes**.
+1. Navigate to Ops Manager and click **Apply Changes**. When the deploy finishes, continue to the next section.
 
-##Deleting the Old CA
+##<a id='delete'></a> Step 4: Delete the Old CA 
 
-1. On the command line, enter the following API call:  
-<pre class="terminal">curl "http<span>s</span>://EXAMPLE.com/api/v0/certificate_authorities/:guid" \ 
+1. List your root CAs to retrieve the GUID of your old, inactive CA:
+<pre class="terminal">
+  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \ 
+    -X GET \ 
+    -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+  </pre>
+
+1. Use `curl` to make an API call to delete your old CA, replacing `OLD-CERT-GUID` with the GUID of your old, inactive CA:  
+<pre class="terminal">curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/:OLD-CERT-GUID" \ 
     -X DELETE \ 
     -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre> 
 The API returns a successful response. 
 <pre class="terminal">HTTP/1.1 200 OK</pre>
-This deletes the old, inactive CA.
 
-1. In Ops Manager, click **Apply Changes**.
+1. Navigate to Ops Manager and click **Apply Changes**. 
