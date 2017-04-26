@@ -75,7 +75,7 @@ If you don't want to use a Pivotal-generated CA, you can provide your own CA wit
         -X POST \ 
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \ 
         -H "Content-Type: application/json" \ 
-        -d '{"cert_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwI...", "private_key_pem": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCA..."}'
+        -d '{"cert\_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwI...", "private\_key\_pem": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCA..."}'
     </pre>
 
 1. Confirm that your new CA has been added by listing all of the root CAs for Ops Manager:
