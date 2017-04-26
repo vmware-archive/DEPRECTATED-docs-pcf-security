@@ -93,18 +93,18 @@ If you don't want to use a Pivotal-generated CA, you can provide your own CA wit
       {
         "guid": "f7bc18f34f2a7a9403c3",
         "issuer": "Pivotal",
-        "created_on": "2017-01-09",
-        "expires_on": "2021-01-09",
+        "created\_on": "2017-01-09",
+        "expires\_on": "2021-01-09",
         "active": true,
-        "cert_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
+        "cert\_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
       }
       {
         "guid": "a8ee01e33e3e3e3303e3",
         "issuer": "Pivotal",
-        "created_on": "2017-04-09",
-        "expires_on": "2021-04-09",
+        "created\_on": "2017-04-09",
+        "expires\_on": "2021-04-09",
         "active": false,
-        "cert_pem": "-----BEGIN CERTIFICATE-----\zBBBC+eAAAe1gAwAAAeZ....etc"
+        "cert\_pem": "-----BEGIN CERTIFICATE-----\zBBBC+eAAAe1gAwAAAeZ....etc"
       }
     ]
   }
