@@ -1,0 +1,84 @@
+---
+title: MySQL Network Communications
+owner: Core Services
+---
+
+This topic describes MySQL internal network communication paths with other Elastic Runtime components.
+
+## <a id="inbound"></a> Inbound Communications ##
+
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>mysql_proxy</td>
+  <td>3306</td>
+  <td>MySQL</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>mysql_monitor</td>
+  <td>mysql_proxy (Proxy health check)</td>
+  <td>1936</td>
+  <td>MySQL</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>mysql_proxy</td>
+  <td>mysql (MySQL Server)</td>
+  <td>3306</td>
+  <td>MySQL</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>mysql_proxy</td>
+  <td>mysql (Proxy API)</td>
+  <td>8080</td>
+  <td>HTTP</td>
+  <td>?</td>
+</tr>
+<tr>
+  <td>mysql</td>
+  <td>mysql (Galera)</td>
+  <td>4567</td>
+  <td>MySQL</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>mysql_monitor</td>
+  <td>mysql  (Galera health check)</td>
+  <td>9200</td>
+  <td>MySQL</td>
+  <td>Basic authentication</td>
+</tr>
+
+
+</table>
+
+## <a id="outbound"></a> Outbound Communications ##
+
+The following table lists network communication paths that are outbound from MySQL.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>MySQL proxy</td>
+  <td>NATS</td>
+  <td>4222</td>
+  <td>NATS (TCP)</td>
+  <td>Basic authentication</td>
+</tr>
+</table>
