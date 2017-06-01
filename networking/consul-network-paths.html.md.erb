@@ -1,0 +1,189 @@
+---
+title: Consul Network Communications
+owner: Consul
+---
+
+This topic describes Consul internal network communication paths with other Elastic Runtime components.
+
+## <a id="inbound"></a> Consul Communications
+
+The following table lists network communication paths for Consul.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol (Layer 3)</th>
+  <th>Protocol (Layer 7)</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>ccdb</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>clock_global</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>cloud_controller</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>cloud_controller_worker</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>consul_server</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>diego_brain</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>diego_cell</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>diego_database</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>doppler</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>etcd_tls_server</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>ha_proxy</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>loggregator_trafficcontroller</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>mysql_proxy</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>nats</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>nfs_server</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>router</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>tcp_router</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>uaa</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>uaadb</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>Service tile VMs</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>consul_server</td>
+  <td>8300</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS from the same CA</td>
+</tr>
+</table>
