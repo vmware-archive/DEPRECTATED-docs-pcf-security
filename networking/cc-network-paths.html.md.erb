@@ -20,30 +20,37 @@ The following table lists network communication paths that are inbound to the Cl
 <tr>
   <td>diego_brain</td>
   <td>cloud_controller</td>
-  <td>9022</td>
-  <td>HTTP</td>
-  <td>Basic authentication</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>mTLS</td>
 </tr>
 <tr>
   <td>diego_database (BBS)</td>
   <td>cloud_controller</td>
-  <td>9022</td>
-  <td>HTTP</td>
-  <td>Basic authentication</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>mTLS</td>
 </tr>
 <tr>
   <td>diego_cell (Rep)</td>
   <td>cloud_controller</td>
-  <td>9022</td>
-  <td>HTTP</td>
-  <td>None</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>mTLS</td>
 </tr>
 <tr>
-  <td>loggregator_trafficcontroller</td>
+  <td>loggregator_trafficcontroller (log access)</td>
   <td>cloud_controller</td>
   <td>9022</td>
   <td>HTTP</td>
   <td>OAuth or basic authentication</td>
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller (syslog drains)</td>
+  <td>cloud_controller</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>mTLS</td>
 </tr>
 <tr>
   <td>router</td>
@@ -65,27 +72,6 @@ The following table lists network communication paths that are outbound from the
   <th>Port</th>
   <th>Protocol</th>
   <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>cloud_controller</td>
-  <td>diego_brain (Stager)</td>
-  <td>8888</td>
-  <td>HTTP</td>
-  <td>None</td>
-</tr>
-<tr>
-  <td>cloud_controller</td>
-  <td>diego_brain (Nsync)</td>
-  <td>8787</td>
-  <td>HTTP</td>
-  <td>None</td>
-</tr>
-<tr>
-  <td>cloud_controller</td>
-  <td>diego_brain (TPS Listener)</td>
-  <td>1518</td>
-  <td>HTTP</td>
-  <td>None</td>
 </tr>
 <tr>
   <td>cloud_controller</td>
