@@ -7,6 +7,7 @@ This topic describes MySQL internal network communication paths with other Elast
 
 ## <a id="inbound"></a> Inbound Communications ##
 
+The following table lists network communication paths that are inbound to MySQL.
 
 <table class="nice">
 <tr>
@@ -23,6 +24,20 @@ This topic describes MySQL internal network communication paths with other Elast
   <td>MySQL</td>
   <td>Basic authentication</td>
 </tr>
+ <tr>
+  <td>cloud_controller_worker</td>
+  <td>mysql_proxy<sup>&#42;</sup></td>
+  <td>3306</td>
+  <td>MySQL</td>
+  <td>MySQL authentication</td>
+ </tr>
+<tr>
+  <td>clock_global</td>
+  <td>mysql_proxy<sup>&#42;</sup></td>
+  <td>3306</td>
+  <td>MySQL</td>
+  <td>Basic authentication</td>
+ </tr>
 <tr>
   <td>mysql_monitor</td>
   <td>mysql_proxy (Proxy health check)</td>
