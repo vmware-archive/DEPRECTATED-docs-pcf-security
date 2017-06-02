@@ -32,7 +32,14 @@ The following table lists network communications that are published to NATS.
   <td>Basic authentication</td>
 </tr>
 <tr>
-  <td>nfs_server (route_registrar)<sup>&#42;</sup></td>
+  <td>mysql_proxy (route_registrar)<sup>&#42;</sup></td>
+  <td>nats</td>
+  <td>4222</td>
+  <td>NATS (TCP)</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>nfs_server (route_registrar)<sup>&#8224;</sup></td>
   <td>nats</td>
   <td>4222</td>
   <td>NATS (TCP)</td>
@@ -61,7 +68,9 @@ The following table lists network communications that are published to NATS.
 </tr>
 </table>
 
-<sup>&#42;</sup>Applies only to deployments where the internal NFS server is selected for file storage.
+<sup>&#42;</sup>Applies only to deployments where internal MySQL is selected as the database.
+
+<sup>&#8224;</sup>Applies only to deployments where the internal NFS server is selected for file storage.
 
 ## <a id="subscribe"></a>Subscribe Communications
 
