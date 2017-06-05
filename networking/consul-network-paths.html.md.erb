@@ -3,7 +3,7 @@ title: Consul Network Communications
 owner: Consul
 ---
 
-This topic describes Consul internal network communication paths with other Elastic Runtime components.
+This topic describes [Consul](https://github.com/hashicorp/consul) internal network communication paths with other Elastic Runtime components.
 
 ## <a id="inbound"></a> Consul Communications
 
@@ -14,7 +14,7 @@ The following table lists network communication paths for Consul.
   <th>Source VM</th>
   <th>Destination VM</th>
   <th>Port</th>
-  <th>Protocol (Layer 3)</th>
+  <th>Protocol (Layer 4)</th>
   <th>Protocol (Layer 7)</th>
   <th>Security and Authentication</th>
 </tr>
@@ -148,6 +148,22 @@ The following table lists network communication paths for Consul.
 </tr>
 <tr>
   <td>Any VM running Consul</td>
+  <td>syslog_adapter</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
+  <td>syslog_scheduler</td>
+  <td>8301</td>
+  <td>TCP/UDP</td>
+  <td>Gossip</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any VM running Consul</td>
   <td>tcp_router</td>
   <td>8301</td>
   <td>TCP/UDP</td>
@@ -187,3 +203,5 @@ The following table lists network communication paths for Consul.
   <td>Mutual TLS from the same CA</td>
 </tr>
 </table>
+
+Port 8301 is the destination port for communications between VMs that run Consul. In addition, the `consul_server` VM listens to all VMs running Consul, including other Consul servers, on port 8300.
