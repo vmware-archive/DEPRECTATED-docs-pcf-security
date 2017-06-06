@@ -20,37 +20,37 @@ The following table lists network communication paths that are inbound to the Cl
 <tr>
   <td>diego_brain</td>
   <td>cloud_controller</td>
-  <td>443</td>
-  <td>HTTPS</td>
-  <td>mTLS</td>
-</tr>
-<tr>
-  <td>diego_database (BBS)</td>
-  <td>cloud_controller</td>
-  <td>443</td>
+  <td>9023</td>
   <td>HTTPS</td>
   <td>mTLS</td>
 </tr>
 <tr>
   <td>diego_cell (Rep)</td>
   <td>cloud_controller</td>
-  <td>443</td>
+  <td>9023</td>
   <td>HTTPS</td>
   <td>mTLS</td>
 </tr>
 <tr>
-  <td>loggregator_trafficcontroller (log access)</td>
+  <td>diego_database (BBS)</td>
   <td>cloud_controller</td>
-  <td>9022</td>
-  <td>HTTP</td>
-  <td>OAuth or basic authentication</td>
+  <td>9023</td>
+  <td>HTTPS</td>
+  <td>mTLS</td>
 </tr>
 <tr>
-  <td>loggregator_trafficcontroller (syslog drains)</td>
+  <td>doppler (Syslog Drain Binder)</td>
+  <td>cloud_controller</td>
+  <td>9023</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>  
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller</td>
   <td>cloud_controller</td>
   <td>443</td>
   <td>HTTPS</td>
-  <td>mTLS</td>
+  <td>OAuth</td>
 </tr>
 <tr>
   <td>router</td>
@@ -96,7 +96,7 @@ The following table lists network communication paths that are outbound from the
  </tr>
  <tr>
   <td>cloud_controller</td>
-  <td>nfs_server or other blobstore<sup>&#135;</sup></td>
+  <td>nfs_server or other blobstore<sup>&#8224;</sup></td>
   <td>4443</td>
   <td>HTTPS</td>
   <td>TLS/basic authentication</td>
@@ -110,7 +110,7 @@ The following table lists network communication paths that are outbound from the
  </tr>
  <tr>
   <td>cloud_controller_worker</td>
-  <td>nfs_server or other blobstore<sup>&#135;</sup></td>
+  <td>nfs_server or other blobstore<sup>&#8224;</sup></td>
   <td>4443</td>
   <td>HTTPS</td>
   <td>TLS/basic authentication</td>
@@ -126,8 +126,8 @@ The following table lists network communication paths that are outbound from the
 
 <sup>&#42;</sup>Only applies to deployments where internal MySQL is selected as the database.
 
-<sup>&#135;</sup>Destination depends on file storage or blobstore configuration.
+<sup>&#8224;</sup>Destination depends on file storage or blobstore configuration.
 
 ## <a id="consul"></a>Consul Communications
 
-Every BOSH-deployed VM, including cloud\_controller and cloud\_controller\_worker, calls out to Consul for service discovery. For more information, see [Consul Network Communications](./consul-network-paths.html).
+Every BOSH-deployed VM, including `cloud_controller` and `cloud_controller_worker`, calls out to Consul for service discovery. For more information, see [Consul Network Communications](./consul-network-paths.html).
