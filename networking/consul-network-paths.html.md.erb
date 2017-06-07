@@ -9,20 +9,20 @@ This topic describes [Consul](https://github.com/hashicorp/consul) internal netw
 
 The following table lists network communication paths for Consul.
 
+<p class="note"><strong>Note</strong>: Port 8301 is the destination port for communications between VMs that run Consul. You must allow both TCP and UDP traffic on port 8301 for all Consul VMs. In addition, <code>consul_server</code> listens to VMs running Consul, including other Consul servers, on port 8300. </p>
+
 <table class="nice">
 <tr>
   <th>Source VM</th>
   <th>Destination VM</th>
   <th>Port</th>
-  <th>Protocol (Layer 4)</th>
-  <th>Protocol (Layer 7)</th>
+  <th>Protocol</th>
   <th>Security and Authentication</th>
 </tr>
 <tr>
   <td>Any VM running Consul</td>
   <td>ccdb</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -30,7 +30,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>clock_global</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -38,7 +37,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>cloud_controller</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -46,7 +44,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>cloud_controller_worker</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -54,7 +51,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>consul_server</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -62,7 +58,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>diego_brain</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -70,7 +65,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>diego_cell</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -78,7 +72,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>diego_database</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -86,7 +79,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>doppler</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -94,7 +86,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>etcd_tls_server</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -102,7 +93,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>ha_proxy</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -110,15 +100,13 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>loggregator_trafficcontroller</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
 <tr>
   <td>Any VM running Consul</td>
-  <td>mysql_proxy</td>
+  <td>mysql_proxy<sup>&#42;</sup></td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -126,15 +114,13 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>nats</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
 <tr>
   <td>Any VM running Consul</td>
-  <td>nfs_server</td>
+  <td>nfs_server<sup>&#8224;</sup></td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -142,7 +128,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>router</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -150,7 +135,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>syslog_adapter</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -158,7 +142,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>syslog_scheduler</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -166,7 +149,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>tcp_router</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -174,7 +156,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>uaa</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -182,7 +163,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>uaadb</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -190,7 +170,6 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>Service tile VMs</td>
   <td>8301</td>
-  <td>TCP/UDP</td>
   <td>Gossip</td>
   <td>Shared secret</td>
 </tr>
@@ -198,10 +177,11 @@ The following table lists network communication paths for Consul.
   <td>Any VM running Consul</td>
   <td>consul_server</td>
   <td>8300</td>
-  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS from the same CA</td>
 </tr>
 </table>
 
-Port 8301 is the destination port for communications between VMs that run Consul. In addition, the `consul_server` VM listens to all VMs running Consul, including other Consul servers, on port 8300.
+<sup>&#42;</sup>Applies only to deployments where internal MySQL is selected as the database.
+
+<sup>&#8224;</sup>Applies only to deployments where the internal NFS server is selected for file storage.
