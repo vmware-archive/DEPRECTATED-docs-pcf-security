@@ -18,6 +18,13 @@ The following table lists network communication paths that are inbound to the Cl
   <th>Security and Authentication</th>
 </tr>
 <tr>
+  <td>cloud_controller</td>
+  <td>cloud_controller (Routing API)</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>UAA tokens</td>
+</tr>
+<tr>
   <td>diego_brain</td>
   <td>cloud_controller</td>
   <td>9023</td>
@@ -79,13 +86,6 @@ The following table lists network communication paths that are outbound from the
   <td>8443</td>
   <td>HTTPS</td>
   <td>OAuth or none<sup>&#42;</sup></td>
-</tr>
-<tr>
-  <td>cloud_controller</td>
-  <td>cloud_controller (Routing API)</td>
-  <td>443</td>
-  <td>HTTPS</td>
-  <td>UAA tokens</td>
 </tr>
 <tr>
   <td>cloud_controller</td>

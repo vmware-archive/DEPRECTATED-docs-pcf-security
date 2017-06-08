@@ -47,6 +47,13 @@ The following table lists network communication paths that are inbound to Diego.
 </tr>
 <tr>
   <td>diego_cell (Rep)</td>
+  <td>diego_brain (CC Uploader)</td>
+  <td>9090</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>diego_cell (Rep)</td>
   <td>diego_brain (File Server)</td>
   <td>8080</td>
   <td>HTTP</td>
@@ -105,13 +112,6 @@ The following table lists network communication paths that are outbound from Die
   <td>diego_cell (Rep)</td>
   <td>cloud_controller</td>
   <td>9022</td>
-  <td>HTTP</td>
-  <td>None</td>
-</tr>
-<tr>
-  <td>diego_cell (Rep)</td>
-  <td>diego_brain (CC Uploader)</td>
-  <td>9090</td>
   <td>HTTP</td>
   <td>None</td>
 </tr>
