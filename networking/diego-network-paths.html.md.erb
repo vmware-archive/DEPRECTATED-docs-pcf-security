@@ -19,45 +19,31 @@ The following table lists network communication paths that are inbound to Diego.
 </tr>
 <tr>
   <td>diego_brain (Auctioneer)</td>
-  <td>diego_database (BBS)</td>
-  <td>8889</td>
-  <td>HTTPS</td>
-  <td>mTLS</td>
-</tr>
-<tr>
-  <td>diego_brain (Auctioneer)</td>
   <td>diego_cell (Rep)</td>
   <td>1801</td>
   <td>HTTPS</td>
-  <td>mTLS</td>
+  <td>Mutual TLS</td>
 </tr>
 <tr>
-  <td>diego_database (BBS)</td>
   <td>diego_brain (Auctioneer)</td>
-  <td>9016</td>
-  <td>HTTPS</td>
-  <td>mTLS</td>
-</tr>
-<tr>
-  <td>diego_database (BBS)</td>
-  <td>diego_cell (Rep)</td>
-  <td>1801</td>
-  <td>HTTP</td>
-  <td>mTLS</td>
-</tr>
-<tr>
-  <td>diego_cell (Rep)</td>
   <td>diego_database (BBS)</td>
   <td>8889</td>
   <td>HTTPS</td>
-  <td>mTLS</td>
+  <td>Mutual TLS</td>
 </tr>
 <tr>
-  <td>diego_cell (Rep)</td>
-  <td>diego_brain (CC-Uploader)</td>
-  <td>9090</td>
-  <td>HTTP</td>
-  <td>None</td>
+  <td>diego_brain (SSH Proxy)</td>
+  <td>diego_database (BBS)</td>
+  <td>8889</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_cell (local Route Emitter)</td>
+  <td>diego_database (BBS)</td>
+  <td>8889</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
 </tr>
 <tr>
   <td>diego_cell (Rep)</td>
@@ -67,25 +53,25 @@ The following table lists network communication paths that are inbound to Diego.
   <td>None</td>
 </tr>
 <tr>
-  <td>diego_cell (Rep)<sup>&#42;</sup></td>
-  <td>diego_cell (Garden-runC)</td>
-  <td>UNIX socket</td>
+  <td>diego_cell (Rep)</td>
+  <td>diego_database (BBS)</td>
+  <td>8889</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_database (BBS)</td>
+  <td>diego_brain (Auctioneer)</td>
+  <td>9016</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_database (BBS)</td>
+  <td>diego_cell (Rep)</td>
+  <td>1801</td>
   <td>HTTP</td>
-  <td>None</td>
-</tr>
-<tr>
-  <td>diego_cell (local Route-Emitter)</td>
-  <td>diego_database (BBS)</td>
-  <td>8889</td>
-  <td>HTTPS</td>
-  <td>mTLS</td>
-</tr>
-<tr>
-  <td>diego_brain (SSH-Proxy)</td>
-  <td>diego_database (BBS)</td>
-  <td>8889</td>
-  <td>HTTPS</td>
-  <td>mTLS</td>
+  <td>Mutual TLS</td>
 </tr>
 </table>
 
@@ -102,11 +88,39 @@ The following table lists network communication paths that are outbound from Die
   <th>Security and Authentication</th>
 </tr>
 <tr>
+  <td>diego_brain (SSH Proxy)</td>
+  <td>App instances</td>
+  <td>2222</td>
+  <td>SSH</td>
+  <td>SSH</td>
+</tr>
+<tr>
+  <td>diego_cell (local Route Emitter)</td>
+  <td>nats</td>
+  <td>4222</td>
+  <td>NATS</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
   <td>diego_cell (Rep)</td>
   <td>cloud_controller</td>
   <td>9022</td>
   <td>HTTP</td>
   <td>None</td>
+</tr>
+<tr>
+  <td>diego_cell (Rep)</td>
+  <td>diego_brain (CC Uploader)</td>
+  <td>9090</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>diego_cell (Rep)</td>
+  <td>nfs_server or other blobstore<sup>&#42;</sup></td>
+  <td>Varies</td>
+  <td>HTTP</td>
+  <td>None/TLS</td>
 </tr>
 <tr>
   <td>diego_database (BBS)</td>
@@ -115,33 +129,8 @@ The following table lists network communication paths that are outbound from Die
   <td>MySQL</td>
   <td>Basic authentication</td>
 </tr>
-<tr>
-  <td>diego_cell (Rep)</td>
-  <td>nfs_server or other blobstore<sup>&#135;</sup></td>
-  <td>Varies</td>
-  <td>HTTP</td>
-  <td>None/TLS</td>
-</tr>
-<tr>
-  <td>diego_cell (local Route-Emitter)</td>
-  <td>nats</td>
-  <td>4222</td>
-  <td>NATS</td>
-  <td>Basic authentication</td>
-</tr>
-<tr>
-  <td>diego_brain (SSH-Proxy)</td>
-  <td>App instances</td>
-  <td>2222</td>
-  <td>SSH</td>
-  <td>SSH</td>
-</tr>
 </table>
 
-<sup>&#42;</sup>Communication is local to the cell.
+<sup>&#42;</sup>The destination depends on your Elastic Runtime blobstore configuration.
 
 <sup>&#8224;</sup>Applies only to deployments where internal MySQL is selected as the database.
-
-<sup>&#135;</sup>Destination depends on Elastic Runtime blobstore configuration.
-
-
