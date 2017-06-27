@@ -1,0 +1,66 @@
+---
+title: etcd Network Communications
+owner: Consul
+---
+
+This topic describes etcd internal network communication paths with other Elastic Runtime components.
+
+## <a id="inbound"></a> Inbound Communications
+
+The following table lists network communication paths that are inbound to etcd.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>etcd_tls_server</td>
+  <td>4001</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_cell</td>
+  <td>etcd_tls_server</td>
+  <td>4001</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_database</td>
+  <td>etcd_tls_server</td>
+  <td>4001</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>doppler</td>
+  <td>etcd_tls_server</td>
+  <td>4001</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>etcd_tls_server</td>
+  <td>etcd_tls_server</td>
+  <td>7001</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller</td>
+  <td>etcd_tls_server</td>
+  <td>4001</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+</table>
+
+## <a id="consul"></a>Consul Communications
+
+Every BOSH-deployed VM, including `etcd_tls_server`, calls out to Consul for service discovery. For more information, see [Consul Network Communications](./consul-network-paths.html).

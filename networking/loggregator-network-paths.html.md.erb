@@ -1,0 +1,124 @@
+---
+title: Loggregator Network Communications
+owner: Loggregator
+---
+
+This topic describes [Loggregator](../../loggregator/architecture.html) internal network communication paths with other Elastic Runtime components.
+
+## <a id="loggregator"></a> Loggregator Communications
+
+The following table lists network communication paths for Loggregator.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>Any<sup>&#42;</sup></td>
+  <td>doppler</td>
+  <td>3457</td>
+  <td>UDP</td>
+  <td>Shared secret</td>
+</tr>
+<tr>
+  <td>Any<sup>&#42;</sup></td>
+  <td>doppler</td>
+  <td>3458</td>
+  <td>TCP with length prefix</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>Any<sup>&#42;</sup></td>
+  <td>loggregator_trafficcontroller</td>
+  <td>8081</td>
+  <td>HTTP/WebSocket</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>Any<sup>&#42;</sup></td>
+  <td>cloud_controller (Statsd Injector)</td>
+  <td>8125</td>
+  <td>UDP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>Any<sup>&#42;</sup></td>
+  <td>uaa (Statsd Injector)</td>
+  <td>8125</td>
+  <td>UDP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>Any VM running metron_agent</td>
+  <td>doppler</td>
+  <td>8082</td>
+  <td>gRPC over HTTP/2</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>doppler</td>
+  <td>etcd_tls_server</td>
+  <td>4001</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>doppler (Syslog Drain Binder)</td>
+  <td>cloud_controller</td>
+  <td>9023</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller</td>
+  <td>cloud_controller</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>OAuth</td>
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller</td>
+  <td>doppler</td>
+  <td>8081</td>
+  <td>HTTP/WebSocket</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller</td>
+  <td>doppler</td>
+  <td>8082</td>
+  <td>gRPC over HTTP/2</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller</td>
+  <td>etcd_tls_server</td>
+  <td>4001</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller</td>
+  <td>uaa</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>OAuth</td>
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller (Route Registrar)</td>
+  <td>nats</td>
+  <td>4222</td>
+  <td>NATS</td>
+  <td>Basic authentication</td>
+</tr>
+</table>
+
+<sup>&#42;</sup>Any source VM can send requests to the specified destination within its subnet.
+
+## <a id="consul"></a>Consul Communications
+
+Every BOSH-deployed VM, including `doppler` and `loggregator_trafficcontroller`, calls out to Consul for service discovery. For more information, see [Consul Network Communications](./consul-network-paths.html).
