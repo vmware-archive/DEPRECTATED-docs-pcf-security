@@ -1,0 +1,168 @@
+---
+title: Routing Network Communications
+owner: Routing
+---
+
+This topic describes the internal network communication paths of the routing subsystem with other Elastic Runtime components.
+
+## <a id="http"></a> HTTP Routing
+
+The following table lists network communication paths for HTTP routing.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>diego_cell (local Route Emitter)</td>
+  <td>nats</td>
+  <td>4222</td>
+  <td>NATS</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>Load balancer</td>
+  <td>router (Gorouter)</td>
+  <td>80</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>Load balancer</td>
+  <td>router (Gorouter)</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>TLS</td>
+</tr>
+<tr>
+  <td>router (Gorouter)</td>
+  <td>nats</td>
+  <td>4222</td>
+  <td>NATS</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>router (Gorouter)</td>
+  <td>System components and app containers</td>
+  <td>Varies</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+</table>
+
+## <a id="tcp"></a> TCP Routing (Optional)
+
+The following table lists network communication paths for TCP routing.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>cloud_controller (Routing API)<sup>&#42;</sup></td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>TLS and OAuth</td>
+</tr>
+<tr>
+  <td>cloud_controller (Routing API)</td>
+  <td>diego_database (Locket)</td>
+  <td>8891</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>cloud_controller (Routing API)</td>
+  <td>mysql_proxy</td>
+  <td>3306</td>
+  <td>MySQL</td>
+  <td>MySQL authentication</td>
+</tr>
+<tr>
+  <td>cloud_controller (Routing API)</td>
+  <td>uaa</td>
+  <td>8443</td>
+  <td>HTTPS</td>
+  <td>TLS</td>
+</tr>
+<tr>
+  <td>diego_brain (global TCP Emitter)</td>
+  <td>cloud_controller (Routing API)</td>
+  <td>3000</td>
+  <td>HTTP</td>
+  <td>OAuth</td>
+</tr>
+<tr>
+  <td>diego_brain (global TCP Emitter)</td>
+  <td>uaa</td>
+  <td>8443</td>
+  <td>HTTPS</td>
+  <td>TLS</td>
+</tr>
+<tr>
+  <td>diego_cell (local Route Emitter)</td>
+  <td>cloud_controller (Routing API)</td>
+  <td>3000</td>
+  <td>HTTP</td>
+  <td>OAuth</td>
+</tr>
+<tr>
+  <td>diego_cell (local Route Emitter)</td>
+  <td>uaa</td>
+  <td>8443</td>
+  <td>HTTPS</td>
+  <td>TLS</td>
+</tr>
+<tr>
+  <td>Load balancer</td>
+  <td>tcp_router</td>
+  <td>1024-65535<sup>&#8224;</sup></td>
+  <td>TCP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>router (Gorouter)</td>
+  <td>cloud_controller (Routing API)</td>
+  <td>3000</td>
+  <td>HTTP</td>
+  <td>OAuth</td>
+</tr>
+<tr>
+  <td>router (Gorouter)</td>
+  <td>uaa</td>
+  <td>8443</td>
+  <td>HTTPS</td>
+  <td>TLS</td>
+</tr>
+<tr>
+  <td>tcp_router</td>
+  <td>cloud_controller (Routing API)</td>
+  <td>3000</td>
+  <td>HTTP</td>
+  <td>OAuth</td>
+</tr>
+<tr>
+  <td>tcp_router</td>
+  <td>uaa</td>
+  <td>8443</td>
+  <td>HTTPS</td>
+  <td>TLS</td>
+</tr>
+</table>
+
+<sup>&#42;</sup> This communication happens through a load balancer and Gorouter. Requests are received by Routing API on port 3000.
+
+<sup>&#8224;</sup> You can use this port range to configure the port in the ERT tile.
+
+## <a id="consul"></a>Consul Communications
+
+Every BOSH-deployed VM, including `router` and `tcp_router`, calls out to Consul for service discovery. For more information, see [Consul Network Communications](./consul-network-paths.html).

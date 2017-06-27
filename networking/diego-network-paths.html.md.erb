@@ -1,0 +1,252 @@
+---
+title: Diego Network Communications
+owner: Diego
+---
+
+This topic describes Diego internal network communication paths with other Elastic Runtime components.
+
+## <a id="inbound"></a> Inbound Communications
+
+The following table lists network communication paths that are inbound to Diego.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>diego_brain (Nsync)</td>
+  <td>8787</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>diego_brain (Stager)</td>
+  <td>8888</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>diego_brain (TPS Listener)</td>
+  <td>1518</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>cloud_controller (Routing API)</td>
+  <td>diego_database (Locket)</td>
+  <td>8891</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+</table>
+
+## <a id="internal"></a> Diego Internal Communications
+
+The following table lists network communication paths that are internal for Diego.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>diego_brain (Auctioneer)</td>
+  <td>diego_cell (Rep)</td>
+  <td>1801</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_brain (Auctioneer)</td>
+  <td>diego_database (BBS)</td>
+  <td>8889</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_brain (Auctioneer)</td>
+  <td>diego_database (Locket)</td>
+  <td>8891</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_brain (SSH Proxy)</td>
+  <td>diego_database (BBS)</td>
+  <td>8889</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_brain (TPS Watcher)</td>
+  <td>diego_database (Locket)</td>
+  <td>8891</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_cell (local Route Emitter)</td>
+  <td>diego_database (BBS)</td>
+  <td>8889</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_cell (Rep)</td>
+  <td>diego_brain (CC Uploader)</td>
+  <td>9090</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>diego_cell (Rep)</td>
+  <td>diego_brain (File Server)</td>
+  <td>8080</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>diego_cell (Rep)</td>
+  <td>diego_database (BBS)</td>
+  <td>8889</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_cell (Rep)</td>
+  <td>diego_database (Locket)</td>
+  <td>8891</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_database (BBS)</td>
+  <td>diego_brain (Auctioneer)</td>
+  <td>9016</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_database (BBS)</td>
+  <td>diego_brain (Stager)</td>
+  <td>8888</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>diego_database (BBS)</td>
+  <td>diego_cell (Rep)</td>
+  <td>1801</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>diego_database (BBS)</td>
+  <td>diego_database (Locket)</td>
+  <td>8891</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+</table>
+
+## <a id="outbound"></a> Outbound Communications ##
+
+The following table lists network communication paths that are outbound from Diego.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>diego_brain</td>
+  <td>cloud_controller</td>
+  <td>9022</td>
+  <td>HTTP</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>diego_brain (SSH Proxy)</td>
+  <td>App instances</td>
+  <td>2222</td>
+  <td>SSH</td>
+  <td>SSH</td>
+</tr>
+<tr>
+  <td>diego_brain (SSH Proxy)</td>
+  <td>cloud_controller</td>
+  <td>9022</td>
+  <td>HTTP</td>
+  <td>OAuth</td>
+</tr>
+<tr>
+  <td>diego_brain (SSH Proxy)</td>
+  <td>uaa</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>TLS and OAuth</td>
+</tr>
+<tr>
+  <td>diego_cell (local Route Emitter)</td>
+  <td>nats</td>
+  <td>4222</td>
+  <td>NATS</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>diego_cell (Rep)</td>
+  <td>cloud_controller</td>
+  <td>9022</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>diego_cell (Rep)</td>
+  <td>nfs_server or other blobstore<sup>&#42;</sup></td>
+  <td>Varies</td>
+  <td>HTTP</td>
+  <td>None/TLS</td>
+</tr>
+<tr>
+  <td>diego_database (BBS)</td>
+  <td>cloud_controller</td>
+  <td>9022</td>
+  <td>HTTP</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>diego_database (BBS)</td>
+  <td>mysql_proxy<sup>&#8224;</sup></td>
+  <td>3306</td>
+  <td>MySQL</td>
+  <td>MySQL authentication</td>
+</tr>
+<tr>
+  <td>diego_database (Locket)</td>
+  <td>mysql_proxy<sup>&#8224;</sup></td>
+  <td>3306</td>
+  <td>MySQL</td>
+  <td>MySQL authentication</td>
+</tr>
+</table>
+
+<sup>&#42;</sup>The destination depends on your Elastic Runtime blobstore configuration.
+
+<sup>&#8224;</sup>Applies only to deployments where internal MySQL is selected as the database.
+
+## <a id="consul"></a>Consul Communications
+
+Every BOSH-deployed VM, including `diego_brain`, `diego_cell`, and `diego_database`, calls out to Consul for service discovery. For more information, see [Consul Network Communications](./consul-network-paths.html).

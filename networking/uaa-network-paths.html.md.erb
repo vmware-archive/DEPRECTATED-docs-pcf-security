@@ -1,0 +1,112 @@
+---
+title: UAA Network Communications
+owner: UAA
+---
+
+This topic describes [User Account and Authentication (UAA)](../../concepts/architecture/uaa.html) internal network communication paths with other Elastic Runtime components.
+
+## <a id="inbound"></a> Inbound Communications
+
+The following table lists network communication paths that are inbound to UAA.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>uaa</td>
+  <td>8443</td>
+  <td>HTTPS</td>
+  <td>OAuth or none<sup>&#42;</sup></td>
+</tr>
+<tr>
+  <td>diego_brain (SSH Proxy)</td>
+  <td>uaa</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>OAuth</td>
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller</td>
+  <td>uaa</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>OAuth</td>
+</tr>
+<tr>
+  <td>router</td>
+  <td>uaa</td>
+  <td>8443</td>
+  <td>HTTPS</td>
+  <td>OAuth</td>
+</tr>
+</table>
+
+<sup>&#42;</sup>The authentication method depends on the type of request.
+
+## <a id="outbound-internal"></a> Outbound Communications: Internal to PCF ##
+
+The following table lists network communication paths that are outbound from UAA.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>uaa</td>
+  <td>mysql_proxy<sup>&#42;</sup></td>
+  <td>3306</td>
+  <td>MySQL</td>
+  <td>MySQL authentication</td>
+</tr>
+<tr>
+  <td>uaa (Route Registrar)</td>
+  <td>nats</td>
+  <td>4222</td>
+  <td>NATS</td>
+  <td>Basic authentication</td>
+</tr>
+</table>
+
+<sup>&#42;</sup>Applies only to deployments where internal MySQL is selected as the database.
+
+## <a id="outbound-external"></a> Outbound Communications: External to PCF ##
+
+The following table lists network communication paths from UAA that are outbound to external systems.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Authentication</th>
+</tr>
+<tr>
+  <td>uaa</td>
+  <td>LDAP</td>
+  <td>LDAP server communication port</td>
+  <td>LDAP/LDAPS</td>
+  <td>Basic authentication (LDAP bind)</td>
+</tr>
+<tr>
+  <td>uaa</td>
+  <td>SAML/OIDC</td>
+  <td>80 or 443 (HTTP port)</td>
+  <td>HTTP/HTTPS</td>
+  <td>Key</td>
+</tr>
+</table>
+
+## <a id="consul"></a>Consul Communications
+
+Every BOSH-deployed VM, including UAA, calls out to Consul for service discovery. For more information, see [Consul Network Communications](./consul-network-paths.html).

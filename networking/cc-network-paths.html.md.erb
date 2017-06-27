@@ -1,0 +1,177 @@
+---
+title: Cloud Controller Network Communications
+owner: CAPI
+---
+
+This topic describes [Cloud Controller](../../concepts/architecture/cloud-controller.html) internal network communication paths with other Elastic Runtime components.
+
+## <a id="inbound"></a> Inbound Communications
+
+The following table lists network communication paths that are inbound to the Cloud Controller.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>cloud_controller (Routing API)</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>OAuth</td>
+</tr>
+<tr>
+  <td>diego_brain</td>
+  <td>cloud_controller</td>
+  <td>9022</td>
+  <td>HTTP</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>diego_brain (SSH Proxy)</td>
+  <td>cloud_controller</td>
+  <td>9022</td>
+  <td>HTTP</td>
+  <td>OAuth</td>
+</tr>
+<tr>
+  <td>diego_cell (Rep)</td>
+  <td>cloud_controller</td>
+  <td>9022</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>diego_database (BBS)</td>
+  <td>cloud_controller</td>
+  <td>9022</td>
+  <td>HTTP</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>doppler (Syslog Drain Binder)</td>
+  <td>cloud_controller</td>
+  <td>9023</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller</td>
+  <td>cloud_controller</td>
+  <td>443</td>
+  <td>HTTPS</td>
+  <td>OAuth</td>
+</tr>
+<tr>
+  <td>router</td>
+  <td>cloud_controller</td>
+  <td>9022</td>
+  <td>HTTP</td>
+  <td>OAuth</td>
+</tr>
+</table>
+
+## <a id="outbound"></a> Outbound Communications ##
+
+The following table lists network communication paths that are outbound from the Cloud Controller.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>diego_brain (Nsync)</td>
+  <td>8787</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>diego_brain (Stager)</td>
+  <td>8888</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>diego_brain (TPS Listener)</td>
+  <td>1518</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>mysql_proxy<sup>&#42;</sup></td>
+  <td>3306</td>
+  <td>MySQL</td>
+  <td>MySQL authentication</td>
+ </tr>
+ <tr>
+  <td>cloud_controller</td>
+  <td>nfs_server or other blobstore<sup>&#8224;</sup></td>
+  <td>4443</td>
+  <td>HTTPS</td>
+  <td>TLS and basic authentication</td>
+ </tr>
+ <tr>
+  <td>cloud_controller</td>
+  <td>uaa</td>
+  <td>8443</td>
+  <td>HTTPS</td>
+  <td>OAuth or none<sup>&#135;</sup></td>
+ </tr>
+ <tr>
+  <td>cloud_controller (Route Registrar)</td>
+  <td>nats</td>
+  <td>4222</td>
+  <td>NATS</td>
+  <td>Basic authentication</td>
+ </tr>
+ <tr>
+  <td>cloud_controller (Routing API)</td>
+  <td>diego_database (Locket)</td>
+  <td>8891</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+ </tr>
+ <tr>
+  <td>cloud_controller_worker</td>
+  <td>mysql_proxy<sup>&#42;</sup></td>
+  <td>3306</td>
+  <td>MySQL</td>
+  <td>MySQL authentication</td>
+ </tr>
+ <tr>
+  <td>cloud_controller_worker</td>
+  <td>nfs_server or other blobstore<sup>&#8224;</sup></td>
+  <td>4443</td>
+  <td>HTTPS</td>
+  <td>TLS and basic authentication</td>
+ </tr>
+ <tr>
+  <td>clock_global</td>
+  <td>mysql_proxy<sup>&#42;</sup></td>
+  <td>3306</td>
+  <td>MySQL</td>
+  <td>MySQL authentication</td>
+ </tr>
+ </table>
+
+<sup>&#42;</sup>Applies only to deployments where internal MySQL is selected as the database.
+
+<sup>&#8224;</sup>The destination depends on your file storage or blobstore configuration.
+
+<sup>&#135;</sup>The authentication method depends on the type of request.
+
+## <a id="consul"></a>Consul Communications
+
+Every BOSH-deployed VM, including `cloud_controller` and `cloud_controller_worker`, calls out to Consul for service discovery. For more information, see [Consul Network Communications](./consul-network-paths.html).
