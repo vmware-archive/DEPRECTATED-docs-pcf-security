@@ -93,6 +93,6 @@ The following table lists network communication paths that are inbound to MySQL.
 
 ## <a id="consul"></a>Consul Communications
 
-All BOSH-deployed VMs, including `mysql`, `mysql_monitor`, and `mysql_proxy`, call out to Consul for service discovery. 
+All MySQL Proxy instances register themselves with Consul, which enables ERT components that use Consul for service discovery to find available proxies.
 For more information, see [Consul Network Communications](./consul-network-paths.html).
 
