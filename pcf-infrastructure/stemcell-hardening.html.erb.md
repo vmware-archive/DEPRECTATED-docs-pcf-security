@@ -228,12 +228,6 @@ tests)_**
 
         59. Audit records are created for loading and unloading of kernel modules and for system calls.
 
-        60. The rsyslog package is installed and activated as a BOSH add-on.
-
-        61. The rsyslog log is configured for proper ownership and permission mask (via a BOSH Add-on).
-
-        62. The rsyslog utility is configured to send logs to a remote log host for storage (via a BOSH Add-on).
-
         63. File Integrity Monitoring can be done on the stemcell (via a BOSH Add-on).
 
     12. **Authentication and Authorization**
