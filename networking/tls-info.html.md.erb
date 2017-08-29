@@ -3,11 +3,54 @@ title: TLS Connections in PCF Deployments
 owner: Security
 ---
 
-Pivotal Cloud Foundry (PCF) uses Transport Layer Security (TLS) protocols to secure connections between internal components and customer hardware.
+Pivotal Cloud Foundry (PCF) uses Transport Layer Security (TLS) protocols to secure connections between internal components, app containers, and customer hardware.
 
-Within a PCF deployment, TLS secures connections between components like the Ops Manager Director and service tiles. PCF components also use TLS connections to secure communications with external hardware, such as customer load balancers.
+Within a PCF deployment, TLS secures connections between components like the Ops Manager Director and service tiles. PCF components use TLS connections to secure communications with external hardware, such as customer load balancers
 
-By default, PCF uses a limited set of cipher suites and TLS versions to secure connections.
+In Elastic Runtime, app instance containers have [identity credentials](#container-creds) that enable TLS communication by app instances.
+
+By default, PCF uses a limited set of [cipher suites](#ciphers) and TLS versions to secure connections.
+
+## <a id="container-creds"></a> App Instance Container Identity Credentials
+
+Each app instance container in PCF has a PEM-encoded [X.509](https://www.ietf.org/rfc/rfc5280.txt) certificate and [PKCS #1 RSA](https://tools.ietf.org/html/rfc3447) private key. App developers can use these credentials to enable secure TLS communications from their apps.
+
+Instance container certificates are issued from the platform root Certificate Authority (CA) and have the following property values:
+
+* **Common Name** is the app instance GUID
+* **Organizational Unit** is the app GUID
+* **Subject Alternative Name** (SAN) contains the container IP address for the app instance
+
+Each container stores its creds in the following variables:
+
+<table id='instance-certs' border="1" class="nice" >
+  <tr>
+    <th>Credential / Keypair Element</th>
+    <th>Environment Variable</th>
+    <th>Command to Retrieve Value</th>
+  </tr><tr>
+    <td>Certificate</td>
+    <td><code>CF_INSTANCE_CERT</code></td>
+    <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_CERT'</code></td>
+  </tr><tr>
+    <td>Private Key</td>
+    <td><code>CF_INSTANCE_KEY</code><code></code></td>
+    <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_KEY'</code></td>
+  </tr>
+</table>
+
+Each container VM also stores the platform root CA certificate in `/etc/cf-system-certificates`.
+
+To run TLS connections or otherwise use instance container credentials from their apps, developers must first add the certificates to their development stack configuration.
+
+In future PCF releases, app container identity credentials may:
+
+  * Enable PCF apps to securely store their own app-specific credentials in [CredHub](https://docs.cloudfoundry.org/credhub/index.html).
+  * Streamline how the [Gorouter](../architecture/router.html) maintains routing table integrity.
+
+For more information about instance ID creds, see the [Instance Identity](https://github.com/cloudfoundry/diego-release/blob/develop/docs/instance-identity.md) document in the diego-release repository.
+
+## <a id="ciphers"></a> TLS Ciphers
 
 The TLS versions and cipher suites PCF supports are in the table below.
 
