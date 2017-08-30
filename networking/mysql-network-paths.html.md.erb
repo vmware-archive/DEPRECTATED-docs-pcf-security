@@ -16,13 +16,15 @@ The following table lists network communication paths that are inbound to MySQL.
   <th>Source VM</th>
   <th>Destination VM</th>
   <th>Port</th>
-  <th>Protocol</th>
+  <th>Transport Layer Protocol</th>
+  <th>App Layer Protocol</th>
   <th>Security and Authentication</th>
 </tr>
 <tr>
   <td>cloud_controller</td>
   <td>mysql_proxy</td>
   <td>3306</td>
+  <td></td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
 </tr>
@@ -30,6 +32,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>cloud_controller_worker</td>
   <td>mysql_proxy</td>
   <td>3306</td>
+  <td></td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
 </tr>
@@ -37,6 +40,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>clock_global</td>
   <td>mysql_proxy</td>
   <td>3306</td>
+  <td></td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
 </tr>
@@ -44,6 +48,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>diego_database</td>
   <td>mysql_proxy</td>
   <td>3306</td>
+  <td></td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
 </tr>
@@ -51,6 +56,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>mysql</td>
   <td>mysql (Galera)</td>
   <td>4567</td>
+  <td></td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
 </tr>
@@ -58,6 +64,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>mysql_monitor</td>
   <td>mysql (Galera health check)</td>
   <td>9200</td>
+  <td></td>
   <td>MySQL</td>
   <td>Basic authentication</td>
 </tr>
@@ -65,6 +72,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>mysql_monitor</td>
   <td>mysql_proxy (Proxy health check)</td>
   <td>1936</td>
+  <td></td>
   <td>MySQL</td>
   <td>Basic authentication</td>
 </tr>
@@ -72,6 +80,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>mysql_proxy</td>
   <td>mysql (MySQL Server)</td>
   <td>3306</td>
+  <td></td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
 </tr>
@@ -79,6 +88,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>mysql_proxy</td>
   <td>mysql (Proxy API)</td>
   <td>8080</td>
+  <td></td>
   <td>HTTP</td>
   <td>Basic authentication</td>
 </tr>
@@ -86,6 +96,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>uaa</td>
   <td>mysql_proxy</td>
   <td>3306</td>
+  <td></td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
 </tr>
@@ -100,13 +111,15 @@ The following table lists network communication paths that are outbound from MyS
   <th>Source VM</th>
   <th>Destination VM</th>
   <th>Port</th>
-  <th>Protocol</th>
+  <th>Transport Layer Protocol</th>
+  <th>App Layer Protocol</th>
   <th>Security and Authentication</th>
 </tr>
 <tr>
   <td>mysql_proxy (Route Registrar)</td>
   <td>nats</td>
   <td>4222</td>
+  <td></td>
   <td>NATS</td>
   <td>Basic authentication</td>
 </tr>
