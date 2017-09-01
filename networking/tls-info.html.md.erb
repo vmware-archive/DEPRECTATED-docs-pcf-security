@@ -5,11 +5,9 @@ owner: Security
 
 Pivotal Cloud Foundry (PCF) uses Transport Layer Security (TLS) protocols to secure connections between internal components, app containers, and customer hardware.
 
-Within a PCF deployment, TLS secures connections between components like the Ops Manager Director and service tiles. PCF components use TLS connections to secure communications with external hardware, such as customer load balancers
+Within a PCF deployment, TLS secures connections between components like the Ops Manager Director and service tiles. PCF components also use TLS connections to secure communications with external hardware, such as customer load balancers.
 
 In Elastic Runtime, app instance containers have [identity credentials](#container-creds) that enable TLS communication by app instances.
-
-By default, PCF uses a limited set of [cipher suites](#ciphers) and TLS versions to secure connections.
 
 ## <a id="container-creds"></a> App Instance Container Identity Credentials
 
@@ -45,48 +43,53 @@ To run TLS connections or otherwise use instance container credentials from thei
 
 For more information about instance ID creds, see the [Instance Identity](https://github.com/cloudfoundry/diego-release/blob/develop/docs/instance-identity.md) document in the diego-release repository.
 
-## <a id="ciphers"></a> TLS Ciphers
+## <a id="ciphers"></a> TLS Cipher Suites
 
-The TLS versions and cipher suites PCF supports are in the table below.
+By default, PCF uses a limited set of cipher suites to secure its internal communications. However, some components used in PCF, like Gorouter and HAProxy, may support additional TLS cipher suites to accommodate older clients outside of PCF. 
 
-<table class="nice">
-<th>PCF version</th>
-<th>TLS version</th>
-<th>Supported cipher suites</th>
-<tr>
-	<td align="center"><strong>1.12</strong></td>
-	<td align="center">1.2, 1.1, 1.0</td>
-	<td>
-		<ul>
-		<li>TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</li>
-		<li>TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</li>
-		<li>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</li>
-		<li>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</li>
-		</ul>
-	</td>
-</tr>
-<tr>
-	<td align="center"><strong>1.11</strong></td>
-	<td align="center">1.2</td>
-	<td>
-		<ul>
-		<li>TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</li>
-		<li>TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</li>
-		<li>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</li>
-		<li>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</li>
-		</ul>
-	</td>
-</tr>
-<tr>
-	<td align="center"><strong>1.10</strong></td>
-	<td align="center">1.2</td>
-	<td>
-		<ul>
-		<li>TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</li>
-		<li>TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</li>
-		<li>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</li>
-		<li>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</li>
-		</ul>
-	</td>
-</tr>
-</table>
+For components that allow you to configure TLS cipher suites, only specify the TLS cipher suites that you need.
+
+### <a id="cipher_recs"></a>TLS Cipher Suite Recommendations
+
+The default and recommended version of TLS to use is TLS v1.2.
+
+The recommended TLS cipher suites to use within PCF are the following:
+
+<ul>
+  <li>TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</li>
+	<li>TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</li>
+	<li>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</li>
+	<li>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</li>
+</ul>
+
+###<a id="cipher_gorouter"></a> Gorouter Configuration
+
+As part of your Elastic Runtime networking configuration, you must specify the TLS cipher suites that Gorouter uses to secure its communications. Only specify the cipher suites that you need.
+
+The recommended TLS cipher suites for Gorouter are:
+
+<ul>
+  <li>ECDHE-RSA-AES128-GCM-SHA256</li>
+  <li>ECDHE-RSA-AES256-GCM-SHA384</li>
+</ul>
+
+You can specify other cipher suites and a different minimum verison of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by Gorouter, see [Securing Traffic into Cloud Foundry](../adminguide/securing-traffic.html#ciphers).
+
+For instructions on how to configure the TLS cipher suites for Gorouter, see the Elastic Runtime installation documentation for the IaaS of your deployment. For example, if you are deploying Elastic Runtime on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking). 
+
+###<a id="cipher_haproxy"></a> HAProxy Configuration
+
+As part of your Elastic Runtime networking configuration, you must specify the TLS cipher suites that HAProxy uses to secure its communications. Only specify the cipher suites that you need.
+
+The recommended TLS cipher suites for HAProxy are:
+
+<ul>
+  <li>DHE-RSA-AES128-GCM-SHA256</li>
+  <li>DHE-RSA-AES256-GCM-SHA384</li>
+  <li>ECDHE-RSA-AES128-GCM-SHA256</li>
+  <li>ECDHE-RSA-AES256-GCM-SHA384</li>
+</ul>
+
+You can specify other cipher suites and a different minimum verison of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by HAProxy, see [ciphers - Cipher Suite Names](https://www.openssl.org/docs/man1.0.2/apps/ciphers.html#CIPHER-SUITE-NAMES) in the OpenSSL documentation.
+
+For instructions on how to configure the TLS cipher suites for HAProxy, see the Elastic Runtime installation documentation for the IaaS of your deployment. For example, if you are deploying Elastic Runtime on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking). 
