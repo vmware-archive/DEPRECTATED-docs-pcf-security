@@ -9,34 +9,53 @@ Within a PCF deployment, TLS secures connections between components like the Ops
 
 By default, PCF uses a limited set of cipher suites and TLS versions to secure connections.
 
-The TLS versions and cipher suites PCF supports are in the table below.
+## <a id="ciphers"></a> TLS Cipher Suites
 
-<table class="nice">
-<th>PCF version</th>
-<th>TLS version</th>
-<th>Supported cipher suites</th>
-<tr>
-	<td align="center"><strong>1.11</strong></td>
-	<td align="center">1.2</td>
-	<td>
-		<ul>
-		<li>TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</li>
-		<li>TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</li>
-		<li>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</li>
-		<li>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</li>
-		</ul>
-	</td>
-</tr>
-<tr>
-	<td align="center"><strong>1.10</strong></td>
-	<td align="center">1.2</td>
-	<td>
-		<ul>
-		<li>TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</li>
-		<li>TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</li>
-		<li>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</li>
-		<li>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</li>
-		</ul>
-	</td>
-</tr>
-</table>
+By default, PCF uses a limited set of cipher suites to secure its internal communications. However, some components used in PCF, like Gorouter, may support additional TLS cipher suites to accommodate older clients outside of PCF. 
+
+For components that allow you to configure TLS cipher suites, only specify the TLS cipher suites that you need.
+
+### <a id="cipher_recs"></a>TLS Cipher Suite Recommendations
+
+The only supported version of TLS in PCF v1.11 is TLS v1.2.
+
+The TLS cipher suites used for internal PCF communications are the following:
+
+<ul>
+    <li>TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</li>
+	<li>TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</li>
+	<li>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</li>
+	<li>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</li>
+</ul>
+
+###<a id="cipher_gorouter"></a> Gorouter Configuration
+
+The default TLS cipher suites for Gorouter are:
+
+<ul>
+  <li>ECDHE-RSA-AES128-GCM-SHA256</li>
+  <li>ECDHE-RSA-AES256-GCM-SHA384</li>
+</ul>
+
+You can specify other TLS v1.2 cipher suites if your deployment requires them. For a list of cipher suites that are optionally supported by Gorouter, see [Securing Traffic into Cloud Foundry](../../adminguide/securing-traffic.html#ciphers).
+
+Only specify the cipher suites that you need.
+
+For instructions on how to configure TLS cipher suites for Gorouter, see the Elastic Runtime installation documentation for the IaaS of your deployment. For example, if you are deploying Elastic Runtime on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking). 
+
+###<a id="cipher_haproxy"></a> HAProxy Configuration
+
+The default TLS cipher suites for HAProxy are:
+
+<ul>
+  <li>DHE-RSA-AES128-GCM-SHA256</li>
+  <li>DHE-RSA-AES256-GCM-SHA384</li>
+  <li>ECDHE-RSA-AES128-GCM-SHA256</li>
+  <li>ECDHE-RSA-AES256-GCM-SHA384</li>
+</ul>
+
+You can specify other TLS v1.2 cipher suites if your deployment requires them. For a list of other TLS cipher suites that are optionally supported by HAProxy, see [ciphers - Cipher Suite Names](https://www.openssl.org/docs/man1.0.2/apps/ciphers.html#CIPHER-SUITE-NAMES) in the OpenSSL documentation.
+
+Only specify the cipher suites that you need.
+
+For instructions on how to configure TLS cipher suites for HAProxy, see the Elastic Runtime installation documentation for the IaaS of your deployment. For example, if you are deploying Elastic Runtime on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking). 
