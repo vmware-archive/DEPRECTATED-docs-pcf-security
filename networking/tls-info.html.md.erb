@@ -34,7 +34,7 @@ Each container stores its creds in the following variables:
     <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_CERT'</code></td>
   </tr><tr>
     <td>Private Key</td>
-    <td><code>CF_INSTANCE_KEY</code><code></code></td>
+    <td><code>CF_INSTANCE_KEY</code></td>
     <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_KEY'</code></td>
   </tr>
 </table>
@@ -42,11 +42,6 @@ Each container stores its creds in the following variables:
 Each container VM also stores the platform root CA certificate in `/etc/cf-system-certificates`.
 
 To run TLS connections or otherwise use instance container credentials from their apps, developers must first add the certificates to their development stack configuration.
-
-In future PCF releases, app container identity credentials may:
-
-  * Enable PCF apps to securely store their own app-specific credentials in [CredHub](https://docs.cloudfoundry.org/credhub/index.html).
-  * Streamline how the [Gorouter](../../concepts/architecture/router.html) maintains routing table integrity.
 
 For more information about instance ID creds, see the [Instance Identity](https://github.com/cloudfoundry/diego-release/blob/develop/docs/instance-identity.md) document in the diego-release repository.
 
