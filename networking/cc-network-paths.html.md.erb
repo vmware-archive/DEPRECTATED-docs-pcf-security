@@ -22,7 +22,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>cloud_controller</td>
   <td>cloud_controller (Routing API)</td>
   <td>443</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -30,7 +30,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>diego_brain</td>
   <td>cloud_controller</td>
   <td>9022</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>Basic authentication</td>
 </tr>
@@ -38,7 +38,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>diego_brain (SSH Proxy)</td>
   <td>cloud_controller</td>
   <td>9022</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -46,7 +46,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>diego_cell (Rep)</td>
   <td>cloud_controller</td>
   <td>9022</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>None</td>
 </tr>
@@ -54,7 +54,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>diego_database (BBS)</td>
   <td>cloud_controller</td>
   <td>9022</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>Basic authentication</td>
 </tr>
@@ -62,7 +62,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>doppler (Syslog Drain Binder)</td>
   <td>cloud_controller</td>
   <td>9023</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -70,7 +70,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>loggregator_trafficcontroller</td>
   <td>cloud_controller</td>
   <td>443</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -78,7 +78,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>router</td>
   <td>cloud_controller</td>
   <td>9022</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -101,7 +101,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller</td>
   <td>mysql_proxy<sup>&#42;</sup></td>
   <td>3306</td>
-  <td></td>
+  <td>TCP</td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
  </tr>
@@ -109,7 +109,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller</td>
   <td>nfs_server or other blobstore<sup>&#8224;</sup></td>
   <td>4443</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>TLS and basic authentication</td>
  </tr>
@@ -117,7 +117,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller</td>
   <td>uaa</td>
   <td>8443</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>OAuth 2.0 or none<sup>&#135;</sup></td>
  </tr>
@@ -125,7 +125,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller (Route Registrar)</td>
   <td>nats</td>
   <td>4222</td>
-  <td></td>
+  <td>TCP</td>
   <td>NATS</td>
   <td>Basic authentication</td>
  </tr>
@@ -133,7 +133,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller (Routing API)</td>
   <td>diego_database (Locket)</td>
   <td>8891</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
  </tr>
@@ -141,7 +141,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller_worker</td>
   <td>mysql_proxy<sup>&#42;</sup></td>
   <td>3306</td>
-  <td></td>
+  <td>TCP</td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
  </tr>
@@ -149,7 +149,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller_worker</td>
   <td>nfs_server or other blobstore<sup>&#8224;</sup></td>
   <td>4443</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>TLS and basic authentication</td>
  </tr>
@@ -157,7 +157,7 @@ The following table lists network communication paths that are outbound from the
   <td>clock_global</td>
   <td>mysql_proxy<sup>&#42;</sup></td>
   <td>3306</td>
-  <td></td>
+  <td>TCP</td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
  </tr>
