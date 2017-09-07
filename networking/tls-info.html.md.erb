@@ -92,4 +92,8 @@ The recommended TLS cipher suites for HAProxy are:
 
 You can specify other cipher suites and a different minimum verison of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by HAProxy, see [ciphers - Cipher Suite Names](https://www.openssl.org/docs/man1.0.2/apps/ciphers.html#CIPHER-SUITE-NAMES) in the OpenSSL documentation.
 
+If you use the default and recommended Gorouter TLS cipher suites in Elastic Runtime, then ensure you have included these Gorouter TLS cipher suites in your HAProxy TLS cipher suite configuration.
+
+If you change the default Gorouter TLS cipher suites in Elastic Runtime, and you change the TLS cipher suites for HAProxy, ensure that you have at least one overlapping TLS cipher suite within the two sets.
+
 For instructions on how to configure the TLS cipher suites for HAProxy, see the Elastic Runtime installation documentation for the IaaS of your deployment. For example, if you are deploying Elastic Runtime on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking). 
