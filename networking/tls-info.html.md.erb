@@ -73,7 +73,7 @@ The recommended TLS cipher suites for Gorouter are:
   <li>ECDHE-RSA-AES256-GCM-SHA384</li>
 </ul>
 
-You can specify other cipher suites and a different minimum verison of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by Gorouter, see [Securing Traffic into Cloud Foundry](../../adminguide/securing-traffic.html#ciphers).
+You can specify other cipher suites and a different minimum version of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by Gorouter, see [Securing Traffic into Cloud Foundry](../../adminguide/securing-traffic.html#ciphers).
 
 For instructions on how to configure the TLS cipher suites for Gorouter, see the Elastic Runtime installation documentation for the IaaS of your deployment. For example, if you are deploying Elastic Runtime on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking). 
 
@@ -90,7 +90,7 @@ The recommended TLS cipher suites for HAProxy are:
   <li>ECDHE-RSA-AES256-GCM-SHA384</li>
 </ul>
 
-You can specify other cipher suites and a different minimum verison of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by HAProxy, see [ciphers - Cipher Suite Names](https://www.openssl.org/docs/man1.0.2/apps/ciphers.html#CIPHER-SUITE-NAMES) in the OpenSSL documentation.
+You can specify other cipher suites and a different minimum version of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by HAProxy, see [ciphers - Cipher Suite Names](https://www.openssl.org/docs/man1.0.2/apps/ciphers.html#CIPHER-SUITE-NAMES) in the OpenSSL documentation.
 
 If you use the default and recommended Gorouter TLS cipher suites in Elastic Runtime, then ensure you have included these Gorouter TLS cipher suites in your HAProxy TLS cipher suite configuration.
 
