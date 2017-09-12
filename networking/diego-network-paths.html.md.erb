@@ -22,7 +22,7 @@ The following table lists network communication paths that are inbound to Diego.
   <td>cloud_controller (Routing API)</td>
   <td>diego_database (Locket)</td>
   <td>8891</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -45,7 +45,7 @@ The following table lists network communication paths that are internal for Dieg
   <td>diego_brain (Auctioneer)</td>
   <td>diego_cell (Rep)</td>
   <td>1801</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -53,7 +53,7 @@ The following table lists network communication paths that are internal for Dieg
   <td>diego_brain (Auctioneer)</td>
   <td>diego_database (BBS)</td>
   <td>8889</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -61,7 +61,7 @@ The following table lists network communication paths that are internal for Dieg
   <td>diego_brain (Auctioneer)</td>
   <td>diego_database (Locket)</td>
   <td>8891</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -69,7 +69,7 @@ The following table lists network communication paths that are internal for Dieg
   <td>diego_brain (SSH Proxy)</td>
   <td>diego_database (BBS)</td>
   <td>8889</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -77,7 +77,7 @@ The following table lists network communication paths that are internal for Dieg
   <td>diego_brain (TPS Watcher)</td>
   <td>diego_database (Locket)</td>
   <td>8891</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -85,7 +85,7 @@ The following table lists network communication paths that are internal for Dieg
   <td>diego_cell (local Route Emitter)</td>
   <td>diego_database (BBS)</td>
   <td>8889</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -93,7 +93,7 @@ The following table lists network communication paths that are internal for Dieg
   <td>diego_cell (Rep)</td>
   <td>diego_brain (CC Uploader)</td>
   <td>9090</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>None</td>
 </tr>
@@ -101,7 +101,7 @@ The following table lists network communication paths that are internal for Dieg
   <td>diego_cell (Rep)</td>
   <td>diego_brain (File Server)</td>
   <td>8080</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>None</td>
 </tr>
@@ -109,7 +109,7 @@ The following table lists network communication paths that are internal for Dieg
   <td>diego_cell (Rep)</td>
   <td>diego_database (BBS)</td>
   <td>8889</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -117,7 +117,7 @@ The following table lists network communication paths that are internal for Dieg
   <td>diego_cell (Rep)</td>
   <td>diego_database (Locket)</td>
   <td>8891</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -125,23 +125,15 @@ The following table lists network communication paths that are internal for Dieg
   <td>diego_database (BBS)</td>
   <td>diego_brain (Auctioneer)</td>
   <td>9016</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
 <tr>
   <td>diego_database (BBS)</td>
-  <td>diego_brain (Stager)</td>
-  <td>8888</td>
-  <td></td>
-  <td>HTTP</td>
-  <td>None</td>
-</tr>
-<tr>
-  <td>diego_database (BBS)</td>
   <td>diego_cell (Rep)</td>
   <td>1801</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -149,7 +141,7 @@ The following table lists network communication paths that are internal for Dieg
   <td>diego_database (BBS)</td>
   <td>diego_database (Locket)</td>
   <td>8891</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -172,7 +164,7 @@ The following table lists network communication paths that are outbound from Die
   <td>diego_brain</td>
   <td>cloud_controller</td>
   <td>9022</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>Basic authentication</td>
 </tr>
@@ -180,7 +172,7 @@ The following table lists network communication paths that are outbound from Die
   <td>diego_brain (SSH Proxy)</td>
   <td>App instances</td>
   <td>2222</td>
-  <td></td>
+  <td>TCP</td>
   <td>SSH</td>
   <td>SSH</td>
 </tr>
@@ -188,7 +180,7 @@ The following table lists network communication paths that are outbound from Die
   <td>diego_brain (SSH Proxy)</td>
   <td>cloud_controller</td>
   <td>9022</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -196,7 +188,7 @@ The following table lists network communication paths that are outbound from Die
   <td>diego_brain (SSH Proxy)</td>
   <td>uaa</td>
   <td>443</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>TLS and OAuth 2.0</td>
 </tr>
@@ -204,7 +196,7 @@ The following table lists network communication paths that are outbound from Die
   <td>diego_cell (local Route Emitter)</td>
   <td>nats</td>
   <td>4222</td>
-  <td></td>
+  <td>TCP</td>
   <td>NATS</td>
   <td>Basic authentication</td>
 </tr>
@@ -212,7 +204,7 @@ The following table lists network communication paths that are outbound from Die
   <td>diego_cell (Rep)</td>
   <td>cloud_controller</td>
   <td>9022</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>None</td>
 </tr>
@@ -220,7 +212,7 @@ The following table lists network communication paths that are outbound from Die
   <td>diego_cell (Rep)</td>
   <td>nfs_server or other blobstore<sup>&#42;</sup></td>
   <td>Varies</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>None/TLS</td>
 </tr>
@@ -228,7 +220,7 @@ The following table lists network communication paths that are outbound from Die
   <td>diego_database (BBS)</td>
   <td>cloud_controller</td>
   <td>9022</td>
-  <td></td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>Basic authentication</td>
 </tr>
@@ -236,7 +228,7 @@ The following table lists network communication paths that are outbound from Die
   <td>diego_database (BBS)</td>
   <td>mysql_proxy<sup>&#8224;</sup></td>
   <td>3306</td>
-  <td></td>
+  <td>TCP</td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
 </tr>
@@ -244,7 +236,7 @@ The following table lists network communication paths that are outbound from Die
   <td>diego_database (Locket)</td>
   <td>mysql_proxy<sup>&#8224;</sup></td>
   <td>3306</td>
-  <td></td>
+  <td>TCP</td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
 </tr>
