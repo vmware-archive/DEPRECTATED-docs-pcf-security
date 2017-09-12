@@ -28,34 +28,10 @@ The following table lists network communication paths for Loggregator.
 </tr>
 <tr>
   <td>Any&#42;</td>
-  <td>doppler</td>
-  <td>3458</td>
-  <td>TCP</td>
-  <td>TCP with length prefix</td>
-  <td>None</td>
-</tr>
-<tr>
-  <td>Any&#42;</td>
   <td>loggregator_trafficcontroller</td>
   <td>8081</td>
   <td>TCP</td>
   <td>HTTP/WebSocket</td>
-  <td>None</td>
-</tr>
-<tr>
-  <td>Any<sup>&#42;</sup></td>
-  <td>cloud_controller (Statsd Injector)</td>
-  <td>8125</td>
-  <td>UDP</td>
-  <td>N/A</td>
-  <td>None</td>
-</tr>
-<tr>
-  <td>Any<sup>&#42;</sup></td>
-  <td>uaa (Statsd Injector)</td>
-  <td>8125</td>
-  <td>UDP</td>
-  <td>N/A</td>
   <td>None</td>
 </tr>
 <tr>
@@ -65,22 +41,6 @@ The following table lists network communication paths for Loggregator.
   <td>TCP</td>
   <td>gRPC over HTTP/2</td>
   <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>doppler (Syslog Drain Binder)</td>
-  <td>cloud_controller</td>
-  <td>9023</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller</td>
-  <td>cloud_controller</td>
-  <td>443</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>OAuth 2.0</td>
 </tr>
 <tr>
   <td>loggregator_trafficcontroller</td>
@@ -101,10 +61,18 @@ The following table lists network communication paths for Loggregator.
 <tr>
   <td>loggregator_trafficcontroller</td>
   <td>uaa</td>
-  <td>443</td>
+  <td>8443</td>
   <td>TCP</td>
   <td>HTTPS</td>
-  <td>OAuth 2.0</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller</td>
+  <td>cloud_controller</td>
+  <td>9023</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
 </tr>
 <tr>
   <td>loggregator_trafficcontroller (Reverse Log Proxy)</td>
