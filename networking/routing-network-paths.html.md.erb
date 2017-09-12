@@ -14,13 +14,15 @@ The following table lists network communication paths for HTTP routing.
   <th>Source VM</th>
   <th>Destination VM</th>
   <th>Port</th>
-  <th>Protocol</th>
+  <th>Transport Layer Protocol</th>
+  <th>App Layer Protocol</th>
   <th>Security and Authentication</th>
 </tr>
 <tr>
   <td>diego_cell (local Route Emitter)</td>
   <td>nats</td>
   <td>4222</td>
+  <td>TCP</td>
   <td>NATS</td>
   <td>Basic authentication</td>
 </tr>
@@ -28,6 +30,7 @@ The following table lists network communication paths for HTTP routing.
   <td>Load balancer</td>
   <td>router (Gorouter)</td>
   <td>80</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>None</td>
 </tr>
@@ -35,6 +38,7 @@ The following table lists network communication paths for HTTP routing.
   <td>Load balancer</td>
   <td>router (Gorouter)</td>
   <td>443</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>TLS</td>
 </tr>
@@ -42,6 +46,7 @@ The following table lists network communication paths for HTTP routing.
   <td>router (Gorouter)</td>
   <td>nats</td>
   <td>4222</td>
+  <td>TCP</td>
   <td>NATS</td>
   <td>Basic authentication</td>
 </tr>
@@ -49,6 +54,7 @@ The following table lists network communication paths for HTTP routing.
   <td>router (Gorouter)</td>
   <td>System components and app containers</td>
   <td>Varies</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>None</td>
 </tr>
@@ -63,13 +69,15 @@ The following table lists network communication paths for TCP routing.
   <th>Source VM</th>
   <th>Destination VM</th>
   <th>Port</th>
-  <th>Protocol</th>
+  <th>Transport Layer Protocol</th>
+  <th>App Layer Protocol</th>
   <th>Security and Authentication</th>
 </tr>
 <tr>
   <td>cloud_controller</td>
   <td>cloud_controller (Routing API)<sup>&#42;</sup></td>
   <td>443</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>TLS and OAuth 2.0</td>
 </tr>
@@ -77,6 +85,7 @@ The following table lists network communication paths for TCP routing.
   <td>cloud_controller (Routing API)</td>
   <td>diego_database (Locket)</td>
   <td>8891</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -84,6 +93,7 @@ The following table lists network communication paths for TCP routing.
   <td>cloud_controller (Routing API)</td>
   <td>mysql_proxy</td>
   <td>3306</td>
+  <td>TCP</td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
 </tr>
@@ -91,6 +101,7 @@ The following table lists network communication paths for TCP routing.
   <td>cloud_controller (Routing API)</td>
   <td>uaa</td>
   <td>8443</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>TLS</td>
 </tr>
@@ -98,6 +109,7 @@ The following table lists network communication paths for TCP routing.
   <td>diego_brain (global TCP Emitter)</td>
   <td>cloud_controller (Routing API)</td>
   <td>3000</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -105,6 +117,7 @@ The following table lists network communication paths for TCP routing.
   <td>diego_brain (global TCP Emitter)</td>
   <td>uaa</td>
   <td>8443</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>TLS</td>
 </tr>
@@ -112,6 +125,7 @@ The following table lists network communication paths for TCP routing.
   <td>diego_cell (local Route Emitter)</td>
   <td>cloud_controller (Routing API)</td>
   <td>3000</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -119,6 +133,7 @@ The following table lists network communication paths for TCP routing.
   <td>diego_cell (local Route Emitter)</td>
   <td>uaa</td>
   <td>8443</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>TLS</td>
 </tr>
@@ -127,12 +142,14 @@ The following table lists network communication paths for TCP routing.
   <td>tcp_router</td>
   <td>1024-65535<sup>&#8224;</sup></td>
   <td>TCP</td>
+  <td>N/A</td>
   <td>None</td>
 </tr>
 <tr>
   <td>router (Gorouter)</td>
   <td>cloud_controller (Routing API)</td>
   <td>3000</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -140,6 +157,7 @@ The following table lists network communication paths for TCP routing.
   <td>router (Gorouter)</td>
   <td>uaa</td>
   <td>8443</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>TLS</td>
 </tr>
@@ -147,6 +165,7 @@ The following table lists network communication paths for TCP routing.
   <td>tcp_router</td>
   <td>cloud_controller (Routing API)</td>
   <td>3000</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -154,6 +173,7 @@ The following table lists network communication paths for TCP routing.
   <td>tcp_router</td>
   <td>uaa</td>
   <td>8443</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>TLS</td>
 </tr>
