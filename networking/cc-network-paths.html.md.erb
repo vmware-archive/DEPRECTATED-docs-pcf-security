@@ -14,13 +14,15 @@ The following table lists network communication paths that are inbound to the Cl
   <th>Source VM</th>
   <th>Destination VM</th>
   <th>Port</th>
-  <th>Protocol</th>
+  <th>Transport Layer Protocol</th>
+  <th>App Layer Protocol</th>
   <th>Security and Authentication</th>
 </tr>
 <tr>
   <td>cloud_controller</td>
   <td>cloud_controller (Routing API)</td>
   <td>443</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -28,6 +30,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>diego_brain</td>
   <td>cloud_controller</td>
   <td>9022</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>Basic authentication</td>
 </tr>
@@ -35,6 +38,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>diego_brain (SSH Proxy)</td>
   <td>cloud_controller</td>
   <td>9022</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -42,6 +46,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>diego_cell (Rep)</td>
   <td>cloud_controller</td>
   <td>9022</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>None</td>
 </tr>
@@ -49,6 +54,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>diego_database (BBS)</td>
   <td>cloud_controller</td>
   <td>9022</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>Basic authentication</td>
 </tr>
@@ -56,6 +62,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>doppler (Syslog Drain Binder)</td>
   <td>cloud_controller</td>
   <td>9023</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -63,6 +70,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>loggregator_trafficcontroller</td>
   <td>cloud_controller</td>
   <td>443</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -70,6 +78,7 @@ The following table lists network communication paths that are inbound to the Cl
   <td>router</td>
   <td>cloud_controller</td>
   <td>9022</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>OAuth 2.0</td>
 </tr>
@@ -84,13 +93,15 @@ The following table lists network communication paths that are outbound from the
   <th>Source VM</th>
   <th>Destination VM</th>
   <th>Port</th>
-  <th>Protocol</th>
+  <th>Transport Layer Protocol</th>
+  <th>App Layer Protocol</th>
   <th>Security and Authentication</th>
 </tr>
 <tr>
   <td>cloud_controller</td>
   <td>diego_brain (Nsync)</td>
   <td>8787</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>None</td>
 </tr>
@@ -98,6 +109,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller</td>
   <td>diego_brain (Stager)</td>
   <td>8888</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>None</td>
 </tr>
@@ -105,6 +117,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller</td>
   <td>diego_brain (TPS Listener)</td>
   <td>1518</td>
+  <td>TCP</td>
   <td>HTTP</td>
   <td>None</td>
 </tr>
@@ -112,6 +125,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller</td>
   <td>etcd_tls_server</td>
   <td>4001</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>Mutual TLS</td>
 </tr>
@@ -119,6 +133,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller</td>
   <td>mysql_proxy<sup>&#42;</sup></td>
   <td>3306</td>
+  <td>TCP</td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
  </tr>
@@ -126,6 +141,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller</td>
   <td>nfs_server or other blobstore<sup>&#8224;</sup></td>
   <td>4443</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>TLS and basic authentication</td>
  </tr>
@@ -133,6 +149,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller</td>
   <td>uaa</td>
   <td>8443</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>OAuth 2.0 or none<sup>&#135;</sup></td>
  </tr>
@@ -140,6 +157,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller (Route Registrar)</td>
   <td>nats</td>
   <td>4222</td>
+  <td>TCP</td>
   <td>NATS</td>
   <td>Basic authentication</td>
  </tr>
@@ -147,6 +165,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller_worker</td>
   <td>mysql_proxy<sup>&#42;</sup></td>
   <td>3306</td>
+  <td>TCP</td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
  </tr>
@@ -154,6 +173,7 @@ The following table lists network communication paths that are outbound from the
   <td>cloud_controller_worker</td>
   <td>nfs_server or other blobstore<sup>&#8224;</sup></td>
   <td>4443</td>
+  <td>TCP</td>
   <td>HTTPS</td>
   <td>TLS and basic authentication</td>
  </tr>
@@ -161,6 +181,7 @@ The following table lists network communication paths that are outbound from the
   <td>clock_global</td>
   <td>mysql_proxy<sup>&#42;</sup></td>
   <td>3306</td>
+  <td>TCP</td>
   <td>MySQL</td>
   <td>MySQL authentication</td>
  </tr>
