@@ -26,7 +26,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>3306</td>
   <td>TCP</td>
   <td>MySQL</td>
-  <td>MySQL authentication</td>
+  <td>MySQL authentication*</td>
 </tr>
 <tr>
   <td>cloud_controller_worker</td>
@@ -34,7 +34,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>3306</td>
   <td>TCP</td>
   <td>MySQL</td>
-  <td>MySQL authentication</td>
+  <td>MySQL authentication*</td>
 </tr>
 <tr>
   <td>clock_global</td>
@@ -42,7 +42,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>3306</td>
   <td>TCP</td>
   <td>MySQL</td>
-  <td>MySQL authentication</td>
+  <td>MySQL authentication*</td>
 </tr>
 <tr>
   <td>diego_database (BBS)</td>
@@ -50,7 +50,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>3306</td>
   <td>TCP</td>
   <td>MySQL</td>
-  <td>MySQL authentication</td>
+  <td>MySQL authentication*</td>
 </tr>
 <tr>
   <td>mysql</td>
@@ -58,14 +58,14 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>4567</td>
   <td>TCP</td>
   <td>MySQL</td>
-  <td>MySQL authentication</td>
+  <td>MySQL authentication*</td>
 </tr>
 <tr>
   <td>mysql_monitor</td>
   <td>mysql (Galera health check)</td>
   <td>9200</td>
   <td>TCP</td>
-  <td>MySQL</td>
+  <td>HTTP</td>
   <td>Basic authentication</td>
 </tr>
 <tr>
@@ -82,7 +82,7 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>3306</td>
   <td>TCP</td>
   <td>MySQL</td>
-  <td>MySQL authentication</td>
+  <td>MySQL authentication*</td>
 </tr>
 <tr>
   <td>mysql_proxy</td>
@@ -98,9 +98,11 @@ The following table lists network communication paths that are inbound to MySQL.
   <td>3306</td>
   <td>TCP</td>
   <td>MySQL</td>
-  <td>MySQL authentication</td>
+  <td>MySQL authentication*</td>
 </tr>
 </table>
+
+(\*) MySQL authentication uses the MySQL native password method.
 
 ## <a id="consul"></a>Consul Communications
 
