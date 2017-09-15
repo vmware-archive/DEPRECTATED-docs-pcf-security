@@ -73,7 +73,7 @@ The following table lists network communication paths that are outbound from UAA
   <td>3306</td>
   <td>TCP</td>
   <td>MySQL</td>
-  <td>MySQL authentication</td>
+  <td>MySQL authentication<sup>&#42;&#42;</sup></td>
 </tr>
 <tr>
   <td>uaa (Route Registrar)</td>
@@ -86,6 +86,8 @@ The following table lists network communication paths that are outbound from UAA
 </table>
 
 <sup>&#42;</sup>Applies only to deployments where internal MySQL is selected as the database.
+
+<sup>&#42;&#42;</sup> MySQL authentication uses the MySQL native password method.
 
 ## <a id="outbound-external"></a> Outbound Communications: External to PCF ##
 
