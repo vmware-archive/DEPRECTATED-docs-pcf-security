@@ -95,7 +95,7 @@ The following table lists network communication paths for TCP routing.
   <td>3306</td>
   <td>TCP</td>
   <td>MySQL</td>
-  <td>MySQL authentication</td>
+  <td>MySQL authentication<sup>&#42;&#42;</sup> </td>
 </tr>
 <tr>
   <td>cloud_controller (Routing API)</td>
@@ -182,6 +182,8 @@ The following table lists network communication paths for TCP routing.
 <sup>&#42;</sup> This communication happens through a load balancer and Gorouter. Requests are received by Routing API on port 3000.
 
 <sup>&#8224;</sup> You can use this port range to configure the port in the ERT tile.
+
+<sup>&#42;&#42;</sup> MySQL authentication uses the MySQL native password method.
 
 ## <a id="consul"></a>Consul Communications
 
