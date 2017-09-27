@@ -47,6 +47,8 @@ For more information about instance ID creds, see the [Instance Identity](https:
 
 By default, PCF uses a limited set of cipher suites to secure its internal communications. However, some components used in PCF, like Gorouter and HAProxy, may support additional TLS cipher suites to accommodate older clients outside of PCF. 
 
+<p class="note">The AWS Classic load balancer does not support the recommended TLS cipher suites. See <a href="../../adminguide/securing-traffic.html#ciphers">Securing Traffic into Cloud Foundry</a> for details and mitigations.</p>
+
 For components that allow you to configure TLS cipher suites, only specify the TLS cipher suites that you need.
 
 ### <a id="cipher_recs"></a>TLS Cipher Suite Recommendations
