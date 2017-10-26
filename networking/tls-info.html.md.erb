@@ -7,7 +7,7 @@ Pivotal Cloud Foundry (PCF) uses Transport Layer Security (TLS) protocols to sec
 
 Within a PCF deployment, TLS secures connections between components like the Ops Manager Director and service tiles. PCF components also use TLS connections to secure communications with external hardware, such as customer load balancers.
 
-In Elastic Runtime, app instance containers have [identity credentials](#container-creds) that enable TLS communication by app instances.
+In Pivotal Application Service (PAS), app instance containers have [identity credentials](#container-creds) that enable TLS communication by app instances.
 
 ## <a id="container-creds"></a> App Instance Container Identity Credentials
 
@@ -66,7 +66,7 @@ The recommended TLS cipher suites to use within PCF are the following:
 
 ###<a id="cipher_gorouter"></a> Gorouter Configuration
 
-As part of your Elastic Runtime networking configuration, you must specify the TLS cipher suites that Gorouter uses to secure its communications. Only specify the cipher suites that you need.
+As part of your PAS networking configuration, you must specify the TLS cipher suites that Gorouter uses to secure its communications. Only specify the cipher suites that you need.
 
 The recommended TLS cipher suites for Gorouter are:
 
@@ -77,11 +77,11 @@ The recommended TLS cipher suites for Gorouter are:
 
 You can specify other cipher suites and a different minimum version of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by Gorouter, see [Securing Traffic into Cloud Foundry](../../adminguide/securing-traffic.html#ciphers).
 
-For instructions on how to configure the TLS cipher suites for Gorouter, see the Elastic Runtime installation documentation for the IaaS of your deployment. For example, if you are deploying Elastic Runtime on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking). 
+For instructions on how to configure the TLS cipher suites for Gorouter, see the PAS installation documentation for the IaaS of your deployment. For example, if you are deploying PAS on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking). 
 
 ###<a id="cipher_haproxy"></a> HAProxy Configuration
 
-As part of your Elastic Runtime networking configuration, you must specify the TLS cipher suites that HAProxy uses to secure its communications. Only specify the cipher suites that you need.
+As part of your PAS networking configuration, you must specify the TLS cipher suites that HAProxy uses to secure its communications. Only specify the cipher suites that you need.
 
 The recommended TLS cipher suites for HAProxy are:
 
@@ -94,8 +94,8 @@ The recommended TLS cipher suites for HAProxy are:
 
 You can specify other cipher suites and a different minimum version of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by HAProxy, see [ciphers - Cipher Suite Names](https://www.openssl.org/docs/man1.0.2/apps/ciphers.html#CIPHER-SUITE-NAMES) in the OpenSSL documentation.
 
-If you use the default and recommended Gorouter TLS cipher suites in Elastic Runtime, then ensure you have included these Gorouter TLS cipher suites in your HAProxy TLS cipher suite configuration.
+If you use the default and recommended Gorouter TLS cipher suites in PAS, then ensure you have included these Gorouter TLS cipher suites in your HAProxy TLS cipher suite configuration.
 
-If you change the default Gorouter TLS cipher suites in Elastic Runtime, and you change the TLS cipher suites for HAProxy, ensure that you have at least one overlapping TLS cipher suite within the two sets.
+If you change the default Gorouter TLS cipher suites in PAS, and you change the TLS cipher suites for HAProxy, ensure that you have at least one overlapping TLS cipher suite within the two sets.
 
-For instructions on how to configure the TLS cipher suites for HAProxy, see the Elastic Runtime installation documentation for the IaaS of your deployment. For example, if you are deploying Elastic Runtime on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking). 
+For instructions on how to configure the TLS cipher suites for HAProxy, see the PAS installation documentation for the IaaS of your deployment. For example, if you are deploying PAS on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking). 
