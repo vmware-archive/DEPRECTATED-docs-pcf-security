@@ -5,7 +5,7 @@ owner: Core Services
 
 This topic describes MySQL internal network communication paths with other Pivotal Application Service (PAS) components.
 
-These communications only apply to deployments where internal MySQL is selected as the ERT database.
+These communications only apply to deployments where internal MySQL is selected as the PAS database.
 
 ## <a id="inbound"></a> Inbound Communications ##
 
@@ -129,5 +129,5 @@ The following table lists network communication paths that are outbound from MyS
 
 ## <a id="consul"></a>Consul Communications
 
-All MySQL Proxy instances register themselves with Consul, which enables ERT components that use Consul for service discovery to find available proxies.
+All MySQL Proxy instances register themselves with Consul, which enables PAS components that use Consul for service discovery to find available proxies.
 For more information, see [Consul Network Communications](./consul-network-paths.html).
