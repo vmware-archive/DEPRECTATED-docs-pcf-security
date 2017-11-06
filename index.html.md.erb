@@ -1,46 +1,31 @@
 ---
-title: Security Guide
+breadcrumb: Pivotal Cloud Foundry Documentation
+title: PCF Security Guide
 owner: Security
 ---
 
-This guide is intended for administrators, developers, and anyone interested in making their Pivotal Cloud Foundry (PCF) deployment more secure. Use this guide to learn how PCF manages infrastructure security, roles and permissions, container hardening, and more.
+##<a id='who'></a>For Security Professionals and PCF Users
 
-To learn about Pivotal's vulnerability reporting and responsible disclosure process, read the [PCF Security Overview and Policy](./process/pcf-security.html). You can review the latest CVEs on the [Pivotal Application Security page](https://pivotal.io/security). 
+This guide explains how Pivotal Cloud Foundry (PCF) manages network access, roles and permissions, internal communications, container hardening, and other security issues. It is intended to give security professionals a complete view of PCF security, and to help all PCF users, not just the security experts, keep the platform secure.
 
-If you are new to PCF security, start with the <a href="#concepts">Concepts</a> section.
+##<a id='cves'></a>Current Security Reports
 
-## <a id='concepts'></a>Security Concepts ##
-Start here if you need a high-level view of how PCF manages security.
+Pivotal publishes security updates regularly in response to privately- and publicly-reported Common Vulnerabilities and Exposures (CVEs).
 
-* <a href="./concepts/index.html" class="subnav">Security Concepts</a>
+See the latest CVEs on the [Pivotal Application Security Team](https://pivotal.io/security) page.
 
-## <a id='process'></a>PCF Security Processes ##
-This section provides high-level content on how Pivotal remediates, discloses, and prevents security events.
+To learn about Pivotal's vulnerability reporting and responsible disclosure process, read [PCF Security Overview and Policy](./process/pcf-security.html).
 
-* <a href="./process/index.html" class="subnav">PCF Security Processes</a>
+##<a id='contents'></a>Guide Contents
 
-## <a id='identity'></a>Identity Management ##
-This section includes topics on identity, authorization, authentication, and access management.
+* <a href="/pivotalcf/2-0/adminguide/securing-traffic.html">Securing Traffic into Cloud Foundry</a> - Configuring and maintaining front-end platform security at the load balancer or router.
 
-* <a href="./identity/index.html" class="subnav">Identity Management</a>
+* <a href="/pivotalcf/2-0/security/identity/index.html">Identity Management</a> - Managing permissions and trust for PCF user accounts, and user accounts in the underlying IaaS.
 
-## <a id='infrastructure'></a>PCF Infrastructure Security ##
-This section includes topics on securing connections and components, such as the Ops Manager Director and stemcells, inside a PCF deployment.
+* <a href="/pivotalcf/2-0/security/networking/tls-info.html">PCF Component Security</a> - How PCF components and app containers keep  internal communications secure, and what paths, ports, and protocols the components use to communicate.
 
-* <a href="./pcf-infrastructure/index.html" class="subnav">PCF Infrastructure Security</a>
+* <a href="/pivotalcf/2-0/security/pcf-infrastructure/index.html">PAS App and Service Security</a> - Enabling PAS apps to communicate internally with other apps and use service instance credentials securely.
 
-## <a id='networking'></a>Network Security ##
-This section includes content about setting up and securing network connections.
+* <a href="/pivotalcf/2-0/credhub/index.html">CredHub</a> - The credential management tool that BOSH uses to store deployment credentials and that PCF runtimes use to create and manage app and service credentials.
 
-* <a href="./networking/index.html" class="subnav">Network Security</a>
-
-## <a id='tiles'></a>Security-Related PCF Tiles ##
-This section includes content about PCF-related services that can enhance security in a deployment.
-
-* <a href="./tiles/index.html" class="subnav">Security-Related PCF Tiles</a>
-
-## <a id='security-adjacent'></a>Other Security Topics ##
-This section includes content that may help you manage other security concerns.
-
-* <a href="./security-adjacent/index.html" class="subnav">Other Security Topics</a>
-
+* <a href="/pivotalcf/2-0/security/process/index.html">PCF Security and Stemcell Processes</a> - How Pivotal responds to security vulnerabilities, and how it tests and updates the versioned operating systems that its products run on.

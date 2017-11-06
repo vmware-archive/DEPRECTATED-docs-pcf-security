@@ -1,5 +1,5 @@
 ---
-title: Stemcell Hardening FAQ
+title: Linux Stemcell Hardening
 owner: Security CONSULT LEGAL BEFORE MAKING ANY CHANGES TO THIS DOC
 ---
 
