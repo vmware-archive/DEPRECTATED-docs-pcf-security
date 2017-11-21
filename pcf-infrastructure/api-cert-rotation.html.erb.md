@@ -4,17 +4,6 @@ owner: OpsMan
 owner: Security
 ---
 
-<style>
-.note.warning {
-    background-color: #fdd;
-    border-color: #fbb
-}
-
-.note.warning:before {
-    color: #f99;
- }
-</style>
-
 This topic describes how to regenerate and rotate your Certificate Authority (CA) certificates.
 
 <p class="note warning"><strong>Warning</strong>: You must complete the procedures in this topic in the exact order specified below. Otherwise, you risk doing damage to your deployment.</p>
@@ -75,7 +64,7 @@ If you don't want to use a Pivotal-generated CA, you can provide your own CA wit
         -X POST \ 
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \ 
         -H "Content-Type: application/json" \ 
-        -d '{"cert\_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwI...", "private\_key\_pem": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCA..."}'
+        -d '{"cert\_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwI...", "private\_key\_pem": "-----BEGIN EXAMPLE RSA PRIVATE KEY-----\nMIIEowIBAAKCA..."}'
     </pre>
 
 1. Confirm that your new CA has been added by listing all of the root CAs for Ops Manager:
