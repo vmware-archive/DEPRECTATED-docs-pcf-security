@@ -29,10 +29,10 @@ The following table lists network communication paths that are inbound to the Cl
 <tr>
   <td>diego_brain</td>
   <td>cloud_controller</td>
-  <td>9022</td>
+  <td>9023</td>
   <td>TCP</td>
-  <td>HTTP</td>
-  <td>Basic authentication</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
 </tr>
 <tr>
   <td>diego_brain (SSH Proxy)</td>
@@ -45,18 +45,18 @@ The following table lists network communication paths that are inbound to the Cl
 <tr>
   <td>diego_cell (Rep)</td>
   <td>cloud_controller</td>
-  <td>9022</td>
+  <td>9023</td>
   <td>TCP</td>
-  <td>HTTP</td>
-  <td>None</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
 </tr>
 <tr>
   <td>diego_database (BBS)</td>
   <td>cloud_controller</td>
-  <td>9022</td>
+  <td>9023</td>
   <td>TCP</td>
-  <td>HTTP</td>
-  <td>Basic authentication</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
 </tr>
 <tr>
   <td>doppler (Syslog Drain Binder)</td>
@@ -120,6 +120,14 @@ The following table lists network communication paths that are outbound from the
   <td>TCP</td>
   <td>HTTPS</td>
   <td>OAuth 2.0 or none<sup>&#135;</sup></td>
+ </tr>
+<tr>
+  <td>cloud_controller</td>
+  <td>diego_database (BBS)</td>
+  <td>8889</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
  </tr>
  <tr>
   <td>cloud_controller (Route Registrar)</td>
