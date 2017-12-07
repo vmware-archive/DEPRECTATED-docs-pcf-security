@@ -6,6 +6,8 @@ owner: Security
 
 This topic describes how to manage Certificate Authority (CA) certificates in your deployment, including how to determine when your CA certificates expire, how to set a custom CA certificate, and how to regenerate and rotate your CA certificates.
 
+For information about rotating IPsec certificates, see [Rotating IPsec Certificates](docs.pivotal.io/addon-ipsec/1-8/credentials.html).
+
 ##<a id='list-certs'></a> Generate and Retrieve Certificates
 
 To manage and retrieve information about certificates in your deployment, use the API calls in this section.
