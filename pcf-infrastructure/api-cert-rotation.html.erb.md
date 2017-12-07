@@ -10,32 +10,12 @@ You must regenerate and rotate them so that critical components do not face a co
 Use the procedure in this topic to determine when your certificate authority expires.
 When you need to rotate your certificate authority, contact [Pivotal Support](http://support.pivotal.io/).
 
-##<a id='cert-expiry'></a> Check Certificate Authority Expiration Dates
+##<a id='cert-expiry'></a> Check CA Certificate Expiration Dates
 
-To retrieve information about the expiration dates for RSA and CA certificates in your deployment, perform the following steps:
+The non-configurable certificates in your deployment expire every two years.
+Use the following procedure to retrieve information about the expiration dates for RSA and CA certificates in your deployment.
 
-1. Target your Ops Manager UAA server:
-<pre>
-$ uaac target https<span>:</span>//OPS-MAN-FQDN/uaa
-</pre>
-
-1. Retrieve your token to authenticate. When prompted for a passcode, retrieve it from `https://OPS-MAN-FQDN/uaa/passcode`.
-<pre>
-$ uaac token owner get
-    Client ID: opsman
-    Client secret:
-    User name: OPS-MAN-USERNAME
-    Password: OPS-MAN-PASSWORD
-</pre>
-  Leave **Client secret** blank.
-  Replace `OPS-MAN-USERNAME` and `OPS-MAN-PASSWORD` with the credentials that you use to log in to the Ops Manager web interface.
-
-1. List your tokens:
-<pre>
-$ uaac contexts
-</pre>
-
-1. Locate the entry for your Ops Manager FQDN. Record the value for <code>access_token</code>.
+1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN`.
 
 1. Use `curl` to make an API call to check for certificates expiring on the system within 6 months:
 <pre>
