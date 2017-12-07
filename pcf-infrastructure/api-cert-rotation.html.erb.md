@@ -10,7 +10,7 @@ You must regenerate and rotate them so that critical components do not face a co
 Use the procedures in this topic to retrieve certificates and determine when your certificates expire.
 When you need to rotate your Certificate Authority (CA), contact [Pivotal Support](http://support.pivotal.io/).
 
-For information about rotating IPsec certificates, see [Rotating IPsec Certificates](docs.pivotal.io/addon-ipsec/1-8/credentials.html).
+For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/1-8/credentials.html).
 
 ##<a id='list-certs'></a> Retrieve Certificates
 
