@@ -4,18 +4,7 @@ owner: OpsMan
 owner: Security
 ---
 
-<style>
-.note.warning {
-    background-color: #fdd;
-    border-color: #fbb
-}
-
-.note.warning:before {
-    color: #f99;
- }
-</style>
-
-This topic describes how to regenerate and rotate your Certificate Authority (CA) certificates.
+This topic describes how to manage Certificate Authority (CA) certificates in your deployment, including how to determine when your CA certificates expire, how to set a custom CA certificate, and how to regenerate and rotate your CA certificates.
 
 <p class="note warning"><strong>Warning</strong>: You must complete the procedures in this topic in the exact order specified below. Otherwise, you risk doing damage to your deployment.</p>
 
@@ -29,34 +18,12 @@ These API calls allow you to create new CAs, apply them, and delete old CAs. The
 
 <p class="note"><strong>Note</strong>: These procedures require you to return to Ops Manager and click <strong>Apply Changes</strong> periodically. Clicking <strong>Apply Changes</strong> redeploys the Ops Manager Director and its tiles. If you apply your changes during each procedure, a successful redeploy verifies that the certificate rotation process is proceeding correctly.</p>
 
-##<a id='cert-expiry'></a> Check Certificate Authority Expiration Dates
+##<a id='cert-expiry'></a> Check CA Certificate Expiration Dates
 
 The non-configurable certificates in your deployment expire every two years.
+Use the following procedure to retrieve information about the expiration dates for RSA and CA certificates in your deployment.
 
-To retrieve information about the expiration dates for RSA and CA certificates in your deployment, perform the following steps:
-
-1. Target your Ops Manager UAA server:
-<pre>
-$ uaac target https<span>:</span>//OPS-MAN-FQDN/uaa
-</pre>
-
-1. Retrieve your token to authenticate. When prompted for a passcode, retrieve it from `https://OPS-MAN-FQDN/uaa/passcode`.
-<pre>
-$ uaac token owner get
-    Client ID: opsman
-    Client secret:
-    User name: OPS-MAN-USERNAME
-    Password: OPS-MAN-PASSWORD
-</pre>
-  Leave **Client secret** blank.
-  Replace `OPS-MAN-USERNAME` and `OPS-MAN-PASSWORD` with the credentials that you use to log in to the Ops Manager web interface.
-
-1. List your tokens:
-<pre>
-$ uaac contexts
-</pre>
-
-1. Locate the entry for your Ops Manager FQDN. Record the value for <code>access_token</code>.
+1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN`.
 
 1. Use `curl` to make an API call to check for certificates expiring on the system within 6 months:
 <pre>
