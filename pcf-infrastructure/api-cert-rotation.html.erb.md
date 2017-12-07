@@ -29,6 +29,49 @@ These API calls allow you to create new CAs, apply them, and delete old CAs. The
 
 <p class="note"><strong>Note</strong>: These procedures require you to return to Ops Manager and click <strong>Apply Changes</strong> periodically. Clicking <strong>Apply Changes</strong> redeploys the Ops Manager Director and its tiles. If you apply your changes during each procedure, a successful redeploy verifies that the certificate rotation process is proceeding correctly.</p>
 
+##<a id='cert-expiry'></a> Check Certificate Authority Expiration Dates
+
+The non-configurable certificates in your deployment expire every two years.
+
+To retrieve information about the expiration dates for RSA and CA certificates in your deployment, perform the following steps:
+
+1. Target your Ops Manager UAA server:
+<pre>
+$ uaac target https<span>:</span>//OPS-MAN-FQDN/uaa
+</pre>
+
+1. Retrieve your token to authenticate. When prompted for a passcode, retrieve it from `https://OPS-MAN-FQDN/uaa/passcode`.
+<pre>
+$ uaac token owner get
+    Client ID: opsman
+    Client secret:
+    User name: OPS-MAN-USERNAME
+    Password: OPS-MAN-PASSWORD
+</pre>
+  Leave **Client secret** blank.
+  Replace `OPS-MAN-USERNAME` and `OPS-MAN-PASSWORD` with the credentials that you use to log in to the Ops Manager web interface.
+
+1. List your tokens:
+<pre>
+$ uaac contexts
+</pre>
+
+1. Locate the entry for your Ops Manager FQDN. Record the value for <code>access_token</code>.
+
+1. Use `curl` to make an API call to check for certificates expiring on the system within 6 months:
+<pre>
+$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates?expires\_within=6m" \
+      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+</pre>
+  Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access_token</code> value you recorded in the previous step.
+
+1. (Optional) To check for expiring certificates in a different time interval, replace `TIME` with an integer and a letter code. Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.<br><br>
+    For example, run the following command to search for certificates expiring within one year:
+    <pre>
+    $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates?expires_within=1y" \
+        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+    </pre>
+
 ##<a id='add-new-ca'></a> Step 1: Add a New CA
 
 1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the following procedures.
