@@ -3,7 +3,7 @@ title: CredHub Network Communications
 owner: CredHub
 ---
 
-This topic describes [CredHub](../../credhub/index.html) internal 
+This topic describes [CredHub](../../credhub/index.html) internal
 network communication paths with other Pivotal Application Service (PAS) components.
 
 ## <a id="inbound"></a> Inbound Communications
@@ -20,12 +20,36 @@ The following table lists network communication paths that are inbound to the Cr
   <th>Security and Authentication</th>
 </tr>
 <tr>
-  <td> </td>
-  <td> </td>
-  <td> </td>
-  <td> </td>
-  <td> </td>
-  <td> </td>
+  <td> api </td>
+  <td> credhub </td>
+  <td> 8844 </td>
+  <td> TCP </td>
+  <td> HTTPS </td>
+  <td> OAuth 2.0 </td>
+</tr>
+<tr>
+  <td> diego-cell </td>
+  <td> credhub </td>
+  <td> 8844 </td>
+  <td> TCP </td>
+  <td> HTTPS </td>
+  <td> Mutual TLS† </td>
+</tr>
+<tr>
+  <td> windows-cell </td>
+  <td> credhub </td>
+  <td> 8844 </td>
+  <td> TCP </td>
+  <td> HTTPS </td>
+  <td> Mutual TLS† </td>
+</tr>
+<tr>
+  <td> windows2016-cell </td>
+  <td> credhub </td>
+  <td> 8844 </td>
+  <td> TCP </td>
+  <td> HTTPS </td>
+  <td> Mutual TLS† </td>
 </tr>
 </table>
 
@@ -43,12 +67,25 @@ The following table lists network communication paths that are outbound from the
   <th>Security and Authentication</th>
 </tr>
 <tr>
+  <td> credhub </td>
+  <td> uaa </td>
+  <td> 8443 </td>
+  <td> TCP </td>
+  <td> HTTPS </td>
+  <td> n/a </td>
+</tr>
 <tr>
-  <td> </td>
-  <td> </td>
-  <td> </td>
-  <td> </td>
-  <td> </td>
-  <td> </td>
+  <td> credhub </td>
+  <td> database* </td>
+  <td> 3306 </td>
+  <td> TCP </td>
+  <td> MySQL </td>
+  <td> MySQL authentication** </td>
 </tr>
 </table>
+
+*Applies only to deployments where internal MySQL is selected as the database.
+
+**MySQL authentication uses the MySQL native password method.
+
+†Diego cells use the certificate pairs generated for individual containers to authenticate with CredHub on behalf of applications.
