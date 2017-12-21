@@ -8,6 +8,34 @@ This topic describes how to manage Certificate Authority (CA) certificates in yo
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/1-8/credentials.html).
 
+##<a id='expiration'></a> Planning for Certificate Expiration
+Non-configurable CA certificates expire 2 years after creation. Root certificates expire after 4 years. These asychronous lifecycles make it possible for you to rotate non-configurable certificates without creating and applying a new root certificate. 
+
+Depending on the needs of your deployment, there are two approaches to certificate rotation:
+<ul>
+<li>You can only <a href="#rotate-non-config">rotate non-configurable certificates</a>, or</li>
+<li>you can <a href="#rotate-ca">create and apply new root and non-configurable certificates</a>.</li> 
+</ul>
+
+##<a id='rotate-non-config'></a> Rotating Non-Configurable Certificates 
+
+If you need to rotate non-configurable certificates, follow the procedure below. If you need to rotate all your certificates, including creating and applying a new root certificate, follow the procedure in <a href="#rotate-ca">Regenerate and Rotate CA Certificates</a>.
+
+###<a id='rotate-with-curl'></a> Rotating Expiring Certificates
+
+1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing Ops Manager Director:
+<pre class="terminal">
+  $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/active/regenerate" \
+        -X POST \
+        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{}'
+</pre> 
+The API returns a successful response:
+<pre class="terminal">HTTP/1.1 200 OK</pre>
+
+1. Navigate to Ops Manager and click **Apply Changes**. When the deploy finishes, continue to the next section.
+
 ##<a id='list-certs'></a> Generate and Retrieve Certificates
 
 To manage and retrieve information about certificates in your deployment, use the API calls in this section.
