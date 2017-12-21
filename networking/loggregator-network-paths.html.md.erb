@@ -28,7 +28,7 @@ The following table lists network communication paths for Loggregator.
 </tr>
 <tr>
   <td>Any VM running Metron</td>
-  <td>doppler</td>
+  <td>doppler<sup>&#8224;</sup></td>
   <td>8082</td>
   <td>TCP</td>
   <td>gRPC over HTTP/2</td>
@@ -36,7 +36,7 @@ The following table lists network communication paths for Loggregator.
 </tr>
 <tr>
   <td>loggregator_trafficcontroller</td>
-  <td>doppler</td>
+  <td>doppler<sup>&#8224;</sup></td>
   <td>8082</td>
   <td>TCP</td>
   <td>gRPC over HTTP/2</td>
@@ -78,9 +78,8 @@ The following table lists network communication paths for Loggregator.
 
 <sup>&#42;</sup>Any source VM can send requests to the specified destination within its subnet.
 
-<sup>&#8224;</sup>Starting from ERT v1.11, Metron does not use the UDP protocol to communicate with Doppler.
-<sup>&#8224;</sup>Starting from PAS v2.0, Doppler does not use the UDP protocol.<br>
-<sup>&#8224;</sup>Starting from PAS v2.0, Doppler does not use the HTTP/WebSocket protocol.
+<sup>&#8224;</sup>Starting from ERT v1.11, Metron does not use the UDP protocol to communicate with Doppler. 
+Starting in PAS v2.0, Doppler no longer uses the UDP protocol and the HTTP/WebSocket protocol.
 
 ## <a id="consul"></a>Consul Communications
 
