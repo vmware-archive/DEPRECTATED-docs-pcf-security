@@ -30,7 +30,8 @@ $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/security/root\_ca\_certificate 
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
 
-###<a id='certs'></a> Retrieve and Generate RSA Certificates
+###<a id='cer1
+ts'></a> Retrieve and Generate RSA Certificates
 
 To generate and return a new RSA certificate signed by the root CA, use `curl` to make the following API call:
 <pre>
@@ -84,6 +85,7 @@ Use the following procedure to add a new CA.
 You can use a Pivotal-generated CA or provide your own CA using the API calls in this section.
 
 1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the following procedures.
+<p class="note"><strong>Note</strong>: When you record your Ops Manager access token, make sure you remove any new line characters such as <code>/n</code>. Otherwise the API call in the following step will not succeed.</p>
 
 1. To use a Pivotal-generated CA, use `curl` to make the following API call:
 <pre>
