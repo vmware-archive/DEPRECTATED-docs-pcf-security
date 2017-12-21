@@ -21,7 +21,7 @@ Depending on the needs of your deployment, there are two approaches to certifica
 
 If you need to rotate non-configurable certificates, follow the procedure below. If you need to rotate all your certificates, including creating and applying a new root certificate, follow the procedure in <a href="#rotate-ca">Regenerate and Rotate CA Certificates</a>.
 
-###<a id='rotate-with-curl'></a> Rotating Non-Configurable Certificates
+###<a id='rotate-with-curl'></a> Rotating Expiring Certificates
 
 1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing Ops Manager Director:
 <pre class="terminal">
@@ -35,8 +35,6 @@ The API returns a successful response:
 <pre class="terminal">HTTP/1.1 200 OK</pre>
 
 1. Navigate to Ops Manager and click **Apply Changes**. When the deploy finishes, continue to the next section.
-
-###
 
 ##<a id='list-certs'></a> Generate and Retrieve Certificates
 
