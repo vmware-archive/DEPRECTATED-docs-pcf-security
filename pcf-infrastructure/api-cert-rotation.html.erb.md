@@ -14,7 +14,7 @@ Non-configurable CA certificates expire 2 years after creation. Root certificate
 Depending on the needs of your deployment, there are two approaches to certificate rotation:
 <ul>
 <li>You can only <a href="#rotate-non-config">rotate non-configurable certificates</a>, or</li>
-<li>you can <a href="#rotate-ca">create and apply new root and non-configurable certificates</a>.</li> 
+<li>You can <a href="#rotate-ca">create and apply new root and non-configurable certificates</a>.</li> 
 </ul>
 
 ##<a id='rotate-non-config'></a> Rotating Non-Configurable Certificates 
