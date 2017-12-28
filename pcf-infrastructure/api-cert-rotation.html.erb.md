@@ -58,8 +58,7 @@ $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/security/root\_ca\_certificate 
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
 
-###<a id='cer1
-ts'></a> Retrieve and Generate RSA Certificates
+###<a id='generate-rsa-certs'></a> Retrieve and Generate RSA Certificates
 
 To generate and return a new RSA certificate signed by the root CA, use `curl` to make the following API call:
 <pre>
