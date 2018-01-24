@@ -1,0 +1,396 @@
+---
+title: BOSH DNS Communications
+owner: BOSH
+---
+
+This topic describes [BOSH DNS](https://bosh.io/docs/dns.html) internal network communication paths with other Pivotal Application Service (PAS) components.
+
+## <a id="inbound"></a> BOSH DNS Communications
+
+The following table lists network communication paths for Consul.
+
+<p class="note"><strong>Note</strong>: Port 8853 is the destination port for communications between BOSH DNS agents. You must allow TCP traffic on 8853 for all VMs running BOSH DNS.</p>
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Transport Layer Protocol</th>
+  <th>App Layer Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>backup-prepare</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>ccdb</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>clock_global</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>cloud_controller</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>cloud_controller_worker</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>consul_server</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>diego_brain</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>diego_cell</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>diego_database</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>doppler</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>ha_proxy</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>loggregator_trafficcontroller</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>mysql_proxy<sup>&#42;</sup></td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>mysql_monitor<sup>&#42;</sup></td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>nats</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>nfs_server<sup>&#8224;</sup></td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>router</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>syslog_adapter</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>syslog_scheduler</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>tcp_router</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>uaa</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>uaadb</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>Service tile VMs</td>
+  <td>53</td>
+  <td>TCP and UDP</td>
+  <td>DNS</td>
+  <td>Unencrypted. This communication happens inside the VM.</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>backup-prepare</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>ccdb</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>clock_global</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>cloud_controller</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>cloud_controller_worker</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>consul_server</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>diego_brain</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>diego_cell</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>diego_database</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>doppler</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>ha_proxy</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>loggregator_trafficcontroller</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>mysql_proxy<sup>&#42;</sup></td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>mysql_monitor<sup>&#42;</sup></td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>nats</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>nfs_server<sup>&#8224;</sup></td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>router</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>syslog_adapter</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>syslog_scheduler</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>tcp_router</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>uaa</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>uaadb</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any VM running BOSH DNS</td>
+  <td>Service tile VMs</td>
+  <td>8853</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+</table>
+
+
+<sup>&#42;</sup>Applies only to deployments where internal MySQL is selected as the database.
+
+<sup>&#8224;</sup>Applies only to deployments where the internal NFS server is selected for file storage.
