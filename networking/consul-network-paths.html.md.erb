@@ -201,3 +201,7 @@ The following table lists network communication paths for Consul.
 <sup>&#42;</sup>Applies only to deployments where internal MySQL is selected as the database.
 
 <sup>&#8224;</sup>Applies only to deployments where the internal NFS server is selected for file storage.
+
+## <a id="bosh-dns"></a>BOSH DNS Communications
+
+Application containers look up services using the BOSH DNS service discovery mechanism. To support this lookup, BOSH Director colocates a BOSH DNS server on every deployed VM. For more information, see [BOSH DNS Network Communications](./bosh-dns-network-paths.html).

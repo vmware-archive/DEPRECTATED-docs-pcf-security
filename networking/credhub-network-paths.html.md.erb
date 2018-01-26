@@ -89,3 +89,7 @@ The following table lists network communication paths that are outbound from the
 **MySQL authentication uses the MySQL native password method.
 
 †Diego cells use the certificate pairs generated for individual containers to authenticate with CredHub on behalf of applications.
+
+## <a id="bosh-dns"></a>BOSH DNS Communications
+
+Application containers look up services using the BOSH DNS service discovery mechanism. To support this lookup, BOSH Director colocates a BOSH DNS server on every deployed VM. For more information, see [BOSH DNS Network Communications](./bosh-dns-network-paths.html).
