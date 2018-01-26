@@ -221,3 +221,7 @@ The following table lists network communication paths for TCP routing.
 ## <a id="consul"></a>Consul Communications
 
 PAS components call out to Consul for service discovery. For more information, see [Consul Network Communications](./consul-network-paths.html).
+
+## <a id="bosh-dns"></a>BOSH DNS Communications
+
+Application containers look up services using the BOSH DNS service discovery mechanism. To support this lookup, BOSH Director colocates a BOSH DNS server on every deployed VM. For more information, see [BOSH DNS Network Communications](./bosh-dns-network-paths.html).
