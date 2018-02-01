@@ -1,7 +1,6 @@
 ---
 title: Managing Non-Configurable TLS/SSL Certificates 
 owner: OpsMan
-owner: Security
 ---
 
 This topic describes how to manage Certificate Authority (CA) certificates in your deployment, including how to determine when your CA certificates expire, how to set a custom CA certificate, and how to regenerate and rotate your CA certificates.
