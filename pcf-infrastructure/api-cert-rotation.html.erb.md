@@ -9,7 +9,7 @@ This topic describes how to manage Certificate Authority (CA) certificates in yo
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/1-8/credentials.html).
 
 ##<a id='expiration'></a> Planning for Certificate Expiration
-Non-configurable CA certificates expire 2 years after creation. Root certificates expire after 4 years. These asychronous lifecycles make it possible for you to rotate non-configurable certificates without creating and applying a new root certificate. 
+Non-configurable CA certificates expire 2 years after creation. Root certificates expire after 4 years. These asynchronous lifecycles make it possible for you to rotate non-configurable certificates without creating and applying a new root certificate. 
 
 Depending on the needs of your deployment, there are two approaches to certificate rotation:
 <ul>
