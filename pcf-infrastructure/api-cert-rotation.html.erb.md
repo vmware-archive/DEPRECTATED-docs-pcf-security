@@ -22,7 +22,7 @@ If you need to rotate non-configurable certificates, follow the procedure below.
 
 ###<a id='rotate-with-curl'></a> Rotating Expiring Certificates
 
-1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing Ops Manager Director:
+1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
 <pre class="terminal">
   $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/active/regenerate" \
         -X POST \
@@ -100,10 +100,10 @@ Certificates can expire or fall out of currency, or your organization's security
 You can rotate the certificates in your Pivotal Cloud Foundry (PCF) deployment using `curl`.
 PCF provides different API calls with which to manage certificates and CAs. New certificates generated through this process use SHA-256 encryption.
 
-These API calls allow you to create new CAs, apply them, and delete old CAs. The process of activating a new CA and rotating it in gives new certificates to the Ops Manager Director.
+These API calls allow you to create new CAs, apply them, and delete old CAs. The process of activating a new CA and rotating it in gives new certificates to the BOSH Director.
 The BOSH Director then passes the certificates to other components in your PCF deployment.
 
-<p class="note"><strong>Note</strong>: These procedures require you to return to Ops Manager and click <strong>Apply Changes</strong> periodically. Clicking <strong>Apply Changes</strong> redeploys the Ops Manager Director and its tiles. If you apply your changes during each procedure, a successful redeploy verifies that the certificate rotation process is proceeding correctly.</p>
+<p class="note"><strong>Note</strong>: These procedures require you to return to Ops Manager and click <strong>Apply Changes</strong> periodically. Clicking <strong>Apply Changes</strong> redeploys the BOSH Director and its tiles. If you apply your changes during each procedure, a successful redeploy verifies that the certificate rotation process is proceeding correctly.</p>
 
 ###<a id='add-new-ca'></a> Step 1: Add a New CA
 
@@ -219,7 +219,7 @@ To provide your own CA, use `curl` to make the following API call:
 
 ###<a id='regenerate'></a> Step 3: Regenerate Non-Configurable Certificates to Apply the New CA
 
-1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing Ops Manager Director:
+1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
 <pre>
   $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/active/regenerate" \
         -X POST \
