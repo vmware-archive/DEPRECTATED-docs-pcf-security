@@ -13,11 +13,11 @@ In Pivotal Application Service (PAS), app instance containers have [identity cre
 
 Each app instance container in PCF has a PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS #1 RSA](https://tools.ietf.org/html/rfc3447) private key. App developers can use these credentials to enable secure TLS communications from their apps.
 
-Instance container certificates are issued from a separate, application-specific root Certificate Authority (CA) and satisfy the following properties:
+Instance container certificates are issued from a separate, app-specific root Certificate Authority (CA) and satisfy the following properties:
 
-* The **Common Name** of the certificate is the app instance GUID
-* The **Subject** of the certificate contains an **Organizational Unit** of the form <code>app:APP-GUID</code>
-* The certificate contains a **Subject Alternative Name** (SAN) with the IP address for the app instance container
+* The **Common Name** of the certificate is the app instance GUID.
+* The **Subject** of the certificate contains an **Organizational Unit** in the form of <code>app:APP-GUID</code>.
+* The certificate contains a **Subject Alternative Name** (SAN) with the IP address for the app instance container.
 
 Each container stores its credentials in the following variables:
 
@@ -37,7 +37,7 @@ Each container stores its credentials in the following variables:
   </tr>
 </table>
 
-The application root CA certificate is installed in the system trust store for buildpack-based applications, and is also present as a file in `/etc/cf-system-certificates`.
+The root CA certificate of the app is installed in the system trust store for buildpack-based apps, and is also present as a file in `/etc/cf-system-certificates`.
 
 To run TLS connections or otherwise use instance container credentials from their apps, developers must first add the certificates to their development stack configuration.
 
