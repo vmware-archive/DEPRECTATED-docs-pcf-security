@@ -11,13 +11,13 @@ In Pivotal Application Service (PAS), app instance containers have [identity cre
 
 ## <a id="container-creds"></a> App Instance Container Identity Credentials
 
-Each app instance container in PCF has a PEM-encoded [X.509](https://www.ietf.org/rfc/rfc5280.txt) certificate and [PKCS #1 RSA](https://tools.ietf.org/html/rfc3447) private key. App developers can use these credentials to enable secure TLS communications from their apps.
+Each app instance container in PCF has a PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS #1 RSA](https://tools.ietf.org/html/rfc3447) private key. App developers can use these credentials to enable secure TLS communications from their apps.
 
-Instance container certificates are issued from the platform root Certificate Authority (CA) and have the following property values:
+Instance container certificates are issued from a separate, application-specific root Certificate Authority (CA) and satisfy the following properties:
 
-* **Common Name** is the app instance GUID
-* **Organizational Unit** is the app GUID
-* **Subject Alternative Name** (SAN) contains the container IP address for the app instance
+* The **Common Name** of the certificate is the app instance GUID
+* The **Subject** of the certificate contains an **Organizational Unit** of the form <code>app:APP-GUID</code>
+* The certificate contains a **Subject Alternative Name** (SAN) with the IP address for the app instance container
 
 Each container stores its credentials in the following variables:
 
@@ -37,7 +37,7 @@ Each container stores its credentials in the following variables:
   </tr>
 </table>
 
-Each container VM also stores the platform root CA certificate in `/etc/cf-system-certificates`.
+The application root CA certificate is installed in the system trust store for buildpack-based applications, and is also present as a file in `/etc/cf-system-certificates`.
 
 To run TLS connections or otherwise use instance container credentials from their apps, developers must first add the certificates to their development stack configuration.
 
