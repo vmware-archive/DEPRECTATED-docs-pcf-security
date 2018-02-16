@@ -11,23 +11,17 @@ In Pivotal Application Service (PAS), app instance containers have [identity cre
 
 ## <a id="container-creds"></a> App Instance Container Identity Credentials
 
-Each app instance container in PCF has a PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS #1 RSA](https://tools.ietf.org/html/rfc3447) private key. App developers can use these credentials to enable secure TLS communications from their apps.
+Each app instance container in PCF has its own PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS #1 RSA](https://tools.ietf.org/html/rfc3447) private key. App developers can use these credentials to enable secure TLS communications from their apps, and PCF itself uses them internally to validate the identity of app instances.
 
-Instance container certificates are issued from a separate, app-specific root Certificate Authority (CA) and satisfy the following properties:
-
-* The **Common Name** of the certificate is the app instance GUID.
-* The **Subject** of the certificate contains an **Organizational Unit** in the form of <code>app:APP-GUID</code>.
-* The certificate contains a **Subject Alternative Name** (SAN) with the IP address for the app instance container.
-
-Each container stores its credentials in the following variables:
+PCF presents the certificate and private key to the app instance via the container filesystem, and sets the following environment variables to the locations of these files:
 
 <table id='instance-certs' border="1" class="nice" >
   <tr>
     <th>Credential / Keypair Element</th>
     <th>Environment Variable</th>
-    <th>Command to Retrieve Value</th>
+    <th>Command to Retrieve Credential Value</th>
   </tr><tr>
-    <td>Certificate</td>
+    <td>Certificate Chain</td>
     <td><code>CF_INSTANCE_CERT</code></td>
     <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_CERT'</code></td>
   </tr><tr>
@@ -37,11 +31,20 @@ Each container stores its credentials in the following variables:
   </tr>
 </table>
 
-The root CA certificate of the app is installed in the system trust store for buildpack-based apps, and is also present as a file in `/etc/cf-system-certificates`.
+To run TLS connections or otherwise use instance container credentials from their apps, developers must first add the certificates to their development stack configuration. The certificate file itself may contain a chain of PEM-encoded certificates, with the instance-specific certificate first in the list and any intermediates following it.
 
-To run TLS connections or otherwise use instance container credentials from their apps, developers must first add the certificates to their development stack configuration.
+Each certificate satisfies the following properties:
 
-For more information about instance ID creds, see the [Instance Identity](https://github.com/cloudfoundry/diego-release/blob/develop/docs/instance-identity.md) document in the diego-release repository.
+* The **Common Name** of the certificate is the app instance GUID.
+* The **Subject** of the certificate contains an **Organizational Unit** in the form of <code>app:APP-GUID</code>.
+* The certificate contains a **Subject Alternative Name** (SAN) with the IP address for the app instance container.
+* The certificate is valid for a 24-hour period, starting from the time at which it was issued.
+
+PCF provides a new certificate and private key to the container shortly before the current certificate expires by moving new files into those locations. Applications that use these credentials continually should reload the new file contents either periodically or in reaction to filesystem watcher events.
+
+These app instance container certificates are issued from a separate root Certificate Authority (CA) dedicated to app instance identity. The certificate for that root CA is installed in the system trust store for buildpack-based apps, and is also present as a file in `/etc/cf-system-certificates` in all app instance containers.
+
+For more information about instance identity credentials, see the [Instance Identity](https://github.com/cloudfoundry/diego-release/blob/develop/docs/instance-identity.md) document in the diego-release repository.
 
 ## <a id="ciphers"></a> TLS Cipher Suites
 
