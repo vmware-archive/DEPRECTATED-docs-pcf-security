@@ -11,9 +11,77 @@ In Pivotal Application Service (PAS), app instance containers have [identity cre
 
 ## <a id="container-creds"></a> App Instance Container Identity Credentials
 
-Each app instance container in PCF has its own PEM-encoded [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS #1 RSA](https://tools.ietf.org/html/rfc3447) private key. App developers can use these credentials to enable secure TLS communications from their apps, and PCF itself uses them internally to validate the identity of app instances.
+Each app instance container in PCF has its own identity credentials. This section is meant to help PCF operators and developers [understand](#cred-details) and [use](#use-creds) these credentials. 
 
-PCF presents the certificate and private key to the app instance via the container filesystem, and sets the following environment variables to the locations of these files:
+### <a id="cred-details"></a> Understanding the Credentials
+
+See the following table to learn about app instance identity credentials.
+
+<table>
+  <tr>
+    <th style="width: 20%">Purpose</th>
+    <td>
+        <ul>
+          <li>For app developers to enable secure TLS communications from their apps.</li>
+          <li>For PCF to use internally to validate the identities of app instances.</li>
+        </ul>
+    </td>
+  </tr>
+  <tr>
+    <th>Type</th>
+    <td>
+      <ul>
+        <li>
+          A PEM-encoded <a href="https://tools.ietf.org/html/rfc5280">X.509</a> certificate and <a href="https://tools.ietf.org/html/rfc3447">PKCS #1 RSA</a> private key. 
+        </li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <th>Location</th>
+    <td>
+        <ul>
+          <li>PCF presents the certificate and private key to the app instance through the container filesystem. </li>
+        </ul>
+    </td>
+  </tr>
+  <tr>
+    <th>Properties of certificate</th>
+    <td>
+        <ul>
+          <li>The <b>Common Name</b> is the app instance GUID.</li>
+          <li>The <b>Subject</b> of the certificate contains an <i>Organizational Unit</i> in the form of <code>app:APP-GUID</code>.</li>
+          <li>The certificate contains a <b>Subject Alternative Name</b> (SAN) with the IP address for the app instance container.</li>
+          <li>The certificate is valid for a 24-hours after being issued.</li>
+        </ul>
+    </td>
+  </tr>
+  <tr>
+    <th>Contents of certificate file</th>
+    <td>
+        <ul>
+          <li>A chain of PEM-encoded certificates, with the instance-specific certificate first in the list and any intermediates following it.</li>
+        </ul>
+    </td>
+  </tr>
+  <tr>
+    <th>Issuing authority</th>
+    <td>
+        <ul>
+          <li>PCF includes a root Certificate Authority (CA) dedicated to app instance identity in the system trust store for buildpack-based apps and as a file in <code>/etc/cf-system-certificates</code> in all app instance containers.
+          <p class="note"><strong>Note</strong>: TLS enabled apps that use use app instance container identity credentials can trust each other because the credentials are issued from the same authority.</p></li>
+        </ul>
+    </td>
+  </tr>
+</table>
+
+
+
+### <a id="use-creds"></a> Using the Credentials
+
+To use instance container credentials from their apps, developers must first add the credentials to their development stack configuration. 
+
+Developers can access the credentials through following environment variables, which PCF sets to the locations of key and certificate files:
 
 <table id='instance-certs' border="1" class="nice" >
   <tr>
@@ -31,18 +99,9 @@ PCF presents the certificate and private key to the app instance via the contain
   </tr>
 </table>
 
-To run TLS connections or otherwise use instance container credentials from their apps, developers must first add the certificates to their development stack configuration. The certificate file itself may contain a chain of PEM-encoded certificates, with the instance-specific certificate first in the list and any intermediates following it.
+<p class="note"><strong>Note</strong>: PCF provides a new certificate and private key to the container shortly before the current certificate expires by moving new files into those locations. Apps that use these credentials continually must reload the new file contents either periodically or in reaction to filesystem watcher events.</p>
 
-Each certificate satisfies the following properties:
-
-* The **Common Name** of the certificate is the app instance GUID.
-* The **Subject** of the certificate contains an **Organizational Unit** in the form of <code>app:APP-GUID</code>.
-* The certificate contains a **Subject Alternative Name** (SAN) with the IP address for the app instance container.
-* The certificate is valid for a 24-hour period, starting from the time at which it was issued.
-
-PCF provides a new certificate and private key to the container shortly before the current certificate expires by moving new files into those locations. Applications that use these credentials continually should reload the new file contents either periodically or in reaction to filesystem watcher events.
-
-These app instance container certificates are issued from a separate root Certificate Authority (CA) dedicated to app instance identity. The certificate for that root CA is installed in the system trust store for buildpack-based apps, and is also present as a file in `/etc/cf-system-certificates` in all app instance containers.
+### <a id="more-info"></a> Additional Information
 
 For more information about instance identity credentials, see the [Instance Identity](https://github.com/cloudfoundry/diego-release/blob/develop/docs/instance-identity.md) document in the diego-release repository.
 
