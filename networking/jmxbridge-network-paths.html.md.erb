@@ -19,12 +19,36 @@ The following table lists network communication paths for JMX Bridge.
   <th>Security and Authentication</th>
 </tr>
 <tr>
-  <td> </td>
-  <td></td>
-  <td> </td>
-  <td> </td>
-  <td> </td>
-  <td> </td>
+  <td>Traffic Controller</td>
+  <td>JMX Firehose Nozzle</td>
+  <td>443/4443</td>
+  <td>TCP</td>
+  <td>Websocket</td>
+  <td>UAA Token</td>
+</tr>
+<tr>
+  <td>JMX Firehose Nozzle</td>
+  <td>JMX Provider</td>
+  <td>13322</td>
+  <td>TCP</td>
+  <td>gRPC</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>JMX Provider</td>
+  <td>User/Client</td>
+  <td>44445</td>
+  <td>TCP</td>
+  <td>RMI</td>
+  <td>Username/Password (optional SSL)</td>
+</tr>
+<tr>
+  <td>JMX Provider</td>
+  <td>User/Client</td>
+  <td>44444</td>
+  <td>TCP</td>
+  <td>RMI Registry</td>
+  <td>Username/Password (optional SSL)</td>
 </tr>
 </table>
 
