@@ -3,9 +3,9 @@ title: JMX Bridge Network Communications
 owner: Metrics
 ---
 
-This topic describes JMX Bridge internal network communication paths with other Pivotal Application Service (PAS) components.
+This topic describes JMX Bridge network communication paths with other Pivotal Application Service (PAS) components.
 
-## <a id="loggregator"></a> JMX Bridge Communications
+## JMX Bridge Communications
 
 The following table lists network communication paths for JMX Bridge.
 
@@ -19,15 +19,15 @@ The following table lists network communication paths for JMX Bridge.
   <th>Security and Authentication</th>
 </tr>
 <tr>
-  <td>Traffic Controller</td>
-  <td>JMX Firehose Nozzle</td>
+  <td>loggregator_trafficcontroller</td>
+  <td>jmx-firehose-nozzle</td>
   <td>443/4443</td>
   <td>TCP</td>
   <td>Websocket</td>
   <td>UAA Token</td>
 </tr>
 <tr>
-  <td>JMX Firehose Nozzle</td>
+  <td>jmx-firehose-nozzle</td>
   <td>JMX Provider</td>
   <td>13322</td>
   <td>TCP</td>
