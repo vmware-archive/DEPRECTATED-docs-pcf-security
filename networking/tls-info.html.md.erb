@@ -72,8 +72,7 @@ See the following table to learn about app instance identity credentials.
     <th>Issuing authority</th>
     <td>
         <ul>
-          <li>PCF includes a root Certificate Authority (CA) dedicated to app instance identity in the system trust store for buildpack-based apps and as a file in <code>/etc/cf-system-certificates</code> in all app instance containers.
-          <p class="note"><strong>Note</strong>: TLS enabled apps that use use app instance container identity credentials can trust each other because the credentials are issued from the same authority.</p></li>
+          <li>PCF includes a root Certificate Authority (CA) dedicated to app instance identity. This CA is in the system trust store for buildpack-based apps and a file in <code>/etc/cf-system-certificates</code> in all app instance containers.</li>
         </ul>
     </td>
   </tr>
@@ -83,27 +82,31 @@ See the following table to learn about app instance identity credentials.
 
 ### <a id="use-creds"></a> Using the Credentials
 
-To use instance container credentials from their apps, developers must first add the credentials to their development stack configuration. 
+If you want to enable secure TLS communications from an app using container instance identity credentials, ensure that you do the following:
 
-Developers can access the credentials through following environment variables, which PCF sets to the locations of key and certificate files:
+* **Add the credentials to your development stack configuration:** 
+  * The credentials must must be present in your development stack configuration for your app to use them. You can retrieve the credentials through following environment variables, which PCF sets to the locations of key and certificate files.
 
-<table id='instance-certs' border="1" class="nice" >
-  <tr>
-    <th>Credential / Keypair Element</th>
-    <th>Environment Variable</th>
-    <th>Command to Retrieve Credential Value</th>
-  </tr><tr>
-    <td>Certificate Chain</td>
-    <td><code>CF_INSTANCE_CERT</code></td>
-    <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_CERT'</code></td>
-  </tr><tr>
-    <td>Private Key</td>
-    <td><code>CF_INSTANCE_KEY</code></td>
-    <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_KEY'</code></td>
-  </tr>
-</table>
-
-<p class="note"><strong>Note</strong>: PCF provides a new certificate and private key to the container shortly before the current certificate expires by moving new files into those locations. Apps that use these credentials continually must reload the new file contents either periodically or in reaction to filesystem watcher events.</p>
+        <table id='instance-certs' border="1" class="nice" >
+          <tr>
+            <th>Credential / Keypair Element</th>
+            <th>Environment Variable</th>
+            <th>Command to Retrieve Credential Value</th>
+          </tr><tr>
+            <td>Certificate Chain</td>
+            <td><code>CF_INSTANCE_CERT</code></td>
+            <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_CERT'</code></td>
+          </tr><tr>
+            <td>Private Key</td>
+            <td><code>CF_INSTANCE_KEY</code></td>
+            <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_KEY'</code></td>
+          </tr>
+        </table>
+* **Reload the credential files before they expire:** 
+  * PCF rotates the credentials shortly before the current certificate expires. Apps that use these credentials continually must reload the certificate and key file contents either periodically or in reaction to filesystem watcher events.
+ 
+* **Configure external clients or servers to trust the root CA:**
+  * To enable secure TLS communication between an app and a client or server external to PCF, you must configure the external client or server to trust the CA that issues app instance container identity credentials. See the _Issuing Authority_ row of the table in [Understanding the Credentials](#cred-details).
 
 ### <a id="more-info"></a> Additional Information
 
