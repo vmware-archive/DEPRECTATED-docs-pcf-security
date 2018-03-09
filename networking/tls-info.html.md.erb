@@ -56,7 +56,7 @@ See the following table to learn about app instance identity credentials.
           <li>The <b>Common Name</b> is the app instance GUID.</li>
           <li>The <b>Subject</b> of the certificate contains an <i>Organizational Unit</i> in the form of <code>app:APP-GUID</code>.</li>
           <li>The certificate contains a <b>Subject Alternative Name</b> (SAN) with the IP address for the app instance container.</li>
-          <li>The certificate is valid for a 24-hours after being issued.</li>
+          <li>The certificate is valid for 24 hours after being issued.</li>
         </ul>
     </td>
   </tr>
@@ -72,7 +72,7 @@ See the following table to learn about app instance identity credentials.
     <th>Issuing authority</th>
     <td>
         <ul>
-          <li>PCF includes a root Certificate Authority (CA) dedicated to app instance identity. This CA is in the system trust store for buildpack-based apps and a file in <code>/etc/cf-system-certificates</code> in all app instance containers.</li>
+          <li>PCF includes a root Certificate Authority (CA) dedicated to app instance identity. This CA is saved in the system trust store for buildpack-based apps and in a file in <code>/etc/cf-system-certificates</code> in all app instance containers.</li>
         </ul>
     </td>
   </tr>
@@ -83,7 +83,7 @@ See the following table to learn about app instance identity credentials.
 If you want to enable secure TLS communications from an app using container instance identity credentials, ensure that you do the following:
 
 * **Add the credentials to your development stack configuration:** 
-  * The credentials must must be present in your development stack configuration for your app to use them. You can retrieve the credentials through following environment variables, which PCF sets to the locations of key and certificate files.
+  * The credentials must be present in your development stack configuration for your app to use them. You can retrieve the credentials through following environment variables, which PCF sets to the locations of key and certificate files.
 
         <table id='instance-certs' border="1" class="nice" >
           <tr>
@@ -101,7 +101,7 @@ If you want to enable secure TLS communications from an app using container inst
           </tr>
         </table>
 * **Reload the credential files before they expire:** 
-  * PCF rotates the credentials shortly before the current certificate expires. Apps that use these credentials continually must reload the certificate and key file contents either periodically or in reaction to filesystem watcher events.
+  * PCF rotates the credentials shortly before the current certificate expires. Apps that use these credentials must reload the certificate and key file contents either periodically or in reaction to filesystem watcher events.
  
 * **Configure external clients or servers to trust the root CA:**
   * To enable secure TLS communication between an app and a client or server external to PCF, you must configure the external client or server to trust the CA that issues app instance container identity credentials. See the _Issuing Authority_ row of the table in [Understanding the Credentials](#cred-details).
