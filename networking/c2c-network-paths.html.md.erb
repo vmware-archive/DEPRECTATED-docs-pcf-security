@@ -43,6 +43,14 @@ The following table lists network communication paths that are inbound to Contai
   <td> HTTP </td>
   <td> Mutual TLS </td>
 </tr>
+<tr>
+  <td> diego-cell (BOSH DNS Adapter) </td>
+  <td> service-discovery (Service Discovery Controller) </td>
+  <td> 8054 </td>
+  <td> TCP </td>
+  <td> HTTP </td>
+  <td> Mutual TLS </td>
+</tr>
 </table>
 #
 ## <a id="outbound"></a> Outbound Communications ##
@@ -74,6 +82,22 @@ The following table lists network communication paths that are outbound from Con
   <td> TCP </td>
   <td> HTTP </td>
   <td> OAuth 2.0 </td>
+</tr>
+<tr>
+  <td> service-discovery (Service Discovery Controller) </td>
+  <td> nats (NATS) </td>
+  <td> 4222 </td>
+  <td> TCP </td>
+  <td> HTTP </td>
+  <td> Basic authentication </td>
+</tr>
+<tr>
+  <td> diego-cell (BOSH DNS) </td>
+  <td> diego-cell (BOSH DNS Adapter) </td>
+  <td> 8053 </td>
+  <td> TCP </td>
+  <td> HTTP </td>
+  <td> None </td>
 </tr>
 </table>
 
