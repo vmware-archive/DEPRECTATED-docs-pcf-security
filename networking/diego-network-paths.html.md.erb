@@ -98,6 +98,14 @@ The following table lists network communication paths that are internal for Dieg
   <td>Mutual TLS</td>
 </tr>
 <tr>
+  <td>diego_brain (SSH Proxy)</td>
+  <td>diego_cell (App instances)</td>
+  <td>Varies<sup>&#8225;</sup></td>
+  <td>TCP</td>
+  <td>SSH</td>
+  <td>SSH</td>
+</tr>
+<tr>
   <td>diego_brain (TPS Watcher)</td>
   <td>diego_database (Locket)</td>
   <td>8891</td>
@@ -203,14 +211,6 @@ The following table lists network communication paths that are outbound from Die
 </tr>
 <tr>
   <td>diego_brain (SSH Proxy)</td>
-  <td>App instances</td>
-  <td>2222</td>
-  <td>TCP</td>
-  <td>SSH</td>
-  <td>SSH</td>
-</tr>
-<tr>
-  <td>diego_brain (SSH Proxy)</td>
   <td>cloud_controller</td>
   <td>9022</td>
   <td>TCP</td>
@@ -280,6 +280,8 @@ The following table lists network communication paths that are outbound from Die
 <sup>&#42;&#42;</sup>MySQL authentication uses the MySQL native password method.
 
 <sup>&#8224;</sup>Applies only to deployments where internal MySQL is selected as the database.
+
+<sup>&#8225;</sup>These are the host-side ports that map to port 2222 in app instance containers and are typically within the range 61001 to 65534.
 
 ## <a id="consul"></a>Consul Communications
 
