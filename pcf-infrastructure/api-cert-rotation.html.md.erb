@@ -23,6 +23,7 @@ Depending on the needs of your deployment, there are two approaches to certifica
 Pivotal Application Service UAA service holds a certificate which signs outbound communication to an external SAML Identity Provider. This certificate also has a 2-year expiration period and requires regeneration after this time.
 
 SAML service provider credentials should only have an impact if all of these conditions are met:
+
 * You are using SSO in production for apps.
 * You are using SAML Identity Providers for SSO service plans.
 * You had Ops Manager generate a certificate for you by clicking the **Generate RSA Certificate** button.
