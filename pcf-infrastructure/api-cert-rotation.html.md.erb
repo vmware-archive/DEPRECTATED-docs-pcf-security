@@ -22,9 +22,9 @@ Depending on which certificates are due to expire, there are two approaches to c
 
 Configurable certificates are certificates you generate yourself, as opposed to certificates that are given to you by the company whose product you are using. There are several types of configurable certificates. One such example is SAML service provider credentials.
 
-Pivotal Application Service (PAS) UAA service holds a CA certificate which signs outbound communication to an external SAML identity provider. This CA certificate also has a 2-year expiration period and requires regeneration after this time.
+Elastic Runtime (ERT) UAA service holds a CA certificate which signs outbound communication to an external SAML identity provider. This CA certificate also has a 2-year expiration period and requires regeneration after this time.
 
-SAML service provider credentials are only required for your PAS deployment's UAA service if all of these conditions are met:
+SAML service provider credentials are only required for your ERT deployment's UAA service if all of these conditions are met:
 
 * You are using SSO in production for apps.
 * You are using SAML identity providers for SSO service plans.
@@ -35,7 +35,7 @@ SAML service provider credentials are only required for your PAS deployment's UA
 
 To retrieve information about the expiration dates for CA certificates in your deployment, do the following:
 
-1. Navigate to **UAA > SAML Service Provider Credentials** in your PAS tile.
+1. Navigate to **UAA > SAML Service Provider Credentials** in your ERT tile.
 
 1. Copy the contents of the **SAML Service Provider Credentials** field into a temporary file such as `test.pem`.
 
@@ -50,17 +50,17 @@ If the certificate is nearing expiration, you must regenerate and rotate it.
 
 ### <a id='rotate-saml-ca'></a> Regenerating and Rotating SAML Service Provider Certificates
 
-If PAS is configured to use SSO/SAML and your identity provider is validating the requests, you must import a new certificate to avoid disrupting PAS when you rotate the certificate.
+If ERT is configured to use SSO/SAML and your identity provider is validating the requests, you must import a new certificate to avoid disrupting ERT when you rotate the certificate.
 
 To regenerate and rotate SAML service provider certificates, do the following:
 
 1. Disable certificate validation in your identity provider.
 
-1. Navigate to **UAA > SAML Service Provider Credentials** in your PAS tile.
+1. Navigate to **UAA > SAML Service Provider Credentials** in your ERT tile.
 
 1. Click **Generate RSA Certificate**.
 
-1. Following the procedure in the [Configure SAML as an Identity Provider for PCF](https://docs.pivotal.io/pivotalcf/1-11/opsguide/auth-sso.html#configure-saml-for-pcf) section of the _Configuring Authentication and Enterprise SSO for PAS_ topic to import the new certificate to your identity provider.
+1. Following the procedure in the [Configure SAML as an Identity Provider for PCF](https://docs.pivotal.io/pivotalcf/1-11/opsguide/auth-sso.html#configure-saml-for-pcf) section of the _Configuring Authentication and Enterprise SSO for ERT_ topic to import the new certificate to your identity provider.
 These steps will vary depending on which SAML provider you are using.
   * If using ADFS, see [Configure Active Directory Federation Services as an Identity Provider](http://docs.pivotal.io/p-identity/1-5/adfs/config-adfs.html).
   * If using CA SSO, see [Configure CA Single Sign-On as an Identity Provider](http://docs.pivotal.io/p-identity/1-5/ca-sso/config-ca-sso.html).
