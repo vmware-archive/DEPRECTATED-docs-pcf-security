@@ -20,7 +20,7 @@ Depending on which certificates are due to expire, there are two approaches to c
 
 ## <a id='rotate-config'></a> Rotating Configurable Certificates
 
-There are several types of configurable certificates. One such example is SAML service provider credentials.
+Configurable certificates are certificates you generate yourself, as opposed to certificates that are given to you by the company whose product you are using. There are several types of configurable certificates. One such example is SAML service provider credentials.
 
 Pivotal Application Service (PAS) UAA service holds a CA certificate which signs outbound communication to an external SAML identity provider. This CA certificate also has a 2-year expiration period and requires regeneration after this time.
 
@@ -42,20 +42,6 @@ To retrieve information about the expiration dates for CA certificates in your d
 1. Run the command to validate the expiration time on the certificate. For example:
 <pre class='terminal'>$ openssl x509 -enddate -noout -in test.pem 
 notAfter=Dec  7 21:01:04 2017 GMT</pre>
-
-Alternatively, you can do the following:
-
-1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN`.
-
-1. To check the system for certificates that expire within a given time interval, use `curl` to make an API call.<br><br>
-    Use the `https://OPS-MAN-FQDN/api/v0/deployed/certificates?expires_within=TIME` endpoint, replacing `TIME` with an integer and a letter code.
-    Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.<br><br>
-    For example, run the following command to search for certificates expiring within six months:
-    <pre>
-    $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates?expires\_within=6m" \
-          -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-    </pre>
-    Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access_token</code> value you recorded in the previous step.
 
 Once you have completed either of the above procedures, find the certificate with the `uaa.service_provider_key_credentials` property and validate its expiration. For example:
 <code>"field "property_reference":".uaa.service_provider_key_credentials"..."valid_until":"2019-06-14T11:37:11Z"</code>
@@ -86,6 +72,8 @@ These steps will vary depending on which SAML provider you are using.
 
 ## <a id='rotate-non-config'></a> Rotating Non-Configurable Certificates 
 
+Non-configurable certificates are certificates that are given to you by the company whose product you are using, as opposed to certificates you generate yourself.
+
 If you need to rotate non-configurable certificates, follow the procedure below. If you need to rotate all your certificates, including creating and applying a new root certificate, follow the procedure in [Regenerate and Rotate CA Certificates](#rotate-ca).
 
 ### <a id='non-config-cert-expiry'></a> Checking Certificate Expiration Dates
@@ -109,7 +97,7 @@ To retrieve information about the expiration dates for RSA and CA certificates i
 
 <p class="note warning"><strong>Warning</strong>: You must complete the procedures in this topic in the exact order specified below. Otherwise, you risk doing damage to your deployment.</p>
 
-Depending on the requirements of your deployment, you may need to rotate your non-configurable CA certificates.
+Depending on the requirements of your deployment, you may need to rotate your CA certificates.
 CA certificates can expire or fall out of currency, or your organization's security compliance policies may require you to rotate CA certificates periodically.
 
 You can rotate the CA certificates in your Pivotal Cloud Foundry (PCF) deployment using `curl`.
