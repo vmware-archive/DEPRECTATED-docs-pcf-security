@@ -1,87 +1,85 @@
 ---
-title: Managing Non-Configurable TLS/SSL Certificates 
+title: Managing TLS Certificates 
 owner: OpsMan
 ---
 
-This topic describes how to manage Certificate Authority (CA) certificates in your deployment, including how to determine when your CA certificates expire, how to set a custom CA certificate, and how to regenerate and rotate your CA certificates.
+This topic describes how to manage Certificate Authority (CA) certificates in your deployment, including how to determine when your CA certificates expire, how to set a custom CA certificate, and how to regenerate and rotate both configurable and non-configurable CA certificates.
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/1-8/credentials.html).
 
 
 ## <a id='expiration'></a> Planning for Certificate Expiration
 
-Non-configurable CA certificates expire 2 years after creation. Root certificates expire after 4 years. These asynchronous lifecycles make it possible for you to rotate non-configurable certificates without creating and applying a new root certificate. 
+CA certificates expire 2 years after creation, and root certificates expire after 4 years. Because CA certificates do not last as long as root certificates, you can rotate CA certificates without creating and applying a new root certificate.
 
-Depending on the needs of your deployment, there are two approaches to certificate rotation:
-<ul>
-<li>You can only <a href="#rotate-non-config">rotate non-configurable certificates</a>, or</li>
-<li>You can <a href="#rotate-ca">create and apply new root and non-configurable certificates</a>.</li> 
-</ul>
+Depending on which certificates are due to expire, there are two approaches to certificate rotation:
+
+* You can only rotate [configurable certificates](#rotate-config) or [non-configurable certificates](#rotate-non-config), or
+* You can rotate CA certificates and [create and apply new root certificates](#rotate-root).
+
+
+## <a id='rotate-config'></a> Rotating Configurable Certificates
+
+Configurable certificates are certificates you generate yourself, as opposed to certificates that are given to you by the company whose product you are using. There are several types of configurable certificates. One such example is SAML service provider credentials.
+
+Elastic Runtime (ERT) UAA service holds a CA certificate which signs outbound communication to an external SAML identity provider. This CA certificate also has a 2-year expiration period and requires regeneration after this time.
+
+SAML service provider credentials are only required for your ERT deployment's UAA service if all of these conditions are met:
+
+* You are using SSO in production for apps.
+* You are using SAML identity providers for SSO service plans.
+* You had Ops Manager generate a certificate for you by clicking the **Generate RSA Certificate** button.
+* You are validating the signature of SAML authentication request with your identity provider.
+
+### <a id='config-cert-expiry'></a> Checking Certificate Expiration Dates
+
+To retrieve information about the expiration dates for CA certificates in your deployment, do the following:
+
+1. Navigate to **Authentication & SSO > Service Provider Credentials** in your ERT tile.
+
+1. Copy the contents of the **SAML Service Provider Credentials** field into a temporary file such as `test.pem`.
+
+1. Run the command to validate the expiration time on the certificate. For example:
+<pre class='terminal'>$ openssl x509 -enddate -noout -in test.pem 
+notAfter=Dec  7 21:01:04 2017 GMT</pre>
+
+Once you have completed either of the above procedures, find the certificate with the `uaa.service_provider_key_credentials` property and validate its expiration. For example:
+<code>"field "property_reference":".uaa.service_provider_key_credentials"..."valid_until":"2019-06-14T11:37:11Z"</code>
+
+If the certificate is nearing expiration, you must regenerate and rotate it.
+
+### <a id='rotate-saml-ca'></a> Regenerating and Rotating SAML Service Provider Certificates
+
+If ERT is configured to use SSO/SAML and your identity provider is validating the requests, you must import a new certificate to avoid disrupting ERT when you rotate the certificate.
+
+To regenerate and rotate SAML service provider certificates, do the following:
+
+1. Disable certificate validation in your identity provider.
+
+1. Navigate to **Authentication & SSO > Service Provider Credentials** in your ERT tile.
+
+1. Click **Generate RSA Certificate**.
+
+1. Following the procedure in the [Configure SAML as an Identity Provider for PCF](https://docs.pivotal.io/pivotalcf/1-10/opsguide/auth-sso.html#configure-saml-for-pcf) section of the _Configuring Authentication and Enterprise SSO for ERT_ topic to import the new certificate to your identity provider.
+These steps will vary depending on which SAML provider you are using.
+  * If using ADFS, see [Configure Active Directory Federation Services as an Identity Provider](http://docs.pivotal.io/p-identity/1-5/adfs/config-adfs.html).
+  * If using CA SSO, see [Configure CA Single Sign-On as an Identity Provider](http://docs.pivotal.io/p-identity/1-5/ca-sso/config-ca-sso.html).
+  * If using Okta, see [Configure Okta as an Identity Provider](http://docs.pivotal.io/p-identity/1-5/okta/config-okta.html).
+  * If using PingFederate, see [Configure PingFederate as an Identity Provider](http://docs.pivotal.io/p-identity/1-5/pingfederate/config-pingfederate.html).
+
+1. Re-enable certificate validation in your identity provider.
 
 
 ## <a id='rotate-non-config'></a> Rotating Non-Configurable Certificates 
 
-If you need to rotate non-configurable certificates, follow the procedure below. If you need to rotate all your certificates, including creating and applying a new root certificate, follow the procedure in <a href="#rotate-ca">Regenerate and Rotate CA Certificates</a>.
+Non-configurable certificates are certificates that are given to you by the company whose product you are using, as opposed to certificates you generate yourself.
 
-### <a id='rotate-with-curl'></a> Rotating Expiring Certificates
+If you need to rotate non-configurable certificates, follow the procedure below. If you need to rotate all your certificates, including creating and applying a new root certificate, follow the procedure in [Regenerate and Rotate CA Certificates](#rotate-ca).
 
-1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing Ops Manager Director:
-<pre class="terminal">
-  $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/active/regenerate" \
-        -X POST \
-        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
-        -H "Content-Type: application/json" \
-        -d '{}'
-</pre> 
-The API returns a successful response:
-<pre class="terminal">HTTP/1.1 200 OK</pre>
-
-1. Navigate to Ops Manager and click **Apply Changes**. When the deploy finishes, continue to the next section.
-
-
-## <a id='list-certs'></a> Generate and Retrieve Certificates
-
-To manage and retrieve information about certificates in your deployment, use the API calls in this section.
-
-Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN`.
-
-### <a id='certs'></a> Retrieve the Root CA Certificate
-
-To return the Ops Manager root CA certificate as a file, use `curl` to make the following API call:
-<pre>
-$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/download\_root\_ca\_cert \
-      -X GET \
-      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-</pre>
-
-To return the Ops Manager root CA certificate as JSON, use `curl` to make the following API call:
-<pre>
-$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/security/root\_ca\_certificate \
-      -X GET \
-      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-</pre>
-
-### <a id='generate-rsa-certs'></a> Retrieve and Generate RSA Certificates
-
-To generate and return a new RSA certificate signed by the root CA, use `curl` to make the following API call:
-<pre>
-$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/certificates/generate \
-      -X POST \
-      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-</pre>
-
-To return metadata from all deployed RSA certificates signed by the root CA, use `curl` to make the following API call:
-<pre>
-$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates \
-      -X GET \
-      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-</pre>
-
-
-## <a id='cert-expiry'></a> Check Certificate Expiration Dates
+### <a id='non-config-cert-expiry'></a> Checking Certificate Expiration Dates
 
 The non-configurable certificates in your deployment expire every two years.
-Use the following procedure to retrieve information about the expiration dates for RSA and CA certificates in your deployment.
+To retrieve information about the expiration dates for RSA and CA certificates in your deployment, do the following:
 
 1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN`.
 
@@ -95,23 +93,22 @@ Use the following procedure to retrieve information about the expiration dates f
     </pre>
     Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access_token</code> value you recorded in the previous step.
 
-
-## <a id='rotate-ca'></a> Regenerate and Rotate CA Certificates
+### <a id='rotate-ca'></a> Regenerating and Rotating CA Certificates
 
 <p class="note warning"><strong>Warning</strong>: You must complete the procedures in this topic in the exact order specified below. Otherwise, you risk doing damage to your deployment.</p>
 
-Depending on the requirements of your deployment, you may need to rotate your non-configurable CA certificates.
-Certificates can expire or fall out of currency, or your organization's security compliance policies may require you to rotate certificates periodically.
+Depending on the requirements of your deployment, you may need to rotate your CA certificates.
+CA certificates can expire or fall out of currency, or your organization's security compliance policies may require you to rotate CA certificates periodically.
 
-You can rotate the certificates in your Pivotal Cloud Foundry (PCF) deployment using `curl`.
-PCF provides different API calls with which to manage certificates and CAs. New certificates generated through this process use SHA-256 encryption.
+You can rotate the CA certificates in your Pivotal Cloud Foundry (PCF) deployment using `curl`.
+PCF provides different API calls with which you can manage certificates and CAs. New CA certificates generated through this process use SHA-256 encryption.
 
-These API calls allow you to create new CAs, apply them, and delete old CAs. The process of activating a new CA and rotating it in gives new certificates to the Ops Manager Director.
+These API calls allow you to create new CAs, apply them, and delete old CAs. The process of activating a new CA and rotating it in gives new certificates to the BOSH Director.
 The BOSH Director then passes the certificates to other components in your PCF deployment.
 
-<p class="note"><strong>Note</strong>: These procedures require you to return to Ops Manager and click <strong>Apply Changes</strong> periodically. Clicking <strong>Apply Changes</strong> redeploys the Ops Manager Director and its tiles. If you apply your changes during each procedure, a successful redeploy verifies that the certificate rotation process is proceeding correctly.</p>
+<p class="note"><strong>Note</strong>: These procedures require you to return to Ops Manager and click <strong>Apply Changes</strong> periodically. Clicking <strong>Apply Changes</strong> redeploys the BOSH Director and its tiles. If you apply your changes during each procedure, a successful redeploy verifies that the certificate rotation process is proceeding correctly.</p>
 
-### <a id='add-new-ca'></a> Step 1: Add a New CA
+#### <a id='add-new-ca'></a> Step 1: Add a New CA
 
 Use the following procedure to add a new CA.
 You can use a Pivotal-generated CA or provide your own CA using the API calls in this section.
@@ -127,7 +124,7 @@ $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/genera
       -H "Content-Type: application/json" \
       -d '{}'
 </pre>  
-If the command succeeds, the API returns a response that includes the new certificate.
+If the command succeeds, the API returns a response that includes the new CA certificate.
   <pre class="terminal">
       HTTP/1.1 200 OK
     {
@@ -137,24 +134,24 @@ If the command succeeds, the API returns a response that includes the new certif
       "expires\_on": "2021-01-19",
       "active": false,
       "cert\_pem": "-----BEGIN EXAMPLE CERTIFICATE-----
-    	MIIC+zCCAeOgAwIBAgIBADANBgkqhkiG9w0BAQsFADAfMQswCQYDVQQGEwJVUzEQ
-    	MA4GA1UECgwHUGl2b3RhbDAeFw0xNzAxMTgyMTQyMjVaFw0yMTAxMTkyMTQyMjVa
-    	MB8xCzAJBgNVBAYTAlVTMRAwDgYDVQQKDAdQaXZvdGFsMIIBIjANBgkqhkiG9w0B
-    	AQEFAAOCAQ8AMIIBCgKCAQEAyV4OhPIIZTEym9OcdcNVip9Ev0ijPPLo9WPLUMzT
-    	IrpDx3nG/TgD+DP09mwVXfqwBlJmoj9DqRED1x/6bc0Ki/BAFo/P4MmOKm3QnDCt
-    	o+4RUvLkQqgA++2HYrNTKWJ5fsXmERs8lK9AXXT7RKXhktyWWU3oNGf7zo0e3YKp
-    	l07DdIW7h1NwIbNcGT1AurIDsxyOZy1HVzLDPtUR2MxhJmSCLsOw3qUDQjatjXKw
-    	82RjcrswjG3nv2hvD4/aTOiHuKM3+AGbnmS2MdIOvFOh/7Y79tUp89csK0gs6uOd
-    	myfdxzDihe4DcKw5CzUTfHKNXgHyeoVOBPcVQTp4lJp1iQIDAQABo0IwQDAdBgNV
-    	HQ4EFgQUyH4y7VEuImLStXM0CKR8uVqxX/gwDwYDVR0TAQH/BAUwAwEB/zAOBgNV
-    	HQ8BAf8EBAMCAQYwDQYJKoZIhvcNAQELBQADggEBALmHOPxdyBGnuR0HgR9V4TwJ
-    	tnKFdFQJGLKVT7am5z6G2Oq5cwACFHWAFfrPG4W9Jm577QtewiY/Rad/PbkY0YSY
-    	rehLThKdkrfNjxjxI0H2sr7qLBFjJ0wBZHhVmDsO6A9PkfAPu4eJvqRMuL/xGmSQ
-    	tVkzgYmnCynMNz7FgHyFbd9D9X5YW8fWGSeVBPPikcONdRvjw9aEeAtbGEh8eZCP
-    	aBQOgsx7b33RuR+CTNqThXY9k8d7/7ba4KVdd4gP8ynFgwvnDQOjcJZ6Go5QY5HA
-    	R+OgIzs3PFW8pAYcvWrXKR0rE8fL5o9qgTyjmO+5yyyvWIYrKPqqIUIvMCdNr84=
-    	-----END EXAMPLE CERTIFICATE-----
-    	"
+      MIIC+zCCAeOgAwIBAgIBADANBgkqhkiG9w0BAQsFADAfMQswCQYDVQQGEwJVUzEQ
+      MA4GA1UECgwHUGl2b3RhbDAeFw0xNzAxMTgyMTQyMjVaFw0yMTAxMTkyMTQyMjVa
+      MB8xCzAJBgNVBAYTAlVTMRAwDgYDVQQKDAdQaXZvdGFsMIIBIjANBgkqhkiG9w0B
+      AQEFAAOCAQ8AMIIBCgKCAQEAyV4OhPIIZTEym9OcdcNVip9Ev0ijPPLo9WPLUMzT
+      IrpDx3nG/TgD+DP09mwVXfqwBlJmoj9DqRED1x/6bc0Ki/BAFo/P4MmOKm3QnDCt
+      o+4RUvLkQqgA++2HYrNTKWJ5fsXmERs8lK9AXXT7RKXhktyWWU3oNGf7zo0e3YKp
+      l07DdIW7h1NwIbNcGT1AurIDsxyOZy1HVzLDPtUR2MxhJmSCLsOw3qUDQjatjXKw
+      82RjcrswjG3nv2hvD4/aTOiHuKM3+AGbnmS2MdIOvFOh/7Y79tUp89csK0gs6uOd
+      myfdxzDihe4DcKw5CzUTfHKNXgHyeoVOBPcVQTp4lJp1iQIDAQABo0IwQDAdBgNV
+      HQ4EFgQUyH4y7VEuImLStXM0CKR8uVqxX/gwDwYDVR0TAQH/BAUwAwEB/zAOBgNV
+      HQ8BAf8EBAMCAQYwDQYJKoZIhvcNAQELBQADggEBALmHOPxdyBGnuR0HgR9V4TwJ
+      tnKFdFQJGLKVT7am5z6G2Oq5cwACFHWAFfrPG4W9Jm577QtewiY/Rad/PbkY0YSY
+      rehLThKdkrfNjxjxI0H2sr7qLBFjJ0wBZHhVmDsO6A9PkfAPu4eJvqRMuL/xGmSQ
+      tVkzgYmnCynMNz7FgHyFbd9D9X5YW8fWGSeVBPPikcONdRvjw9aEeAtbGEh8eZCP
+      aBQOgsx7b33RuR+CTNqThXY9k8d7/7ba4KVdd4gP8ynFgwvnDQOjcJZ6Go5QY5HA
+      R+OgIzs3PFW8pAYcvWrXKR0rE8fL5o9qgTyjmO+5yyyvWIYrKPqqIUIvMCdNr84=
+      -----END EXAMPLE CERTIFICATE-----
+      "
   </pre>
 <br>
 To provide your own CA, use `curl` to make the following API call:
@@ -203,7 +200,7 @@ To provide your own CA, use `curl` to make the following API call:
 1. Navigate to `https://OPS-MAN-FQDN` in a browser and log in to Ops Manager.
 1. Click **Apply Changes**. When the deploy finishes, continue to the next section.
 
-### <a id='activate-new-ca'></a> Step 2: Activate the New CA
+#### <a id='activate-new-ca'></a> Step 2: Activate the New CA
 
 1. Use `curl` to make an API call to activate the new CA, replacing `CERT-GUID` with the GUID of your CA that you retrieved in the previous section:
   <pre>$ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/CERT-GUID/activate" \
@@ -223,9 +220,9 @@ To provide your own CA, use `curl` to make the following API call:
   </pre>
   Examine the response to ensure that your new CA has `active` set to `true`.
 
-### <a id='regenerate'></a> Step 3: Regenerate Non-Configurable Certificates to Apply the New CA
+#### <a id='regenerate'></a> Step 3: Regenerate Non-Configurable Certificates to Apply the New CA
 
-1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing Ops Manager Director:
+1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
 <pre>
   $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/active/regenerate" \
         -X POST \
@@ -238,7 +235,7 @@ The API returns a successful response:
 
 1. Navigate to Ops Manager and click **Apply Changes**. When the deploy finishes, continue to the next section.
 
-### <a id='delete'></a> Step 4: Delete the Old CA
+#### <a id='delete'></a> Step 4: Delete the Old CA
 
 1. List your root CAs to retrieve the GUID of your old, inactive CA:
 <pre>
@@ -258,9 +255,43 @@ The API returns a successful response.
 
 1. Navigate to Ops Manager and click **Apply Changes**.
 
+### <a id='list-certs'></a> Generating and Retrieving Certificates
 
-## <a id='saml'></a> SAML Service Provider Credential Certificates
+To manage and retrieve information about certificates in your deployment, use the API calls in this section.
 
-Elastic Runtime UAA service holds a certificate which signs outbound communication to an external SAML Identity Provider. This certificate also has a 2-year expiration period and requires regeneration after this time.
+Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN`.
 
-For more information, see [this Knowledge Base article](https://discuss.pivotal.io/hc/en-us/articles/115015717747-PCF-Advisory-SAML-Service-Provider-Credential-Certificates-Expire-after-2-Years).
+
+## <a id='rotate-root'></a> Rotating Root Certificates
+
+### <a id='root-certs'></a> Retrieving the Root Certificate
+
+To return the Ops Manager root certificate as a file, use `curl` to make the following API call:
+<pre>
+$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/download\_root\_ca\_cert \
+      -X GET \
+      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+</pre>
+
+To return the Ops Manager root certificate as JSON, use `curl` to make the following API call:
+<pre>
+$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/security/root\_ca\_certificate \
+      -X GET \
+      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+</pre>
+
+### <a id='generate-rsa-certs'></a> Retrieving and Generating RSA Certificates
+
+To generate and return a new RSA certificate signed by the root CA, use `curl` to make the following API call:
+<pre>
+$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/certificates/generate \
+      -X POST \
+      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+</pre>
+
+To return metadata from all deployed RSA certificates signed by the root CA, use `curl` to make the following API call:
+<pre>
+$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates \
+      -X GET \
+      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+</pre>
