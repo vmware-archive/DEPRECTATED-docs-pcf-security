@@ -50,7 +50,7 @@ If the certificate is nearing expiration, you must regenerate and rotate it.
 
 ### <a id='rotate-saml-ca'></a> Regenerating and Rotating SAML Service Provider Certificates
 
-<p class='note'><strong>Note:</strong> This procedure will only be disruptive if PAS is configured to use SSO/SAML and your identity provider is validating the requests, in which case you must import a new certificate to the identity provider.</p>
+If PAS is configured to use SSO/SAML and your identity provider is validating the requests, you must import a new certificate to avoid disrupting PAS when you rotate the certificate.
 
 To regenerate and rotate SAML service provider certificates, do the following:
 
@@ -58,7 +58,7 @@ To regenerate and rotate SAML service provider certificates, do the following:
 
 1. Navigate to **UAA > SAML Service Provider Credentials** in your PAS tile.
 
-1. Click **Generate RSA Certificate**. 
+1. Click **Generate RSA Certificate**.
 
 1. Following the procedure in the [Configure SAML as an Identity Provider for PCF](https://docs.pivotal.io/pivotalcf/2-2/opsguide/auth-sso.html#configure-saml-for-pcf) section of the _Configuring Authentication and Enterprise SSO for PAS_ topic to import the new certificate to your identity provider.
 These steps will vary depending on which SAML provider you are using.
@@ -264,16 +264,16 @@ Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.h
 
 ## <a id='rotate-root'></a> Rotating Root Certificates
 
-### <a id='root-certs'></a> Retrieving the Root CA Certificate
+### <a id='root-certs'></a> Retrieving the Root Certificate
 
-To return the Ops Manager root CA certificate as a file, use `curl` to make the following API call:
+To return the Ops Manager root certificate as a file, use `curl` to make the following API call:
 <pre>
 $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/download\_root\_ca\_cert \
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
 
-To return the Ops Manager root CA certificate as JSON, use `curl` to make the following API call:
+To return the Ops Manager root certificate as JSON, use `curl` to make the following API call:
 <pre>
 $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/security/root\_ca\_certificate \
       -X GET \
