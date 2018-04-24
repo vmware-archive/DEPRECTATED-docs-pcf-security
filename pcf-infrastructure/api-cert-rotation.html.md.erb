@@ -43,6 +43,9 @@ To retrieve information about the expiration dates for CA certificates in your d
 <pre class='terminal'>$ openssl x509 -enddate -noout -in test.pem 
 notAfter=Dec  7 21:01:04 2017 GMT</pre>
 
+Once you have completed the above procedure, find the certificate with the `uaa.service_provider_key_credentials` property and validate its expiration. For example:
+<code>"field "property_reference":".uaa.service_provider_key_credentials"..."valid_until":"2019-06-14T11:37:11Z"</code>
+
 If the certificate is nearing expiration, you must regenerate and rotate it.
 
 ### <a id='rotate-saml-ca'></a> Regenerating and Rotating SAML Service Provider Certificates
