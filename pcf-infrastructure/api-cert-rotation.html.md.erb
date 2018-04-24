@@ -87,7 +87,7 @@ To retrieve information about the expiration dates for RSA and CA certificates i
     Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.<br><br>
     For example, run the following command to search for certificates expiring within six months:
     <pre>
-    $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates?expires\_within=6m" \
+    $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates?expires_within=6m" \
           -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
     </pre>
     Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access_token</code> value you recorded in the previous step.
@@ -117,7 +117,7 @@ You can use a Pivotal-generated CA or provide your own CA using the API calls in
 
 1. To use a Pivotal-generated CA, use `curl` to make the following API call:
 <pre>
-$ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/generate" \
+$ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/generate" \
       -X POST \ 
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
       -H "Content-Type: application/json" \
@@ -129,43 +129,43 @@ If the command succeeds, the API returns a response that includes the new CA cer
     {
       "guid": "f7bc18f34f2a7a9403c3",
       "issuer": "Pivotal",
-      "created\_on": "2017-01-19",
-      "expires\_on": "2021-01-19",
+      "created_on": "2017-01-19",
+      "expires_on": "2021-01-19",
       "active": false,
-      "cert\_pem": "-----BEGIN EXAMPLE CERTIFICATE-----
+      "cert_pem": "-----BEGIN EXAMPLE CERTIFICATE-----
       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
-      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
+      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
       -----END EXAMPLE CERTIFICATE-----
       "
   </pre>
 <br>
 To provide your own CA, use `curl` to make the following API call:
     <pre>
-    $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
+    $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
         -X POST \ 
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
         -H "Content-Type: application/json" \ 
-        -d '{"cert\_pem": "-----BEGIN CERTIFICATE-----\EXAMPLE-CERTIFICATE", "private\_key\_pem": "-----BEGIN EXAMPLE RSA PRIVATE KEY-----\EXAMPLE-KEY"}'
+        -d '{"cert_pem": "-----BEGIN CERTIFICATE-----\EXAMPLE-CERTIFICATE", "private_key_pem": "-----BEGIN EXAMPLE RSA PRIVATE KEY-----\EXAMPLE-KEY"}'
     </pre>
     Replace `EXAMPLE-CERTIFICATE` with your custom CA certificate and `EXAMPLE-KEY` with your custom RSA key.
 
 1. Confirm that your new CA has been added by listing all of the root CAs for Ops Manager:
   <pre>
-  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
+  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
         -X GET \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
   </pre>
@@ -174,22 +174,22 @@ To provide your own CA, use `curl` to make the following API call:
   <pre class="terminal">
     HTTP/1.1 200 OK
     {
-      "certificate\_authorities": [
+      "certificate_authorities": [
         {
           "guid": "f7bc18f34f2a7a9403c3",
           "issuer": "Pivotal",
-          "created\_on": "2017-01-09",
-          "expires\_on": "2021-01-09",
+          "created_on": "2017-01-09",
+          "expires_on": "2021-01-09",
           "active": true,
-          "cert\_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
+          "cert_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
         }
         {
           "guid": "a8ee01e33e3e3e3303e3",
           "issuer": "Pivotal",
-          "created\_on": "2017-04-09",
-          "expires\_on": "2021-04-09",
+          "created_on": "2017-04-09",
+          "expires_on": "2021-04-09",
           "active": false,
-          "cert\_pem": "-----BEGIN CERTIFICATE-----\zBBBC+eAAAe1gAwAAAeZ....etc"
+          "cert_pem": "-----BEGIN CERTIFICATE-----\zBBBC+eAAAe1gAwAAAeZ....etc"
         }
       ]
     }
@@ -202,7 +202,7 @@ To provide your own CA, use `curl` to make the following API call:
 #### <a id='activate-new-ca'></a> Step 2: Activate the New CA
 
 1. Use `curl` to make an API call to activate the new CA, replacing `CERT-GUID` with the GUID of your CA that you retrieved in the previous section:
-  <pre>$ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/CERT-GUID/activate" \
+  <pre>$ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/CERT-GUID/activate" \
       -X POST \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
       -H "Content-Type: application/json" \
@@ -213,7 +213,7 @@ To provide your own CA, use `curl` to make the following API call:
 
 1. List your root CAs to confirm that the new CA is active:
 <pre>
-  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
+  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
         -X GET \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
   </pre>
@@ -238,7 +238,7 @@ The API returns a successful response:
 
 1. List your root CAs to retrieve the GUID of your old, inactive CA:
 <pre>
-  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
+  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
         -X GET \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
@@ -267,14 +267,14 @@ Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.h
 
 To return the Ops Manager root certificate as a file, use `curl` to make the following API call:
 <pre>
-$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/download\_root\_ca\_cert \
+$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/download_root_ca_cert \
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
 
 To return the Ops Manager root certificate as JSON, use `curl` to make the following API call:
 <pre>
-$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/security/root\_ca\_certificate \
+$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/security/root_ca_certificate \
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
