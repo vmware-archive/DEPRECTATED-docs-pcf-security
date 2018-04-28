@@ -5,7 +5,7 @@ owner: OpsMan
 
 This topic describes how to manage Certificate Authority (CA) certificates in your deployment, including how to determine when your CA certificates expire, how to set a custom CA certificate, and how to regenerate and rotate both configurable and non-configurable CA certificates.
 
-For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/1-8/credentials.html).
+For information about rotating IPsec certificates, see [Rotating IPsec Certificates](../../addon-ipsec/1-8/credentials.html).
 
 
 ## <a id='expiration'></a> Planning for Certificate Expiration
@@ -14,8 +14,9 @@ CA certificates expire 2 years after creation, and root certificates expire afte
 
 Depending on which certificates are due to expire, use one of the following approaches to certificate rotation:
 
-* [Rotate Configurable Certificates](#rotate-config) or [Rotate Non-Configurable Certificates](#rotate-non-config)
-* [Rotate CA Certificates](#rotate-root)
+* [Rotating Configurable Certificates](#rotate-config) or [Rotating Non-Configurable Certificates](#rotate-non-config)
+* [Rotating Root Certificates](#rotate-root)
+
 
 ## <a id='rotate-config'></a> Rotating Configurable Certificates
 
@@ -61,10 +62,10 @@ To regenerate and rotate SAML service provider certificates, do the following:
 
 1. Following the procedure in the [Configure SAML as an Identity Provider for PCF](https://docs.pivotal.io/pivotalcf/2-2/opsguide/auth-sso.html#configure-saml-for-pcf) section of the _Configuring Authentication and Enterprise SSO for PAS_ topic to import the new certificate to your identity provider.
 These steps will vary depending on which SAML provider you are using.
-  * If using ADFS, see [Configure Active Directory Federation Services as an Identity Provider](http://docs.pivotal.io/p-identity/1-5/adfs/config-adfs.html).
-  * If using CA SSO, see [Configure CA Single Sign-On as an Identity Provider](http://docs.pivotal.io/p-identity/1-5/ca-sso/config-ca-sso.html).
-  * If using Okta, see [Configure Okta as an Identity Provider](http://docs.pivotal.io/p-identity/1-5/okta/config-okta.html).
-  * If using PingFederate, see [Configure PingFederate as an Identity Provider](http://docs.pivotal.io/p-identity/1-5/pingfederate/config-pingfederate.html).
+  * If using ADFS, see [Configure Active Directory Federation Services as an Identity Provider](../../p-identity/1-5/adfs/config-adfs.html).
+  * If using CA SSO, see [Configure CA Single Sign-On as an Identity Provider](../../p-identity/1-5/ca-sso/config-ca-sso.html).
+  * If using Okta, see [Configure Okta as an Identity Provider](../../p-identity/1-5/okta/config-okta.html).
+  * If using PingFederate, see [Configure PingFederate as an Identity Provider](../../p-identity/1-5/pingfederate/config-pingfederate.html).
 
 1. Re-enable certificate validation in your identity provider.
 
