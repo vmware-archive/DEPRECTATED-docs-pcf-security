@@ -1,0 +1,316 @@
+---
+title: Understanding Personal Data in PCF and PWS
+owner: Security
+---
+
+This topic describes the personal data that is collected, stored, and processed by Pivotal Cloud Foundry (PCF) and Pivotal Web Services (PWS), in order to enable GDPR compliance.
+
+##<a id='overview'></a> Overview
+
+**If you use PCF**, you can use this topic to identify the location of the personal data in your PCF deployment in order to comply with GDPR requests.</p>
+
+**If you use PWS**, you can use this article to do one or both of the following:
+
+* Identity the location of the personal data in PWS and the PCF instance that runs PWS in order to comply with a GDPR request. You will not be able to access the data but you can report its location in your email to <a href="mailto:privacy@pivotal.io">privacy@pivotal.io</a>.
+
+* Identity the location of the personal data in PWS and the PCF instance that runs PWS in order to make a GDPR request to Pivotal through <a href="mailto:privacy@pivotal.io">privacy@pivotal.io</a>.
+
+<p class="note"><strong>Note</strong>: PWS users must consult both the <a href="#pcf">Personal Data in PCF</a> and <a href="#pws">Personal Data in PWS</a> sections because PWS runs on PCF.</p>
+
+For more information about GDPR compliance, and for a GDPR-specific definition of personal data, see the following topics:
+
+* **PCF**: <a href="https://docs-pcf-staging.cfapps.io/pivotalcf/2-2/security/gdpr.html">GDPR Compliance</a>
+* **PWS**: <a href="https://gdpr-pws.cfapps.io/security/gdpr.html">GDPR Compliance</a>
+
+##<a id='pcf'></a>Personal Data in PCF
+
+The following sections describe the personal data that is collected, stored, or processed by components of PCF.
+
+###<a id='uaa'></a>User Account and Authentication (UAA)
+
+UAA is an open-source Cloud Foundry component that provides identity management features and identity-based security for applications and APIs. For more information, see <a href="https://docs.pivotal.io/pivotalcf/uaa/">User Account and Authentication</a>.
+
+<table>
+<tbody>
+<tr>
+<th>GDPR</th>
+<th>Workflow</th>
+<th>What personal data is collected?</th>
+<th>When is it collected?</th>
+<th>Where is it stored?</th>
+<th>How is it processed?</th>
+<th>Who has access to it?</th>
+</tr>
+<tr>
+<th rowspan="3" scope="rowgroup">Business Initiation</th>
+<td> User registers</td>
+<td> 
+<ul>
+<li>Username</li>
+<li>Email address</li>
+<li>First name (optional)</li>
+<li>Last name (optional)</li>
+<li>User ID (UAA GUID, generated)</li>
+</ul>
+</td>
+<td>User registration submission</td>
+<td>UAA DB</td>
+<td>Stored in UAA DB</td>
+<td>
+<ul>
+<li>End user</li>
+<li>UAA administrators</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td> Just-in-time provisioning: create user on user login</td>
+<td>
+<ul>
+<li>Username</li>
+<li>Email address</li>
+<li>First name (optional)</li>
+<li>Last name (optional)</li>
+<li>User ID (UAA GUID, generated)</li>
+<li>Additional attributes as defined by the organization </li>
+</ul>
+</td>
+<td>User login </td>
+<td>UAA DB</td>
+<td>Stored in UAA DB </td>
+<td>UAA administrators</td>
+</tr>
+<tr>
+<td>Admin user makes a creation API call</td>
+<td> 
+<ul>
+<li>Username</li>
+<li>Email address</li>
+<li>First name (optional)</li>
+<li>Last name (optional)</li>
+<li>User ID (UAA GUID, generated)</li>
+<li>Additional attributes as defined by the organization</li>
+</ul>
+</td>
+<td>Admin API call </td>
+<td>UAA DB </td>
+<td>Stored in UAA DB </td>
+<td>UAA administrators</td>
+</tr>
+<tr>
+<th rowspan="4" scope="rowgroup">Business Execution</th>
+<td>User self-updates profile</td>
+<td>
+<ul>
+<li>Email address</li>
+<li>First name (optional)</li>
+<li>Last name (optional)</li>
+</ul>
+</td>
+<td>User registration submission</td>
+<td>UAA DB</td>
+<td>Stored in UAA DB</td>
+<td>
+<ul>
+<li>End user</li>
+<li>UAA administrators</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Just-in-time provisioning: user update</td>
+<td>
+<ul>
+<li>Email address</li>
+<li>First name (optional)</li>
+<li>Last Name (optional)</li>
+<li>Additional attributes as defined by the organization </li>
+</ul>
+</td>
+<td>User login </td>
+<td>UAA DB </td>
+<td>Stored in UAA DB</td>
+<td>UAA administrators</td>
+</tr>
+<tr>
+<td>User logs in</td>
+<td>
+<ul>
+<li>Current account cookie (generated)</li>
+<li>Saved account cookie (generated)</li>
+</ul>
+</td>
+<td>User login</td>
+<td>User browser</td>
+<td>By UAA</td>
+<td>
+<ul>
+<li>End user</li>
+<li>UAA login page </li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Admin user makes an update API call</td>
+<td>
+<ul>
+<li>Email address</li>
+<li>First name (optional)</li>
+<li>Last name (optional)</li>
+<li>Additional attributes as defined by the organization</li>
+</ul>
+</td>
+<td> Admin API call</td>
+<td>UAA DB </td>
+<td>Stored in UAA DB</td>
+<td> UAA administrators</td>
+</tr>
+<tr>
+<th rowspan="2" scope="rowgroup">Delete User Flow</th>
+<td>Admin user makes a hard delete API call</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Deleted from UAA DB</td>
+<td>UAA administrators</td>
+</tr>
+<tr>
+<td>Admin user makes a deactivation API call</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Soft delete (records still held in database but user cannot login) </td>
+<td>UAA administrators</td>
+</tr>
+<tr>
+<th>Reports/Logs</th>
+<td>Event or debug logs</td>
+<td>Any information</td>
+<td>When event happens</td>
+<td>UAA logs</td>
+<td>Depends on setup of <a href="https://docs.pivotal.io/pivotalcf/loggregator/index.html">Loggregator</a> and log forwarding</td>
+<td>BOSH administrators</td>
+</tr>
+</tbody>
+</table>
+
+###<a id="capi"></a> Cloud Foundry API
+
+The Cloud Foundry API release contains several components, including the Cloud Controller. For more information, see the Cloud Foundry API release [readme](https://github.com/cloudfoundry/capi-release).
+
+<table>
+<tbody>
+<tr>
+<th>GDPR</th>
+<th>Workflow</th>
+<th>What personal data is collected?</th>
+<th>When is it collected?</th>
+<th>Where is it stored?</th>
+<th>How is it processed?</th>
+<th>Who has access to it?</th>
+<th>How long is it kept?</th>
+</tr>
+<tr>
+<th>Business Initiation</th>
+<td>User makes a request for the first time</td>
+<td> User ID</td>
+<td>The first time a user makes a request to the API</td>
+<td>Cloud Controller DB</td>
+<td>It is used to identify permissions for the user</td>
+<td>PCF operator </td>
+<td>As long as the user is part of the system</td>
+</tr>
+<tr>
+<th>Business Execution</th>
+<td>Troubleshooting API requests</td>
+<td>
+<ul>
+<li>User ID </li>
+<li>User agent</li>
+<li>IP address</li>
+</ul>
+</td>
+<td>On each request</td>
+<td>
+<ul>
+<li>Local VM:<br />component and logs </li>
+<li>Log aggregator used by PCF operator</li>
+</ul>
+</td>
+<td> n/a</td>
+<td>PCF operator</td>
+<td>
+<ul>
+<li>Local VM:<br />4 week maximum by default</li>
+<li>Log aggregator as configured by PCF operator</li>
+</ul>
+ </td>
+</tr>
+<tr>
+<th rowspan="3" scope="rowgroup">Audit Trails</th>
+<td>Audit what changes a user makes</td>
+<td>
+<ul>
+<li>Name</li>
+<li>User ID</li>
+<li>Email address</li>
+</ul>
+</td>
+<td>On specific API requests that mutate the state of resources</td>
+<td>Audit Event Table in the Cloud Controller DB</td>
+<td> n/a</td>
+<td>
+<ul>
+<li>PCF operator</li>
+<li>Users that can view the resource that had an audited change</li>
+</ul>
+</td>
+<td>31 days</td>
+</tr>
+<tr>
+<td>Audit what changes a user makes</td>
+<td>
+<ul>
+<li>IP Address</li>
+<li>Email address</li>
+<li>User ID</li>
+<li>Username</li>
+</ul>
+</td>
+<td>On each request </td>
+<td>
+<ul>
+<li>Local VM:<br />CEF logs</li>
+<li>Log aggregator used by PCF operator</li>
+</ul>
+</td>
+<td>n/a </td>
+<td>PCF operator </td>
+<td>
+<ul>
+<li>Local VM:<br />4 week maximum by default</li>
+<li>Log aggregator as configured by PCF operator</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Audit what user created a resource</td>
+<td>
+<ul>
+<li>Name</li>
+<li>User ID</li>
+<li>Email address</li>
+</ul>
+</td>
+<td>When API resources are created</td>
+<td>As part of the resource row in Cloud Controller DB</td>
+<td>n/a</td>
+<td>
+<ul>
+<li>PCF operator</li>
+<li>Users that can view the resource</li></ul>
+</td>
+<td>As long as the resource exists</td>
+</tr>
+</tbody>
+</table>
