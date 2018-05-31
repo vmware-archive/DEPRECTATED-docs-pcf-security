@@ -43,7 +43,7 @@ All PCF releases pass through extensive test suites that include automated unit,
 ## <a id='testing-integration-validation'></a> Release Testing, Integration, and Validation
 This section describes Pivotal's software development processes and explains compliance and regulatory standards to which Pivotal software adheres.
 
-### T,<a id='test-driven-dev'></a> Test-Driven Development
+### <a id='test-driven-dev'></a> Test-Driven Development
 Pivotal's development process relies on a strict workflow with continuous automated testing. Pivotal R&D does not separate engineering and testing teams. Rather, every Pivot on each engineering team is responsible for ensuring the quality of their code. They write tests for all of the software components that they develop, often before writing the software itself.
 
 With every software change, automated build pipelines trigger these tests for the new software component and for everything it touches. If a new code check-in does not pass its tests or causes a failure elsewhere, it pauses the build pipeline for the entire team, or sometimes all of Pivotal R&D. The transparency of this process encourages developers to work together to address code issues quickly.
