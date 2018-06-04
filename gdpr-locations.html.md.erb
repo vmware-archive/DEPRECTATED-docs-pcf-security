@@ -9,7 +9,7 @@ This topic describes the personal data that is collected, stored, and processed 
 
 You can use this topic to identify the location of the personal data in your PCF deployment in order to comply with GDPR requests.
 
-For more information about GDPR compliance, and for a GDPR-specific definition of personal data, see <a href="gdpr.html">GDPR Compliance</a>.
+For more information about GDPR compliance and for a GDPR-specific definition of personal data, see <a href="gdpr.html">GDPR Compliance</a>.
 
 The following sections describe the personal data that is collected, stored, or processed by components of PCF.
 
@@ -307,11 +307,11 @@ The Cloud Foundry API release contains several components, including the Cloud C
 By default, the [Gorouter](../concepts/architecture/router.html) logs include the `X-Forwarded-For` header, which may include the originating client IP.
 Under GDPR, client IP addresses should be considered personal data.
 
-In Pivotal Application Service (PAS) v2.0 and above, and Elastic Runtime v1.12, operators can disable logging of client IP addresses in the Gorouter.
+In Pivotal Application Service (PAS) v2.0 and above and Elastic Runtime v1.12, operators can disable logging of client IP addresses in the Gorouter.
 
 To disable logging of client IP addresses, perform the following steps:
 
-1. Navigate to the Ops Manager Installation Dashboard and click the PAS or ERT tile.
+1. Navigate to the Ops Manager Installation Dashboard and click the PAS or Elastic Runtime tile.
 1. Click **Networking**.
 1. Under **Logging of Client IPs in CF Router**, select one of the two options:
 	* If the source IP address exposed by your load balancer is its own IP address, select **Disable logging of X-Forwarded-For header only**. 
