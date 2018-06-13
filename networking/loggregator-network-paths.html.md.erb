@@ -74,6 +74,14 @@ The following table lists network communication paths for Loggregator.
   <td>NATS</td>
   <td>Basic authentication</td>
 </tr>
+<tr>
+  <td>loggregator_trafficcontroller (metrics_forwarder)</td>
+  <td>BOSH Director (metrics_server)</td>
+  <td>25595</td>
+  <td>TCP</td>
+  <td>gRPC over HTTP/2</td>
+  <td>Mutual TLS</td>
+</tr>
 </table>
 
 <sup>&#42;</sup>Any source VM can send requests to the specified destination within its subnet.
