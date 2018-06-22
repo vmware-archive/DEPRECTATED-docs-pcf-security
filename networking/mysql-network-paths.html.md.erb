@@ -62,16 +62,16 @@ The following table lists network communication paths that are inbound to MySQL.
 </tr>
 <tr>
   <td>mysql_monitor</td>
-  <td>mysql (Galera health check)</td>
-  <td>9200</td>
+  <td>mysql (MySQL Server))</td>
+  <td>3306</td>
   <td>TCP</td>
-  <td>HTTP</td>
+  <td>MySQL</td>
   <td>Basic authentication</td>
 </tr>
 <tr>
   <td>mysql_monitor</td>
   <td>mysql_proxy (Proxy health check)</td>
-  <td>1936</td>
+  <td>443/8080**</td>
   <td>TCP</td>
   <td>MySQL</td>
   <td>Basic authentication</td>
@@ -86,8 +86,8 @@ The following table lists network communication paths that are inbound to MySQL.
 </tr>
 <tr>
   <td>mysql_proxy</td>
-  <td>mysql (Proxy API)</td>
-  <td>8080</td>
+  <td>mysql (Galera health check)</td>
+  <td>9200</td>
   <td>TCP</td>
   <td>HTTP</td>
   <td>Basic authentication</td>
@@ -102,7 +102,8 @@ The following table lists network communication paths that are inbound to MySQL.
 </tr>
 </table>
 
-(\*) MySQL authentication uses the MySQL native password method.
+(\*) MySQL authentication uses the MySQL native password method.<br/><br/>
+(**) Port 443 is used if mysql_proxy is registered with Gorouter. If not registered, mysql_proxy uses port 8080 instead.
 
 ## <a id="outbound"></a> Outbound Communications ##
 
