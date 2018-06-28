@@ -84,6 +84,14 @@ The following table lists network communication paths that are outbound from Con
   <td> OAuth 2.0 </td>
 </tr>
 <tr>
+  <td>diego_database (api - Policy Server)</td>
+  <td>mysql_proxy<sup>&#42;</sup></td>
+  <td>3306</td>
+  <td>TCP</td>
+  <td>MySQL</td>
+  <td>MySQL authentication*</td>
+</tr>
+<tr>
   <td> diego_brain (Service Discovery Controller) </td>
   <td> nats (NATS) </td>
   <td> 4222 </td>
@@ -99,7 +107,17 @@ The following table lists network communication paths that are outbound from Con
   <td> HTTP </td>
   <td> None </td>
 </tr>
+<tr>
+  <td>diego_cell (VXLAN Policy Agent)</td>
+  <td>mysql_proxy<sup>&#42;</sup></td>
+  <td>3306</td>
+  <td>TCP</td>
+  <td>MySQL</td>
+  <td>MySQL authentication*</td>
+</tr>
 </table>
+
+<sup>&#42;</sup>Applies only to deployments where internal MySQL is selected as the database.
 
 ## <a id="bosh-dns"></a>BOSH DNS Communications
 
