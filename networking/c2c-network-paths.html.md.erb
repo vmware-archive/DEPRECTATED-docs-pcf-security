@@ -20,32 +20,32 @@ The following table lists network communication paths that are inbound to Contai
   <th>Security and Authentication</th>
 </tr>
 <tr>
-  <td> diego-cell (Silk CNI) </td>
-  <td> diego-cell (Silk Daemon) </td>
+  <td> diego_cell (Silk CNI) </td>
+  <td> diego_cell (Silk Daemon) </td>
   <td> 23954 </td>
   <td> TCP </td>
   <td> HTTP </td>
   <td> None </td>
 </tr>
 <tr>
-  <td> diego-cell (Silk Daemon) </td>
-  <td> diego-api (Silk Controller) </td>
+  <td> diego_cell (Silk Daemon) </td>
+  <td> diego_api (Silk Controller) </td>
   <td> 4103 </td>
   <td> TCP </td>
   <td> HTTP </td>
   <td> Mutual TLS </td>
 </tr>
 <tr>
-  <td> diego-cell (VXLAN Policy Agent) </td>
-  <td> api (Policy Server Internal) </td>
+  <td> diego_cell (VXLAN Policy Agent) </td>
+  <td> diego_database (api - Policy Server Internal) </td>
   <td> 4003 </td>
   <td> TCP </td>
   <td> HTTP </td>
   <td> Mutual TLS </td>
 </tr>
 <tr>
-  <td> diego-cell (BOSH DNS Adapter) </td>
-  <td> service-discovery (Service Discovery Controller) </td>
+  <td> diego_cell (BOSH DNS Adapter) </td>
+  <td> diego_brain (Service Discovery Controller) </td>
   <td> 8054 </td>
   <td> TCP </td>
   <td> HTTP </td>
@@ -68,7 +68,7 @@ The following table lists network communication paths that are outbound from Con
 </tr>
 <tr>
 <tr>
-  <td> api (Policy Server) </td>
+  <td> diego_database (api - Policy Server) </td>
   <td> uaa </td>
   <td> 8443 </td>
   <td> TCP </td>
@@ -76,15 +76,15 @@ The following table lists network communication paths that are outbound from Con
   <td> TLS </td>
 </tr>
 <tr>
-  <td> api (Policy Server) </td>
-  <td> api (Cloud Controller) </td>
+  <td> diego_database (api - Policy Server) </td>
+  <td> cloud_controller (api - Cloud Controller) </td>
   <td> 9022 </td>
   <td> TCP </td>
   <td> HTTP </td>
   <td> OAuth 2.0 </td>
 </tr>
 <tr>
-  <td> service-discovery (Service Discovery Controller) </td>
+  <td> diego_brain (Service Discovery Controller) </td>
   <td> nats (NATS) </td>
   <td> 4222 </td>
   <td> TCP </td>
@@ -92,8 +92,8 @@ The following table lists network communication paths that are outbound from Con
   <td> Basic authentication </td>
 </tr>
 <tr>
-  <td> diego-cell (BOSH DNS) </td>
-  <td> diego-cell (BOSH DNS Adapter) </td>
+  <td> diego_cell (BOSH DNS) </td>
+  <td> diego_cell (BOSH DNS Adapter) </td>
   <td> 8053 </td>
   <td> TCP </td>
   <td> HTTP </td>
