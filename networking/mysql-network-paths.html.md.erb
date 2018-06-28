@@ -53,6 +53,22 @@ The following table lists network communication paths that are inbound to MySQL 
   <td>MySQL authentication*</td>
 </tr>
 <tr>
+  <td>diego_cell (VXLAN Policy Agent)</td>
+  <td>mysql_proxy</td>
+  <td>3306</td>
+  <td>TCP</td>
+  <td>MySQL</td>
+  <td>MySQL authentication*</td>
+</tr>
+<tr>
+  <td>diego_database (Policy Server)</td>
+  <td>mysql_proxy</td>
+  <td>3306</td>
+  <td>TCP</td>
+  <td>MySQL</td>
+  <td>MySQL authentication*</td>
+</tr>
+<tr>
   <td>diego_database (BBS)</td>
   <td>mysql_proxy</td>
   <td>3306</td>
