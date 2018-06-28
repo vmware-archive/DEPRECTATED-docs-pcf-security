@@ -3,7 +3,7 @@ title: Stemcell Hardening FAQ
 owner: Security CONSULT LEGAL BEFORE MAKING ANY CHANGES TO THIS DOC
 ---
 
-<p class="note"><strong>Note</strong>: This document applies to stemcell v3263.</p>
+<p class="note"><strong>Note:</strong> This document applies to stemcell v3263.</p>
 
 Customers and prospects often ask for details on stemcell hardening, i.e., the process by which 
 we secure Pivotal Cloud Foundry by reducing its vulnerability surface from outside access. 
@@ -17,17 +17,7 @@ documentation artifact to feed into the customers’ existing security assessmen
 with IaaS specific packaging. A typical stemcell contains a bare minimum OS skeleton with a 
 few common utilities pre-installed, a BOSH Agent, and a few configuration files to securely 
 configure the OS by default. For example: with vSphere, the official stemcell for Ubuntu 
-Trusty is an approximately 500MB VMDK file. With AWS, official stemcells are published as 
-AMIs that can be used in an AWS account. Stemcells do not contain any specific information 
-about any software that will be installed once that stemcell becomes a specialized machine 
-in the cluster; nor do they contain any sensitive information which would make them unable 
-to be shared with other BOSH users. This clear separation between base OS and later-installed 
-software is what makes stemcells a powerful concept. In addition to being generic, stemcells 
-for one OS (e.g. all Ubuntu Trusty stemcells) are exactly the same for all infrastructures. 
-This property of stemcells allows BOSH users to quickly and reliably switch between different 
-infrastructures without worrying about the differences between OS images. The CF BOSH team 
-is responsible for producing and maintaining an official set of stemcells. Cloud Foundry 
-currently supports Ubuntu Trusty on vSphere, AWS, OpenStack, Google, and Azure infrastructures.
+Trusty is an approximately 500MB VMDK file. With AWS, official stemcells are published as MIs that can be used in an AWS account. Stemcells do not contain any specific information about any software that will be installed once that stemcell becomes a specialized machine in the cluster; nor do they contain any sensitive information which would make them unable to be shared with other BOSH users. This clear separation between base OS and later-installed software is what makes stemcells a powerful concept. In addition to being generic, stemcells for one OS (e.g. all Ubuntu Trusty and Xenial stemcells) are exactly the same for all infrastructures. This property of stemcells allows BOSH users to quickly and reliably switch between different infrastructures without worrying about the differences between OS images. The CF BOSH team is responsible for producing and maintaining an official set of stemcells. Cloud Foundry currently supports Ubuntu Trusty and Xenial on vSphere, AWS, OpenStack, Google, and Azure infrastructures.
 
 2. **WHAT IS STEMCELL HARDENING?** Stemcell hardening is the process of securing a stemcell 
 by reducing its surface of vulnerability, which is larger when a system performs more functions; 
