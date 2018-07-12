@@ -119,6 +119,4 @@ The following table lists network communication paths that are outbound from Con
 
 <sup>&#42;</sup>Applies only to deployments where internal MySQL is selected as the database.
 
-## <a id="bosh-dns"></a>BOSH DNS Communications
-
-Application containers look up services using the BOSH DNS service discovery mechanism. To support this lookup, BOSH Director colocates a BOSH DNS server on every deployed VM. For more information, see [BOSH DNS Network Communications](./bosh-dns-network-paths.html).
+<%= partial "bosh-dns" %>

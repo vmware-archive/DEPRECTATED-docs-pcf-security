@@ -178,11 +178,4 @@ The following table lists network communication paths that are outbound from MyS
 </tr>
 </table>
 
-## <a id="consul"></a>Consul Communications
-
-All MySQL Proxy instances register themselves with Consul, which enables PAS components that use Consul for service discovery to find available proxies.
-For more information, see [Consul Network Communications](./consul-network-paths.html).
-
-## <a id="bosh-dns"></a>BOSH DNS Communications
-
-Application containers look up services using the BOSH DNS service discovery mechanism. To support this lookup, BOSH Director colocates a BOSH DNS server on every deployed VM. For more information, see [BOSH DNS Network Communications](./bosh-dns-network-paths.html).
+<%= partial "bosh-dns" %>
