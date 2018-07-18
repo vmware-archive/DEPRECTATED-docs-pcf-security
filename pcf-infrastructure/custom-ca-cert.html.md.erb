@@ -9,17 +9,16 @@ To secure traffic in your PCF deployment, you must provide a CA to issue CA cert
 Pivotal recommends you provide a CA certificate from a known CA when using a production environment. When you add and activate a new CA, a CA certificate is issued to BOSH Director. 
 BOSH Director then passes the certificate to other components in your PCF deployment. 
 
-<p class="note"><strong>Note:</strong> You can also use the Pivotal Application Service (PAS) interface to issue certificates signed by the OPS Manager CA. However, you should use only use the PAS issued CA in testing and development environments. 
-For more information on creating a Pivotal-generated CA, see <a href= "https://docs.pivotal.io/pivotalcf/2-2/opsguide/security_config.html#create_or_obtain_certs"> Creating a Wildcard Certificate for PCF Deployments</a>.</p>
-
 Use the below procedures to add and activate a new CA.
 
-## <a id='add'></a>Step 1: Adding a Custom CA
+<p class="note"><strong>Note:</strong> You can also use the Pivotal Application Service (PAS) interface to issue certificates signed by the OPS Manager CA. However, you should use only use the PAS issued CA in testing and development environments. 
+For more information on creating a Pivotal-generated CA, see <a href= "https://docs.pivotal.io/pivotalcf/2-2/opsguide/security_config.html#create_or_obtain_certs"> Creating a Wildcard Certificate for PCF Deployments</a>.</p>  
+## <a id='add'></a>Step 1: Add a Custom CA
 
-When adding a custom CA, you must have access to your User Account and Authentication (UAA) access token. Perform the steps in User Account and Authentication (UAA) Server
+When adding a custom CA, you must have access to your User Account and Authentication (UAA) access token. Perform the steps in [User Account and Authentication (UAA) Server
 ](../../concepts/architecture/uaa.html) topic to target and authenticate with the Ops Manager UAA server. Record and save your Ops Manager access token.
 
-<strong>Note</strong>: When you record and save your Ops Manager access token, remove any new line characters such as <code>/n</code>. Otherwise the API call in the following step will not succeed.</p>
+<p class="note"><strong>Note</strong>: When you record and save your Ops Manager access token, remove any new line characters such as <code>/n</code>. Otherwise the API call in the following step will not succeed.</p>
 
 You can add a new CA by using the following API calls and the `curl` command: 
 
@@ -31,7 +30,7 @@ You can add a new CA by using the following API calls and the `curl` command:
         -H "Content-Type: application/json" \ 
         -d '{"cert_pem": "-----BEGIN CERTIFICATE-----\EXAMPLE-CERTIFICATE", "private_key_pem": "-----BEGIN RSA PRIVATE KEY-----\EXAMPLE-KEY"}'
     </pre>
-    Replace `EXAMPLE-CERTIFICATE` with your custom CA certificate and `EXAMPLE-KEY` with your custom RSA key.
+    Replace `EXAMPLE-CERTIFICATE` with your custom CA certificate and `EXAMPLE-KEY` with your custom RSA key.           
 
     The APl call returns a response that includes the new CA certificate:
     <pre class="terminal">
@@ -55,9 +54,9 @@ You can add a new CA by using the following API calls and the `curl` command:
         -X GET \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
   </pre>
-  <br>
-  The API call returns a response:
-  <pre class="terminal">
+
+    The API call returns a response listing all of the root CAs:
+    <pre class="terminal">
     HTTP/1.1 200 OK
     {
       "certificate_authorities": [
@@ -71,15 +70,15 @@ You can add a new CA by using the following API calls and the `curl` command:
         }
       ]
     }
-  </pre>
-  Confirm that your newly added CA has `active` set to `false`. Record and save its GUID.
+    </pre>
+  Confirm that your new CA has `active` set to `false`. Record and save its GUID.
 
 1. Navigate to `https://OPS-MAN-FQDN` in a browser and log in to Ops Manager.
 1. Click **Apply Changes**. When the deploy finishes, continue to the next section.
 
 ## <a id='activate-new-ca'></a> Step 2: Activate the New CA
 
-After adding your new CA you must activate it. Once the CA is activated, BOSH Director is issued a CA certificate from the CA. 
+After adding your CA you must activate it. Once the CA is activated, the CA issues a CA certificate to BOSH Director. 
 
 1. Use `curl` to make an API call to activate the new CA. 
 Replace `CERT-GUID` with the GUID of your CA that you retrieved in the previous section:
@@ -89,7 +88,7 @@ Replace `CERT-GUID` with the GUID of your CA that you retrieved in the previous 
       -H "Content-Type: application/json" \
       -d '{}' 
   </pre> 
-  The API returns a successful response:
+  If the API call succeed, it returns a successful response:
   <pre class="terminal">HTTP/1.1 200 OK</pre>
 
 1. List your root CAs to confirm that the new CA is active:
@@ -99,5 +98,4 @@ Replace `CERT-GUID` with the GUID of your CA that you retrieved in the previous 
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
   </pre>
  Confirm that your new CA has `active` set to `true`.
-
- 1. Navigate to Ops Manager and click **Apply Changes**.
+1. Navigate to Ops Manager and click **Apply Changes**.
