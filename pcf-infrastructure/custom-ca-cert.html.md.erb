@@ -31,7 +31,7 @@ You can add a new CA by using the following API calls and the `curl` command:
         -H "Content-Type: application/json" \ 
         -d '{"cert_pem": "-----BEGIN CERTIFICATE-----\EXAMPLE-CERTIFICATE", "private_key_pem": "-----BEGIN RSA PRIVATE KEY-----\EXAMPLE-KEY"}'
     </pre>
-    Replace `EXAMPLE-CERTIFICATE` with your custom CA certificate and `EXAMPLE-KEY` with your custom RSA key.           
+    Replace `EXAMPLE-CERTIFICATE` with your custom CA certificate and `EXAMPLE-KEY` with your RSA key.           
 
     The APl call returns a response that includes the new CA certificate:
     <pre class="terminal">
@@ -89,7 +89,7 @@ Replace `CERT-GUID` with the GUID of your CA that you retrieved in the previous 
       -H "Content-Type: application/json" \
       -d '{}' 
   </pre> 
-  If the API call succeed, it returns a successful response:
+  If the API call succeeds, it returns a successful response:
   <pre class="terminal">HTTP/1.1 200 OK</pre>
 
 1. List your root CAs to confirm that the new CA is active:
