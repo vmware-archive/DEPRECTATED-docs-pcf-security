@@ -11,14 +11,15 @@ BOSH Director then passes the certificate to other components in your PCF deploy
 
 Use the below procedures to add and activate a new CA.
 
-<p class="note"><strong>Note:</strong> You can also use the Pivotal Application Service (PAS) interface to issue certificates signed by the OPS Manager CA. However, you should use only use the PAS issued CA in testing and development environments. 
-For more information on creating a Pivotal-generated CA, see <a href= "https://docs.pivotal.io/pivotalcf/2-2/opsguide/security_config.html#create_or_obtain_certs"> Creating a Wildcard Certificate for PCF Deployments</a>.</p>  
+<p class="note"><strong>Note:</strong> You can also use the Pivotal Application Service (PAS) interface to issue certificates signed by the Ops Manager CA. However, you should use only use this locally-issued CA in testing and development environments. 
+For more information on creating a Pivotal-generated CA, see <a href= "https://docs.pivotal.io/pivotalcf/2-2/opsguide/security_config.html#create_or_obtain_certs"> Creating a Wildcard Certificate for PCF Deployments</a>.</p>
+
 ## <a id='add'></a>Step 1: Add a Custom CA
 
 When adding a custom CA, you must have access to your User Account and Authentication (UAA) access token. Perform the steps in [User Account and Authentication (UAA) Server
-](../../concepts/architecture/uaa.html) topic to target and authenticate with the Ops Manager UAA server. Record and save your Ops Manager access token.
+](../../concepts/architecture/uaa.html) topic to target and authenticate with the Ops Manager UAA server. Record your Ops Manager access token.
 
-<p class="note"><strong>Note</strong>: When you record and save your Ops Manager access token, remove any new line characters such as <code>/n</code>. Otherwise the API call in the following step will not succeed.</p>
+<p class="note"><strong>Note</strong>: When you record your Ops Manager access token, remove any new line characters such as <code>/n</code>. Otherwise the API call in the following step will not succeed.</p>
 
 You can add a new CA by using the following API calls and the `curl` command: 
 
@@ -71,7 +72,7 @@ You can add a new CA by using the following API calls and the `curl` command:
       ]
     }
     </pre>
-  Confirm that your new CA has `active` set to `false`. Record and save its GUID.
+  Confirm that your new CA has `active` set to `false`. Record its GUID.
 
 1. Navigate to `https://OPS-MAN-FQDN` in a browser and log in to Ops Manager.
 1. Click **Apply Changes**. When the deploy finishes, continue to the next section.
