@@ -1,22 +1,23 @@
 ---
-title: Adding a Custom Certificate Authority  
+title: Adding a Trusted Certificate Authority  
 owner: OpsMan
 ---
-This topic describes how to add a custom certificate authority (CA) to issue CA certificates in a Pivotal Cloud Foundry (PCF) deployment.
+This topic describes how to add a trusted certificate authority (CA) to issue digital certificates in a Pivotal Cloud Foundry (PCF) deployment.
 
 ## <a id='overview'></a>Custom CA Overview
-To secure traffic in your PCF deployment, you must provide a CA to issue CA certificates. 
-Pivotal recommends you provide a CA certificate from a known CA when using a production environment. When you add and activate a new CA, a CA certificate is issued to BOSH Director. 
+To secure traffic in your PCF deployment, you must provide a CA to issue digital certificates. 
+Pivotal recommends you supply a trusted CA from a well-known provider when using a production environment. 
+When you add and activate a new CA, a digital certificate is issued to BOSH Director. 
 BOSH Director then passes the certificate to other components in your PCF deployment. 
 
 Use the below procedures to add and activate a new CA.
 
-<p class="note"><strong>Note:</strong> You can also use the Pivotal Application Service (PAS) interface to issue certificates signed by the Ops Manager CA. However, you should use only use this locally-issued CA in testing and development environments. 
+<p class="note"><strong>Note:</strong> You can also use the Pivotal Application Service (PAS) interface to issue wildcard certificates signed by the Ops Manager CA. Wildcard certificates include both the root domain and sub-domains in a single certificate. However, you should only use this Pivotal-generated CA in testing and development environments. 
 For more information on creating a Pivotal-generated CA, see <a href= "https://docs.pivotal.io/pivotalcf/2-2/opsguide/security_config.html#create_or_obtain_certs"> Creating a Wildcard Certificate for PCF Deployments</a>.</p>
 
 ## <a id='add'></a>Step 1: Add a Custom CA
 
-When adding a custom CA, you must have access to your User Account and Authentication (UAA) access token. Perform the steps in [User Account and Authentication (UAA) Server
+When adding a trusted CA, you must have access to your User Account and Authentication (UAA) access token. Perform the steps in [User Account and Authentication (UAA) Server
 ](../../concepts/architecture/uaa.html) topic to target and authenticate with the Ops Manager UAA server. Record your Ops Manager access token.
 
 <p class="note"><strong>Note</strong>: When you record your Ops Manager access token, remove any new line characters such as <code>/n</code>. Otherwise the API call in the following step will not succeed.</p>
@@ -31,9 +32,9 @@ You can add a new CA by using the following API calls and the `curl` command:
         -H "Content-Type: application/json" \ 
         -d '{"cert_pem": "-----BEGIN CERTIFICATE-----\EXAMPLE-CERTIFICATE", "private_key_pem": "-----BEGIN RSA PRIVATE KEY-----\EXAMPLE-KEY"}'
     </pre>
-    Replace `EXAMPLE-CERTIFICATE` with your custom CA certificate and `EXAMPLE-KEY` with your RSA key.           
+    Replace `EXAMPLE-CERTIFICATE` with your certificate and `EXAMPLE-KEY` with your RSA key.           
 
-    The APl call returns a response that includes the new CA certificate:
+    The APl call returns a response that includes the new CA:
     <pre class="terminal">
     HTTP/1.1 200 OK
     {
@@ -79,7 +80,7 @@ You can add a new CA by using the following API calls and the `curl` command:
 
 ## <a id='activate-new-ca'></a> Step 2: Activate the New CA
 
-After adding your CA you must activate it. Once the CA is activated, the CA issues a CA certificate to BOSH Director. 
+After adding your CA you must activate it. Once the CA is activated, the CA issues digital certificate to BOSH Director. 
 
 1. Use `curl` to make an API call to activate the new CA. 
 Replace `CERT-GUID` with the GUID of your CA that you retrieved in the previous section:
