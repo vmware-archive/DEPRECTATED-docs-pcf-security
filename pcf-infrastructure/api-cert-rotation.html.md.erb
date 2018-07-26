@@ -3,7 +3,7 @@ title: Managing TLS Certificates
 owner: OpsMan
 ---
 
-This topic describes how to manage Certificate Authority (CA) certificates in your deployment, including how to determine when your CA certificates expire, how to set a custom CA certificate, and how to regenerate and rotate both configurable and non-configurable CA certificates.
+This topic describes how to manage Certificate Authority (CA) certificates in your deployment, including how to determine when your CA certificates expire, and how to regenerate and rotate both configurable and non-configurable CA certificates.
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](../../../addon-ipsec/1-8/credentials.html).
 
@@ -12,10 +12,11 @@ For information about rotating IPsec certificates, see [Rotating IPsec Certifica
 
 CA certificates expire 2 years after creation, and root certificates expire after 4 years. Because CA certificates do not last as long as root certificates, you can rotate CA certificates without creating and applying a new root certificate.
 
-Depending on which certificates are due to expire, use one of the following approach to certificate rotation:
+Depending on which certificates are due to expire, use one of the following approaches to certificate rotation:
 
-* [Rotate Configurable Certificates](#rotate-config) or [Rotate Non-Configurable Certificates](#rotate-non-config)
-* [Rotate CA Certificates](#rotate-root)
+* [Rotating Configurable Certificates](#rotate-config) or [Rotating Non-Configurable Certificates](#rotate-non-config)
+* [Rotating Root Certificates](#rotate-root)
+
 
 ## <a id='rotate-config'></a> Rotating Configurable Certificates
 
@@ -42,8 +43,8 @@ To retrieve information about the expiration dates for CA certificates in your d
 <pre class='terminal'>$ openssl x509 -enddate -noout -in test.pem 
 notAfter=Dec  7 21:01:04 2017 GMT</pre>
 
-Once you have completed the above procedure, find the certificate with the `uaa.service_provider_key_credentials` property and validate its expiration. For example:
-<code>"field "property_reference":".uaa.service_provider_key_credentials"..."valid_until":"2019-06-14T11:37:11Z"</code>
+Once you have completed the above procedure, find the certificate with the `uaa.service_provider_key_credentials` property and validate its expiration. For example:
+<code>"field "property\_reference":".uaa.service\_provider\_key\_credentials"..."valid\_until":"2019-06-14T11:37:11Z"</code>
 
 If the certificate is nearing expiration, you must regenerate and rotate it.
 
@@ -90,7 +91,8 @@ To retrieve information about the expiration dates for RSA and CA certificates i
     $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates?expires_within=6m" \
           -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
     </pre>
-    Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access_token</code> value you recorded in the previous step.
+
+    Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access\_token</code> value you recorded in the previous step.
 
 ### <a id='rotate-ca'></a> Regenerating and Rotating CA Certificates
 
@@ -132,7 +134,8 @@ If the command succeeds, the API returns a response that includes the new CA cer
       "created_on": "2017-01-19",
       "expires_on": "2021-01-19",
       "active": false,
-      "cert_pem": "-----BEGIN EXAMPLE CERTIFICATE-----
+
+      "cert\_pem": "-----BEGIN EXAMPLE CERTIFICATE-----
       MIIC+zCCAeOgAwIBAgIBADANBgkqhkiG9w0BAQsFADAfMQswCQYDVQQGEwJVUzEQ
       EXAMPLEoCgwHUGl2b3RhbDAeFw0xNDarthgyMTQyMjVaFw0yMTAxMTkyMTQyMjVa
       EXAMPLEoBgNVBAYTAlVTMRAwDgYDVVaderdQaXZvdGFsMIIBIjANBgkqhkiG9w0B
@@ -149,19 +152,11 @@ If the command succeeds, the API returns a response that includes the new CA cer
       EXAMPLEoCynMNz7FgHyFbd9D9X5YW8fWGSeVBPPikcONdRvjw9aEeAtbGEh8eZCP
       EXAMPLEob33RuR+CTNqThXY9k8d7/7ba4KVdd4gP8ynFgwvnDQOjcJZ6Go5QY5HA
       EXAMPLEoPFW8pAYcvWrXKR0rE8fL5o9qgTyjmO+5yyyvWIYrKPqqIUIvMCdNr84=
-      -----END EXAMPLE CERTIFICATE-----
-      "
+    	-----END EXAMPLE CERTIFICATE-----
+    	"
   </pre>
 <br>
-To provide your own CA, use `curl` to make the following API call:
-    <pre>
-    $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
-        -X POST \ 
-        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
-        -H "Content-Type: application/json" \ 
-        -d '{"cert_pem": "-----BEGIN CERTIFICATE-----\EXAMPLE-CERTIFICATE", "private_key_pem": "-----BEGIN EXAMPLE RSA PRIVATE KEY-----\EXAMPLE-KEY"}'
-    </pre>
-    Replace `EXAMPLE-CERTIFICATE` with your custom CA certificate and `EXAMPLE-KEY` with your custom RSA key.
+To provide your own CA, see [Adding a Custom Certificate Authority](./custom-ca-cert.html#add).
 
 1. Confirm that your new CA has been added by listing all of the root CAs for Ops Manager:
   <pre>
@@ -223,7 +218,7 @@ To provide your own CA, use `curl` to make the following API call:
 
 1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
 <pre>
-  $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/active/regenerate" \
+  $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/active/regenerate" \
         -X POST \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
         -H "Content-Type: application/json" \
@@ -245,7 +240,7 @@ The API returns a successful response:
 
 1. Use `curl` to make an API call to delete your old CA, replacing `OLD-CERT-GUID` with the GUID of your old, inactive CA:  
 <pre>
-  $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/:OLD-CERT-GUID" \
+  $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/:OLD-CERT-GUID" \
         -X DELETE \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre> 
@@ -267,14 +262,18 @@ Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.h
 
 To return the Ops Manager root certificate as a file, use `curl` to make the following API call:
 <pre>
-$ curl "https<span>:</span>//OPS-MAN-FQDN/download_root_ca_cert \
+
+$ curl "https<span>:</span>//OPS-MAN-FQDN/download\_root\_ca\_cert \
+
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
 
 To return the Ops Manager root certificate as JSON, use `curl` to make the following API call:
 <pre>
-$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/security/root_ca_certificate \
+
+$ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/security/root\_ca\_certificate \
+
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
@@ -293,4 +292,6 @@ To return metadata from all deployed RSA certificates signed by the root CA, use
 $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates \
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+
 </pre>
+

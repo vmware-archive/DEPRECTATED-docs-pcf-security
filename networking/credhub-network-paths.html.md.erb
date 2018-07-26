@@ -20,7 +20,7 @@ The following table lists network communication paths that are inbound to the Cr
   <th>Security and Authentication</th>
 </tr>
 <tr>
-  <td> api </td>
+  <td> cloud_controller (api) </td>
   <td> credhub </td>
   <td> 8844 </td>
   <td> TCP </td>
@@ -28,7 +28,7 @@ The following table lists network communication paths that are inbound to the Cr
   <td> OAuth 2.0 </td>
 </tr>
 <tr>
-  <td> diego-cell </td>
+  <td> diego_cell </td>
   <td> credhub </td>
   <td> 8844 </td>
   <td> TCP </td>
@@ -36,7 +36,7 @@ The following table lists network communication paths that are inbound to the Cr
   <td> Mutual TLS† </td>
 </tr>
 <tr>
-  <td> windows-cell </td>
+  <td> windows_cell </td>
   <td> credhub </td>
   <td> 8844 </td>
   <td> TCP </td>
@@ -44,7 +44,7 @@ The following table lists network communication paths that are inbound to the Cr
   <td> Mutual TLS† </td>
 </tr>
 <tr>
-  <td> windows2016-cell </td>
+  <td> windows2016_cell </td>
   <td> credhub </td>
   <td> 8844 </td>
   <td> TCP </td>
@@ -76,7 +76,7 @@ The following table lists network communication paths that are outbound from the
 </tr>
 <tr>
   <td> credhub </td>
-  <td> database* </td>
+  <td> mysql_proxy* </td>
   <td> 3306 </td>
   <td> TCP </td>
   <td> MySQL </td>
@@ -90,6 +90,4 @@ The following table lists network communication paths that are outbound from the
 
 †Diego cells use the certificate pairs generated for individual containers to authenticate with CredHub on behalf of applications.
 
-## <a id="bosh-dns"></a>BOSH DNS Communications
-
-Application containers look up services using the BOSH DNS service discovery mechanism. To support this lookup, BOSH Director colocates a BOSH DNS server on every deployed VM. For more information, see [BOSH DNS Network Communications](./bosh-dns-network-paths.html).
+<%= partial "bosh-dns" %>

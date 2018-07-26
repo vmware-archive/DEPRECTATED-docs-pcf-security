@@ -258,11 +258,4 @@ The following table lists network communication paths that are outbound from Die
 
 <sup>&#8225;</sup>These are the host-side ports that map to port 2222 in app instance containers and are typically within the range 61001 to 65534.
 
-## <a id="consul"></a>Consul Communications
-
-PAS components call out to Consul for service discovery. For more information, see [Consul Network Communications](./consul-network-paths.html).
-
-## <a id="bosh-dns"></a>BOSH DNS Communications
-
-Application containers look up services using the BOSH DNS service discovery mechanism. To support this lookup, BOSH Director colocates a BOSH DNS server on every deployed VM. For more information, see [BOSH DNS Network Communications](./bosh-dns-network-paths.html).
-
+<%= partial "bosh-dns" %>

@@ -5,7 +5,7 @@ owner: Core Services
 
 This topic describes MySQL internal network communication paths with other Pivotal Application Service (PAS) components.
 
-These communications only apply to deployments where internal MySQL is selected as the PAS database.
+<p class="note"><strong>Note:</strong>These communications only apply to deployments where internal MySQL is selected as the PAS database.</p>
 
 ## <a id="inbound"></a> Inbound and Internal Communications ##
 
@@ -45,12 +45,69 @@ The following table lists network communication paths that are inbound and inter
   <td>MySQL authentication*</td>
 </tr>
 <tr>
-  <td>diego_database</td>
+  <td>credhub</td>
   <td>mysql_proxy</td>
   <td>3306</td>
   <td>TCP</td>
   <td>MySQL</td>
   <td>MySQL authentication*</td>
+</tr>
+<tr>
+  <td>diego_cell (VXLAN Policy Agent)</td>
+  <td>mysql_proxy</td>
+  <td>3306</td>
+  <td>TCP</td>
+  <td>MySQL</td>
+  <td>MySQL authentication*</td>
+</tr>
+<tr>
+  <td>diego_database (Policy Server)</td>
+  <td>mysql_proxy</td>
+  <td>3306</td>
+  <td>TCP</td>
+  <td>MySQL</td>
+  <td>MySQL authentication*</td>
+</tr>
+<tr>
+  <td>diego_database (BBS)</td>
+  <td>mysql_proxy</td>
+  <td>3306</td>
+  <td>TCP</td>
+  <td>MySQL</td>
+  <td>MySQL authentication*</td>
+</tr>
+<tr>
+  <td>diego_database (Locket)</td>
+  <td>mysql_proxy</td>
+  <td>3306</td>
+  <td>TCP</td>
+  <td>MySQL</td>
+  <td>MySQL authentication*</td>
+</tr>
+<tr>
+  <td>uaa</td>
+  <td>mysql_proxy</td>
+  <td>3306</td>
+  <td>TCP</td>
+  <td>MySQL</td>
+  <td>MySQL authentication*</td>
+</tr>
+</table>
+
+(\*) MySQL authentication uses the MySQL native password method.
+
+## <a id="inbound"></a> Internal Communications ##
+
+The following table lists network communication paths that are internal to MySQL VMs.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Transport Layer Protocol</th>
+  <th>App Layer Protocol</th>
+  <th>Security and Authentication</th>
 </tr>
 <tr>
   <td>mysql</td>
@@ -62,16 +119,16 @@ The following table lists network communication paths that are inbound and inter
 </tr>
 <tr>
   <td>mysql_monitor</td>
-  <td>mysql (Galera health check)</td>
-  <td>9200</td>
+  <td>mysql (MySQL Server)</td>
+  <td>3306</td>
   <td>TCP</td>
-  <td>HTTP</td>
+  <td>MySQL</td>
   <td>Basic authentication</td>
 </tr>
 <tr>
   <td>mysql_monitor</td>
   <td>mysql_proxy (Proxy health check)</td>
-  <td>1936</td>
+  <td>443/8080**</td>
   <td>TCP</td>
   <td>MySQL</td>
   <td>Basic authentication</td>
@@ -86,23 +143,17 @@ The following table lists network communication paths that are inbound and inter
 </tr>
 <tr>
   <td>mysql_proxy</td>
-  <td>mysql (Proxy API)</td>
-  <td>8080</td>
+  <td>mysql (Galera health check)</td>
+  <td>9200</td>
   <td>TCP</td>
   <td>HTTP</td>
   <td>Basic authentication</td>
 </tr>
-<tr>
-  <td>uaa</td>
-  <td>mysql_proxy</td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
+
 </table>
 
-(\*) MySQL authentication uses the MySQL native password method.
+(\*) MySQL authentication uses the MySQL native password method.<br/><br/>
+(**) Port 443 is used if mysql_proxy is registered with Gorouter. If not registered, mysql_proxy uses port 8080 instead.
 
 ## <a id="outbound"></a> Outbound Communications ##
 
@@ -127,11 +178,4 @@ The following table lists network communication paths that are outbound from MyS
 </tr>
 </table>
 
-## <a id="consul"></a>Consul Communications
-
-All MySQL Proxy instances register themselves with Consul, which enables PAS components that use Consul for service discovery to find available proxies.
-For more information, see [Consul Network Communications](./consul-network-paths.html).
-
-## <a id="bosh-dns"></a>BOSH DNS Communications
-
-Application containers look up services using the BOSH DNS service discovery mechanism. To support this lookup, BOSH Director colocates a BOSH DNS server on every deployed VM. For more information, see [BOSH DNS Network Communications](./bosh-dns-network-paths.html).
+<%= partial "bosh-dns" %>
