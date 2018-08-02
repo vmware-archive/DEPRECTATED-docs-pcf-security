@@ -36,6 +36,8 @@ PCF has many customer stakeholders who need to know about security updates. When
 
 Attackers can exploit vulnerabilities to compromise user data and processing resources. This can affect data confidentiality, integrity, and availability to different degrees. For vulnerabilities related to Ubuntu provided packages, Pivotal follows [Canonical's priority levels](http://people.canonical.com/~ubuntu-security/cve/priority.html). For other vulnerabilities, Pivotal follows [Common Vulnerability Scoring System v3.0 standards](https://www.first.org/cvss/specification-document) when assessing severity.
 
+Pivotal uses Canonical’s Ubuntu distribution of Linux for PCF Ubuntu stemcells and rootfs. Canonical provides Pivotal with support services allowing us to escalate CVEs that we determine may affect PCF. In general, Pivotal does not escalate to upstream open source software components or vendors for Medium or Low CVEs that are not yet patched. PCF may escalate on behalf of a customer for High or Critical CVEs. PCF customers who are interested in addressing CVEs in Ubuntu that are not yet patched can establish their own support relationship with [Canonical](https://www.ubuntu.com/support).
+
 Pivotal reports the severity of vulnerabilities using the following severity classes:
 
 ###<a id='high'></a>High ###
