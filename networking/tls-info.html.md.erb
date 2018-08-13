@@ -9,6 +9,7 @@ Within a PCF deployment, TLS secures connections between components like the BOS
 
 In Pivotal Application Service (PAS), app instance containers have [identity credentials](#container-creds) that enable TLS communication by app instances.
 
+
 ## <a id="container-creds"></a> App Instance Container Identity Credentials
 
 Each app instance container in PCF has its own identity credentials. This section is meant to help PCF operators and developers [understand](#cred-details) and [use](#use-creds) these credentials. 
@@ -78,15 +79,12 @@ See the following table to learn about app instance identity credentials.
   </tr>
 </table>
 
-
-
 ### <a id="use-creds"></a> Using the Credentials
 
 If you want to enable secure TLS communications from an app using container instance identity credentials, ensure that you do the following:
 
 * **Add the credentials to your development stack configuration:** 
   * The credentials must be present in your development stack configuration for your app to use them. You can retrieve the credentials through following environment variables, which PCF sets to the locations of key and certificate files.
-
         <table id='instance-certs' border="1" class="nice" >
           <tr>
             <th>Credential / Keypair Element</th>
@@ -102,6 +100,7 @@ If you want to enable secure TLS communications from an app using container inst
             <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_KEY'</code></td>
           </tr>
         </table>
+
 * **Reload the credential files before they expire:** 
   * PCF rotates the credentials shortly before the current certificate expires. Apps that use these credentials must reload the certificate and key file contents either periodically or in reaction to filesystem watcher events.
  
@@ -112,6 +111,7 @@ If you want to enable secure TLS communications from an app using container inst
 
 For more information about instance identity credentials, see the [Instance Identity](https://github.com/cloudfoundry/diego-release/blob/develop/docs/instance-identity.md) document in the diego-release repository.
 
+
 ## <a id="ciphers"></a> TLS Cipher Suites
 
 By default, PCF uses a limited set of cipher suites to secure its internal communications. However, some components used in PCF, like the Gorouter and HAProxy, may support additional TLS cipher suites to accommodate older clients outside of PCF. 
@@ -120,35 +120,33 @@ By default, PCF uses a limited set of cipher suites to secure its internal commu
 
 For components that allow you to configure TLS cipher suites, only specify the TLS cipher suites that you need.
 
-### <a id="cipher_recs"></a>TLS Cipher Suite Recommendations
+### <a id="cipher_recs"></a> TLS Cipher Suite Recommendations
 
 The default and recommended version of TLS to use is TLS v1.2.
 
 The recommended TLS cipher suites to use within PCF are the following:
 
-<ul>
-  <li>TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</li>
-	<li>TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</li>
-	<li>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</li>
-	<li>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</li>
-</ul>
+* TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+* TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
+* TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+* TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 
-###<a id="cipher_gorouter"></a> Gorouter Configuration
+### <a id="cipher_gorouter"></a> Gorouter Configuration
 
 As part of your PAS networking configuration, you must specify the TLS cipher suites that the Gorouter uses to secure its communications. Only specify the cipher suites that you need.
 
 The recommended TLS cipher suites for the Gorouter are:
 
-<ul>
-  <li>ECDHE-RSA-AES128-GCM-SHA256</li>
-  <li>ECDHE-RSA-AES256-GCM-SHA384</li>
-</ul>
+* ECDHE-RSA-AES128-GCM-SHA256
+* ECDHE-RSA-AES256-GCM-SHA384
 
 You can specify other cipher suites and a different minimum version of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by the Gorouter, see [Securing Traffic into Cloud Foundry](../../adminguide/securing-traffic.html#ciphers).
 
-For instructions on how to configure the TLS cipher suites for the Gorouter, see the PAS installation documentation for the IaaS of your deployment. For example, if you are deploying PAS on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking). 
+For instructions on how to configure the TLS cipher suites for the Gorouter, see the PAS installation documentation for the IaaS of your deployment. For example, if you are deploying PAS on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking).
 
-###<a id="cipher_haproxy"></a> HAProxy Configuration
+<p class='note'><strong>Note:</strong> In PAS v2.3, traffic between the Gorouter and Cloud Controller is encrypted. To ensure there is no downtime while upgrading from v2.2 to v2.3, download the latest patch for v2.2. This patch contains the configuration `router.backends.enable_tls: true` in the Gorouter manifest.</p>
+
+### <a id="cipher_haproxy"></a> HAProxy Configuration
 
 As part of your PAS networking configuration, you must specify the TLS cipher suites that HAProxy uses to secure its communications. Only specify the cipher suites that you need.
 
@@ -169,22 +167,23 @@ If you change the default Gorouter TLS cipher suites in PAS, and you change the 
 
 For instructions on how to configure the TLS cipher suites for HAProxy, see the PAS installation documentation for the IaaS of your deployment. For example, if you are deploying PAS on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking).
 
+
 ## <a id="components"></a> Component Communications
 
 The following topics describe how network communications work for main subsystem of PCF. Each topic lists the paths, ports, and protocols that the components within the subsystem use to communicate.
 
-* <a href="/pivotalcf/security/networking/cc-network-paths.html">Cloud Controller Network Communications</a>
+* [Cloud Controller Network Communications](/pivotalcf/security/networking/cc-network-paths.html)
 
-* <a href="/pivotalcf/security/networking/consul-network-paths.html">Consul Network Communications</a>
+* [Consul Network Communications](/pivotalcf/security/networking/consul-network-paths.html)
 
-* <a href="/pivotalcf/security/networking/diego-network-paths.html">Diego Network Communications</a>
+* [Diego Network Communications](/pivotalcf/security/networking/diego-network-paths.html)
 
-* <a href="/pivotalcf/security/networking/loggregator-network-paths.html">Loggregator Network Communications</a>
+* [Loggregator Network Communications](/pivotalcf/security/networking/loggregator-network-paths.html)
 
-* <a href="/pivotalcf/security/networking/mysql-network-paths.html">MySQL Network Communications</a>
+* [MySQL Network Communications](/pivotalcf/security/networking/mysql-network-paths.html)
 
-* <a href="/pivotalcf/security/networking/nats-network-paths.html">NATS Network Communications</a>
+* [NATS Network Communications](/pivotalcf/security/networking/nats-network-paths.html)
 
-* <a href="/pivotalcf/security/networking/routing-network-paths.html">Routing Network Communications</a>
+* [Routing Network Communications](/pivotalcf/security/networking/routing-network-paths.html)
 
-* <a href="/pivotalcf/security/networking/uaa-network-paths.html">UAA Network Communications</a>
+* [UAA Network Communications](/pivotalcf/security/networking/uaa-network-paths.html)
