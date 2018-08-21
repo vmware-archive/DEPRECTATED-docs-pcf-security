@@ -198,6 +198,7 @@ To provide your own CA, use `curl` to make the following API call:
   Identify your newly added CA, which has `active` set to `false`. Record its GUID.
 
 1. Navigate to `https://OPS-MAN-FQDN` in a browser and log in to Ops Manager.
+1. Navigate to the BOSH Director tile, and open the Director Config section. Check the box that says `Recreate All VMs`. This will ensure that the newly generated CA propagates to all deployed VMS, and will prevent downtime during certificate regeneration. 
 1. Click **Apply Changes**. When the deploy finishes, continue to the next section.
 
 #### <a id='activate-new-ca'></a> Step 2: Activate the New CA
@@ -233,7 +234,9 @@ To provide your own CA, use `curl` to make the following API call:
 The API returns a successful response:
 <pre class="terminal">HTTP/1.1 200 OK</pre>
 
-1. Navigate to Ops Manager and click **Apply Changes**. When the deploy finishes, continue to the next section.
+1. In the browser, navigate to the BOSH Director tile, and open the Director Config section. 
+1. Check the box that says `Recreate All VMs`. This will help prevent downtime during certificate regeneration.
+1. Click **Apply Changes**. When the deploy finishes, continue to the next section.
 
 #### <a id='delete'></a> Step 4: Delete the Old CA
 
