@@ -192,7 +192,12 @@ To provide your own CA, see [Adding a Custom Certificate Authority](./custom-ca-
   Identify your newly added CA, which has `active` set to `false`. Record its GUID.
 
 1. Navigate to `https://OPS-MAN-FQDN` in a browser and log in to Ops Manager.
-1. Navigate to the BOSH Director tile, and open the Director Config section. Check the box that says `Recreate All VMs`. This will ensure that the newly generated CA propagates to all deployed VMS, and will prevent downtime during certificate regeneration. 
+1. Click the **BOSH Director** tile in the **Installation Dashboard**.
+1. Select the **Director Config** pane.
+1. Select **Recreate All VMs**.
+
+  <p class="note"><strong>Note:</strong> By selecting <b>Recreate All VMs</b> you can ensure that the newly generated CA propagates to all deployed VMS. This can prevent downtime during certificate regeneration.</p>
+
 1. Click **Apply Changes**. When the deploy finishes, continue to the next section.
 
 #### <a id='activate-new-ca'></a> Step 2: Activate the New CA
