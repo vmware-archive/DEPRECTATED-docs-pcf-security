@@ -67,22 +67,6 @@ The following table lists network communication paths for Loggregator.
   <td>Mutual TLS</td>
 </tr>
 <tr>
-  <td>loggregator_trafficcontroller (cf auth proxy)</td>
-  <td>router (Gorouter)</td>
-  <td>8083</td>
-  <td>TCP</td>
-  <td>HTTP</td>
-  <td>OAuth</td>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller (Reverse Log Proxy)</td>
-  <td>loggregator_trafficcontroller (Reverse Log Proxy)</td>
-  <td>8088</td>
-  <td>TCP</td>
-  <td>HTTP</td>
-  <td>none</td>
-</tr>
-<tr>
   <td>loggregator_trafficcontroller (Route Registrar)</td>
   <td>nats</td>
   <td>4222</td>
