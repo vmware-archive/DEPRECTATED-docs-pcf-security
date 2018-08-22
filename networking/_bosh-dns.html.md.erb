@@ -2,4 +2,6 @@
 
 By default, PAS components and app containers look up services using the BOSH DNS service discovery mechanism. To support this lookup, BOSH Director colocates a BOSH DNS server on every deployed VM. For more information, see [BOSH DNS Network Communications](./bosh-dns-network-paths.html).
 
+## <a id="consul"></a>Consul Communications
 
+If you disabled BOSH DNS for PAS components and other VMs by selecting **Disable BOSH DNS server for troubleshooting purposes** in the BOSH Director tile **Director Config** pane, PAS components call out to Consul for service discovery. For more information, see [Consul Network Communications](./consul-network-paths.html).
