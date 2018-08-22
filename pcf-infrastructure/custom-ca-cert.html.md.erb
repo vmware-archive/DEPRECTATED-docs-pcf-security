@@ -7,7 +7,7 @@ This topic describes how to add a custom certificate authority (CA) to issue dig
 ## <a id='overview'></a>Custom CA Overview
 To secure traffic in your PCF deployment, you must provide a CA to issue digital certificates. When you add and activate a new CA, a digital certificate is issued to BOSH Director. BOSH Director then passes the certificate to other components in your PCF deployment. 
 
-Pivotal recommends you supply a CA from a trusted provider when using a production environment. While you can create your own custom CAs if necessary, a custom CA is more secure because it has been authenticated by the trusted entities permitted to issue them.
+Pivotal recommends you supply a CA from a trusted provider when using a production environment. While you can create your own custom CAs if necessary, a trusted CA is more secure because it has been authenticated by the trusted entities permitted to issue them.
 
 <p class="note"><strong>Note:</strong> You can also use the Pivotal Application Service (PAS) interface to issue wildcard certificates signed by the Ops Manager CA. Wildcard certificates include both the root domain and sub-domains in a single certificate. However, you should only use this Pivotal-generated CA in testing and development environments. 
 For more information on creating a Pivotal-generated CA, see <a href= "https://docs.pivotal.io/pivotalcf/2-3/opsguide/security_config.html#create_or_obtain_certs"> Creating a Wildcard Certificate for PCF Deployments</a>.</p>
