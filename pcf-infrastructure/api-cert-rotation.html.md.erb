@@ -1,5 +1,5 @@
 ---
-title: Managing TLS Certificates 
+title: Managing TLS Certificates
 owner: OpsMan
 ---
 
@@ -70,7 +70,7 @@ These steps will vary depending on which SAML provider you are using.
 1. Re-enable certificate validation in your identity provider.
 
 
-## <a id='rotate-non-config'></a> Rotating Non-Configurable Certificates 
+## <a id='rotate-non-config'></a> Rotating Non-Configurable Certificates
 
 Non-configurable certificates are certificates that are given to you by the company whose product you are using, as opposed to certificates you generate yourself.
 
@@ -119,11 +119,11 @@ You can use a Pivotal-generated CA or provide your own CA using the API calls in
 1. To use a Pivotal-generated CA, use `curl` to make the following API call:
 <pre>
 $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/generate" \
-      -X POST \ 
+      -X POST \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
       -H "Content-Type: application/json" \
       -d '{}'
-</pre>  
+</pre>
 If the command succeeds, the API returns a response that includes the new CA certificate.
   <pre class="terminal">
       HTTP/1.1 200 OK
@@ -191,10 +191,7 @@ To provide your own CA, see [Adding a Custom Certificate Authority](./custom-ca-
 1. Navigate to `https://OPS-MAN-FQDN` in a browser and log in to Ops Manager.
 1. Click the **BOSH Director** tile in the **Installation Dashboard**.
 1. Select the **Director Config** pane.
-1. Select **Recreate All VMs**.
-
-  <p class="note"><strong>Note:</strong> By selecting <b>Recreate All VMs</b> you can ensure that the newly generated CA propagates to all deployed VMS. This can prevent downtime during certificate regeneration.</p>
-  
+1. Select **Recreate All VMs**. This propagates the new CA to all VMs to prevent downtime.
 1. Click **Apply Changes**. When the deploy finishes, continue to the next section.
 
 #### <a id='activate-new-ca'></a> Step 2: Activate the New CA
@@ -204,8 +201,8 @@ To provide your own CA, see [Adding a Custom Certificate Authority](./custom-ca-
       -X POST \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
       -H "Content-Type: application/json" \
-      -d '{}' 
-  </pre> 
+      -d '{}'
+  </pre>
   The API returns a successful response:
   <pre class="terminal">HTTP/1.1 200 OK</pre>
 
@@ -226,7 +223,7 @@ To provide your own CA, see [Adding a Custom Certificate Authority](./custom-ca-
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
         -H "Content-Type: application/json" \
         -d '{}'
-</pre> 
+</pre>
 The API returns a successful response:
 <pre class="terminal">HTTP/1.1 200 OK</pre>
 
@@ -241,13 +238,13 @@ The API returns a successful response:
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
 
-1. Use `curl` to make an API call to delete your old CA, replacing `OLD-CERT-GUID` with the GUID of your old, inactive CA:  
+1. Use `curl` to make an API call to delete your old CA, replacing `OLD-CERT-GUID` with the GUID of your old, inactive CA:
 <pre>
   $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/:OLD-CERT-GUID" \
         -X DELETE \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-</pre> 
-The API returns a successful response. 
+</pre>
+The API returns a successful response.
 <pre class="terminal">HTTP/1.1 200 OK</pre>
 
 1. Navigate to Ops Manager and click **Apply Changes**.
