@@ -117,13 +117,8 @@ You can use a Pivotal-generated CA or provide your own CA using the API calls in
 
 1. To use a Pivotal-generated CA, use `curl` to make the following API call:
 <pre>
-<<<<<<< HEAD
-$ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/generate" \
-      -X POST \
-=======
 $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/generate" \
       -X POST \
->>>>>>> 751661b... incorpate feedback [#159934679]
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
       -H "Content-Type: application/json" \
       -d '{}'
@@ -304,10 +299,4 @@ To return metadata from all deployed RSA certificates signed by the root CA, use
 $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates \
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-<<<<<<< HEAD
-
 </pre>
-
-=======
-</pre>
->>>>>>> 751661b... incorpate feedback [#159934679]
