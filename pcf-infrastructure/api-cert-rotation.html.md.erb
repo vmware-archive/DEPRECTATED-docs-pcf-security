@@ -78,8 +78,7 @@ If you need to rotate non-configurable certificates, follow the procedure below.
 
 ### <a id='non-config-cert-expiry'></a> Checking Certificate Expiration Dates
 
-The non-configurable certificates in your deployment expire every two years.
-To retrieve information about the expiration dates for RSA and CA certificates in your deployment, do the following:
+The non-configurable certificates in your deployment expire every two years. To retrieve information about the expiration dates for RSA and CA certificates in your deployment, do the following:
 
 1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN`.
 
@@ -93,28 +92,26 @@ To retrieve information about the expiration dates for RSA and CA certificates i
     </pre>
     Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access_token</code> value you recorded in the previous step.
 
+<p class='note'><strong>Note:</strong> If the certificates have already expired, the <a href="#rotate-ca">Regenerating and Rotating CA Certificates</a> procedure does not work. Contact Pivotal Support for guidance.</p>
+
 ### <a id='rotate-ca'></a> Regenerating and Rotating CA Certificates
 
-<p class="note warning"><strong>Warning</strong>: You must complete the procedures in this topic in the exact order specified below. Otherwise, you risk doing damage to your deployment.</p>
+<p class="note warning"><strong>WARNING:</strong> You must complete the procedures in this topic in the exact order specified below. Otherwise, you risk doing damage to your deployment.</p>
 
-Depending on the requirements of your deployment, you may need to rotate your CA certificates.
-CA certificates can expire or fall out of currency, or your organization's security compliance policies may require you to rotate CA certificates periodically.
+Depending on the requirements of your deployment, you may need to rotate your CA certificates. CA certificates can expire or fall out of currency, or your organization's security compliance policies may require you to rotate CA certificates periodically.
 
-You can rotate the CA certificates in your Pivotal Cloud Foundry (PCF) deployment using `curl`.
-PCF provides different API calls with which you can manage certificates and CAs. New CA certificates generated through this process use SHA-256 encryption.
+You can rotate the CA certificates in your Pivotal Cloud Foundry (PCF) deployment using `curl`. PCF provides different API calls with which you can manage certificates and CAs. New CA certificates generated through this process use SHA-256 encryption.
 
-These API calls allow you to create new CAs, apply them, and delete old CAs. The process of activating a new CA and rotating it in gives new certificates to the BOSH Director.
-The BOSH Director then passes the certificates to other components in your PCF deployment.
+These API calls allow you to create new CAs, apply them, and delete old CAs. The process of activating a new CA and rotating it in gives new certificates to the BOSH Director. The BOSH Director then passes the certificates to other components in your PCF deployment.
 
-<p class="note"><strong>Note</strong>: These procedures require you to return to Ops Manager and click <strong>Apply Changes</strong> periodically. Clicking <strong>Apply Changes</strong> redeploys the BOSH Director and its tiles. If you apply your changes during each procedure, a successful redeploy verifies that the certificate rotation process is proceeding correctly.</p>
+<p class="note"><strong>Note:</strong> These procedures require you to return to Ops Manager and click <strong>Apply Changes</strong> periodically. Clicking <strong>Apply Changes</strong> redeploys the BOSH Director and its tiles. If you apply your changes during each procedure, a successful redeploy verifies that the certificate rotation process is proceeding correctly.</p>
 
 #### <a id='add-new-ca'></a> Step 1: Add a New CA
 
-Use the following procedure to add a new CA.
-You can use a Pivotal-generated CA or provide your own CA using the API calls in this section.
+Use the following procedure to add a new CA. You can use a Pivotal-generated CA or provide your own CA using the API calls in this section.
 
 1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the following procedures.
-<p class="note"><strong>Note</strong>: When you record your Ops Manager access token, make sure you remove any new line characters such as <code>/n</code>. Otherwise the API call in the following step will not succeed.</p>
+<p class="note"><strong>Note:</strong> When you record your Ops Manager access token, make sure you remove any new line characters such as <code>/n</code>. Otherwise the API call in the following step will not succeed.</p>
 
 1. To use a Pivotal-generated CA, use `curl` to make the following API call:
 <pre>
@@ -198,7 +195,9 @@ To provide your own CA, use `curl` to make the following API call:
   Identify your newly added CA, which has `active` set to `false`. Record its GUID.
 
 1. Navigate to `https://OPS-MAN-FQDN` in a browser and log in to Ops Manager.
+
 1. Navigate to the BOSH Director tile, and open the Director Config section. Check the box that says `Recreate All VMs`. This will ensure that the newly generated CA propagates to all deployed VMS, and will prevent downtime during certificate regeneration. 
+
 1. Click **Apply Changes**. When the deploy finishes, continue to the next section.
 
 #### <a id='activate-new-ca'></a> Step 2: Activate the New CA
