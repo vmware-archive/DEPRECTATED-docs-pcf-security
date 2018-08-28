@@ -269,22 +269,18 @@ Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.h
 
 To return the Ops Manager root certificate as a file, use `curl` to make the following API call:
 <pre>
-
 $ curl "https<span>:</span>//OPS-MAN-FQDN/download\_root\_ca\_cert \
 
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
-
 To return the Ops Manager root certificate as JSON, use `curl` to make the following API call:
 <pre>
-
 $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/security/root\_ca\_certificate \
 
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
-
 ### <a id='generate-rsa-certs'></a> Retrieving and Generating RSA Certificates
 
 To generate and return a new RSA certificate signed by the root CA, use `curl` to make the following API call:
