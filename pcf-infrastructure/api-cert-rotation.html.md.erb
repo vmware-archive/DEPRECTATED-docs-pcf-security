@@ -7,31 +7,16 @@ This topic describes how to manage Certificate Authority (CA) certificates in yo
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](../../../addon-ipsec/1-8/credentials.html).
 
-
-## <a id='expiration'></a> Planning for Certificate Expiration
+## <a id='expiration'></a> Plan for Certificate Expiration
 
 CA certificates expire 2 years after creation, and root certificates expire after 4 years. Because CA certificates do not last as long as root certificates, you can rotate CA certificates without creating and applying a new root certificate.
 
 Depending on which certificates are due to expire, use one of the following approaches to certificate rotation:
 
-* [Rotating Configurable Certificates](#rotate-config) or [Rotating Non-Configurable Certificates](#rotate-non-config)
-* [Rotating Root Certificates](#rotate-root)
+* [Rotate Configurable Certificates](#rotate-config) or [Rotate Non-Configurable Certificates](#rotate-non-config)
+* [Manage and Rotate Root Certificates](#rotate-root)
 
-
-## <a id='rotate-config'></a> Rotating Configurable Certificates
-
-Configurable certificates are certificates you generate yourself, as opposed to certificates that are given to you by the company whose product you are using. There are several types of configurable certificates. One such example is SAML service provider credentials.
-
-Pivotal Application Service (PAS) UAA service holds a CA certificate which signs outbound communication to an external SAML identity provider. This CA certificate also has a 2-year expiration period and requires regeneration after this time.
-
-SAML service provider credentials are only required for your PAS deployment's UAA service if all of these conditions are met:
-
-* You are using SSO in production for apps.
-* You are using SAML identity providers for SSO service plans.
-* You had Ops Manager generate a certificate for you by clicking the **Generate RSA Certificate** button.
-* You are validating the signature of SAML authentication request with your identity provider.
-
-### <a id='config-cert-expiry'></a> Checking Certificate Expiration Dates
+### <a id='config-cert-expiry'></a> Check Configurable Certificate Expiration Dates
 
 To retrieve information about the expiration dates for CA certificates in your deployment, do the following:
 
@@ -48,7 +33,36 @@ Once you have completed the above procedure, find the certificate with the `uaa.
 
 If the certificate is nearing expiration, you must regenerate and rotate it.
 
-### <a id='rotate-saml-ca'></a> Regenerating and Rotating SAML Service Provider Certificates
+### <a id='non-config-cert-expiry'></a> Check Non-Configurable Certificate Expiration Dates
+
+The non-configurable certificates in your deployment expire every two years. To retrieve information about the expiration dates for RSA and CA certificates in your deployment, do the following:
+
+1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN`.
+
+1. To check the system for certificates that expire within a given time interval, use `curl` to make an API call.<br><br>
+    Use the `https://OPS-MAN-FQDN/api/v0/deployed/certificates?expires_within=TIME` endpoint, replacing `TIME` with an integer and a letter code.
+    Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.<br><br>
+    For example, run the following command to search for certificates expiring within six months:
+    <pre>
+    $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates?expires\_within=6m" \
+          -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+    </pre>
+    Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access\_token</code> value you recorded in the previous step.
+
+## <a id='rotate-config'></a> Rotate Configurable Certificates
+
+Configurable certificates are certificates you generate yourself, as opposed to certificates that are given to you by the company whose product you are using. There are several types of configurable certificates. One such example is SAML service provider credentials.
+
+Pivotal Application Service (PAS) UAA service holds a CA certificate which signs outbound communication to an external SAML identity provider. This CA certificate also has a 2-year expiration period and requires regeneration after this time.
+
+SAML service provider credentials are only required for your PAS deployment's UAA service if all of these conditions are met:
+
+* You are using SSO in production for apps.
+* You are using SAML identity providers for SSO service plans.
+* You had Ops Manager generate a certificate for you by clicking the **Generate RSA Certificate** button.
+* You are validating the signature of SAML authentication request with your identity provider.
+
+### <a id='rotate-saml-ca'></a> Regenerate and Rotate SAML Service Provider Certificates
 
 If PAS is configured to use SSO/SAML and your identity provider is validating the requests, you must import a new certificate to avoid disrupting PAS when you rotate the certificate.
 
@@ -69,17 +83,18 @@ These steps will vary depending on which SAML provider you are using.
 
 1. Re-enable certificate validation in your identity provider.
 
-
-## <a id='rotate-non-config'></a> Rotating Non-Configurable Certificates 
+## <a id='rotate-non-config'></a> Rotate Non-Configurable Certificates
 
 Non-configurable certificates are certificates that are given to you by the company whose product you are using, as opposed to certificates you generate yourself.
 
-If you need to rotate non-configurable certificates, follow the procedure below. If you need to rotate all your certificates, including creating and applying a new root certificate, follow the procedure in [Regenerate and Rotate CA Certificates](#rotate-ca).
+To rotate all your certificates, including creating and applying a new root certificate, follow the procedure in [Regenerate and Rotate CA Certificates](#rotate-ca).
 
-### <a id='non-config-cert-expiry'></a> Checking Certificate Expiration Dates
+To rotate non-configurable certificates without creating a new root certificate, skip ahead to [Step 3: Regenerate Non-Configurable Certificates](#regenerate).
 
-The non-configurable certificates in your deployment expire every two years. To retrieve information about the expiration dates for RSA and CA certificates in your deployment, do the following:
+<p class='note'><strong>Note:</strong> The <a href="#rotate-ca">Regenerate and Rotate CA Certificates</a> procedure does not work when your certificates have already expired.<br>
+If the <a href="#non-config-cert-expiry">Check Non-Configurable Certificate Expiration Dates</a> procedure indicates that your certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
 
+<<<<<<< HEAD
 1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN`.
 
 1. To check the system for certificates that expire within a given time interval, use `curl` to make an API call.<br><br>
@@ -94,7 +109,7 @@ The non-configurable certificates in your deployment expire every two years. To 
 
 <p class='note'><strong>Note:</strong> If the certificates have already expired, the <a href="#rotate-ca">Regenerating and Rotating CA Certificates</a> procedure does not work. Contact Pivotal Support for guidance.</p>
 
-### <a id='rotate-ca'></a> Regenerating and Rotating CA Certificates
+### <a id='rotate-ca'></a> Regenerate and Rotate CA Certificates
 
 <p class="note warning"><strong>WARNING:</strong> You must complete the procedures in this topic in the exact order specified below. Otherwise, you risk doing damage to your deployment.</p>
 
@@ -246,16 +261,13 @@ The API returns a successful response.
 
 1. Navigate to Ops Manager and click **Apply Changes**.
 
-### <a id='list-certs'></a> Generating and Retrieving Certificates
+## <a id='rotate-root'></a> Manage and Rotate Root Certificates
 
 To manage and retrieve information about certificates in your deployment, use the API calls in this section.
 
 Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN`.
 
-
-## <a id='rotate-root'></a> Rotating Root Certificates
-
-### <a id='root-certs'></a> Retrieving the Root Certificate
+### <a id='root-certs'></a> Retrieve the Root Certificate
 
 To return the Ops Manager root certificate as a file, use `curl` to make the following API call:
 <pre>
@@ -271,7 +283,7 @@ $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/security/root\_ca\_certificate 
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
 
-### <a id='generate-rsa-certs'></a> Retrieving and Generating RSA Certificates
+### <a id='generate-rsa-certs'></a> Retrieve and Generate RSA Certificates
 
 To generate and return a new RSA certificate signed by the root CA, use `curl` to make the following API call:
 <pre>
