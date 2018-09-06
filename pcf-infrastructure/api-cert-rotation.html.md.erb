@@ -7,6 +7,7 @@ This topic describes how to manage Certificate Authority (CA) certificates in yo
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](../../../addon-ipsec/1-8/credentials.html).
 
+
 ## <a id='expiration'></a> Plan for Certificate Expiration
 
 CA certificates expire 2 years after creation, and root certificates expire after 4 years. Because CA certificates do not last as long as root certificates, you can rotate CA certificates without creating and applying a new root certificate.
@@ -49,6 +50,7 @@ The non-configurable certificates in your deployment expire every two years. To 
     </pre>
     Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access\_token</code> value you recorded in the previous step.
 
+
 ## <a id='rotate-config'></a> Rotate Configurable Certificates
 
 Configurable certificates are certificates you generate yourself, as opposed to certificates that are given to you by the company whose product you are using. There are several types of configurable certificates. One such example is SAML service provider credentials.
@@ -83,6 +85,7 @@ These steps will vary depending on which SAML provider you are using.
 
 1. Re-enable certificate validation in your identity provider.
 
+
 ## <a id='rotate-non-config'></a> Rotate Non-Configurable Certificates
 
 Non-configurable certificates are certificates that are given to you by the company whose product you are using, as opposed to certificates you generate yourself.
@@ -108,11 +111,10 @@ These API calls allow you to create new CAs, apply them, and delete old CAs. The
 
 #### <a id='add-new-ca'></a> Step 1: Add a New CA
 
-Use the following procedure to add a new CA.
-You can use a Pivotal-generated CA or provide your own CA using the API calls in this section.
+Use the following procedure to add a new CA. You can use a Pivotal-generated CA or provide your own CA using the API calls in this section.
 
 1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the following procedures.
-<p class="note"><strong>Note:</strong> When you record your Ops Manager access token, make sure you remove any new line characters such as <code>/n</code>. Otherwise the API call in the following step will not succeed.</p>
+  <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, make sure you remove any new line characters such as <code>/n</code>. Otherwise the API call in the following step will not succeed.</p>
 
 1. To use a Pivotal-generated CA, use `curl` to make the following API call:
 <pre>
@@ -195,7 +197,7 @@ To provide your own CA, see [Adding a Custom Certificate Authority](./custom-ca-
 
 1. Select **Recreate All VMs**. This propagates the new CA to all VMs to prevent downtime.
 
-1. Click **Apply Changes**. When the deploy finishes, continue to the next section.
+1. Click **Review Pending Changes**, then **Apply Changes**. When the deploy finishes, continue to the next section.
 
 #### <a id='activate-new-ca'></a> Step 2: Activate the New CA
 
@@ -230,7 +232,7 @@ To provide your own CA, see [Adding a Custom Certificate Authority](./custom-ca-
 The API returns a successful response:
 <pre class="terminal">HTTP/1.1 200 OK</pre>
 
-1. Navigate to Ops Manager and click **Apply Changes**. When the deploy finishes, continue to the next section.
+1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes**. When the deploy finishes, continue to the next section.
 
 #### <a id='delete'></a> Step 4: Delete the Old CA
 
@@ -250,7 +252,8 @@ The API returns a successful response:
 The API returns a successful response.
 <pre class="terminal">HTTP/1.1 200 OK</pre>
 
-1. Navigate to Ops Manager and click **Apply Changes**.
+1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes**.
+
 
 ## <a id='rotate-root'></a> Manage and Rotate Root Certificates
 
