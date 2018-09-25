@@ -7,7 +7,6 @@ This topic describes how to manage Certificate Authority (CA) certificates in yo
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](../../../addon-ipsec/1-8/credentials.html).
 
-
 ## <a id='expiration'></a> Plan for Certificate Expiration
 
 CA certificates expire 2 years after creation, and root certificates expire after 4 years. Because CA certificates do not last as long as root certificates, you can rotate CA certificates without creating and applying a new root certificate.
@@ -51,7 +50,16 @@ The non-configurable certificates in your deployment expire every two years. To 
     Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access\_token</code> value you recorded in the previous step.
 
 
-## <a id='rotate-config'></a> Rotate Configurable Certificates
+## <a id='config'></a> Configurable Certificates
+
+To secure internal communication between components, PCF uses two kinds of configurable certificates:
+
+- **BOSH DNS certificates** issued by a CA stored in CredHub. Ops Manager calls the CredHub API to generate and store these.
+- **Other internal certificates** issued by a CA that Ops Manager creates directly.
+
+To regenerate both types of certificates at once, call the [`regenerate` endpoint](https://docs.pivotal.io/pivotalcf/2-2/opsman-api/#listing-the-root-certificate-authorities) in the Ops Manager API.
+
+### <a id='rotate-config'></a> Rotate Configurable Certificates
 
 Configurable certificates are certificates you generate yourself, as opposed to certificates that are given to you by the company whose product you are using. There are several types of configurable certificates. One such example is SAML service provider credentials.
 
@@ -86,9 +94,11 @@ These steps will vary depending on which SAML provider you are using.
 1. Re-enable certificate validation in your identity provider.
 
 
-## <a id='rotate-non-config'></a> Rotate Non-Configurable Certificates
+## <a id='non-config'></a> Non-Configurable Certificates
 
 Non-configurable certificates are certificates that are given to you by the company whose product you are using, as opposed to certificates you generate yourself.
+
+### <a id='rotate-non-config'></a> Rotate Non-Configurable Certificates
 
 To rotate all your certificates, including creating and applying a new root certificate, follow the procedure in [Regenerate and Rotate CA Certificates](#rotate-ca).
 
