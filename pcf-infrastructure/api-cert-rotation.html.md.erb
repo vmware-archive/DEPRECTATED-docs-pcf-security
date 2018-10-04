@@ -1,5 +1,5 @@
 ---
-title: Managing TLS Certificates
+title: Managing Certificates
 owner: OpsMan
 ---
 
@@ -16,7 +16,7 @@ For information about using trusted third-party certificates for both apps hoste
 
 ## <a id='intro'></a> Introduction
 
-Ops Manager manages and accounts for internal certificates that enable PCF components to communicate with each other securely, using TLS.
+The Ops Manager API manages and lists internal certificates that enable PCF components to communicate with each other securely, using TLS. It can also list certificates used externally, such as SAML certs that authenticate to an external identity provider.
 
 To keep PCF running, you must keep track of which certs are set to expire soon, and rotate them before they expire. To do this, you can run the [Check and Rotate Certs](#check-and-rotate) procedure.
 
@@ -350,7 +350,7 @@ The information for each configurable certificate looks like this:
 1. If you are rotating configurable certs within the [Rotate Root and Leaf Certificates](#rotate-ca) procedure, continue to the next step. Otherwise, if you are rotating configurable certs only, return to the **Installation Dashboard**, click **Review Pending Changes**, and click **Apply Changes**.
 
 
-#### <a id='rotate-saml-ca'></a> Example: Rotate SAML Service Provider CA
+#### <a id='rotate-saml-ca'></a> Configurable Cert Example: Rotate SAML CA
 
 SAML service provider credentials are one example of configurable certs in PCF. When PAS is configured to use SAML as an identity provider, it uses a configurable CA certificate to authenticate to an external SAML server, by generating ephemeral certs that PAS includes in its outbound request message headers. This CA has a two-year expiration period.
 
