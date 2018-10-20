@@ -3,66 +3,76 @@ title: Disk Encryption
 owner: Security
 ---
 
-This topic describes how to secure all PCF VMs by encrypting all of their disks or rotating their disk encryption keys.
+This topic describes how to secure PCF VMs by encrypting their disks or rotating their disk encryption keys.
 
 
 ## <a id='intro'></a> Introduction
 
-Disk encryption protects data integrity if computing resources are breached through a network or stolen physically, and the encryption key can serve as an element in two-factor authentication.
+Disk encryption protects data integrity if computing resources are breached through a network or stolen physically. The encryption key can also serve as an element in two-factor authentication.
+
+Disk encryption for VMs works at the IaaS level. An IaaS encrypts disks when it first creates them, or re-encrypts them when it rotates encryption keys. To encrypt disks in PCF, you must:
+
+1. Configure the IaaS to encrypt disks when it creates or re-creates them.
+
+2. Trigger BOSH to re-create the existing VMs that use the disks, and create encrypted disks from now on for new VMs.
+
+The procedures below detail how to do this for each IaaS.
+
+### <a id='disks'></a> Disks You Can Encrypt on a PCF VM
+
+* The root file system (rootfs) for the VM. For BOSH-created VMs, this comes from the stemcell.
+* Ephemeral disk (RAM) for the VM.
+* Persistent disk (hard disk) for the VM.
+
+### <a id='scopes'></a> Which VMs Each Procedure Encrypts
+
+For each IaaS, there are two disk encryption procedures, which encrypt different VMs:
+
+* The **BOSH Director** procedure encrypts the disks used by the BOSH Director VM when you first create a PCF environment.
+* The **BOSH-Deployed VM** procedure encrypts disks for the VMs that the BOSH Director creates, after BOSH has been deployed.
 
 
-## <a id='disks'></a> Disks You Can Encrypt on a VM in PCF
+## <a id='encrypt-rotate'></a> Encrypt Disks or Rotate Keys
 
-* The root file system (rootfs) for the VM - for BOSH-created VMs, this comes from the stemcell
-* Ephemeral disk (RAM) for the VM
-* Persistent disk (hard disk) for the VM
+You can use the same procedure to either encrypt disks for the first time or rotate encryption keys.
 
+For BOSH-deployed VMs, some IaaSes let you associate a policy with the BOSH process that automatically encrypts all disks BOSH creates. On AWS, BOSH must explicitly tell the IaaS to encrypt each disk that it creates, and passes in an encryption key. The following table summarizes these differences:
 
-## <a id='types'></a> Types of VMs You Can Encrypt in PCF
-
-*  The Ops Manager VM itself
-* VMs created by BOSH - all PCF component VMs
-
-
-## <a id='encrypt-vs-rotate'></a> Encrypt Disks or Rotate Keys
-
-Encrypting for the first time or rotating keys is the same operation.
-
-### <a id='iaases'></a> Variations by IaaS
-
-This varies by IaaS.  Some IaaSes let you associate a policy with the BOSH process that automatically encrypts all disks that BOSH creates. On other IaaSes, BOSH explicitly tells the IaaS to encrypt each disk that it creates, and passes in an encryption key that it stores. On other IaaSes, you can't do it at all yet.
-
-| IaaSes | Where configured | How configured | How encrypted | BOSH stores encryption keys? |
-| --- | --- | --- | --- | --- |
-| Azure (with Managed Disks) | IaaS level | Policy associated with BOSH process by IaaS | IaaS automatically encrypts disks it creates for BOSH | No |
-| AWS, Azure (with Storage Accounts), vSphere | BOSH | Setting in BOSH | BOSH tells IaaS to encrypt disks it creates | Yes |
+| IaaS | How configured | How encrypted | User can supply key | BOSH must store key |
+| --- | --- | --- | --- | --- | --- |
+| Azure (with Managed Disks) | User configures IaaS to associate encrypt policy with BOSH | IaaS automatically encrypts disks it creates for BOSH | No | No |
+| Azure (with Storage Accounts), vSphere | User configures IaaS to associate encrypt policy with BOSH | IaaS automatically encrypts disks it creates for BOSH | Yes | No |
+| AWS | User pastes key ARN (ID) into Ops Manager | BOSH tells IaaS to encrypt disks it creates | Yes | Yes |
 
 ### <a id='azure'></a> Azure
 
-Managed Disks vs Storage Accounts
-Managed Disks is better, more on-demand, but not all Azure regions support Managed Disks
-Managed Disks don't let you bring your own key, but you also don't need to explicitly recreate VMs to install or rotate disk encryption
+Azure provides virtual disk space through [Azure Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-introduction). In some regions, Azure also offers the [Managed Disks](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/managed-disks-overview) service, which allocates disk space flexibly on demand.
 
-#### <a id='managed'></a> Managed Disks
+For disk encryption, Pivotal recommends Managed Disks storage where available. With Managed Disks, encryption keys are managed by the IaaS, so you need not (and cannot) supply your own. You also do not need to re-create VMs after encrypting disks or rotating encryption keys, because the IaaS propagates the change to all VMs automatically.
 
-#### <a id='storage'></a> Storage Accounts
+Follow the steps below to initiate or rotate disk encryption for BOSH-deployed VMs on Azure:
 
-Do TK-PROCEDURE-X
+1. Log in to Azure Portal and follow the [Encryption workflow](https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-overview#encryption-workflow) to encrypt new and existing PCF VMs.
+
+1. For Storage Account disks (not Managed Disks), follow the [Recreate BOSH-Deployed Disks](#re-create) procedure below to propagate the change to existing VMs.
+
+For more information about how BOSH integrates with IaaS-level disk encryption on Azure, see [Encryption](https://bosh.io/docs/azure/#encryption) under _Microsoft Azure_ in the BOSH documentation.
 
 ### <a id='vsphere'></a> vSphere v6.5 or Later
 
-After changing key, recreate disks as follows:
+vSphere supports disk encryption in versions 6.5 and later for encrypted VMs. Follow the steps below to initiate or rotate disk encryption for BOSH-deployed VMs on vSphere v6.5+:
 
-  - stemcells: Upload new stemcell and Apply Changes -- may have to wait 2-ish weeks for new ones (there is a hack to do it sooner; call support)
-  - ephemeral disks - Ops Man BOSH Director tile > **Director Config** pane  **Recreate All VMs** checkbox - has been in tile since v1.9 or earlier
-  -  persistent:
-      - PCF 2.3+ Ops Man BOSH Director tile > **Director Config** pane  **Recreate All Persistent Disks** checkbox
-      - Pre v2.3: Change disk size of VMs to any other size
-For any / all of the above, **Apply Changes** to take effect
+1. Log in to vCenter and follow the [Encrypt an Existing Virtual Machine or Virtual Disk](https://docs.vmware.com/en/VMware-vSphere/6.5/com.vmware.vsphere.security.doc/GUID-5E2C3F74-38C1-44C3-ABC5-C2C9353B9DC4.html) procedure in the _VMware Docs_.
+
+1. Follow the [Recreate BOSH-Deployed Disks](#re-create) procedure below to propagate the change to existing VMs.
+
+For more information about how BOSH integrates with IaaS-level disk encryption on vSphere, see [Encryption](https://bosh.io/docs/vsphere/#encryption) under _vSphere_ in the BOSH documentation.
 
 ### <a id='aws'></a> AWS v69 or Later
 
-### <a id='encrypt-rotate-opsman'></a> Propagate Disk Encryption Change to PCF
+For more information about how BOSH integrates with IaaS-level disk encryption on AWS, see [Encryption](https://bosh.io/docs/aws/#encryption) under _Amazon Web Services_ in the BOSH documentation.
+
+### <a id='re-create'></a> Re-Create BOSH-Deployed Disks
 
   - stemcells: Upload new stemcell and Apply Changes -- may have to wait 2-ish weeks for new ones (there is a hack to do it sooner; call support)
   - ephemeral disks - Ops Man BOSH Director tile > **Director Config** pane  **Recreate All VMs** checkbox - has been in tile since v1.9 or earlier
