@@ -81,11 +81,17 @@ For instructions on how to encrypt BOSH-deployed VMs and the Ops Manager VM on A
 
 For more information about how BOSH integrates with IaaS-level disk encryption on AWS, see [Encryption](https://bosh.io/docs/aws/#encryption) under _Amazon Web Services_ in the BOSH documentation.
 
-### <a id='re-create'></a> Re-Create BOSH-Deployed Disks
+### <a id='recreate'></a> Recreate BOSH-Deployed Disks
 
-  - stemcells: Upload new stemcell and Apply Changes -- may have to wait 2-ish weeks for new ones (there is a hack to do it sooner; call support)
-  - ephemeral disks - Ops Man BOSH Director tile > **Director Config** pane  **Recreate All VMs** checkbox - has been in tile since v1.9 or earlier
-  -  persistent:
-      - PCF 2.3+ Ops Man BOSH Director tile > **Director Config** pane  **Recreate All Persistent Disks** checkbox
-      - Pre v2.3: Change disk size of VMs to any other size
-For any / all of the above, **Apply Changes** to take effect
+Unless you are using Azure Managed Disks, you need to manually recreate disks on BOSH-deployed VMs after you have added or rotated disk encryption keys. To manually recreate disks, do the following:
+
+1. Configure Ops Manager to encrypt VM root, RAM, and hard disks on next deploy:
+  - **Root File System**: To recreate the root file system for VMs, you must upload a new stemcell. If you are already running the latest stemcell, you can:
+      - Wait until a new stemcell comes out, typically less than two weeks.
+      - Call [Pivotal Support](https://support.pivotal.io) if propagating disk encryption is urgent.
+  - **Ephemeral Disks**: In the **Director Config** pane of the Ops Manager tile, enable the **Recreate All VMs** checkbox.
+  - **Persistent Disks**
+      - PCF v2.3 and later: In the **Director Config** pane of the Ops Manager tile, enable the **Recreate All Persistent Disks** checkbox.
+      - PCF v2.2 and earlier: In the **Resource Config** pane of all tiles, change the disk or VM sizes of all VMs that you need to encrypt.
+
+1. Click **Review Pending Changes** and **Apply Changes**.
