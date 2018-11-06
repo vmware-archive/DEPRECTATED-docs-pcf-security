@@ -126,10 +126,10 @@ The default and recommended version of TLS to use is TLS v1.2.
 
 The recommended TLS cipher suites to use within PCF are the following:
 
-* TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
-* TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
-* TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-* TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+* TLS\_DHE\_RSA\_WITH\_AES\_128\_GCM\_SHA256
+* TLS\_DHE\_RSA\_WITH\_AES\_256\_GCM\_SHA384
+* TLS\_ECDHE\_RSA\_WITH\_AES\_128\_GCM\_SHA256
+* TLS\_ECDHE\_RSA\_WITH\_AES\_256\_GCM\_SHA384
 
 ### <a id="cipher_gorouter"></a> Gorouter Configuration
 
@@ -144,7 +144,7 @@ You can specify other cipher suites and a different minimum version of TLS suppo
 
 For instructions on how to configure the TLS cipher suites for the Gorouter, see the PAS installation documentation for the IaaS of your deployment. For example, if you are deploying PAS on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking).
 
-<p class='note'><strong>Note:</strong> In PAS v2.3, traffic between the Gorouter and Cloud Controller is encrypted. To ensure there is no downtime while upgrading from v2.2 to v2.3, download the latest patch for v2.2. This patch contains the configuration `router.backends.enable_tls: true` in the Gorouter manifest.</p>
+<p class='note'><strong>Note:</strong> In PAS v2.3, traffic between the Gorouter and Cloud Controller is encrypted. To ensure there is no downtime while upgrading from v2.2 to v2.3, download the latest patch for v2.2. This patch contains the configuration <code>router.backends.enable_tls: true</code> in the Gorouter manifest.</p>
 
 ### <a id="cipher_haproxy"></a> HAProxy Configuration
 
