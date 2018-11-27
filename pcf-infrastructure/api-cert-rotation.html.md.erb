@@ -74,7 +74,7 @@ The following procedures check the expiration dates and [types](#types) of CAs a
 ### <a id='root-expiry'></a> Check Ops Manager Root CA Expiration Date
 
 1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the steps below.
-  <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>/n</code>.</p>
+  <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
 
 1. To retrieve the Ops Manager root CA, use `curl` to make an Ops Manager API call to the `https://OPS-MAN-FQDN/api/v0/certificate_authorities` endpoint. For example:
     <pre class='terminal'>
@@ -107,7 +107,7 @@ The following procedures check the expiration dates and [types](#types) of CAs a
 The non-configurable certificates in your deployment expire every two years, as may your configurable certs. To retrieve information about the expiration dates for these certificates, do the following:
 
 1. If you haven't already, perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the steps below.
-  <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>/n</code>.</p>
+  <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
 
 1. To check the system for certificates that expire within a given time interval, use `curl` to call the `https://OPS-MAN-FQDN/api/v0/deployed/certificates?expires_within=TIME` API endpoint, replacing `TIME` with an integer-letter code.
     Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.<br><br>
@@ -163,7 +163,7 @@ To prevent system downtime, this procedure includes two BOSH redeploys. When you
 #### <a id='add-new-ca'></a> Step 1: Add a New Root CA
 
 1. If you haven't already, perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the following procedures.
-  <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>/n</code>.</p>
+  <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
 
 1. Use Ops Manager to generate a new CA, or else add your own custom CA.
   * **To use your own custom CA**, follow the instructions in [Adding a Custom Certificate Authority](./custom-ca-cert.html#add).
@@ -383,7 +383,7 @@ These steps will vary depending on which SAML provider you are using.
 To manage and retrieve information about certificates in your deployment, use the API calls in this section.
 
 If you haven't already, perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN`.
-  <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>/n</code>.</p>
+  <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
 
 ### <a id='generate-rsa-certs'></a> Generate a Single RSA Certificate
 
