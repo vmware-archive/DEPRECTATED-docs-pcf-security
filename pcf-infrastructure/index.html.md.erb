@@ -1,24 +1,23 @@
 ---
-title: PCF App and Service Security
+title: PCF Infrastructure Security
 owner: Security
 ---
 
-This section describes how PCF and PCF users manage security for apps and service instances.
+This section provides links to topics about security infrastructure in 
+Pivotal Cloud Foundry (PCF).
 
-* <a href="/pivotalcf/2-0/opsguide/config-ssh.html">Configuring SSH Access for PCF</a> - How to configure PCF to allow SSH access to app instances, for debugging.
 
-* <a href="/pivotalcf/2-0/concepts/understand-cf-networking.html">Understanding Container-to-Container Networking</a> - How to create app-specific policies that enable internal app-to-app communication.
+* <a href="/pivotalcf/security/pcf-infrastructure/stemcell-index.html">Stemcell Security</a>: Details how Pivotal tests and updates its stemcells, which supply the base versioned operating system for all PCF products.
 
-* <a href="/pivotalcf/2-0/opsguide/app-sec-groups.html">Restricting App Access to Internal PCF Components</a> - How to create Application Security Groups (ASGs), rules that allow internal outgoing communications from all apps in PCF, or the apps running in the same space.
+* <a href="/pivotalcf/security/pcf-infrastructure/certificates-index.html">Certificates and TLS in PCF</a>: 
+Provides information on how to manage the certificates that enable TLS communications in PCF.
 
-* <a href="/pivotalcf/2-0/concepts/asg.html">Understanding Application Security Groups</a> - How ASGs work and how to manage them in all versions of Cloud Foundry, including PCF. 
+* <a href="/pivotalcf/security/pcf-infrastructure/disk-encrypt.html">Disk Encryption</a>: 
+Describes how to encrypt disks or rotate disk encryption keys in a PCF deployment.
 
-* <a href="/pivotalcf/2-0/opsguide/notifications-asg.html">Configuring Application Security Groups for Email Notifications</a> - How to define an ASG to enable app-generated notifications.
+* <a href="/pivotalcf/loggregator/cc-uaa-logging.html">Security Event Logging</a>: 
+Provides a reference of security-related events logged by the Cloud Controller, CredHub and UAA components in PCF.
 
-* <a href="/pivotalcf/2-0/devguide/deploy-apps/trusted-system-certificates.html">Trusted System Certificates</a> - Where applications can find trusted system certificates.
 
-* <a href="/pivotalcf/2-0/security/pcf-infrastructure/custom-ca-cert.html">Adding a Custom CA Certificate</a>: How to add a custom CA certificate to a PCF deployment.
 
-* <a href="/pivotalcf/2-0/devguide/services/application-binding.html">Delivering Service Credentials to an Application</a> - How binding apps to a service instance generates credentials that enable the apps to use the service.
 
-* <a href="/pivotalcf/2-0/devguide/services/service-keys.html">Managing Service Keys</a> - How to create and manage service keys that enable apps to use service instances.
