@@ -153,4 +153,61 @@ The following table lists network communication paths for Loggregator.
 <div><sup>&#42;&#42;&#42;</sup>User provided service bindings with syslog URL can be configured with any port.</div>
 <div><sup>&#42;&#42;&#42;&#42;</sup>Basic authentication only supported for HTTPS syslog drains.</div>
 
+## <a id="log-cache"></a> Log Cache Communications
+
+The following table lists network communication paths for Log Cache.
+
+<table class="nice">
+<tr>
+  <th>Source VM</th>
+  <th>Destination VM</th>
+  <th>Port</th>
+  <th>Transport Layer Protocol</th>
+  <th>App Layer Protocol</th>
+  <th>Security and Authentication</th>
+</tr>
+<tr>
+  <td>log-cache (Nozzle)</td>
+  <td>loggregator_trafficcontroller (Reverse Log Proxy)</td>
+  <td>8082</td>
+  <td>TCP</td>
+  <td>gRPC over HTTP/2</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any&#42;</td>
+  <td>log-cache</td>
+  <td>8080</td>
+  <td>TCP</td>
+  <td>gRPC over HTTP/2</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>gorouter</td>
+  <td>log-cache (Auth Proxy)</td>
+  <td>8083</td>
+  <td>TCP</td>
+  <td>HTTP</td>
+  <td>Oauth</td>
+</tr>
+<tr>
+  <td>log-cache (Auth Proxy)</td>
+  <td>uaa</td>
+  <td>8443</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>TLS</td>
+</tr>
+<tr>
+  <td>log-cache (Auth Proxy)</td>
+  <td>cloud_controller</td>
+  <td>9024</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+</table>
+
+<sup>&#42;</sup>Any source VM can send requests to the specified destination within its subnet.
+
 <%= partial "bosh-dns" %>
