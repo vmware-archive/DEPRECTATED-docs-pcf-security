@@ -82,9 +82,68 @@ The following table lists network communication paths for Loggregator.
   <td>gRPC over HTTP/2</td>
   <td>Mutual TLS</td>
 </tr>
+<tr>
+  <td>loggregator_trafficcontroller</td>
+  <td>doppler (Log Cache)</td>
+  <td>8080</td>
+  <td>TCP</td>
+  <td>gRPC over HTTP/2</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>syslog_adapter</td>
+  <td>loggregator_trafficcontroller (Reverse Log Proxy)</td>
+  <td>8082</td>
+  <td>TCP</td>
+  <td>gRPC over HTTP/2</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>syslog_adapter</td>
+  <td>Any&#42;&#42;</td>
+  <td>Any&#42;&#42;&#42;</td>
+  <td>TCP</td>
+  <td>TCP, TCP w/ TLS, HTTPS</td>
+  <td>Basic authentication&#42;&#42;&#42;&#42;</td>
+</tr>
+<tr>
+  <td>syslog_scheduler</td>
+  <td>syslog_adapter</td>
+  <td>4443</td>
+  <td>TCP</td>
+  <td>gRPC over HTTP/2</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>syslog_scheduler</td>
+  <td>cloud_controller</td>
+  <td>9023</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>loggregator_trafficcontroller (Reverse Log Proxy Gateway)</td>
+  <td>cloud_controller</td>
+  <td>9023</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>Any&#42;</td>
+  <td>loggregator_trafficcontroller (Reverse Log Proxy Gateway)</td>
+  <td>8088</td>
+  <td>TCP</td>
+  <td>HTTP/Server Sent Events</td>
+  <td>OAuth</td>
+</tr>
 </table>
 
-<sup>&#42;</sup>Any source VM can send requests to the specified destination within its subnet.
+<div><sup>&#42;</sup>Any source VM can send requests to the specified destination within its subnet.</div>
+<div><sup>&#42;&#42;</sup>Sends syslog messages to any host configured via user provided service binding with syslog URL.</div>
+<div><sup>&#42;&#42;&#42;</sup>User provided service bindings with syslog URL can be configured with any port.</div>
+<div><sup>&#42;&#42;&#42;&#42;</sup>Basic authentication only supported for HTTPS syslog drains.</div>
 
 <sup>&#8224;</sup>Starting from ERT v1.11, Metron does not use the UDP protocol to communicate with Doppler. 
 Starting in PAS v2.0, Doppler no longer uses the UDP protocol or the HTTP/WebSocket protocol.
