@@ -1,6 +1,6 @@
 ---
 breadcrumb: Pivotal Cloud Foundry Documentation
-title: PCF Security Guide
+title: PCF Security and Compliance Guide
 owner: Security
 ---
 
@@ -8,7 +8,9 @@ owner: Security
 
 This guide explains how Pivotal Cloud Foundry (PCF) manages network access, roles and permissions, internal communications, container hardening, and other security issues. It is intended to give security professionals a complete view of PCF security, and to help all PCF users, not just the security experts, keep the platform secure.
 
-##<a id='cves'></a>Current Security Reports
+In addition, this guide provides information about PCF compliance with published control standards and regulations such as [NIST Special Publication 800-53(r4)](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf) and [GPDR](https://eugdpr.org/).
+
+##<a id='cves'></a> Pivotal Security Processes and CVE Reports
 
 Pivotal publishes security updates regularly in response to privately- and publicly-reported Common Vulnerabilities and Exposures (CVEs).
 
@@ -16,17 +18,26 @@ Pivotal publishes security updates regularly in response to privately- and publi
 
 * To learn about Pivotal's vulnerability reporting and responsible disclosure process, read [PCF Security Overview and Policy](./process/pcf-security.html).
 
-##<a id='contents'></a>Guide Contents
+* To learn about the testing, release and security lifecycle of PCF, see [PCF Testing, Release, and Security Lifecycle](./process/security-lifecycle.html).
 
-* <a href="/pivotalcf/adminguide/securing-traffic.html">Securing Traffic into Cloud Foundry</a>: Configuring and maintaining front-end platform security at the load balancer or router.
+##<a id='contents'></a> Security
 
-* <a href="/pivotalcf/security/identity/index.html">Identity Management</a>:  Managing permissions and trust for PCF user accounts, and user accounts in the underlying IaaS.
+* <a href="/pivotalcf/concepts/index.html">Security Concepts</a>: 
+Provides links to conceptual documentation about how security is implemented sin PCF.
 
-* <a href="/pivotalcf/security/networking/index.html">PCF Network Security</a>: How PCF components and app containers keep network communications secure, and what paths, ports, and protocols the components use to communicate.
+* <a href="/pivotalcf/security/pcf-infrastructure/index.html">PCF Infrastructure Security</a>: 
+Provides guidance and procedures for securing PCF infrastructure such as hardening stemcells and managing the certificates that enable TLS communication.
 
-* <a href="/pivotalcf/security/pcf-infrastructure/index.html">PCF App and Service Security</a>: Enabling PAS apps to communicate internally with other apps and use service instance credentials securely.
+* <a href="/pivotalcf/security/networking/index.html">Network Security</a>: 
+Covers the security aspects of PCF networking such as the paths, ports, and protocols 
+that components use to communicate.
 
-* <a href="/pivotalcf/credhub/index.html">CredHub</a>: The credential management tool that BOSH uses to store deployment credentials and that PCF runtimes use to create and manage app and service credentials.
+* <a href="/pivotalcf/security/identity/index.html">Credential and Identity Management</a>: 
+Describes how PCF manages permissions and trust for PCF user accounts. 
+Also provides documentation about CredHub, the credential management system that BOSH uses to store deployment credentials and that PCF runtimes use to create and manage app and service credentials.
+
+* <a href="/pivotalcf/security/apps-services/index.html">Security for Apps and Services</a>: 
+Collects documentation about the security mechanisms that surround apps and services running on PCF.
 
 * <a href="/pivotalcf/security/pcf-infrastructure/certificates-on-pcf.html">Certificates on PCF</a>: How certificates are utilized in PCF to secure both internal and external networking calls.
 
@@ -34,3 +45,14 @@ Pivotal publishes security updates regularly in response to privately- and publi
 
 * <a href="https://docs.pivotal.io/nist/index.html">NIST Controls and PCF</a>:
 Assessment of Pivotal Cloud Foundry against NIST SP 800-53(r4) Controls.
+
+##<a id="compliance"></a> Compliance 
+
+* <a href="https://docs.pivotal.io/nist/index.html">NIST Controls and PCF</a>: 
+Provides a dedicated site that assesses Pivotal Cloud Foundry against NIST SP 800-53(r4) Controls. 
+
+* <a href="/pivotalcf/opsguide/gdpr.html">General Data Protection Regulation</a>: 
+Provides an overview of the General Data Protection Regulation (GDPR) and where Pivotal Cloud Foundry (PCF) may store personal data
+
+
+>>>>>>> master
