@@ -3,24 +3,40 @@ title: Certificates on PCF
 owner: Security
 ---
 
-This topic describes the sources and uses of certificates to secure both internal and external networking calls in Pivotal Cloud Foundry (PCF).
+This topic describes the sources and uses for certificates to secure both internal and
+external networking calls in Pivotal Cloud Foundry (PCF).
+
 
 ## <a id="sources"></a>Certificate Sources
 
-Certificates within PCF originate from two sources:
+Certificates in PCF originate from two of the following sources:
 
-* Enterprise Root Certificate Authority (CA)
+* [Enterprise Root Certificate Authority (CA)](#enterprise-root-ca)
 
-* CredHub
+* [CredHub](#credhub)
+
 
 ### <a id="enterprise-root-ca"></a>Enterprise Root CA
 
-Most enterprises have mechanisms to generate certificates via an internal process against their root CA. This is a good implementation for systems that are more static in nature and do not have a requirement for the certificate issuing system to be highly available and highly performant at all times.
+An enterprise root CA is able to
+grant itself a certificate and create subordinate CAs. Domains require an enterprise root CA to allow
+clients to request certificates.
+
+Generating certificates against a root CA is a good implementation for systems that are
+static and do not need highly available certificate creation.
+
 
 ### <a id="credhub"></a>CredHub
 
-CredHub can be used as a source for certificates within PCF. These certificates can either be self-signed or signed by an imported trusted CA. Use CredHub when:
+You can use CredHub as a source for certificates in PCF. These certificates can either
+be self-signed or signed by an imported trusted CA. Certificates are self-signed by default.
 
-* High-availability is important
+Use CredHub for the following benefits:
+
+* High availability
 * Dynamic generation of certificates
-* Securing communications between platform components, applications, and services
+* More secure communication between platform components, applications, and services
+
+Pivotal recommends using Credhub for high availability and good security posture in PCF.
+
+For more information, see [CredHub](../credhub/index.html).
