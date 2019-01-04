@@ -363,36 +363,39 @@ The information for each configurable certificate looks like this:
 
 SAML service provider credentials are one example of configurable certs in PCF. When PAS is configured to use SAML as an identity provider, it uses a configurable CA certificate to authenticate to an external SAML server, by generating ephemeral certs that PAS includes in its outbound request message headers. This CA has a two-year expiration period.
 
-In addition, the [SSO](https://docs.pivotal.io/p-identity/index.html) service requires certs for every external Identity Provider (IdP) that is uses.
+In addition, the [SSO](https://docs.pivotal.io/p-identity/index.html) service shares the use of PAS SAML certificates for every SAML external Identity Provider (IdP) integration (a.k.a. trust or partnernship or Federation), and must also be rotated in lockstep with PAS.
 
 The [Rotate Your SAML CA for SSO](#rotate-saml-ca)  procedure below provides an example of how to rotate certs for each IdP, including temporarily disabling certificate validation on the IdP side during the rotation.
 
 The Knowledge Base article [PCF Advisory - SAML Service Provider Credential Certificates Expire after 2 Years](https://community.pivotal.io/s/article/PCF-Advisory---SAML-Service-Provider-Credential-Certificates-Expire-after-2-Years) provides more information about rotating SAML certs.
 
 
-##### <a id='rotate-saml-ca-sso'></a> Rotate Your SAML CA for SSO
+##### <a id='rotate-saml-ca-sso'></a> Rotate Your SAML CA for PAS and the SSO Service
 
 SAML service provider credentials are only required for your PAS deployment if all of these conditions are met:
 
-* You are using SSO in production for apps.
-* You are using SAML identity providers for SSO service plans.
+* You are using SSO in production for login to PAS and/or using the SSO service for login to apps.
+* You are using SAML identity providers for PAS and/or SSO service plans.
 * You had Ops Manager generate a certificate for you by clicking the **Generate RSA Certificate** button.
 * You are validating the signature of SAML authentication request with your identity provider.
 
-To regenerate and rotate SAML service provider certificates without disrupting PAS, do the following:
+To regenerate and rotate SAML service provider certificates without disrupting PAS or your apps using the SSO service, do the following:
 
 1. Disable certificate validation in your identity provider.
 
-1. Navigate to **UAA** > **SAML Service Provider Credentials** in your PAS tile.
-
-1. Click **Generate RSA Certificate**.
-
-1. Following the procedure in the [Configure SAML as an Identity Provider for PCF](../../../opsguide/auth-sso.html#configure-saml-for-pcf) section of the _Configuring Authentication and Enterprise SSO for PAS_ topic to import the new certificate to your identity provider.
+1. For PAS, download the PAS SAML metadata and import the updated SAML metadata in your identity provider. Follow the procedure in the [Configure SAML as an Identity Provider for PCF](../../../opsguide/auth-sso.html#configure-saml-for-pcf) section of the _Configuring Authentication and Enterprise SSO for PAS_ topic to download and import the new certificate to your identity provider.
 These steps will vary depending on which SAML provider you are using.
-  * If using ADFS, see [Configure Active Directory Federation Services as an Identity Provider](../../../p-identity/1-5/adfs/config-adfs.html).
-  * If using CA SSO, see [Configure CA Single Sign-On as an Identity Provider](../../../p-identity/1-5/ca-sso/config-ca-sso.html).
-  * If using Okta, see [Configure Okta as an Identity Provider](../../../p-identity/1-5/okta/config-okta.html).
-  * If using PingFederate, see [Configure PingFederate as an Identity Provider](../../../p-identity/1-5/pingfederate/config-pingfederate.html).
+  * If using ADFS, see [here](../../../opsguide/adfs-sso-configuration.html).
+  * If using CA SSO, see [here](../../../opsguide/ca-sso-config.html).
+  * If using PingFederate, see [here](../../../opsguide/ping-federate-sso-configuration.html).
+
+1. For the SSO service, download the SAML Service Provider metadata for each SAML identity provider integration (a.k.a. trust or partnernship or Federation) and import the updated SAML Service Provider metadata in your identity provider.
+These steps will vary depending on which SAML provider you are using.
+  * If using ADFS, see [here](https://docs.pivotal.io/p-identity/adfs/config-sso.html).
+  * If using CA SSO, see [here](https://docs.pivotal.io/p-identity/ca-sso/config-sso.html).
+  * If using Okta, see [Configure Okta as an Identity Provider](https://docs.pivotal.io/p-identity/okta/config-sso.html).
+  * If using PingFederate, see [Configure PingFederate as an Identity Provider](https://docs.pivotal.io/p-identity/pingfederate/config-sso.html).
+  * Additional identity provider documents are available [here](https://docs.pivotal.io/p-identity/index.html#guides)
 
 1. Re-enable certificate validation in your identity provider.
 
