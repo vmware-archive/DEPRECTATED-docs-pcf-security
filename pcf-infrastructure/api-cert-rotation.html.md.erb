@@ -363,7 +363,7 @@ The information for each configurable certificate looks like this:
 
 SAML service provider credentials are one example of configurable certs in PCF. When PAS is configured to use SAML as an identity provider, it uses a configurable CA certificate to authenticate to an external SAML server, by generating ephemeral certs that PAS includes in its outbound request message headers. This CA has a two-year expiration period.
 
-In addition, the [SSO](https://docs.pivotal.io/p-identity/index.html) service shares the use of SAML certificates for every SAML external Identity Provider (IdP) integration (a.k.a. trust or partnernship or Federation) , and must also be rotated in lockstep with PAS.
+In addition, the [SSO](https://docs.pivotal.io/p-identity/index.html) service shares the use of PAS SAML certificates for every SAML external Identity Provider (IdP) integration (a.k.a. trust or partnernship or Federation), and must also be rotated in lockstep with PAS.
 
 The [Rotate Your SAML CA for SSO](#rotate-saml-ca)  procedure below provides an example of how to rotate certs for each IdP, including temporarily disabling certificate validation on the IdP side during the rotation.
 
