@@ -365,7 +365,7 @@ The information for each configurable certificate looks like this:
 
 SAML service provider credentials are one example of configurable certs in PCF. When PAS is configured to use SAML as an identity provider, it uses a configurable CA certificate to authenticate to an external SAML server, by generating ephemeral certs that PAS includes in its outbound request message headers. This CA has a two-year expiration period.
 
-In addition, the [SSO](https://docs.pivotal.io/p-identity/index.html) service shares the use of PAS SAML certificates for every SAML external Identity Provider (IdP) integration, such as trust,  partnernship, or Federation. You must rotate these in lockstep with PAS.
+In addition, the [SSO](https://docs.pivotal.io/p-identity/index.html) service shares the use of PAS SAML certificates for every SAML external Identity Provider (IdP) integration, such as trust,  partnership, or Federation. You must rotate these in lockstep with PAS.
 
 The [Rotate Your SAML CA for SSO](#rotate-saml-ca)  procedure below provides an example of how to rotate certs for each IdP, including temporarily disabling certificate validation on the IdP side during the rotation.
 
@@ -405,7 +405,7 @@ To regenerate and rotate SAML service provider certificates without disrupting P
   </tr>
 </table>
 
-1. For the SSO service, follow the procedure in the table below that corresponds to your use case. This includes downloading the SAML Service Provider metadata for each SAML identity provider integration, such as trust, partnernship, or Federation, and importing the updated SAML Service Provider metadata in your identity provider.
+1. For the SSO service, follow the procedure in the table below that corresponds to your use case. This includes downloading the SAML Service Provider metadata for each SAML identity provider integration, such as trust, partnership, or Federation, and importing the updated SAML Service Provider metadata in your identity provider.
   <table border="1">
   <tr>
     <th>Solution Name</th>
