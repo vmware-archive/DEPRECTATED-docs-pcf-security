@@ -1,0 +1,35 @@
+---
+title:
+owner: 
+---
+
+This topic describes the different types of network traffic that happen in Pivotal Cloud Foundry (PCF) and how traffic is encrypted with TLS. 
+
+## Overview
+
+<table>
+	<tr>
+		<th>Type of Traffic</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>Ingress app traffic</td>
+		<td>Communication from an external client to an app running on the platform</td>
+	</tr>
+	<tr>
+		<td>Traffic between platform components</td>
+		<td>Internal communication between the platform components of PCF</td>
+	</tr>
+	<tr>
+		<td>Traffic between apps</td>
+		<td>Communication between apps running on PAS</td>
+	</tr>
+	<tr>
+		<td>Traffic between apps and PCF services</td>
+		<td>Communication between apps running on PAS and backend services managed by PCF, such as Pivotal Cloud Cache (PCC).</td>
+	</tr>
+	<tr>
+		<td>Traffic between apps and external services</td>
+		<td>Communication between apps running on PAS and backend services that are not managed by PCF, such as an external database</td>
+	</tr>
+</table
