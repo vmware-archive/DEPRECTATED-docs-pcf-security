@@ -5,9 +5,9 @@ owner: Security
 
 This topic describes how Pivotal Cloud Foundry (PCF) uses Transport Layer Security (TLS) protocols to secure connections between internal components, app containers, and customer hardware.
 
-## <a id="tls-types"></a> Types of TLS Connections in PCF
+## <a id="tls-types"></a> Types of Network Communication in PCF
 
-This section describes the different types of network communication that happen in PCF and how it is encrypted with TLS.
+This section describes the different types of network communication that happen in PCF and how it is secured with TLS.
 
 Within a PCF deployment, TLS secures connections between components like the BOSH Director and service tiles. PCF components also use TLS connections to secure communications with external hardware, such as customer load balancers.
 
@@ -41,7 +41,7 @@ where their certificates for TLS termination originate.
 
 ###  <a id="component-to-component"></a> Between Platform Components
 
-The following diagram illustrates the TLS connections between platform components. 
+The following diagram illustrates communication between platform components secured with TLS. 
 
 <%= image_tag("platform-components.png", :class => "no-border") %>
 
@@ -67,7 +67,7 @@ The following topics describe how network communications work for main subsystem
 
 ### <a id="app-to-app"></a> Between Apps
 
-The following diagram illustrates TLS connections between apps running on PCF. In this example, the `frontend-blue` and `frontend-green` apps both receive client requests, but only the `frontend-green` app is allowed to communicate with the `backend` app. 
+The following diagram illustrates communications between apps running on PCF secured with TLS. In this example, the `frontend-blue` and `frontend-green` apps both receive client requests, but only the `frontend-green` app is allowed to communicate with the `backend` app. 
 
 <%= image_tag("between-app-traffic.png", :class => "no-border") %>
 
@@ -77,7 +77,7 @@ Developers specify which apps are allowed to communicate using container network
 
 ###  <a id="app-to-service"></a> Between Apps and On-Platform Services
 
-The following diagram illustrates TLS connections between apps and on-platform services. It uses Pivotal Cloud Cache as an example of an on-platform service. 
+The following diagram illustrates communication between apps and on-platform services secured with TLS. It uses Pivotal Cloud Cache as an example of an on-platform service. 
 
 <%= image_tag("apps-services.png", :class => "no-border") %>
 
@@ -85,7 +85,7 @@ BOSH CredHub issues certificates to the Pivotal Cloud Cache components. For the 
 
 ###  <a id="app-to-external-service"></a> Between Apps and External Services
 
-The following diagram illustrates TLS connections between apps and external services. 
+The following diagram illustrates communications between apps and external services secured with TLS. 
 
 <%= image_tag("apps-external-services.png", :class => "no-border") %>
 
