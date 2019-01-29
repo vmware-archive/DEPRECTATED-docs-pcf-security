@@ -3,11 +3,11 @@ title: TLS Connections in PCF
 owner: Security
 ---
 
-This topic describes how Pivotal Cloud Foundry (PCF) uses Transport Layer Security (TLS) protocols to secure connections between internal components, app containers, and customer hardware.
+This topic classifies the different paths through which external clients, internal components, app containers, and app services communicate in Pivotal Cloud Foundry (PCF), and how the platform uses Transport Layer Security (TLS) protocols to secure these communications.
 
 ## <a id="tls-types"></a> Types of Network Communication in PCF
 
-This section describes the different types of network communication that happen in PCF and how it is secured with TLS.
+This section classifies the different types of network communication in PCF and how they are secured with TLS.
 
 Within a PCF deployment, TLS secures connections between components like the BOSH Director and service tiles. PCF components also use TLS connections to secure communications with external hardware, such as customer load balancers.
 
@@ -41,7 +41,7 @@ where their certificates for TLS termination originate.
 
 ###  <a id="component-to-component"></a> Between Platform Components
 
-The following diagram illustrates communication between platform components secured with TLS. 
+The following diagram illustrates communication between platform components, secured with TLS. 
 
 <%= image_tag("platform-components.png", :class => "no-border") %>
 
@@ -49,7 +49,7 @@ The CredHub instance in BOSH generates certificates for all components in PCF. T
 
 #### <a id="components"></a> Component Communication Details
 
-The following topics describe how network communications work for main subsystem of PCF. Each topic lists the paths, ports, and protocols that the components within the subsystem use to communicate.
+The following topics list the paths, ports, and protocols that subsystems within Pivotal Application Service (PAS) use to communicate.
 
 * [Cloud Controller Network Communications](/pivotalcf/security/networking/cc-network-paths.html)
 
@@ -67,7 +67,7 @@ The following topics describe how network communications work for main subsystem
 
 ### <a id="app-to-app"></a> Between Apps
 
-The following diagram illustrates communications between apps running on PCF secured with TLS. In this example, the `frontend-blue` and `frontend-green` apps both receive client requests, but only the `frontend-green` app is allowed to communicate with the `backend` app. 
+The following diagram illustrates TLS communications between apps running on PCF. In this example, the `frontend-blue` and `frontend-green` apps both receive client requests, but only the `frontend-green` app is allowed to communicate with the `backend` app. 
 
 <%= image_tag("between-app-traffic.png", :class => "no-border") %>
 
@@ -77,19 +77,21 @@ Developers specify which apps are allowed to communicate using container network
 
 ###  <a id="app-to-service"></a> Between Apps and On-Platform Services
 
-The following diagram illustrates communication between apps and on-platform services secured with TLS. It uses Pivotal Cloud Cache as an example of an on-platform service. 
+The following diagram illustrates TLS communication between apps and managed, on-platform services. It uses Pivotal Cloud Cache as an example of a managed service. 
 
 <%= image_tag("apps-services.png", :class => "no-border") %>
 
 BOSH CredHub issues certificates to the Pivotal Cloud Cache components. For the app, the developer must retrieve a copy of this certificate using the CredHub API and place it in the truststore for the app. For more information, see the [Developing an App Under TLS](https://docs.pivotal.io/p-cloud-cache/tls-enabled-app.html) document in the Pivotal Cloud Cache documentation. 
 
+Separately, PAS Runtime Credhub might store credentials for the app to access a service over the TLS connection, adding a second layer of security. For more information, see [Securing Services Instance Credentials with Runtime CredHub](../../opsguide/secure-si-creds.html).
+
 ###  <a id="app-to-external-service"></a> Between Apps and External Services
 
-The following diagram illustrates communications between apps and external services secured with TLS. 
+The following diagram illustrates communications between apps and external, brokered services secured with TLS. 
 
 <%= image_tag("apps-external-services.png", :class => "no-border") %>
 
-The developer must retrieve the certificate from the external service and provide it to their app. One way to do this is by placing the certificate in PAS CredHub and modifying your app to consume the certificate through the [CredHub Service Broker for PCF](https://docs.pivotal.io/credhub-service-broker/).
+The developer must retrieve the certificate from the external service and provide it to their app. One way to do this is by placing the certificate in Runtime CredHub and modifying your app to consume the certificate through the [CredHub Service Broker for PCF](https://docs.pivotal.io/credhub-service-broker/).
 
 ## <a id="container-creds"></a> App Instance Container Identity Credentials
 
