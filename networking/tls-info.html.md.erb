@@ -229,7 +229,7 @@ The recommended TLS cipher suites for the Gorouter are:
 
 You can specify other cipher suites and a different minimum version of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by the Gorouter, see [Securing Traffic into Cloud Foundry](../../adminguide/securing-traffic.html#ciphers).
 
-For instructions on how to configure the TLS cipher suites for the Gorouter, see the PAS installation documentation for the IaaS of your deployment. For example, if you are deploying PAS on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking).
+For instructions on how to configure the TLS cipher suites for the Gorouter, see [Configuring PAS](../../configure-pas.html#networking). 
 
 <p class='note'><strong>Note:</strong> In PAS v2.3, traffic between the Gorouter and Cloud Controller is encrypted. To ensure there is no downtime while upgrading from v2.2 to v2.3, download the latest patch for v2.2. This patch contains the configuration <code>router.backends.enable_tls: true</code> in the Gorouter manifest.</p>
 
@@ -252,7 +252,7 @@ If you use the default and recommended Gorouter TLS cipher suites in PAS, then e
 
 If you change the default Gorouter TLS cipher suites in PAS, and you change the TLS cipher suites for HAProxy, ensure that you have at least one overlapping TLS cipher suite within the two sets.
 
-For instructions on how to configure the TLS cipher suites for HAProxy, see the PAS installation documentation for the IaaS of your deployment. For example, if you are deploying PAS on GCP, see [Step 6: Configure Networking](../../customizing/gcp-er-config.html#networking).
+For instructions on how to configure the TLS cipher suites for HAProxy, see the PAS installation documentation for the IaaS of your deployment. For example, if you are deploying PAS on GCP, see see [Configuring PAS](../../configure-pas.html#networking). 
 
 
 
