@@ -233,7 +233,7 @@ For instructions on how to configure the TLS cipher suites for the Gorouter, see
 
 <p class='note'><strong>Note:</strong> In PAS v2.3, traffic between the Gorouter and Cloud Controller is encrypted. To ensure there is no downtime while upgrading from v2.2 to v2.3, download the latest patch for v2.2. This patch contains the configuration <code>router.backends.enable_tls: true</code> in the Gorouter manifest.</p>
 
-<p class="note warning"><strong>Warning</strong>: The default cipher suites are required for communication with CAPI and removing them causes downtime. See <a href="https://docs.pivotal.io/pivotalcf/2-4/pcf-release-notes/runtime-rn#cipher-downtime">Removal of Default Ciphers Causes Downtime when Upgrading from 2.2 to 2.3 and from 2.3 to 2.4</a>.</p>
+<p class="note warning"><strong>Warning</strong>: The default cipher suites are required for communication with CAPI and removing them causes downtime. See <a href="https://docs.pivotal.io/pivotalcf/2-4/pcf-release-notes/runtime-rn.html#cipher-downtime">Removal of Default Ciphers Causes Downtime when Upgrading from 2.2 to 2.3 and from 2.3 to 2.4</a>.</p>
 
 ### <a id="cipher_haproxy"></a> HAProxy Configuration
 
