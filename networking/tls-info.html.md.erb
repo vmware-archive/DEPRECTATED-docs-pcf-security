@@ -102,7 +102,7 @@ The developer must retrieve the certificate from the external service and provid
 
 Each app instance container in PCF has its own identity credentials. This section is meant to help PCF operators and developers [understand](#cred-details) and [use](#use-creds) these credentials. 
 
-### <a id="cred-details"></a> Understanding the Credentials
+### <a id="cred-details"></a> About App Instance Identity Credentials
 
 See the following table to learn about app instance identity credentials.
 
@@ -193,7 +193,8 @@ If you want to enable secure TLS communications from an app using container inst
   * PCF rotates the credentials shortly before the current certificate expires. Apps that use these credentials must reload the certificate and key file contents either periodically or in reaction to filesystem watcher events.
  
 * **Configure external clients or servers to trust the root CA:**
-  * To enable secure TLS communication between an app and a client or server external to PCF, you must configure the external client or server to trust the CA that issues app instance container identity credentials. See the _Issuing Authority_ row of the table in [Understanding the Credentials](#cred-details).
+  * To enable secure TLS communication between an app and a client or server external to PCF, you must configure the external client or server to trust the CA that issues app instance container identity credentials. See the _Issuing Authority_ row of the table in [About App Instance Identity Credentials
+](#cred-details).
 
 ### <a id="more-info"></a> Additional Information
 
