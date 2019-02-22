@@ -131,7 +131,6 @@ Output from the `deployed/certificates` endpoint, such as the output generated i
 You need to manually rotate these different certificate types in different ways. The following rules identify the type of each cert requiring rotation:
 
 * **Non-Rotatable** cert property values fulfill one of the following conditions:
-  - `property_reference` includes `nats_client_ca`, `nats_server_certificate`, `nats_director_client_certificate`, or `nats_health_monitor_client_certificate`
   - `variable_path` is `/opsmgr/bosh_dns/tls_ca`  
 
     If you have non-rotatable certs expiring soon, call [Pivotal Support](https://support.pivotal.io).
