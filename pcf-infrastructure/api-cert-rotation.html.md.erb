@@ -1,6 +1,6 @@
 ---
 title: Managing Certificates
-owner: OpsMan
+owner: Ops Manager
 ---
 
 This topic describes how to manage the internal Certificate Authorities (CAs) and certificates in Pivotal Cloud Foundry (PCF) that are visible to the Ops Manager API. The topic includes:
@@ -38,7 +38,7 @@ Four types of PCF internal certs require planned rotation:
     - The Ops Manager API's [`deployed/certificates`](https://docs.pivotal.io/pivotalcf/opsman-api/#getting-information-about-certificates-from-products) endpoint returns information about these, along with information about non-configurable certs.
 
 * **Non-Rotatable** certs are five specific leaf certs that, like non-configurable certs, are issued by the root CA and returned by the `deployed/certificates` endpoint.
-    - Unlike non-configurable certs, non-rotatable certs cannot currently be rotated by the Ops Manager API.
+    - Unlike non-configurable certs, non-rotatable certs cannot be rotated by the Ops Manager API.
 
 In addition to the types above, some Pivotal products issue their own **tile certificates** that are not managed by or visible to the Ops Manager API. These tile certs do not require planned rotation because they rotate automatically with product upgrades.
 
@@ -118,7 +118,7 @@ The non-configurable certificates in your deployment expire every two years, as 
     </pre>
     Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access\_token</code> value you recorded in the previous step.
 
-1. To make the JSON output more readable, you can pipe it to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.
+1. To make the JSON output more readable, pipe it to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.
 
 1. To determine the expiration date of each certificate, refer to its `expires_on` value.
 
@@ -147,19 +147,23 @@ You need to manually rotate these different certificate types in different ways.
 
 The following procedures rotate CAs and certificates that are listed or managed by the Ops Manager API.
 
-<p class='note'><strong>Note:</strong> The rotation procedures described in this topic does not work when your certificates have already expired.  If your certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
+<p class='note'><strong>Note:</strong> The rotation procedures described in this topic does not work when your certificates have already expired. If your certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
 
 ### <a id='rotate-ca'></a> Rotate Root and Leaf Certificates
 
-This procedure uses the Ops Manager API to rotate the Ops Manager root certificate and the intermediate CAs and non-configurable leaf certificates underneath it. It also includes the option to rotate configurable certs.
+This procedure uses the Ops Manager API to rotate the Ops Manager root certificate, the NATS CA, and the intermediate CAs and non-configurable leaf certificates underneath them. It also includes the option to rotate configurable certs.
 
 PCF users never need to manually rotate intermediate CAs, because they rotate automatically when the root CA is rotated.
 
 To prevent system downtime, this procedure includes two BOSH redeploys. When you click **Apply Changes** for the first time, BOSH applies new certificates to PCF components alongside the old ones. The second **Apply Changes** then deletes the old ones. Each successful redeploy verifies that the certificate rotation process is proceeding correctly.
 
-<p class="note warning"><strong>WARNING:</strong> You must complete these steps in the exact order specified. Otherwise, you risk damaging your deployment.</p>
+<p class="note warning"><strong>WARNING:</strong> You must complete these steps in the exact order specified. Otherwise, you may damage your deployment.</p>
 
 #### <a id='add-new-ca'></a> Step 1: Add a New Root CA
+
+Follow this procedure to add a new root CA for Ops Manager.
+
+<p class="note"><strong>Note</strong>: This procedure regenerates the NATS CA in unison with the Ops Manager root CA.</p>
 
 1. If you haven't already, perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the following procedures.
   <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
