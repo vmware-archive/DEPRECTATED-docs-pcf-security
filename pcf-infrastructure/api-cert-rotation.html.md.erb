@@ -164,11 +164,41 @@ To prevent system downtime, this procedure includes two BOSH redeploys. When you
 
 #### <a id='add-new-ca'></a> Step 1: Add a New Root CA
 
+Follow this procedure to add a new root CA for Ops Manager. The new root CA can be a Pivotal-generated CA or your own custom CA.
+
+To add a new root CA for Ops Manager, do the following:
+
 1. If you haven't already, perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the following procedures.
   <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
 
 1. Use Ops Manager to generate a new CA, or else add your own custom CA.
-  * **To use your own custom CA**, follow the instructions in [Adding a Custom Certificate Authority](./custom-ca-cert.html#add).
+  * **To use your own custom CA**, call the Ops Manager API `generate` endpoint as follows:
+    <pre>
+      curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
+          -X POST \
+          -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
+          -H "Content-Type: application/json" \
+          -d '{"cert\_pem": "-----BEGIN CERTIFICATE-----\YOUR-CERTIFICATE", "private\_key\_pem": "-----BEGIN RSA PRIVATE KEY-----\YOUR-KEY"}'
+    </pre>
+    Where:
+    <ul><li>`YOUR-CERTIFICATE` is your custom CA.</li> 
+      <li>`YOUR-KEY` is your RSA key.</li>
+      <li>`YOUR-UAA-ACCESS-TOKEN` is your UAA access token.</li></ul><p>If the command succeeds, the API returns a response that includes the new CA certificate:</p> 
+    <pre class="terminal">
+      HTTP/1.1 200 OK
+      {
+        "certificate\_authorities": [
+          {
+            "guid": "f7bc18f34f2a7a9403c3",
+            "issuer": "YOUR-CA",
+            "created\_on": "2017-01-09",
+            "expires\_on": "2021-01-09",
+            "active": true,
+            "cert\_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
+          }
+        ]
+      }
+    </pre>
   * **To use a Pivotal-generated CA**, call the Ops Manager API `generate` endpoint as follows:
     <pre>
     $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/generate" \
