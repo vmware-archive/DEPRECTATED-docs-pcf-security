@@ -23,24 +23,21 @@ The Ops Manager API manages and lists internal certificates that enable PCF comp
 To keep PCF running, you must keep track of which certs are set to expire soon, and rotate them before they expire. To do this, you can run the [Check and Rotate Certs](#check-and-rotate) procedure.
 
 
-### <a id='types'></a> Certificate Types
+## <a id='types'></a> Certificate Types
 
-Four types of PCF internal certs require planned rotation:
+The following types of PCF internal certs require planned rotation:
 
-* **The Ops Manager root CA** issues other certs that PCF uses.
-    - The Ops Manager API's [`certificate_authorities`](https://docs.pivotal.io/pivotalcf/opsman-api/#listing-the-root-certificate-authorities) endpoint returns this.
+* **Ops Manager Root CA**: The Ops Manager root CA issues other certs that PCF uses. The root CA can be a Pivotal-generated CA or your own custom CA. 
+    - The Ops Manager API `certificate_authorities` endpoint returns all of the root certificate authorities for Ops Manager. For more information, see [Listing the Root Certificate Authorities](https://docs.pivotal.io/pivotalcf/opsman-api/#listing-the-root-certificate-authorities). 
 
-* **Non-configurable** certs are leaf certs issued directly by the Ops Manager root CA, or by intermediate CAs in a [chain of trust](https://tools.ietf.org/html/rfc8446) originated by the root CA.
-    - The Ops Manager API's [`deployed/certificates`](https://docs.pivotal.io/pivotalcf/opsman-api/#getting-information-about-certificates-from-products) endpoint returns information about these.
-    - The Ops Manager API's [`active/regenerate`](https://docs.pivotal.io/pivotalcf/opsman-api/#generating-new-certificates) endpoint rotates these.
-    - They are created by a CA stored in Ops Manager itself, or created and stored by CredHub and managed by Ops Manager calls to the CredHub API.
+* **Non-configurable Certs**: Non-configurable certs are leaf certs either created by a CA stored in Ops Manager, or created and stored by CredHub and managed by Ops Manager calls to the CredHub API. Non-configurable certs are issued directly by the Ops Manager root CA, or by intermediate CAs in a chain of trust originated by the root CA. For more information about chains of trust, see [The Transport Layer Security (TLS) Protocol](https://tools.ietf.org/html/rfc8446).
+    - The Ops Manager API `deployed/certificates` endpoint returns information about Non-Configurable certs. For more information, see [Getting Information About Certificates for Products](https://docs.pivotal.io/pivotalcf/opsman-api/#getting-information-about-certificates-from-products).
+    - The Ops Manager API `active/regenerate` endpoint rotates non-configurable certs. For more information, see [Generating New Certificates](https://docs.pivotal.io/pivotalcf/opsman-api/#generating-new-certificates).
 
-* **Configurable** certs are leaf certs supplied by the user and pasted into configuration fields in Ops Manager.
-    - For convenience, some configuration panes include a **Generate RSA Certificate** link that supplies valid certificates, but users can obtain configurable certs from elsewhere.
-    - The Ops Manager API's [`deployed/certificates`](https://docs.pivotal.io/pivotalcf/opsman-api/#getting-information-about-certificates-from-products) endpoint returns information about these, along with information about non-configurable certs.
+* **Configurable Certs**: Configurable certs are leaf certs supplied by the user and pasted into configuration fields in Ops Manager. For convenience, some configuration panes include a **Generate RSA Certificate** link that supplies valid certificates, but users can obtain configurable certs from elsewhere.
+    - The Ops Manager API `deployed/certificates` endpoint returns information about both configurable and non-configurable certs. For more information, see [Getting Information About Certificates for Products](https://docs.pivotal.io/pivotalcf/opsman-api/#getting-information-about-certificates-from-products).
 
-* **Non-Rotatable** certs are five specific leaf certs that, like non-configurable certs, are issued by the root CA and returned by the `deployed/certificates` endpoint.
-    - Unlike non-configurable certs, non-rotatable certs cannot currently be rotated by the Ops Manager API.
+* **Non-rotatable Certs**: Non-rotatable certs are five specific leaf certs that, like non-configurable certs, are issued by the root CA and returned by the Ops Manager API `deployed/certificates` endpoint. Unlike non-configurable certs, non-rotatable certs cannot be rotated by the Ops Manager API.
 
 In addition to the types above, some Pivotal products issue their own **tile certificates** that are not managed by or visible to the Ops Manager API. These tile certs do not require planned rotation because they rotate automatically with product upgrades.
 
