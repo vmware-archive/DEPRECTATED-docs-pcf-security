@@ -71,6 +71,8 @@ The following procedures check the expiration dates and [types](#types) of CAs a
 
 ### <a id='root-expiry'></a> Check Ops Manager Root CA Expiration Date
 
+To check the Ops Manager root CA expiration date, do the following:
+
 1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the steps below.
   <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
 
@@ -102,7 +104,9 @@ The following procedures check the expiration dates and [types](#types) of CAs a
 
 ### <a id='leaf-expiry'></a> Check Leaf Certificate Expiration Dates
 
-The non-configurable certificates in your deployment expire every two years, as may your configurable certs. To retrieve information about the expiration dates for these certificates, do the following:
+The non-configurable certificates in your deployment expire every two years, as may your configurable certs. 
+
+To check the expiration dates for these certificates, do the following:
 
 1. If you haven't already, perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the steps below.
   <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
@@ -309,7 +313,7 @@ To activate the new root CA, do the following:
   </pre>
   Examine the response to ensure that your new CA has `active` set to `true`.
 
-#### <a id='rotate-config-after-new-root'></a> Step 3 (Optional) : Rotate Configurable Certs
+#### <a id='rotate-config-after-new-root'></a> Step 3 (Optional): Rotate Configurable Certs
 
 If you have configurable certs expiring soon, complete the [Rotate Configurable Certs](#rotate-config) procedure. This procedure ensures that your next deploy includes both new configurable certs and new non-configurable certs. You can also rotate your configurable certs later and perform an additional deploy.
 
@@ -348,7 +352,7 @@ This procedure regenerates non-configurable leaf certificates visible to the Ops
 
 Run by itself, this procedure does not rotate or otherwise affect the Ops Manager root CA.
 
-To rotate, non-configurable certs, do the following:
+To rotate non-configurable certs, do the following:
 
 1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
 <pre>
