@@ -70,6 +70,8 @@ The following procedures check the expiration dates and [types](#types) of CAs a
 
 ### <a id='root-expiry'></a> Check Ops Manager Root CA Expiration Date
 
+To check the expiration date for the Ops Manager root CA, do the following:
+
 1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the steps below.
   <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
 
@@ -101,7 +103,9 @@ The following procedures check the expiration dates and [types](#types) of CAs a
 
 ### <a id='leaf-expiry'></a> Check Leaf Certificate Expiration Dates
 
-The non-configurable certificates in your deployment expire every two years, as may your configurable certs. To retrieve information about the expiration dates for these certificates, do the following:
+The non-configurable certificates in your deployment expire every two years, as may your configurable certs. 
+
+To check the expiration dates for these certificates, do the following:
 
 1. If you haven't already, perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the steps below.
   <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
@@ -154,7 +158,7 @@ PCF users never need to manually rotate intermediate CAs, because they rotate au
 
 To prevent system downtime, this procedure includes two BOSH redeploys. When you click **Apply Changes** for the first time, BOSH applies new certificates to PCF components alongside the old ones. The second **Apply Changes** then deletes the old ones. Each successful redeploy verifies that the certificate rotation process is proceeding correctly.
 
-<p class="note warning"><strong>WARNING:</strong> You must complete these steps in the exact order specified. Otherwise, you risk damaging your deployment.</p>
+<p class="note warning"><strong>Warning:</strong> You must complete these steps in the exact order specified. Otherwise, you risk damaging your deployment.</p>
 
 #### <a id='add-new-ca'></a> Step 1: Add a New Root CA
 
@@ -301,17 +305,19 @@ To add a new root CA for Ops Manager, do the following:
   </pre>
   Examine the response to ensure that your new CA has `active` set to `true`.
 
-#### <a id='rotate-config-after-new-root'></a> Step 3 (Optional) : Rotate Configurable Certs
+#### <a id='rotate-config-after-new-root'></a> Step 3 (Optional): Rotate Configurable Certs
 
-If you have configurable certs expiring soon, this is a good time to follow the [Rotate Configurable Certs](#rotate-config) procedure, so that your next **Apply Changes** step includes both new configurable certs and new non-configurable certs. You can also rotate your configurable certs later, separately and perform an additional redeploy.
+If you have configurable certs expiring soon, complete the [Rotate Configurable Certs](#rotate-config) procedure, so that your next deploy includes both new configurable certs and new non-configurable certs. You can also rotate your configurable certs later and perform an additional deploy.
 
 #### <a id='regenerate-from-new-root'></a> Step 4: Rotate Non-Configurable Certs from the New Root
 
-1. Follow the [Rotate Non-Configurable Certificates](#regenerate) procedure to regenerate new non-configurable certs from the new root CA.
+To rotate non-configurable certs from the new root, follow the [Rotate Non-Configurable Certificates](#regenerate) procedure to regenerate new non-configurable certs from the new root CA.
 
-<p class="note warning"><strong>WARNING:</strong> Be sure to include the <strong>Review Pending Changes</strong> and <strong>Apply Changes</strong> step of the <a href="#regenerate">Rotate Non-Configurable Certificates</a> procedure before you proceed to deleting the old CA.</p>
+<p class="note warning"><strong>Warning:</strong> Be sure to include the <strong>Review Pending Changes</strong> and <strong>Apply Changes</strong> step of the <a href="#regenerate">Rotate Non-Configurable Certificates</a> procedure before you proceed to deleting the old CA.</p>
 
 #### <a id='delete'></a> Step 5: Delete the Old CA
+
+To delete the old CA, do the following:
 
 1. List your root CAs to retrieve the GUID of your old, inactive CA:
 <pre>
@@ -338,6 +344,8 @@ This procedure regenerates non-configurable leaf certificates visible to the Ops
 
 Run by itself, this procedure does not rotate or otherwise affect the Ops Manager root CA.
 
+To rotate non-configurable certificates, do the following:
+
 1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
 <pre>
   $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/active/regenerate" \
@@ -360,7 +368,7 @@ For specific instructions on how to rotate SAML certs for both PAS and the SSO s
 
 For Ops Manager, PAS, and other runtimes, Pivotal recommends only rotating configurable certificates within the more inclusive [Rotate Root and Leaf Certificates](#rotate-ca) procedure. But if you are sure that only your configurable certificates need rotation, and no others, you can run this procedure by itself and click **Apply Changes** at the end.
 
-To rotate configurable certs:
+To rotate configurable certs, do the following:
 
 1. If you haven't already, use the Ops Manager API `deployed/certificates` endpoint to retrieve information about your expiring configurable certs, as described in the procedures [Check Leaf Certificate Expiration Dates](#leaf-expiry) and [Identify Non-Configurable, Configurable, and Unrotatable Leaf Certs](#id-leaf-type).  
 The information for each configurable certificate looks like this:
