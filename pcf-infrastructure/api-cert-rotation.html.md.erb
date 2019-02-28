@@ -290,6 +290,8 @@ To add a new root CA for Ops Manager, do the following:
 
 #### <a id='activate-new-ca'></a> Step 2: Activate the New CA
 
+To activate the new CA, do the following:
+
 1. Use `curl` to make an Ops Manager API call that activates the new CA, replacing `CERT-GUID` with the GUID of your CA that you retrieved in the previous section:
   <pre>$ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/CERT-GUID/activate" \
       -X POST \
