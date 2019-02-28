@@ -1,110 +1,16 @@
 ---
-title: Adding a Custom Certificate Authority
+title: Custom Certificate Authorities
 owner: OpsMan
 ---
 
-This topic describes how to add a custom certificate authority (CA) to issue digital certificates in a Pivotal Cloud Foundry (PCF) deployment.
+This topic provides an overview of using custom certificate authorities (CAs) in a Pivotal Cloud Foundry (PCF) deployment.
 
+## <a id='overview'></a>Overview
 
-## <a id='overview'></a> Custom CA Overview
-
-To secure traffic in your PCF deployment, you must provide a CA to issue digital certificates. When you add and activate a new CA, a digital certificate is issued to BOSH Director. BOSH Director then passes the certificate to other components in your PCF deployment.
+To secure traffic in your PCF deployment, you must provide a CA to issue digital certificates. This can be either a Pivotal-generated or custom CA. When you add and activate a new CA, a digital certificate is issued to BOSH Director. BOSH Director then passes the certificate to other components in your PCF deployment. 
 
 Pivotal recommends you supply a CA from a trusted provider when using a production environment. While you can create your own custom CAs if necessary, a trusted CA is more secure because it has been authenticated by the trusted entities permitted to issue them.
 
-<p class="note"><strong>Note:</strong> You can also use the Pivotal Application Service (PAS) interface to issue wildcard certificates signed by the Ops Manager CA. Wildcard certificates include both the root domain and sub-domains in a single certificate. However, you should only use this Pivotal-generated CA in testing and development environments. For more information on creating a Pivotal-generated CA, see <a href= "https://docs.pivotal.io/pivotalcf/opsguide/security_config.html#create_or_obtain_certs"> Creating a Wildcard Certificate for PCF Deployments</a>.</p>
+## <a id='add-custom-ca'></a>Add a Custom CA
 
-Use the below procedures to add and activate a new CA.
-
-
-## <a id='add'></a> Step 1: Add a Custom CA
-
-When adding a custom CA, you must have access to your User Account and Authentication (UAA) access token. Perform the steps in [User Account and Authentication (UAA) Server](../../concepts/architecture/uaa.html) to target and authenticate with the Ops Manager UAA server. Record your access token.
-
-<p class="note"><strong>Note:</strong> When you record your access token, remove any new line characters such as <code>/n</code>. Otherwise the API call in the following step will not succeed.</p>
-
-You can add a new CA by using the following API calls and the `curl` command:
-
-1. Use `curl` to make the following API call:
-    <pre>
-    $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
-        -X POST \
-        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
-        -H "Content-Type: application/json" \
-        -d '{"cert\_pem": "-----BEGIN CERTIFICATE-----\EXAMPLE-CERTIFICATE", "private\_key\_pem": "-----BEGIN RSA PRIVATE KEY-----\EXAMPLE-KEY"}'
-    </pre>
-    Replace `EXAMPLE-CERTIFICATE` with your certificate and `EXAMPLE-KEY` with your RSA key.
-    The APl call returns a response that includes the new CA:
-    <pre class="terminal">
-    HTTP/1.1 200 OK
-    {
-      "certificate\_authorities": [
-        {
-          "guid": "f7bc18f34f2a7a9403c3",
-          "issuer": "YOUR-CA",
-          "created\_on": "2017-01-09",
-          "expires\_on": "2021-01-09",
-          "active": true,
-          "cert\_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
-        }
-      ]
-    }
-  </pre>
-
-1. Confirm that you have added your new CA by listing all of the root CAs for Ops Manager:
-  <pre>
-  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
-        -X GET \
-        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-  </pre>
-    The API call returns a response listing all of the root CAs:
-    <pre class="terminal">
-    HTTP/1.1 200 OK
-    {
-      "certificate\_authorities": [
-        {
-          "guid": "f7bc18f34f2a7a9403c3",
-          "issuer": "YOUR-CA",
-          "created\_on": "2017-01-09",
-          "expires\_on": "2021-01-09",
-          "active": false,
-          "cert\_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
-        }
-      ]
-    }
-    </pre>
-  Confirm that your new CA has `active` set to `false`.
-
-1. Record the new CA's GUID.
-
-1. Navigate to `https://OPS-MAN-FQDN` in a browser and log in to Ops Manager.
-
-1. Click **Review Pending Changes**, then **Apply Changes**. When the deploy finishes, continue to the next section.
-
-
-## <a id='activate-new-ca'></a> Step 2: Activate the New CA
-
-After adding your CA you must activate it. Once the CA is activated, the CA issues digital certificates to BOSH Director.
-
-1. Use `curl` to make an API call to activate the new CA.
-Replace `CERT-GUID` with the GUID of your CA that you recorded in the previous section:
-  <pre>$ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/CERT-GUID/activate" \
-      -X POST \
-      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
-      -H "Content-Type: application/json" \
-      -d '{}'
-  </pre>
-  If the API call succeeds, it returns a successful response:
-  <pre class="terminal">HTTP/1.1 200 OK</pre>
-
-1. List your root CAs to confirm that the new CA is active:
-<pre>
-  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
-        -X GET \
-        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-  </pre>
- Confirm that your new CA has `active` set to `true`.
-
-1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes**.
-
-After following this procedure, your custom CA can issue digital certificates for your PCF deployment.
+You can add a new custom CA as part of the procedure for rotating CAs and other certificate types in PCF. To add and activate a new custom CA in PCF, see [Rotate Root and Leaf Certificates](./api-cert-rotation.html#rotate-ca).
