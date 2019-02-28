@@ -161,8 +161,6 @@ To prevent system downtime, this procedure includes two BOSH redeploys. When you
 
 Follow this procedure to add a new root CA for Ops Manager. The new root CA can be a Pivotal-generated CA or your own custom CA.
 
-To use a custom CA, you must have access to your User Account and Authentication (UAA) access token. Perform the steps in [User Account and Authentication (UAA) Server](../../concepts/architecture/uaa.html) to target and authenticate with the Ops Manager UAA server. When you record your access token, remove any new line characters, such as `/n`.
-
 <p class="note"><strong>Note</strong>: This procedure regenerates the NATS CA in unison with the Ops Manager root CA.</p>
 
 To add a new root CA for Ops Manager, do the following:
