@@ -169,7 +169,8 @@ To add a new root CA for Ops Manager, do the following:
 1. If you haven't already, perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the following procedures.
   <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
 
-1. Use Ops Manager to generate a new CA, or else add your own custom CA.
+1. Use Ops Manager to generate a new CA, or else add your own custom CA. 
+  <p class ="note"><b>Note:</b> Elliptic Curve Digital Signature Algorithm (ECDSA) certificates are not supported in PCF.</p>
   * **To use your own custom CA**, call the Ops Manager API `generate` endpoint as follows:
     <pre>
       curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
