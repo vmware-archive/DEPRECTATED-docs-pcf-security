@@ -11,6 +11,8 @@ To secure traffic in your PCF deployment, you must provide a CA to issue digital
 
 Pivotal recommends you supply a CA from a trusted provider when using a production environment. While you can create your own custom CAs if necessary, a trusted CA is more secure because it has been authenticated by the trusted entities permitted to issue them.
 
+<p class ="note"><b>Note:</b> Elliptic Curve Digital Signature Algorithm (ECDSA) certificates are not supported in PCF.</p>
+
 ## <a id='add-custom-ca'></a>Add a Custom CA
 
 You can add a new custom CA as part of the procedure for rotating CAs and other certificate types in PCF. To add and activate a new custom CA in PCF, see [Rotate Root and Leaf Certificates](./api-cert-rotation.html#rotate-ca).
