@@ -343,11 +343,11 @@ The API returns a successful response:
 
 1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes** to perform a second redeploy.
 
-#### <a id='delete'></a> Step 5: Delete the Old CA
+#### <a id='delete'></a> Step 5: (Optional) Delete the Old CA
 
 <p class="note warning"><strong>Warning:</strong> Be sure to include the <strong>Review Pending Changes</strong> and <strong>Apply Changes</strong> from <a href="#regenerate-from-new-root">Step 4: Rotate Non-Configurable Certs from the New Root</a> before you proceed to deleting the old CA.</p>
 
-The delete the old CA, do the following:
+If you want to delete the old CA, do the following:
 
 1. List your root CAs to retrieve the GUID of your old, inactive CA:
 <pre>
