@@ -319,11 +319,38 @@ If you have configurable certs expiring soon, complete the [Rotate Configurable 
 
 #### <a id='regenerate-from-new-root'></a> Step 4: Rotate Non-Configurable Certs from the New Root
 
-To rotate non-configurable certs from the new root CA, follow the [Rotate Non-Configurable Certificates](#regenerate) procedure.
+To rotate non-configurable certs from the new root CA, do the following: 
 
-<p class="note warning"><strong>Warning:</strong> Be sure to include the <strong>Review Pending Changes</strong> and <strong>Apply Changes</strong> step of the <a href="#regenerate">Rotate Non-Configurable Certificates</a> procedure before you proceed to deleting the old CA.</p>
+1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
+<pre>
+  curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/active/regenerate" \
+        -X POST \
+        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{}'
+</pre>
+The API returns a successful response:
+<pre class="terminal">HTTP/1.1 200 OK</pre>
+
+1. Click the **BOSH Director** tile in the **Installation Dashboard**.
+
+1. Select the **Director Config** pane.
+
+1. Select **Recreate All VMs**. This propagates the new CA to all VMs to prevent downtime.
+
+1. Go back to the Installation Dashboard. For each service tile you have installed, do the following:
+
+    1. Click the tile.
+
+    1. Click the **Errands** tab.
+
+    1. Enable the **Recreate All Service Instances** errand if provided. If you do not see this errand, contact [Pivotal Support](https://pivotal.io/support).
+
+1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes** to perform a second redeploy.
 
 #### <a id='delete'></a> Step 5: Delete the Old CA
+
+<p class="note warning"><strong>Warning:</strong> Be sure to include the <strong>Review Pending Changes</strong> and <strong>Apply Changes</strong> from <a href="#regenerate-from-new-root">Step 4: Rotate Non-Configurable Certs from the New Root</a> before you proceed to deleting the old CA.</p>
 
 The delete the old CA, do the following:
 
