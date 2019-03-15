@@ -160,6 +160,8 @@ To prevent system downtime, this procedure includes two BOSH redeploys. When you
 
 <p class="note warning"><strong>Warning:</strong> You must complete these steps in the exact order specified. Otherwise, you risk damaging your deployment.</p>
 
+<p class="note warning"><strong>Warning:</strong> We've recently identified a bug in certificate rotation when mutual TLS route integrity is enabled in PAS. Please validate whether you're using mutual TLS by opening the "Application Settings" tab in OpsManager under the PAS product and look for the "Router application identity verification". If the option is set to "Router and applications use mutual TLS to verify each other's identity" then do NOT run this procedure and contact pivotal support. We're working to fix this issue in an upcoming patch. </p>
+
 #### <a id='add-new-ca'></a> Step 1: Add a New Root CA
 
 Follow this procedure to add a new root CA for Ops Manager. The new root CA can be a Pivotal-generated CA or your own custom CA.
