@@ -160,9 +160,9 @@ To prevent system downtime, this procedure includes two BOSH redeploys. When you
 
 <p class="note warning"><strong>Warning:</strong> You must complete these steps in the exact order specified. Otherwise, you risk damaging your deployment.</p>
 
-<p class="note warning"><strong>Warning:</strong> If you use mutual TLS for route integrity, do not attempt to rotate certificate authorities (CAs). Instead, contact Pivotal Support. You can check this setting in the <strong>Application Settings</strong> pane of the PAS tile. If <strong>Router application identity verification</strong> is set to <code>Router and applications use mutual TLS to verify each other's identity</code>, then you cannot rotate CAs. If you try to rotate CAs, the router will not be able to reach apps.</p>
+<p class="note warning"><strong>Warning:</strong> If you use mutual TLS for route integrity, do not attempt to rotate certificate authorities (CAs). Instead, contact <a href="https://support.pivotal.io">Pivotal Support</a>. For more information, see <a href="https://docs.pivotal.io/pivotalcf/2-3/pcf-release-notes/runtime-rn.html">Certificate Authority Rotation is Not Working in Some PAS Configurations</a>.</p>
 
-
+ If you try to rotate CAs, the router will not be able to reach apps.
 
 #### <a id='add-new-ca'></a> Step 1: Add a New Root CA
 
