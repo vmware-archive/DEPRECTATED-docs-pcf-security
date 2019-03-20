@@ -162,8 +162,6 @@ To prevent system downtime, this procedure includes two BOSH redeploys. When you
 
 <p class="note warning"><strong>Warning:</strong> If you use mutual TLS for route integrity, do not attempt to rotate certificate authorities (CAs). Instead, contact <a href="https://support.pivotal.io">Pivotal Support</a>. For more information, see <a href="https://docs.pivotal.io/pivotalcf/2-3/pcf-release-notes/runtime-rn.html#cert-rotation-with-mutual-tls-route-integrity">Certificate Authority Rotation is Not Working in Some PAS Configurations</a>.</p>
 
- If you try to rotate CAs, the router will not be able to reach apps.
-
 #### <a id='add-new-ca'></a> Step 1: Add a New Root CA
 
 Follow this procedure to add a new root CA for Ops Manager. The new root CA can be a Pivotal-generated CA or your own custom CA.
