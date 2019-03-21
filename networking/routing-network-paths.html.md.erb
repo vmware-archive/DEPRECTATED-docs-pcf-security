@@ -240,21 +240,118 @@ The following table lists network communication paths for service mesh.
   <th>Security and Authentication</th>
 </tr>
 <tr>
-  <td></td>
-  <td></td>
-  <td></td>
-  <td></td>
-  <td></td>
-  <td></td>
+  <td>cloud_controller (cloud_controller_ng)</td>
+  <td>istio_control (copilot)</td>
+  <td>9001</td>
+  <td>TCP</td>
+  <td>GRPC</td>
+  <td>Mutual TLS</td>
 </tr>
 <tr>
-  <td></td>
-  <td></td>
-  <td></td>
-  <td></td>
-  <td></td>
-  <td></td>
+  <td>istio_control (copilot)</td>
+  <td>diego_database (bbs)</td>
+  <td>8889</td>
+  <td>TCP</td>
+  <td>HTTP</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>istio_control(pilot-discovery)</td>
+  <td>istio_control (copilot)</td>
+  <td>9009</td>
+  <td>TCP</td>
+  <td>GRPC</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>istio_router (envoy)</td>
+  <td>App Containers</td>
+  <td>Varies</td>
+  <td>TCP</td>
+  <td>HTTP/HTTPS</td>
+  <td>Optional TLS</td>
+</tr>
+<tr>
+  <td>istio_router(envoy)</td>
+  <td>istio_control(pilot-discovery)</td>
+  <td>15010</td>
+  <td>TCP</td>
+  <td>GRPC</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>Load balancer</td>
+  <td>istio_router (envoy)</td>
+  <td>80</td>
+  <td>TCP</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>Load balancer</td>
+  <td>istio_router (envoy)</td>
+  <td>443</td>
+  <td>TCP</td>
+  <td>HTTPS</td>
+  <td>TLS</td>
+</tr>
+<tr>
+  <td>Load balancer (health_check)</td>
+  <td>istio_router (envoy)</td>
+  <td>8002</td>
+  <td>TCP</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>route_syncer (cc_route_syncer)</td>
+  <td>istio_control (copilot)</td>
+  <td>9001</td>
+  <td>TCP</td>
+  <td>GRPC</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>route_syncer (cc_route_syncer)</td>
+  <td>mysql_proxy*</td>
+  <td>3306</td>
+  <td>TCP</td>
+  <td>MySQL</td>
+  <td>MySQL authentication*</td>
+</tr>
+<tr>
+  <td>n/a (admin)</td>
+  <td>istio_router (envoy)</td>
+  <td>8001</td>
+  <td>TCP</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>n/a (for envoy secure GRPC communication)</td>
+  <td>istio_control(pilot-discovery)</td>
+  <td>15012</td>
+  <td>TCP</td>
+  <td>GRPC</td>
+  <td>Mutual TLS</td>
+</tr>
+<tr>
+  <td>n/a (for HTTP discovery service)</td>
+  <td>istio_control(pilot-discovery)</td>
+  <td>8080</td>
+  <td>TCP</td>
+  <td>HTTP</td>
+  <td>None</td>
+</tr>
+<tr>
+  <td>n/a (for pilot’s self-monitoring)</td>
+  <td>istio_control(pilot-discovery)</td>
+  <td>9093</td>
+  <td>TCP</td>
+  <td>HTTP</td>
+  <td>None</td>
 </tr>
 </table>
+<sup>*</sup>Applies only to deployments where internal MySQL is selected as the database.
 
 <%= partial "bosh-dns" %>
