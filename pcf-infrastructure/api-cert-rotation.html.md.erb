@@ -130,18 +130,20 @@ To check the expiration dates for non-configurable and configurable leaf certifi
 
 Output from the `deployed/certificates` endpoint, such as the output generated in the [Check Leaf Certificate Expiration Dates](#leaf-expiry) procedure, combines information about non-configurable, configurable, and unrotatable leaf certificates into a single list.
 
-You need to manually rotate these different certificate types in different ways. The following rules identify the type of each certificate requiring rotation:
+You need to manually rotate the different leaf certificate types in different ways. 
 
-* **Non-Rotatable** certificate property values fulfill one of the following conditions:
+The following rules identify the type of each leaf certificate requiring rotation:
+
+* **Non-Rotatable Certificates**: Non-Rotatable leaf certificates have the following property value:
   - `variable_path` is `/opsmgr/bosh_dns/tls_ca`  
 
     If you have non-rotatable certificates expiring soon, call [Pivotal Support](https://support.pivotal.io).
 
-* **Non-Configurable** certificates have the following property values, but are not non-rotatable as identified above:
+* **Non-Configurable Certificates**: Non-Configurable leaf certificates have the following property values, but are not non-rotatable as identified above:
   - `configurable` is `false`
   - `location` is either `ops_manager` or `credhub`
 
-* **Configurable** certificates have the following property value:
+* **Configurable Certificates**: Configurable leaf certificates have the following property value:
   - `configurable` is `true`
 
 
