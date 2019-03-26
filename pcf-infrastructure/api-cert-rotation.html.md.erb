@@ -155,11 +155,13 @@ The following procedures rotate CAs and certificates that are listed or managed 
 
 ### <a id='rotate-ca'></a> Rotate Root and Leaf Certificates
 
-This procedure uses the Ops Manager API to rotate the Ops Manager root certificate and the intermediate CAs and non-configurable leaf certificates underneath it. It also includes the option to rotate configurable certificates.
+This procedure uses the Ops Manager API to rotate the Ops Manager root CA, the NATS CA, and the intermediate CAs and non-configurable leaf certificates underneath them.
+
+Rotating the Ops Manager root CA automatically rotates all configurable leaf certificates. You can also rotate configurable leaf certificates separately from rotating the root CA. For information about rotating configurable leaf certificates without also rotating the root CA, see [Rotate Configurable Certificates](#rotate-config).
 
 PCF users never need to manually rotate intermediate CAs, because they rotate automatically when the root CA is rotated.
 
-To prevent system downtime, this procedure includes two BOSH redeploys. When you click **Apply Changes** for the first time, BOSH applies new certificates to PCF components alongside the old ones. The second **Apply Changes** then deletes the old ones. Each successful redeploy verifies that the certificate rotation process is proceeding correctly.
+To prevent system downtime, this procedure includes two BOSH redeploys. When you click **Apply Changes** for the first time, BOSH applies new certificates to PCF components alongside the old ones. The second **Apply Changes** then deletes the old certificates. Each successful redeploy verifies that the certificate rotation process is proceeding correctly.
 
 <p class="note warning"><strong>Warning:</strong> You must complete these steps in the exact order specified. Otherwise, you risk damaging your deployment.</p>
 
