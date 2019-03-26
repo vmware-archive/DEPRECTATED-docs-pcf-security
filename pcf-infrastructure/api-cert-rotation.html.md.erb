@@ -3,11 +3,12 @@ title: Managing Certificates
 owner: OpsMan
 ---
 
-This topic describes how to manage the internal Certificate Authorities (CAs) and certificates in Pivotal Cloud Foundry (PCF) that are visible to the Ops Manager API. The topic includes:
+This topic describes how to manage the root certificate authorities (CAs) and leaf certificates in Pivotal Cloud Foundry (PCF) that are visible to the Ops Manager API. 
 
-* How to check the expiration dates of CAs and certificates.
-* How to rotate different types of CAs and certificates as needed.
-* A [master procedure](#check-and-rotate) for checking and rotating all of the Ops Manager CAs and certificates that require manual checking and rotation.
+This topic includes the following:
+
+* A list of the different types of certificates that require planned rotation. See [Certificate Types](#types).
+* Instructions for checking the expiration date of and rotating the Ops Manager root CAs and leaf certificates. See [Master Procedure: Check and Rotate Certificates](#check-and-rotate).
 
 <p class="note warning"><strong>WARNING:</strong> You must be using <strong>Ops Manager version 2.1.6 or higher</strong> to avoid a critical issue. Upgrade to at least that patch version before running any of the following certificate rotation procedures.</p>
 
