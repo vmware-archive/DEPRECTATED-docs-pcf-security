@@ -151,13 +151,13 @@ The following rules identify the type of each leaf certificate requiring rotatio
 
 ## <a id='rotate'></a> Rotate CAs and Leaf Certificates
 
-The following procedures rotate CAs and certificates that are listed or managed by the Ops Manager API.
+The following procedures rotate CAs and leaf certificates that are listed or managed by the Ops Manager API.
 
 <p class='note'><strong>Note:</strong> The rotation procedures described in this topic does not work when your certificates have already expired.  If your certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
 
 ### <a id='rotate-ca'></a> Rotate Root and Leaf Certificates
 
-This procedure uses the Ops Manager API to rotate the Ops Manager root CA, the NATS CA, and the intermediate CAs and non-configurable leaf certificates underneath them.
+This procedure uses the Ops Manager API to rotate the Ops Manager root CA and non-configurable leaf certificates.
 
 Rotating the Ops Manager root CA automatically rotates all configurable leaf certificates. You can also rotate configurable leaf certificates separately from rotating the root CA. For information about rotating configurable leaf certificates without also rotating the root CA, see [Rotate Configurable Certificates](#rotate-config).
 
