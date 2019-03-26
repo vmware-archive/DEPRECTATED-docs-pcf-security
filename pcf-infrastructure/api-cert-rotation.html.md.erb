@@ -3,14 +3,12 @@ title: Managing Certificates
 owner: Ops Manager
 ---
 
-This topic describes how to manage the internal root certificate authorities (CAs) and other certificates in Pivotal Cloud Foundry (PCF) that are visible to the Ops Manager API. 
+This topic describes how to manage the root certificate authorities (CAs) and leaf certificates in Pivotal Cloud Foundry (PCF) that are visible to the Ops Manager API. 
 
 This topic includes the following:
 
-* A list of the different types of certificates that require planned rotation.
-* How to check the expiration dates of certificates.
-* How to rotate Pivotal-generated CAs, your own custom CAs, and leaf certificates as needed.
-* A [master procedure](#check-and-rotate) for checking and rotating all of the Ops Manager CAs and leaf certificates that require manual checking and rotation.
+* A list of the different types of certificates that require planned rotation. See [Certificate Types](#types).
+* Instructions for checking the expiration date of and rotating the Ops Manager root CAs and leaf certificates. See [Master Procedure: Check and Rotate Certificates](#check-and-rotate).
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](../../../addon-ipsec/1-8/credentials.html).
 
@@ -20,7 +18,7 @@ For information about using trusted third-party certificates for both apps hoste
 
 The Ops Manager API manages and lists internal certificates that enable PCF components to communicate with each other securely using TLS. It can also list certificates used externally, such as SAML certificates that authenticate to an external identity provider.
 
-To keep PCF running, you must keep track of which certificates are set to expire soon, and rotate them before they expire. To do this, follow the [Check and Rotate Certificates](#check-and-rotate) procedure.
+To keep PCF running, you must keep track of which certificates are set to expire soon, and rotate them before they expire. To do this, follow the instructions in [Master Procedure: Check and Rotate Certificates](#check-and-rotate).
 
 ## <a id='types'></a> Certificate Types
 
