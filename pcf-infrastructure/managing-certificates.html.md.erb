@@ -1,0 +1,71 @@
+---
+title: Managing Certificates with the Ops Manager API
+owner: Ops Manager
+---
+
+This topic describes how to manage and retrieve information about certificates in PCF using the Ops Manager API.
+
+## <a id='overview'></a> Overview
+
+The Ops Manager API includes endpoints for managing and retrieving information about certificates in a PCF deployment. 
+
+For more information about Ops Manager API endpoints for managing certificates, see [Certificate Authorities](http://docs.pivotal.io/pivotalcf/opsman-api/#certificate-authorities) in the Ops Manager API documentation.
+
+## <a id='prerequisites'></a> Prerequisites
+
+To use the Ops Manager API, you must generate an access token by authenticating with the Ops Manager User Account and Authentication (UAA) server.
+
+For more information about authenticating with UAA, see [Using Ops Manager API](../../customizing/ops-man-api.html).
+
+## <a id='generate-rsa-certs'></a> Generate a Single RSA Certificate
+
+To generate and return a new RSA certificate signed by the root certificate authority (CA), use `curl` to make the following API call:
+
+```
+curl "https://OPS-MAN-FQDN/api/v0/certificates/generate \
+      -X POST \
+      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+```
+
+Where `YOUR-UAA-ACCESS-TOKEN` is your Ops Manager access token without any newline characters such as `\n`. 
+
+
+## <a id='root-certs'></a> Retrieve the Ops Manager Root CA
+
+You can view the Ops Manager root CA as a file or in JSON format.
+
+### <a id='root-certs-file'></a> Retrieve the Ops Manager Root CA as a File
+
+To return the Ops Manager root CA as a file, use `curl` to make the following API call:
+
+```
+curl "https://OPS-MAN-FQDN/download\_root\_ca\_cert \
+      -X GET \
+      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+```
+
+Where `YOUR-UAA-ACCESS-TOKEN` is your Ops Manager access token without any newline characters such as `\n`. 
+
+### <a id='root-certs-json'></a> Retrieve the Ops Manager Root CA as JSON
+
+To return the Ops Manager root CA as JSON, use `curl` to make the following API call:
+
+```
+curl "https://OPS-MAN-FQDN/api/v0/security/root\_ca\_certificate \
+      -X GET \
+      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+```
+
+Where `YOUR-UAA-ACCESS-TOKEN` is your Ops Manager access token without any newline characters such as `\n`. 
+
+## <a id='list-rsa-certs'></a> List all RSA Certificates
+
+To return metadata from all deployed RSA certificates visible to Ops Manager, except the root CAs, use `curl` to make the following API call:
+
+```
+curl "https://OPS-MAN-FQDN/api/v0/deployed/certificates \
+      -X GET \
+      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+```
+
+Where `YOUR-UAA-ACCESS-TOKEN` is your Ops Manager access token without any newline characters such as `\n`. 
