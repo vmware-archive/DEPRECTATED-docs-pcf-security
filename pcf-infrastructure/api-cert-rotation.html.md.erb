@@ -423,7 +423,7 @@ The information for each configurable certificate looks like this:
 1. For each configurable certificate that expires soon:
   1. Find the text field the certificate is configured within the Ops Manager interface.
       * The `product_guid` field in the API output can help identify which tile the certificate is configured in. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the PAS tile.
-      * The `property_reference` field in the API output can often help identify which **Settings** pane the cert is configured in. For example, the `uaa.service_provider_key_credentials` property is configured in the PAS tile > **UAA** pane.
+      * The `property_reference` field in the API output can often help identify which **Settings** pane the certificate is configured in. For example, the `uaa.service_provider_key_credentials` property is configured in the PAS tile > **UAA** pane.
       * You might have to look through multiple configuration panes to identify where a certificate is configured.
   2. Paste a new value for the certificate into the field
   3. Click **Save** at the bottom of each pane in which you have provided new certificates.
