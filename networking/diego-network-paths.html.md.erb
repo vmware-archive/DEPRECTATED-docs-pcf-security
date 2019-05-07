@@ -115,7 +115,7 @@ The following table lists network communication paths that are internal for Dieg
 </tr>
 <tr>
   <td>diego_cell (Rep)</td>
-  <td>diego_brain (File Server)</td>
+  <td>diego_brain (File Server)<sup>&#8258;</sup></td>
   <td>8080</td>
   <td>TCP</td>
   <td>HTTP</td>
@@ -222,7 +222,7 @@ The following table lists network communication paths that are outbound from Die
   <td>Varies</td>
   <td>TCP</td>
   <td>HTTP</td>
-  <td>None/TLS</td>
+  <td>Signed URLs/TLS</td>
 </tr>
 <tr>
   <td>diego_database (BBS)</td>
@@ -253,6 +253,8 @@ The following table lists network communication paths that are outbound from Die
 <sup>&#42;</sup>The destination depends on your PAS blobstore configuration. If you use the internal blobstore, the Diego Cell communicates to the blobstore using TLS on port `4443`. 
 
 <sup>&#42;&#42;</sup>MySQL authentication uses the MySQL native password method.
+
+<sup>&#8258;</sup>The Diego File Server is responsible for distributing non-sensitive, static platform assets to internal platform components.
 
 <sup>&#8224;</sup>Applies only to deployments where internal MySQL is selected as the database.
 
