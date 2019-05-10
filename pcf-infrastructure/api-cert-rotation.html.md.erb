@@ -21,7 +21,9 @@ Rotate root CAs and leaf certificates before they expire to avoid downtime for y
 
 ## <a id='procedure'></a> Procedure
 
-This section describes the procedure for rotating the root CA and leaf certificates in PCF.
+This section provides an overview of the procedure for rotating the root CA and leaf certificates in PCF.
+
+To rotate certificates in PCF, you first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, you follow a certificate rotation procedure to replace expiring certificates and redeploy BOSH to apply changes.
 
 To rotate root CAs and leaf certificates in PCF, do the following:
 
@@ -30,14 +32,14 @@ To rotate root CAs and leaf certificates in PCF, do the following:
 1. Rotate the certificates that expire soon. See [Rotate Certificates](#rotate).
 
 
-## <a id='checks'></a> Check Expiration Dates and Certificate Types
+### <a id='checks'></a> Check Expiration Dates and Certificate Types
 
 This section describes how to check the expiration dates of the root CA and leaf certificates that the Ops Manager API lists and manages. It also explains how to identify the types of leaf certificates that expire soon and require manual rotation. 
 
 After identifying the types of certificates that expire soon, you can determine which certificate rotation procedure to follow. 
 
 
-### <a id='root-expiry'></a> Check Root CA Expiration Date
+#### <a id='root-expiry'></a> Check Root CA Expiration Date
 
 This procedure describes how to check the expiration date for the Ops Manager root CA. The Ops Manager root CA expires four years after creation. 
 
@@ -72,7 +74,7 @@ To check the Ops Manager root CA expiration date, do the following:
     </pre>
 
 
-### <a id='leaf-expiry'></a> Check Leaf Certificate Expiration Dates and Types
+#### <a id='leaf-expiry'></a> Check Leaf Certificate Expiration Dates and Types
 
 This procedure describes how to check the expiration dates of leaf certificates using the `deployed/certificates` endpoint. It also describes how to identify non-configurable, configurable, and non-rotatable leaf certificates in the output from the `deployed/certificates` endpoint.  
 
@@ -102,7 +104,7 @@ To check the expiration dates of leaf certificates and identify the types of lea
   * **Configurable Certificates**: Configurable leaf certificates have the following property value: `configurable` is `true`
 
 
-## <a id='rotate'></a> Rotate Certificates
+### <a id='rotate'></a> Rotate Certificates
 
 This section includes procedures for rotating root CAs and leaf certificates. There are different rotation procedures for each type of certificate that requires rotation. 
 
@@ -119,7 +121,7 @@ To rotate certificates, do one of the following procedures:
 * To rotate configurable leaf certificates, but not the root CA, follow the [Rotate Configurable Leaf Certificates](#rotate-config) procedure.
 
 
-### <a id='rotate-ca'></a> Rotate the Root CA and Leaf Certificates
+#### <a id='rotate-ca'></a> Rotate the Root CA and Leaf Certificates
 
 This procedure uses the Ops Manager API to rotate the Ops Manager root CA and non-configurable leaf certificates. Rotating the Ops Manager root CA automatically rotates all non-configurable leaf certificates.
 
@@ -140,7 +142,7 @@ To rotate the root CA and leaf certificates, do the following:
 1. (Optional) Delete the old CA. See [Delete the Old CA](#delete).
 
 
-#### <a id='add-new-ca'></a> Step 1: Add a New Root CA
+<a id='add-new-ca'></a> <b>Step 1: Add a New Root CA</b>
 
 Follow this procedure to add a new root CA for Ops Manager. The new root CA can be a Pivotal-generated CA or your own custom CA.
 
@@ -270,7 +272,7 @@ To add a new root CA for Ops Manager, do the following:
 
 1. Click **Review Pending Changes**, then **Apply Changes**. When the deploy finishes, continue to the next section.
 
-#### <a id='activate-new-ca'></a> Step 2: Activate the Root CA
+<a id='activate-new-ca'></a> <b>Step 2: Activate the Root CA</b>
 
 To activate the new root CA, do the following:
 
@@ -295,7 +297,7 @@ To activate the new root CA, do the following:
   </pre>
   Examine the response to ensure that your new CA has `active` set to `true`.
 
-#### <a id='rotate-config-after-new-root'></a> (Optional) Step 3: Rotate Configurable Leaf Certificates
+<a id='rotate-config-after-new-root'></a> <b>(Optional) Step 3: Rotate Configurable Leaf Certificates</b>
 
 If there are any configurable certificates in your foundation expiring soon, Pivotal recommends rotating them now. Rotating configurable leaf certificates now ensures that your next BOSH deploy includes both new configurable and non-configurable leaf certificates.
 
@@ -308,7 +310,7 @@ To rotate configurable leaf certificates, do the following for each configurable
 3. Click **Save** at the bottom of each pane in which you added new certificates.
 
 
-#### <a id='regenerate-from-new-root'></a> Step 4: Rotate Non-Configurable Leaf Certificates from the New Root
+<a id='regenerate-from-new-root'></a> <b>Step 4: Rotate Non-Configurable Leaf Certificates from the New Root</b>
 
 After activating the new root CA, you must rotate non-configurable leaf certificates from the root CA. 
 
@@ -341,7 +343,7 @@ The API returns a successful response:
 
 1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes** to perform a second redeploy.
 
-#### <a id='delete'></a> (Optional) Step 5: Delete the Old CA
+<a id='delete'></a> <b>(Optional) Step 5: Delete the Old CA</b>
 
 After activating a new root CA and rotating leaf certificates from the new root CA, Pivotal recommends deleting the old root CA from your foundation.
 
@@ -371,7 +373,7 @@ The API returns a successful response.
 1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes**.
 
 
-### <a id='regenerate'></a> Rotate Non-Configurable Leaf Certificates
+#### <a id='regenerate'></a> Rotate Non-Configurable Leaf Certificates
 
 This procedure rotates non-configurable leaf certificates visible to the Ops Manager API, whether they are managed and stored by Ops Manager directly, or by CredHub at Ops Manager request.
 
@@ -393,7 +395,7 @@ The API returns a successful response:
 1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes** to perform a second redeploy.
 
 
-### <a id='rotate-config'></a> Rotate Configurable Leaf Certificates
+#### <a id='rotate-config'></a> Rotate Configurable Leaf Certificates
 
 Configurable certificates are generated by the user and pasted into Ops Manager configuration panes where needed. Examples include certificates that terminate SSL traffic into PAS, or authenticate a Single Sign-On (SSO) service plan to an external SAML server.
 
@@ -426,7 +428,7 @@ The information for each configurable certificate looks like this:
 
 1. If you are rotating configurable certificates within the [Rotate Root and Leaf Certificates](#rotate-ca) procedure, continue to the next step. Otherwise, if you are rotating configurable leaf certificates only, return to the **Installation Dashboard**, click **Review Pending Changes**, and click **Apply Changes**.
 
-### <a id='rotate-saml-ca'></a> Rotate Identity Provider SAML Certificates
+#### <a id='rotate-saml-ca'></a> Rotate Identity Provider SAML Certificates
 
 SAML service provider credentials are one example of configurable certificates in PCF. When PAS is configured to use SAML as an identity provider, it uses a configurable CA certificate to authenticate to an external SAML server, by generating ephemeral certificates that PAS includes in its outbound request message headers. This CA has a two-year expiration period.
 
