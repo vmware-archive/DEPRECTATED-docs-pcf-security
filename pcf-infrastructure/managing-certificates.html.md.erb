@@ -39,7 +39,7 @@ You can view the Ops Manager root CA as a file or in JSON format.
 To return the Ops Manager root CA as a file, use `curl` to make the following API call:
 
 ```
-curl "https://OPS-MAN-FQDN/download\_root\_ca\_cert \
+curl "https://OPS-MAN-FQDN/download_root_ca_cert \
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 ```
@@ -51,7 +51,7 @@ Where `YOUR-UAA-ACCESS-TOKEN` is your Ops Manager access token without any newli
 To return the Ops Manager root CA as JSON, use `curl` to make the following API call:
 
 ```
-curl "https://OPS-MAN-FQDN/api/v0/security/root\_ca\_certificate \
+curl "https://OPS-MAN-FQDN/api/v0/security/root_ca_certificate \
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 ```
