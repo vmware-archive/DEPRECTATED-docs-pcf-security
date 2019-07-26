@@ -49,6 +49,8 @@ The following diagram illustrates communication between platform components, sec
 
 The CredHub instance in BOSH generates certificates for all components in PCF. The certificates are self signed by default. To issue certificates signed by your enterprise, you can add a custom CA to CredHub.
 
+<%= partial '../../adminguide/windows-gorouter-tls' %>
+
 #### <a id="components"></a> Component Communication Details
 
 The following topics list the paths, ports, and protocols that subsystems within Pivotal Application Service (PAS) use to communicate.
