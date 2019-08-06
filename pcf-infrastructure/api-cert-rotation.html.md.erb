@@ -3,17 +3,17 @@ title: Rotating Certificates
 owner: Ops Manager
 ---
 
-This topic describes how to check the expiration date of and rotate the root Certificate Authorities (CAs) and leaf certificates in Pivotal Cloud Foundry (PCF) that are visible to the Ops Manager API. 
+This topic describes how to check the expiration date of and rotate the root Certificate Authorities (CAs) and leaf certificates in Pivotal Cloud Foundry (PCF) that are visible to the Ops Manager API.
 
 <p class='note'><strong>Note:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
 
-For information about rotating IPsec certificates, see [Rotating IPsec Certificates](../../../addon-ipsec/1-8/credentials.html).
+For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/credentials.html).
 
 For information about using trusted third-party certificates for both apps hosted on PCF and internal PCF components, see [Setting Trusted Certificates](../../customizing/trusted-certificates.html).
 
 ## <a id='intro'></a> Overview
 
-The Ops Manager API manages and lists internal Certificate Authorities (CAs) and leaf certificates that enable PCF components to communicate with each other securely using TLS. It can also list certificates used externally, such as SAML certificates that authenticate to an external identity provider. 
+The Ops Manager API manages and lists internal Certificate Authorities (CAs) and leaf certificates that enable PCF components to communicate with each other securely using TLS. It can also list certificates used externally, such as SAML certificates that authenticate to an external identity provider.
 
 For more information about root CAs and leaf certificates, see [Certificate Types](certificate-types.html).
 
@@ -34,14 +34,14 @@ To rotate root CAs and leaf certificates in PCF, do the following:
 
 ### <a id='checks'></a> Check Expiration Dates and Certificate Types
 
-This section describes how to check the expiration dates of the root CA and leaf certificates that the Ops Manager API lists and manages. It also explains how to identify the types of leaf certificates that expire soon and require manual rotation. 
+This section describes how to check the expiration dates of the root CA and leaf certificates that the Ops Manager API lists and manages. It also explains how to identify the types of leaf certificates that expire soon and require manual rotation.
 
-After identifying the types of certificates that expire soon, you can determine which certificate rotation procedure to follow. 
+After identifying the types of certificates that expire soon, you can determine which certificate rotation procedure to follow.
 
 
 #### <a id='root-expiry'></a> Check Root CA Expiration Date
 
-This procedure describes how to check the expiration date for the Ops Manager root CA. The Ops Manager root CA expires four years after creation. 
+This procedure describes how to check the expiration date for the Ops Manager root CA. The Ops Manager root CA expires four years after creation.
 
 To check the Ops Manager root CA expiration date, do the following:
 
@@ -76,7 +76,7 @@ To check the Ops Manager root CA expiration date, do the following:
 
 #### <a id='leaf-expiry'></a> Check Leaf Certificate Expiration Dates and Types
 
-This procedure describes how to check the expiration dates of leaf certificates using the `deployed/certificates` endpoint. It also describes how to identify non-configurable, configurable, and non-rotatable leaf certificates in the output from the `deployed/certificates` endpoint.  
+This procedure describes how to check the expiration dates of leaf certificates using the `deployed/certificates` endpoint. It also describes how to identify non-configurable, configurable, and non-rotatable leaf certificates in the output from the `deployed/certificates` endpoint.
 
 To check the expiration dates of leaf certificates and identify the types of leaf certificates that expire soon, do the following:
 
@@ -97,7 +97,7 @@ To check the expiration dates of leaf certificates and identify the types of lea
 1. To determine the expiration date of each certificate, refer to its `expires_on` value.
 
 1. Identify the types of leaf certificates requiring rotation. The following rules identify the type of each leaf certificate:
-  * **Non-Rotatable Certificates**: Non-Rotatable leaf certificates have the following property value: `variable_path` is `/opsmgr/bosh_dns/tls_ca`  
+  * **Non-Rotatable Certificates**: Non-Rotatable leaf certificates have the following property value: `variable_path` is `/opsmgr/bosh_dns/tls_ca`
   * **Non-Configurable Certificates**: Non-Configurable leaf certificates have the following property values and are not non-rotatable as identified above:
       * `configurable` is `false`
       * `location` is either `ops_manager` or `credhub`
@@ -106,7 +106,7 @@ To check the expiration dates of leaf certificates and identify the types of lea
 
 ### <a id='rotate'></a> Rotate Certificates
 
-This section includes procedures for rotating root CAs and leaf certificates. There are different rotation procedures for each type of certificate that requires rotation. 
+This section includes procedures for rotating root CAs and leaf certificates. There are different rotation procedures for each type of certificate that requires rotation.
 
 You can determine which rotation procedure to follow based on the types of certificates in your foundation that must be rotated.  For more information about identifying the types of certificates in your foundation that expire soon, see [Check Expiration Dates and Certificate Types](#checks).
 
@@ -135,7 +135,7 @@ To rotate the root CA and leaf certificates, do the following:
 
 1. Activate the root CA. [Activate the Root CA](#activate-new-ca).
 
-1. (Optional) Rotate leaf configurable certificates. See [Rotate Configurable Leaf Certificates](#rotate-config-after-new-root). 
+1. (Optional) Rotate leaf configurable certificates. See [Rotate Configurable Leaf Certificates](#rotate-config-after-new-root).
 
 1. Rotate non-configurable leaf certificates. See [Rotate Non-Configurable Leaf Certificates from the New Root](#regenerate-from-new-root).
 
@@ -153,7 +153,7 @@ To add a new root CA for Ops Manager, do the following:
 1. If you haven't already, perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the following steps.
   <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
 
-1. Use Ops Manager to generate a new CA, or else add your own custom CA: 
+1. Use Ops Manager to generate a new CA, or else add your own custom CA:
   <p class ="note"><b>Note:</b> Elliptic Curve Digital Signature Algorithm (ECDSA) certificates are not supported in PCF.</p>
   * **To use your own custom CA**, call the Ops Manager API `generate` endpoint as follows:
     <pre>
@@ -164,9 +164,9 @@ To add a new root CA for Ops Manager, do the following:
           -d '{"cert\_pem": "-----BEGIN CERTIFICATE-----\YOUR-CERTIFICATE", "private\_key\_pem": "-----BEGIN RSA PRIVATE KEY-----\YOUR-KEY"}'
     </pre>
     Where:
-    <ul><li>`YOUR-CERTIFICATE` is your custom CA.</li> 
+    <ul><li>`YOUR-CERTIFICATE` is your custom CA.</li>
       <li>`YOUR-KEY` is your RSA key.</li>
-      <li>`YOUR-UAA-ACCESS-TOKEN` is your UAA access token.</li></ul><p>If the command succeeds, the API returns a response that includes the new CA certificate:</p> 
+      <li>`YOUR-UAA-ACCESS-TOKEN` is your UAA access token.</li></ul><p>If the command succeeds, the API returns a response that includes the new CA certificate:</p>
     <pre class="terminal">
       HTTP/1.1 200 OK
       {
@@ -181,7 +181,7 @@ To add a new root CA for Ops Manager, do the following:
           }
         ]
       }
-    </pre> 
+    </pre>
   * **To use a Pivotal-generated CA**, call the Ops Manager API `generate` endpoint as follows:
     <pre>
       curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/generate" \
@@ -312,9 +312,9 @@ To rotate configurable leaf certificates, do the following for each configurable
 
 <a id='regenerate-from-new-root'></a> <b>Step 4: Rotate Non-Configurable Leaf Certificates from the New Root</b>
 
-After activating the new root CA, you must rotate non-configurable leaf certificates from the root CA. 
+After activating the new root CA, you must rotate non-configurable leaf certificates from the root CA.
 
-To rotate non-configurable leaf certificates from the new root CA, do the following: 
+To rotate non-configurable leaf certificates from the new root CA, do the following:
 
 1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
 <pre>
@@ -405,7 +405,7 @@ For instructions on how to rotate SAML certificates for both PAS and the SSO ser
 
 To rotate configurable leaf certificates, do the following:
 
-1. If you haven't already, use the Ops Manager API `deployed/certificates` endpoint to retrieve information about your expiring configurable certificates, as described in the procedures [Check Expiration Dates and Certificate Types](#checks).  
+1. If you haven't already, use the Ops Manager API `deployed/certificates` endpoint to retrieve information about your expiring configurable certificates, as described in the procedures [Check Expiration Dates and Certificate Types](#checks).
 The information for each configurable certificate looks like this:
   <pre class="terminal">
     {
@@ -449,7 +449,7 @@ To regenerate and rotate SAML service provider certificates without disrupting P
 
 1. Disable certificate validation in your identity provider.
 
-1. For PAS, follow the procedure in the table below that corresponds to your use case. This includes downloading and importing a new certificate and updated SAML metadata in your identity provider. 
+1. For PAS, follow the procedure in the table below that corresponds to your use case. This includes downloading and importing a new certificate and updated SAML metadata in your identity provider.
   <table border="1">
   <tr>
     <th>Solution Name</th>
