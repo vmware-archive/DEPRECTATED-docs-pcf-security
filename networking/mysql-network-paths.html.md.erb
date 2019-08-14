@@ -5,7 +5,7 @@ owner: Core Services
 
 This topic describes MySQL internal network communication paths with other Pivotal Application Service (PAS) components.
 
-<p class="note"><strong>Note:</strong>These communications only apply to deployments where internal MySQL is selected as the PAS database.</p>
+<p class="note"><strong>Note:</strong> These communications only apply to deployments where internal MySQL is selected as the PAS database.</p>
 
 ## <a id="inbound"></a> Inbound Communications ##
 
@@ -185,5 +185,11 @@ The following table lists network communication paths that are outbound from MyS
   <td>Basic authentication</td>
 </tr>
 </table>
+
+<p class="note"><strong>Note</strong>: If you select the <strong>Enable inactive
+mysql port</strong> checkbox on the <strong>Internal MySQL</strong> pane of the
+PAS tile, you can run auditing and reporting queries on an inactive MySQL node
+over port 3336. For more information, see the <a href="../../customizing/configure-pas.html#internal-mysql">Configure Internal MySQL</a>
+section of <em>Configuring PAS</em>.</p>
 
 <%= partial "bosh-dns" %>
