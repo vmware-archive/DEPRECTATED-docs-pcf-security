@@ -19,13 +19,15 @@ For more information about root CAs and leaf certificates, see [Certificate Type
 
 Rotate root CAs and leaf certificates before they expire to avoid downtime for your foundation.
 
+<p class='note'><strong>Note:</strong>The Ops Manager root CA expires four years after creation.</p>
+
 ## <a id='procedure'></a> Procedure
 
-This section provides an overview of the procedure for rotating the root CA and leaf certificates in PCF.
+This section explains how to rotate the root CA and leaf certificates in PCF.
 
 To rotate certificates in PCF, you first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, you follow a certificate rotation procedure to replace expiring certificates and redeploy BOSH to apply changes.
 
-To rotate root CAs and leaf certificates in PCF, do the following:
+To rotate root CAs and leaf certificates:
 
 1. Check the expiration dates of the root CA and leaf certificates, and identify the types of leaf certificates that require rotation. See [Check Expiration Dates and Certificate Types](#checks).
 
@@ -34,57 +36,68 @@ To rotate root CAs and leaf certificates in PCF, do the following:
 
 ### <a id='checks'></a> Check Expiration Dates and Certificate Types
 
-This section describes how to check the expiration dates of the root CA and leaf certificates that the Ops Manager API lists and manages. It also explains how to identify the types of certificates that expire soon and require manual rotation.
+This section describes how to check the expiration dates of the root CA and leaf certificates that the Ops Manager API lists and manages. It also explains how to identify the types of certificates that require manual rotation.
 
 After identifying the types of certificates that expire soon, you can determine which certificate rotation procedure to follow.
-
-The Ops Manager root CA expires four years after creation.
 
 1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the steps below.
   <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
 
-1. To retrieve the Ops Manager certificates, use `curl` to call the `/deployed/certificates` endpoint of the Ops Manager API:
+1.  To retrieve the Ops Manager certificates, use `curl` to call the `/deployed/certificates` endpoint of the Ops Manager API:
 
     ```
     curl "https://OPS-MAN-FQDN/api/v0/deployed/certificates" \
           -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
     ```
-   Where:
-   * `OPS-MAN-FQDN` is the URL of your Ops Manager.
-   * `YOUR-UAA-ACCESS-TOKEN` is the <code>access\_token</code> value you recorded in the previous step.<br /><br />
-   * To limit command output to certificates that expire within a given time interval, append `?expires_within=TIME` to the endpoint, replacing `TIME` with an integer-letter code.
-      - Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.
-      - For example, querying `https://OPS-MAN-FQDN/api/v0/deployed/certificates?expires_within=6m` searches for certificates expiring within six months.
-   *  To make the JSON output more readable, you can pipe your `curl` command to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.
+    Where:
+    * `OPS-MAN-FQDN` is the URL of your Ops Manager.
+    * `YOUR-UAA-ACCESS-TOKEN` is the <code>access\_token</code> value you recorded in the previous step:
+    
+    More options:<br />
+    <ul><li>
+    To limit command output to certificates that expire within a given time interval, append `?expires_within=TIME` to the endpoint, replacing `TIME` with an integer-letter code.<br />
+            <ul><li>
+            Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.
+            </li><li>
+            For example, querying to `https://OPS-MAN-FQDN/api/v0/deployed/certificates?expires_within=6m` searches for certificates expiring within six months.
+            </li></ul>
+     </li><li>
+     To make the JSON output more readable, you can pipe your `curl` command to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.
+     </li></ul>
 
-1. To determine its expiration date of the active CA, refer to its `expires_on` value. For example, the root CA shown below expires on September 5, 2019:
+1. The `deployed/certificates` output lists all root CA and leaf certificates visible to the Ops Manager API. For each certificate listed, determine its expiration date and type.
+  1. Determine the expiration date from the `valid_until` value.
+  For example, the root CA listed below expires on August 12, 2020:
     <pre class='terminal'>
-{
-  "certificate\_authorities": [
     {
-      "guid": "9c9a110c8f82a1e4aaca",
-      "issuer": "Pivotal",
-      "created\_on": "2017-09-05T22:47:53Z",
-      "expires\_on": "2019-09-05T22:47:53Z",
-      "active": true,
-      "cert_pem": "\-\-\-\-\-BEGIN CERTIFICATE\-\-\-\-\-\
-      [...]
-      \n-----END CERTIFICATE\-\-\-\-\-\n"
+      "configurable": true,
+      "is\_ca": true,
+      "property\_reference": ".properties.root\_ca.fb10484dd5541a273c9d",
+      "property\_type": "rsa\_cert\_credentials",
+      "product\_guid": "ops\_manager",
+      "location": "ops\_manager",
+      "variable\_path": null,
+      "issuer": "/CN=ToolsmithsCA",
+      "valid\_from": "2019-08-13T15:30:22Z",
+      "valid\_until": "2020-08-12T15:30:22Z"
+    },
     </pre>
+  2. For any certificates expiring soon, use the following rules to identify their types:
+      * **Non-Rotatable Certificates**: Non-Rotatable certificates have the following property value:
+          * `variable_path` is `/opsmgr/bosh_dns/tls_ca`
+      * **Non-Configurable Certificates**: Non-Configurable leaf certificates have the following property values:
+          * `variable_path` is not `/opsmgr/bosh_dns/tls_ca`
+          * `configurable` is `false`
+          * `location` is either `ops_manager` or `credhub`
+          * `is_ca` is `false`
+      * **Configurable Certificates**: Configurable leaf certificates have the following property values:
+          * `configurable` is `true`
+          * `is_ca` is `false`
+      * **Ops Manager Root CA and matching NATS CA**: Root CA certificates have the following property values:
+          * `is_ca` is `true`
+          * `location` is `ops_manager`
 
-
-1. In the `certificate_authorities` list returned, if there is more than one, find the CA with `"active": true`.
-
-
-1. Identify the types of leaf certificates requiring rotation. The following rules identify the type of each certificate:
-  * **Non-Rotatable Certificates**: Non-Rotatable leaf certificates have the following property value: `variable_path` is `/opsmgr/bosh_dns/tls_ca`
-  * **Non-Configurable Certificates**: Non-Configurable leaf certificates have the following property values and are not non-rotatable as identified above:
-      * `configurable` is `false`
-      * `location` is either `ops_manager` or `credhub`
-  * **Configurable Certificates**: Configurable leaf certificates have the following property value: `configurable` is `true`
-  * **Ops Manager Root CA and matching NATS CA**: Non-leaf, CA certificates that the `deployed/certificates` endpoint returns along with leaf certificates.
-       * Property value `is_ca` is `true` and `location` is `ops_manager`
-       * You can skip checking these certs. The easier [Check Root CA Expiration Date](#root-expiry) procedure above checks the expiration of these CAs.
+1. Continue to [Rotate Certificates](#rotate) with your list of certificate types that expire soon.
 
 ### <a id='rotate'></a> Rotate Certificates
 
