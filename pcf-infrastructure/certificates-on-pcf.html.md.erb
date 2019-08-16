@@ -1,15 +1,15 @@
 ---
-title: Certificates on PCF
+title: Certificates on <%= vars.product_name %>
 owner: Security
 ---
 
 This topic describes the sources and uses for certificates to secure both internal and
-external networking calls in Pivotal Cloud Foundry (PCF).
+external networking calls in <%= vars.first_product_name  %>.
 
 
 ## <a id="sources"></a>Certificate Sources
 
-Certificates in PCF originate from two of the following sources:
+Certificates in <%= vars.product_name %> originate from two of the following sources:
 
 * [Enterprise Root Certificate Authority (CA)](#enterprise-root-ca)
 
@@ -28,7 +28,7 @@ static and do not need highly available certificate creation.
 
 ### <a id="credhub"></a>CredHub
 
-You can use CredHub as a source for certificates in PCF. These certificates can either
+You can use CredHub as a source for certificates in <%= vars.product_name %>. These certificates can either
 be self-signed or signed by an imported trusted CA. Certificates are self-signed by default.
 
 Use CredHub for the following benefits:
@@ -37,6 +37,6 @@ Use CredHub for the following benefits:
 * Dynamic generation of certificates
 * More secure communication between platform components, applications, and services
 
-Pivotal recommends using Credhub for high availability and good security posture in PCF.
+Pivotal recommends using Credhub for high availability and good security posture in <%= vars.product_name %>.
 
 For more information, see [CredHub](../../credhub/index.html).

@@ -3,14 +3,14 @@ title: Disk Encryption
 owner: Security
 ---
 
-This topic describes how to secure Pivotal Cloud Foundry (PCF) VMs by encrypting their disks or rotating their disk encryption keys.
+This topic describes how to secure <%= vars.first_product_name  %> VMs by encrypting their disks or rotating their disk encryption keys.
 
 
 ## <a id='intro'></a> Introduction
 
 Disk encryption protects data integrity if computing resources are stolen physically.
 
-Disk encryption for VMs works at the IaaS level. An IaaS encrypts disks when it first creates them, or re-encrypts them when it rotates encryption keys. To encrypt disks in PCF, you must:
+Disk encryption for VMs works at the IaaS level. An IaaS encrypts disks when it first creates them, or re-encrypts them when it rotates encryption keys. To encrypt disks in <%= vars.product_name %>, you must:
 
 1. Configure the IaaS to encrypt disks when it creates or re-creates them.
 
@@ -18,7 +18,7 @@ Disk encryption for VMs works at the IaaS level. An IaaS encrypts disks when it 
 
 The procedures below detail how to do this for each IaaS.
 
-### <a id='disks'></a> Disks You Can Encrypt on a PCF VM
+### <a id='disks'></a> Disks You Can Encrypt on a <%= vars.product_name %> VM
 
 * The root file system for the VM. For BOSH-created VMs, this comes from the stemcell.
 * Ephemeral disk for the VM.
@@ -28,7 +28,7 @@ The procedures below detail how to do this for each IaaS.
 
 For each IaaS, there are two disk encryption procedures, which encrypt different VMs:
 
-* The **BOSH Director** procedure encrypts the disks used by the BOSH Director VM when you first create a PCF environment.
+* The **BOSH Director** procedure encrypts the disks used by the BOSH Director VM when you first create a <%= vars.product_name %> environment.
 * The **BOSH-Deployed VM** procedure encrypts disks for the VMs that the BOSH Director creates, after BOSH has been deployed.
 
 
@@ -57,7 +57,7 @@ For disk encryption, Pivotal recommends Managed Disks storage where available. W
 
 Follow the steps below to initiate or rotate disk encryption for BOSH-deployed VMs on Azure:
 
-1. Log in to Azure Portal and follow the [Encryption workflow](https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-overview#encryption-workflow) to encrypt new and existing PCF VMs.
+1. Log in to Azure Portal and follow the [Encryption workflow](https://docs.microsoft.com/en-us/azure/security/azure-security-disk-encryption-overview#encryption-workflow) to encrypt new and existing <%= vars.product_name %> VMs.
 
 1. For unmanaged Storage Account disks, follow the [Recreate BOSH-Deployed Disks](#recreate) procedure below to propagate the change to existing VMs.
   - With Managed Disks, you can skip this step.
@@ -92,7 +92,7 @@ Unless you are using Azure Managed Disks, you need to manually recreate disks on
       - Call [Pivotal Support](https://support.pivotal.io) if propagating disk encryption is urgent.
   - **Ephemeral Disks**: In the **Director Config** pane of the Ops Manager tile, enable the **Recreate All VMs** checkbox.
   - **Persistent Disks**
-      - PCF v2.3 and later: In the **Director Config** pane of the Ops Manager tile, enable the **Recreate All Persistent Disks** checkbox.
-      - PCF v2.2 and earlier: In the **Resource Config** pane of all tiles, change the disk or VM sizes of all VMs that you need to encrypt.
+      - <%= vars.product_name %> v2.3 and later: In the **Director Config** pane of the Ops Manager tile, enable the **Recreate All Persistent Disks** checkbox.
+      - <%= vars.product_name %> v2.2 and earlier: In the **Resource Config** pane of all tiles, change the disk or VM sizes of all VMs that you need to encrypt.
 
 1. Click **Review Pending Changes** and **Apply Changes**.

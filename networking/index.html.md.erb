@@ -2,28 +2,28 @@
 title: Network Security
 owner: Security
 ---
-This section introduces some of the networking and routing security options for your Pivotal Cloud Foundry (PCF) deployment.
+This section introduces some of the networking and routing security options for your <%= vars.first_product_name  %> deployment.
 
 ## <a id="secure_traffic"></a> Securing Traffic and Controlling Routes
 
-You can enable and configure a number of customization options to secure traffic in and out of your PCF deployment.
+You can enable and configure a number of customization options to secure traffic in and out of your <%= vars.product_name %> deployment.
 
-* <a href="./tls-info.html" class="subnav">TLS Connections in PCF Deployments</a>
+* <a href="./tls-info.html" class="subnav">TLS Connections in <%= vars.product_name %> Deployments</a>
 * [Securing Traffic into Cloud Foundry](../../adminguide/securing-traffic.html)
 * [Providing a Certificate for Your SSL/TLS Termination Point](../../opsguide/security_config.html)
 * [Enabling TCP Routing](../../adminguide/enabling-tcp-routing.html)
 
 ## <a id="use_ipsec"></a> Using the IPsec Add-On
 
-The IPsec add-on for PCF provides additional security to the network layer for each BOSH-deployed virtual machine (VM).
+The IPsec add-on for <%= vars.product_name %> provides additional security to the network layer for each BOSH-deployed virtual machine (VM).
 
-The PCF IPsec add-on secures network traffic within a Cloud Foundry deployment and provides internal system protection if a malicious actor breaches your firewall.
+The <%= vars.product_name %> IPsec add-on secures network traffic within a Cloud Foundry deployment and provides internal system protection if a malicious actor breaches your firewall.
 
 * [Securing Data in Transit with the IPsec Add-on](http://docs.pivotal.io/addon-ipsec/)
 * [Rotating IPsec Credentials](http://docs.pivotal.io/addon-ipsec/credentials.html)
 * [Installing the Pivotal Cloud Foundry IPsec Add-On](http://docs.pivotal.io/addon-ipsec/installing.html)
 
-## <a id="net_commpaths"></a> Network Communication Paths in PCF
+## <a id="net_commpaths"></a> Network Communication Paths in <%= vars.product_name %>
 
 * <a href="bosh-dns-network-paths.html" class="subnav">BOSH DNS Network Communications</a>
 * <a href="cc-network-paths.html" class="subnav">Cloud Controller Network Communications</a>

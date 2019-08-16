@@ -3,17 +3,17 @@ title: Rotating Certificates
 owner: Ops Manager
 ---
 
-This topic describes how to check the expiration date of and rotate the Ops Manager root Certificate Authorities (CAs) and leaf certificates in Pivotal Cloud Foundry (PCF) that are visible to the Ops Manager API.
+This topic describes how to check the expiration date of and rotate the root Certificate Authorities (CAs) and leaf certificates in <%= vars.first_product_name  %> that are visible to the Ops Manager API.
 
 <p class='note warning'><strong>Warning:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/credentials.html).
 
-For information about using trusted third-party certificates for both apps hosted on PCF and internal PCF components, see [Setting Trusted Certificates](../../customizing/trusted-certificates.html).
+For information about using trusted third-party certificates for both apps hosted on <%= vars.product_name %> and internal <%= vars.product_name %> components, see [Setting Trusted Certificates](../../customizing/trusted-certificates.html).
 
 ## <a id='intro'></a> Overview
 
-The Ops Manager API manages and lists internal Certificate Authorities (CAs) and leaf certificates that enable PCF components to communicate with each other securely using TLS. It can also list certificates used externally, such as SAML certificates that authenticate to an external identity provider.
+The Ops Manager API manages and lists internal Certificate Authorities (CAs) and leaf certificates that enable <%= vars.product_name %> components to communicate with each other securely using TLS. It can also list certificates used externally, such as SAML certificates that authenticate to an external identity provider.
 
 For more information about the CAs and leaf certificates visible to the Ops Manager API, see [Certificate Types](certificate-types.html).
 
@@ -21,11 +21,11 @@ Rotate CAs and leaf certificates before they expire to avoid downtime for your f
 
 ## <a id='procedure'></a> Procedure
 
-This section explains how to rotate the Ops Manager root CA and leaf certificates in PCF.
+This section explains how to rotate the Ops Manager root CA and leaf certificates in <%= vars.product_name %>.
 
 <p class="note"><b>Note:</b> The BOSH NATS CA is automatically rotated when you rotate the Ops Manager root CA.</p>
 
-To rotate certificates in PCF, you first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, you follow a certificate rotation procedure to replace expiring certificates and redeploy BOSH to apply changes.
+To rotate certificates in <%= vars.product_name %>, you first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, you follow a certificate rotation procedure to replace expiring certificates and redeploy BOSH to apply changes.
 
 To rotate CAs and leaf certificates:
 
@@ -123,7 +123,7 @@ This procedure uses the Ops Manager API to rotate the Ops Manager root CA and no
 
 <p class="note"><b>Note:</b> This procedure automatically rotates the BOSH NATS CA.</p>
 
-To prevent system downtime, this procedure includes two BOSH deploys. The first BOSH deploy applies new certificates to PCF components. The second BOSH deploy deletes the old certificates.
+To prevent system downtime, this procedure includes two BOSH deploys. The first BOSH deploy applies new certificates to <%= vars.product_name %> components. The second BOSH deploy deletes the old certificates.
 
 <p class="note warning"><strong>Warning:</strong> You must complete these steps in the exact order specified. Otherwise, you may damage your deployment.</p>
 
@@ -152,7 +152,7 @@ To add a new root CA for Ops Manager, do the following:
   <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
 
 1. Use Ops Manager to generate a new CA, or else add your own custom CA:
-  <p class ="note"><b>Note:</b> Elliptic Curve Digital Signature Algorithm (ECDSA) certificates are not supported in PCF.</p>
+  <p class ="note"><b>Note:</b> Elliptic Curve Digital Signature Algorithm (ECDSA) certificates are not supported in <%= vars.product_name %>.</p>
   * **To use your own custom CA**, call the Ops Manager API `generate` endpoint as follows:
     <pre>
       curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
@@ -428,13 +428,13 @@ The information for each configurable certificate looks like this:
 
 #### <a id='rotate-saml-ca'></a> Rotate Identity Provider SAML Certificates
 
-SAML service provider credentials are one example of configurable certificates in PCF. When PAS is configured to use SAML as an identity provider, it uses a configurable CA certificate to authenticate to an external SAML server, by generating ephemeral certificates that PAS includes in its outbound request message headers. This CA has a two-year expiration period.
+SAML service provider credentials are one example of configurable certificates in <%= vars.product_name %>. When PAS is configured to use SAML as an identity provider, it uses a configurable CA certificate to authenticate to an external SAML server, by generating ephemeral certificates that PAS includes in its outbound request message headers. This CA has a two-year expiration period.
 
 In addition, the [SSO](https://docs.pivotal.io/p-identity/index.html) service shares the use of PAS SAML certificates for every SAML external Identity Provider (IdP) integration, such as trust,  partnership, or Federation. You must rotate these in lockstep with PAS.
 
 The following procedure provides an example of how to rotate certificates for each IdP, including temporarily disabling certificate validation on the IdP side during the rotation.
 
-The Knowledge Base article [PCF Advisory - SAML Service Provider Credential Certificates Expire after 2 Years](https://community.pivotal.io/s/article/PCF-Advisory---SAML-Service-Provider-Credential-Certificates-Expire-after-2-Years) provides more information about rotating SAML certificates.
+The Knowledge Base article [<%= vars.product_name %> Advisory - SAML Service Provider Credential Certificates Expire after 2 Years](https://community.pivotal.io/s/article/PCF-Advisory---SAML-Service-Provider-Credential-Certificates-Expire-after-2-Years) provides more information about rotating SAML certificates.
 
 SAML service provider credentials are only required for your PAS deployment if all of these conditions are met:
 
