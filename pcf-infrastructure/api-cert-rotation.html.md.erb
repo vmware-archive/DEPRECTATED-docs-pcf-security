@@ -3,7 +3,7 @@ title: Rotating Certificates
 owner: Ops Manager
 ---
 
-This topic describes how to check the expiration date of and rotate the root Certificate Authorities (CAs) and leaf certificates in Pivotal Cloud Foundry (PCF) that are visible to the Ops Manager API. 
+This topic describes how to check the expiration date of and rotate the Ops Manager root Certificate Authority (CA), BOSH NATS CA, and leaf certificates in <%= vars.first_product_name  %> that are visible to the Ops Manager API.
 
 <p class='note'><strong>Note:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
 
@@ -21,9 +21,9 @@ Rotate root CAs and leaf certificates before they expire to avoid downtime for y
 
 ## <a id='procedure'></a> Procedure
 
-This section provides an overview of the procedure for rotating the root CA and leaf certificates in PCF.
+This section explains how to rotate the Ops Manager root CA, BOSH NATS CA, and leaf certificates in <%= vars.product_name %>.
 
-To rotate certificates in PCF, you first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, you follow a certificate rotation procedure to replace expiring certificates and redeploy BOSH to apply changes.
+<p class="note"><b>Note:</b> The BOSH NATS CA is automatically rotated when you rotate the Ops Manager root CA. For more information, see <a href="./certificate-types.html">Certificate Types</a>.</p>
 
 To rotate root CAs and leaf certificates in PCF, do the following:
 
@@ -103,7 +103,6 @@ To check the expiration dates of leaf certificates and identify the types of lea
       * `location` is either `ops_manager` or `credhub`
   * **Configurable Certificates**: Configurable leaf certificates have the following property value: `configurable` is `true`
 
-
 ### <a id='rotate'></a> Rotate Certificates
 
 This section includes procedures for rotating root CAs and leaf certificates. There are different rotation procedures for each type of certificate that requires rotation. 
@@ -114,7 +113,7 @@ To rotate certificates, do one of the following procedures:
 
 * To rotate non-rotatable certificates, call [Pivotal Support](http://support.pivotal.io).
 
-* To rotate the root CA, follow the [Rotate the Root CA and Leaf Certificates](#rotate-ca) procedure. This procedure automatically rotates all non-configurable leaf certificates. You can also optionally rotate configurable leaf certificates as part of this procedure.
+* To rotate the Ops Manager root CA, follow the [Rotate the Root CA and Leaf Certificates](#rotate-ca) procedure. This procedure automatically rotates all non-configurable leaf certificates and the BOSH NATS CA. You can also optionally rotate configurable leaf certificates as part of this procedure.
 
 * To rotate non-configurable leaf certificates, but not the root CA, follow the [Rotate Non-Configurable Leaf Certificates](#regenerate) procedure.
 
@@ -123,13 +122,13 @@ To rotate certificates, do one of the following procedures:
 
 #### <a id='rotate-ca'></a> Rotate the Root CA and Leaf Certificates
 
-This procedure uses the Ops Manager API to rotate the Ops Manager root CA and non-configurable leaf certificates. Rotating the Ops Manager root CA automatically rotates all non-configurable leaf certificates.
+This procedure uses the Ops Manager API to rotate the Ops Manager root CA, BOSH NATS CA, and non-configurable leaf certificates. Rotating the Ops Manager root CA automatically rotates the BOSH NATS CA and all non-configurable leaf certificates.
 
-To prevent system downtime, this procedure includes two BOSH deploys. The first BOSH deploy applies new certificates to PCF components. The second BOSH deploy deletes the old certificates.
+To prevent system downtime, this procedure includes two BOSH deploys. The first BOSH deploy applies new certificates to <%= vars.product_name %> components. The second BOSH deploy deletes the old certificates.
 
 <p class="note warning"><strong>Warning:</strong> You must complete these steps in the exact order specified. Otherwise, you may damage your deployment.</p>
 
-To rotate the root CA and leaf certificates, do the following:
+To rotate the Ops Manager root CA and leaf certificates, do the following:
 
 1. Add a new root CA. See [Add a New Root CA](#add-new-ca).
 
@@ -146,9 +145,9 @@ To rotate the root CA and leaf certificates, do the following:
 
 Follow this procedure to add a new root CA for Ops Manager. The new root CA can be a Pivotal-generated CA or your own custom CA.
 
-<p class="note"><strong>Note</strong>: This procedure regenerates the NATS CA in unison with the Ops Manager root CA.</p>
+This procedure also automatically regenerates the BOSH NATS CA.
 
-To add a new root CA for Ops Manager, do the following:
+To add a new root CA for Ops Manager and regenerate the BOSH NATS CA, do the following:
 
 1. If you haven't already, perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the following steps.
   <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
@@ -401,7 +400,7 @@ Configurable certificates are generated by the user and pasted into Ops Manager 
 
 For instructions on how to rotate SAML certificates for both PAS and the SSO service, see [Rotate Identity Provider SAML Certificates](#rotate-saml-ca).
 
-<p class="note warning"><b>Warning:</b> This procedure does not rotate the Ops Manager root CA. To rotate both the root CA and non-configurable leaf certificates, see [Rotate the Root CA and Leaf Certificates](#rotate-ca).</p>
+<p class="note warning"><b>Warning:</b> This procedure does not rotate the Ops Manager root CA. To rotate both the root CA and non-configurable leaf certificates, see <a href="#rotate-ca">Rotate the Root CA and Leaf Certificates</a>.</p>
 
 To rotate configurable leaf certificates, do the following:
 
