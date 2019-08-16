@@ -15,7 +15,7 @@ Leaf certificates are signed by a CA and are used to identify resources in PCF. 
 
 The following types of PCF certificates require planned rotation:
 
-* **Ops Manager Root CA**: The Ops Manager root CA issues other certificates that PCF uses. The root CA can be a Pivotal-generated CA or your own custom CA. For more information about viewing the root CAs for Ops Manager, see [Listing the Root Certificate Authorities](https://docs.pivotal.io/pivotalcf/opsman-api/#listing-the-root-certificate-authorities). 
+* **Ops Manager Root CA**: The Ops Manager root CA issues other certificates that PCF uses. The root CA can be a Pivotal-generated CA or your own custom CA. The Ops Manager root CA expires four years after creation. For more information about viewing the root CAs for Ops Manager, see [Listing the Root Certificate Authorities](https://docs.pivotal.io/pivotalcf/opsman-api/#listing-the-root-certificate-authorities). 
 
 * **Other internal CAs**: Other internal CAs include the BOSH NATS CA and BOSH DNS CAs. These CAs are used primarily for internal purposes. You cannot rotate the BOSH DNS CAs. The BOSH NATS CA is rotated automatically when you rotate the Ops Manager root CA.
 
