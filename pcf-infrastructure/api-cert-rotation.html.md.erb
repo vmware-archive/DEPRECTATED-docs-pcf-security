@@ -28,15 +28,19 @@ PCF uses a root CA and various leaf certificates. Root CAs are self-signed certi
 
 Leaf certificates are signed by a CA and are used to identify resources in PCF. Both root CAs and leaf certificates require planned rotation in PCF.
 
-The following types of PCF certificates require planned rotation:
+The following types of <%= vars.product_name %> certificates require planned rotation:
 
-* **Ops Manager Root CA**: The Ops Manager root CA issues other certificates that PCF uses. The root CA can be a Pivotal-generated CA or your own custom CA. For more information about viewing the root CAs for Ops Manager, see [Listing the Root Certificate Authorities](https://docs.pivotal.io/pivotalcf/opsman-api/#listing-the-root-certificate-authorities). 
+* **Ops Manager Root CA**: The Ops Manager root CA issues other certificates that <%= vars.product_name %> uses. The root CA can be a Pivotal-generated CA or your own custom CA. The Ops Manager root CA expires four years after creation. For more information about viewing the root CAs for Ops Manager, see [Listing the Root Certificate Authorities](https://docs.pivotal.io/pivotalcf/opsman-api/#listing-the-root-certificate-authorities). 
 
-* **Non-configurable Certificates**: Non-configurable certificates are leaf certificates either created by a CA stored in Ops Manager, or created and stored by CredHub and managed by Ops Manager calls to the CredHub API. Non-configurable certificates are issued directly by the Ops Manager root CA, or by intermediate CAs in a chain of trust originated by the root CA. For more information about about viewing non-configurable leaf certificates, see [Getting Information About Certificates for Products](https://docs.pivotal.io/pivotalcf/opsman-api/#getting-information-about-certificates-from-products). For more information about generating non-configurable leaf certificates, see [Generating New Certificates](https://docs.pivotal.io/pivotalcf/opsman-api/#generating-new-certificates). 
+* **Other internal CAs**: The following CAs are used primarily for internal purposes: 
+  * **BOSH NATS CA**: The BOSH NATS CA is rotated automatically when you rotate the Ops Manager root CA. The BOSH NATS CA is rotatable in PCF v2.3.10 or later, PCF v2.4.4 or later, and PCF v2.5 or later. For more information, see [2.3.10](https://docs.pivotal.io/pivotalcf/2-3/pcf-release-notes/opsmanager-rn.html#2-3-10) in _Ops Manager v2.3 Release Notes_ and [2.4.4](https://docs.pivotal.io/pivotalcf/2-4/pcf-release-notes/opsmanager-rn.html#2-4-4) in _Ops Manager v2.4 Release Notes_.
+  * **BOSH DNS CAs**: The BOSH DNS CAs are applied automatically when you upgrade to PCF v2.3. You cannot rotate the BOSH DNS CAs. To apply all BOSH DNS leaf certificates after upgrading to v2.3, you must rotate all certificates in your environment. For more information, see [BOSH DNS Certificate Authority Upgrades](https://docs.pivotal.io/pivotalcf/2-3/pcf-release-notes/opsmanager-rn.html#bosh-dns-certs) in _Ops Manager v2.3 Release Notes_.
 
-* **Configurable Certificates**: Configurable certificates are leaf certificates supplied by the user and pasted into configuration fields in Ops Manager. Some configuration panes include a **Generate RSA Certificate** button that supplies valid certificates, but users can obtain configurable certificates from elsewhere. For more information about viewing configurable leaf certificates, see [Getting Information About Certificates for Products](https://docs.pivotal.io/pivotalcf/opsman-api/#getting-information-about-certificates-from-products).
+* **Non-configurable Certificates**: Non-configurable certificates are leaf certificates either created by a CA stored in Ops Manager, or created and stored by CredHub and managed by Ops Manager calls to the CredHub API. Non-configurable certificates are issued directly by the Ops Manager root CA, or by intermediate CAs in a chain of trust originated by the root CA. Non-configurable certificates expire after two years. For more information about about viewing non-configurable leaf certificates, see [Getting Information About Certificates for Products](https://docs.pivotal.io/pivotalcf/opsman-api/#getting-information-about-certificates-from-products). For more information about generating non-configurable leaf certificates, see [Generating New Certificates](https://docs.pivotal.io/pivotalcf/opsman-api/#generating-new-certificates). 
 
-* **Non-rotatable Certificates**: Non-rotatable certificates are leaf certificates that, like non-configurable certificates, are issued by the root CA. Unlike non-configurable certificates, non-rotatable certificates cannot be rotated by the Ops Manager API. For more information about viewing non-rotatable leaf certificates, see [Getting Information About Certificates for Products](https://docs.pivotal.io/pivotalcf/opsman-api/#getting-information-about-certificates-from-products).
+* **Configurable Certificates**: Configurable certificates are leaf certificates supplied by the user and pasted into configuration fields in Ops Manager. Some configuration panes include a **Generate RSA Certificate** button that supplies valid certificates, but users can obtain configurable certificates from elsewhere. Configurable certificates generated by Ops Manager typically expire after two years. For more information about viewing configurable leaf certificates, see [Getting Information About Certificates for Products](https://docs.pivotal.io/pivotalcf/opsman-api/#getting-information-about-certificates-from-products).
+
+* **Non-rotatable Certificates**: Non-rotatable certificates are leaf certificates that, like non-configurable certificates, are issued by the root CA. Unlike non-configurable certificates, non-rotatable certificates cannot be rotated by the Ops Manager API. For more information about viewing non-rotatable leaf certificates, see [Getting Information About Certificates for Products](https://docs.pivotal.io/pivotalcf/opsman-api/#getting-information-about-certificates-from-products).opsman-api/#getting-information-about-certificates-from-products).
 
 In addition to the types of certificates listed above, some Pivotal products issue their own tile certificates that are not managed by or visible to the Ops Manager API. These tile certificates do not require planned rotation because they rotate automatically with product upgrades.
 
@@ -149,13 +153,15 @@ The following rules identify the type of each leaf certificate requiring rotatio
 
 ## <a id='rotate'></a> Rotate CAs and Leaf Certificates
 
-The following procedures rotate CAs and leaf certificates that are listed or managed by the Ops Manager API.
+The following procedures rotate the Ops Manager root CA, BOSH NATS CA, and leaf certificates that are listed or managed by the Ops Manager API.
 
 <p class='note'><strong>Note:</strong> The rotation procedures described in this topic does not work when your certificates have already expired.  If your certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
 
 ### <a id='rotate-ca'></a> Rotate Root and Leaf Certificates
 
-This procedure uses the Ops Manager API to rotate the Ops Manager root CA and non-configurable leaf certificates.
+This procedure uses the Ops Manager API to rotate the Ops Manager root CA, the BOSH NATS CA, and the intermediate CAs and non-configurable leaf certificates underneath them.
+
+<p class="note"><b>Note:</b> The BOSH NATS CA is automatically rotated when you rotate the Ops Manager root CA. For more information, see <a href="#types">Certificate Types</a>.</p>
 
 Rotating the Ops Manager root CA automatically rotates all configurable leaf certificates. You can also rotate configurable leaf certificates separately from rotating the root CA. For information about rotating configurable leaf certificates without also rotating the root CA, see [Rotate Configurable Certificates](#rotate-config).
 
