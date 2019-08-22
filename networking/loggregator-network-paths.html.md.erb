@@ -99,38 +99,6 @@ The following table lists network communication paths for Loggregator.
   <td>Mutual TLS</td>
 </tr>
 <tr>
-  <td>syslog_adapter</td>
-  <td>loggregator_trafficcontroller (Reverse Log Proxy)</td>
-  <td>8082</td>
-  <td>TCP</td>
-  <td>gRPC over HTTP/2</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>syslog_adapter</td>
-  <td>Any&#42;&#42;</td>
-  <td>Any&#42;&#42;&#42;</td>
-  <td>TCP</td>
-  <td>TCP, TCP w/ TLS, HTTPS</td>
-  <td>Basic authentication&#42;&#42;&#42;&#42;</td>
-</tr>
-<tr>
-  <td>syslog_scheduler</td>
-  <td>syslog_adapter</td>
-  <td>4443</td>
-  <td>TCP</td>
-  <td>gRPC over HTTP/2</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>syslog_scheduler</td>
-  <td>cloud_controller</td>
-  <td>9023</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
   <td>loggregator_trafficcontroller (Reverse Log Proxy Gateway)</td>
   <td>cloud_controller</td>
   <td>9023</td>
