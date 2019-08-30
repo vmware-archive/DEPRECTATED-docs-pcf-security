@@ -22,7 +22,7 @@ For more information about authenticating with UAA, see [Using Ops Manager API](
 To generate and return a new RSA certificate signed by the root certificate authority (CA), use `curl` to make the following API call:
 
 ```
-curl "https://OPS-MAN-FQDN/api/v0/certificates/generate \
+curl "https://OPS-MAN-FQDN/api/v0/certificates/generate" \
       -X POST \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 ```
@@ -39,7 +39,7 @@ You can view the Ops Manager root CA as a file or in JSON format.
 To return the Ops Manager root CA as a file, use `curl` to make the following API call:
 
 ```
-curl "https://OPS-MAN-FQDN/download_root_ca_cert \
+curl "https://OPS-MAN-FQDN/download_root_ca_cert" \
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 ```
@@ -51,7 +51,7 @@ Where `YOUR-UAA-ACCESS-TOKEN` is your Ops Manager access token without any newli
 To return the Ops Manager root CA as JSON, use `curl` to make the following API call:
 
 ```
-curl "https://OPS-MAN-FQDN/api/v0/security/root_ca_certificate \
+curl "https://OPS-MAN-FQDN/api/v0/security/root_ca_certificate" \
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 ```
@@ -63,9 +63,9 @@ Where `YOUR-UAA-ACCESS-TOKEN` is your Ops Manager access token without any newli
 To return metadata from all deployed RSA certificates visible to Ops Manager, except the root CAs, use `curl` to make the following API call:
 
 ```
-curl "https://OPS-MAN-FQDN/api/v0/deployed/certificates \
+curl "https://OPS-MAN-FQDN/api/v0/deployed/certificates" \
       -X GET \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 ```
 
-Where `YOUR-UAA-ACCESS-TOKEN` is your Ops Manager access token without any newline characters such as `\n`. 
+Where `YOUR-UAA-ACCESS-TOKEN` is your Ops Manager access token without any newline characters such as `\n`.
