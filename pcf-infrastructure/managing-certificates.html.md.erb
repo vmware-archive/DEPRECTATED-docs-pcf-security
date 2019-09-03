@@ -60,7 +60,9 @@ Where `YOUR-UAA-ACCESS-TOKEN` is your Ops Manager access token without any newli
 
 ## <a id='list-rsa-certs'></a> List all RSA Certificates
 
-To return metadata from all deployed RSA certificates visible to Ops Manager, including the root CA, use `curl` to make the following API call:
+To return metadata from all deployed RSA certificates visible to Ops Manager,
+including the root CA and certificates that Ops Manager stores in CredHub,
+use `curl` to make the following API call:
 
 ```
 curl "https://OPS-MAN-FQDN/api/v0/deployed/certificates" \

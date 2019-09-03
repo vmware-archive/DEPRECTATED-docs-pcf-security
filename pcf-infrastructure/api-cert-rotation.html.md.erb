@@ -65,7 +65,8 @@ After identifying the types of certificates that expire soon, you can determine 
      To make the JSON output more readable, you can pipe your `curl` command to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.
      </li></ul>
 
-1. The `deployed/certificates` output lists all CAs and leaf certificates visible to the Ops Manager API. For each certificate listed, determine its expiration date and type.
+1. The `deployed/certificates` output lists all CAs and leaf certificates visible to the Ops Manager API, whether they are by Ops Manager directly, or in CredHub at Ops Manager request.
+For each certificate listed, determine its expiration date and type.
   1. Determine the expiration date from the `valid_until` value.
   For example, the root CA listed below expires on August 12, 2020:
     <pre class='terminal'>
