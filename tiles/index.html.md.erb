@@ -27,14 +27,18 @@ VMs against configuration hardening guidelines.
 
 ##<a id="add-ons"></a> Add-ons
 
-This section provides links to security-related BOSH add-ons available for <%= vars.first_product_name  %> deployments.
+This section provides links to security-related BOSH add-ons available for <%= vars.product_name  %> deployments.
 
 * <a href="https://docs.pivotal.io/addon-fim/index.html">File Integrity Monitoring Add-on for <%= vars.product_name %></a>:
 Provides File Integrity Monitoring (FIM) protection within the <%= vars.product_name %> environment.
 This monitoring is sometimes required for compliance purposes.
 
 * <a href="https://docs.pivotal.io/addon-ipsec/index.html">IPsec Add-on for <%= vars.product_name %></a>:
-Secures data transmissions inside <%= vars.first_product_name  %>.
+Adds security to the network layer for each BOSH-deployed virtual machine (VM), increasing internal protection if a malicious actor breaches your firewall.
+
+  * [Securing Data in Transit with the IPsec Add-on](http://docs.pivotal.io/addon-ipsec/)
+  * [Rotating IPsec Credentials](http://docs.pivotal.io/addon-ipsec/credentials.html)
+  * [Installing the <%= vars.product_name %> IPsec Add-On](http://docs.pivotal.io/addon-ipsec/installing.html)
 
 * <a href="https://docs.pivotal.io/addon-antivirus/index.html">ClamAV Add-on for <%= vars.product_name %></a>:
 Provides antivirus protection within the <%= vars.product_name %> environment.
