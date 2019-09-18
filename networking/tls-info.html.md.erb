@@ -3,7 +3,7 @@ title: TLS Connections in Pivotal Application Service
 owner: Security
 ---
 
-<% current_page.data.title = "TLS Connections in " + vars.product_runtime %>
+<% current_page.data.title = "TLS Connections in " + vars.app_runtime_full %>
 
 This topic classifies the different paths through which external clients, internal components, app containers, and app services communicate in <%= vars.first_product_name  %>, and how the platform uses Transport Layer Security (TLS) protocols to secure these communications.
 
@@ -15,12 +15,12 @@ Within a <%= vars.product_name %> deployment, TLS secures connections between co
 
 ### <a id="client-to-app"></a> Between an External Client and an App
 
-The following diagram illustrates the flow of communication from a client making a request to an app: 
+The following diagram illustrates the flow of communication from a client making a request to an app:
 
 <%= image_tag("ingress-traffic.png", :class => "no-border") %>
 [//]: https://docs.google.com/drawings/d/1gMYrcGpr-srWAv-ZvCs-9UHaV0JG2jpbre5cG2XoLRg/edit?usp=sharing
 
-The following table describes each component involved in receiving a client request and 
+The following table describes each component involved in receiving a client request and
 where their certificates for TLS termination originate.
 
 <table>
@@ -44,7 +44,7 @@ where their certificates for TLS termination originate.
 
 ###  <a id="component-to-component"></a> Between Platform Components
 
-The following diagram illustrates communication between platform components, secured with TLS. 
+The following diagram illustrates communication between platform components, secured with TLS.
 
 <%= image_tag("platform-components.png", :class => "no-border") %>
 [//]: https://docs.google.com/drawings/d/1Nr9dRH72PphVq_iW23yceqq2lzrR4mGvpWdTItTQuqU/edit?usp=sharing
@@ -73,7 +73,7 @@ The following topics list the paths, ports, and protocols that subsystems within
 
 ### <a id="app-to-app"></a> Between Apps
 
-The following diagram illustrates TLS communications between apps running on <%= vars.product_name %>. In this example, the `frontend-blue` and `frontend-green` apps both receive client requests, but only the `frontend-green` app is allowed to communicate with the `backend` app. 
+The following diagram illustrates TLS communications between apps running on <%= vars.product_name %>. In this example, the `frontend-blue` and `frontend-green` apps both receive client requests, but only the `frontend-green` app is allowed to communicate with the `backend` app.
 
 <%= image_tag("between-app-traffic.png", :class => "no-border") %>
 [//]: https://docs.google.com/drawings/d/1h4x8vNf2xiCZMVpFLb11Dx-PmMmcYOMWBHAHfbzNbUQ/edit?usp=sharing
@@ -84,18 +84,18 @@ Developers specify which apps are allowed to communicate using container network
 
 ###  <a id="app-to-service"></a> Between Apps and On-Platform Services
 
-The following diagram illustrates TLS communication between apps and managed, on-platform services. It uses Pivotal Cloud Cache as an example of a managed service. 
+The following diagram illustrates TLS communication between apps and managed, on-platform services. It uses Pivotal Cloud Cache as an example of a managed service.
 
 <%= image_tag("apps-services.png", :class => "no-border") %>
 [//]: https://docs.google.com/drawings/d/16WDbrSCLR9-avP0-DvnsJHwDG3tc8vMJTNiU-6rFLNo/edit?usp=sharing
 
-BOSH CredHub issues certificates to the Pivotal Cloud Cache components. For the app, the developer must retrieve a copy of this certificate using the CredHub API and place it in the truststore for the app. For more information, see the [Developing an App Under TLS](https://docs.pivotal.io/p-cloud-cache/tls-enabled-app.html) document in the Pivotal Cloud Cache documentation. 
+BOSH CredHub issues certificates to the Pivotal Cloud Cache components. For the app, the developer must retrieve a copy of this certificate using the CredHub API and place it in the truststore for the app. For more information, see the [Developing an App Under TLS](https://docs.pivotal.io/p-cloud-cache/tls-enabled-app.html) document in the Pivotal Cloud Cache documentation.
 
 Separately, PAS Runtime Credhub might store credentials for the app to access a service over the TLS connection, adding a second layer of security. For more information, see [Securing Services Instance Credentials with Runtime CredHub](../../opsguide/secure-si-creds.html).
 
 ###  <a id="app-to-external-service"></a> Between Apps and External Services
 
-The following diagram illustrates communications between apps and external, brokered services secured with TLS. 
+The following diagram illustrates communications between apps and external, brokered services secured with TLS.
 
 <%= image_tag("apps-external-services.png", :class => "no-border") %>
 [//]: https://docs.google.com/drawings/d/1pUQUeC9_XBq_wTJu6Ws0vPTPO8Xz4FQfqj5PRflQ5_M/edit?usp=sharing
@@ -104,7 +104,7 @@ The developer must retrieve the certificate from the external service and provid
 
 ## <a id="container-creds"></a> App Instance Container Identity Credentials
 
-Each app instance container in <%= vars.product_name %> has its own identity credentials. This section is meant to help <%= vars.product_name %> operators and developers [understand](#cred-details) and [use](#use-creds) these credentials. 
+Each app instance container in <%= vars.product_name %> has its own identity credentials. This section is meant to help <%= vars.product_name %> operators and developers [understand](#cred-details) and [use](#use-creds) these credentials.
 
 ### <a id="cred-details"></a> About App Instance Identity Credentials
 
@@ -129,7 +129,7 @@ See the following table to learn about app instance identity credentials.
     <td>
       <ul>
         <li>
-          A PEM-encoded <a href="https://tools.ietf.org/html/rfc5280">X.509</a> certificate and <a href="https://tools.ietf.org/html/rfc3447">PKCS #1 RSA</a> private key. 
+          A PEM-encoded <a href="https://tools.ietf.org/html/rfc5280">X.509</a> certificate and <a href="https://tools.ietf.org/html/rfc3447">PKCS #1 RSA</a> private key.
         </li>
       </ul>
     </td>
@@ -175,7 +175,7 @@ See the following table to learn about app instance identity credentials.
 
 If you want to enable secure TLS communications from an app using container instance identity credentials, ensure that you do the following:
 
-* **Add the credentials to your development stack configuration:** 
+* **Add the credentials to your development stack configuration:**
   * The credentials must be present in your development stack configuration for your app to use them. You can retrieve the credentials through following environment variables, which <%= vars.product_name %> sets to the locations of key and certificate files.
         <table id='instance-certs' border="1" class="nice" >
           <tr>
@@ -193,9 +193,9 @@ If you want to enable secure TLS communications from an app using container inst
           </tr>
         </table>
 
-* **Reload the credential files before they expire:** 
+* **Reload the credential files before they expire:**
   * <%= vars.product_name %> rotates the credentials shortly before the current certificate expires. Apps that use these credentials must reload the certificate and key file contents either periodically or in reaction to filesystem watcher events.
- 
+
 * **Configure external clients or servers to trust the root CA:**
   * To enable secure TLS communication between an app and a client or server external to <%= vars.product_name %>, you must configure the external client or server to trust the CA that issues app instance container identity credentials. See the _Issuing Authority_ row of the table in [About App Instance Identity Credentials
 ](#cred-details).
@@ -206,7 +206,7 @@ For more information about instance identity credentials, see the [Instance Iden
 
 ## <a id="ciphers"></a> TLS Cipher Suites
 
-By default, <%= vars.product_name %> uses a limited set of cipher suites to secure its internal communications. However, some components used in <%= vars.product_name %>, like the Gorouter and HAProxy, may support additional TLS cipher suites to accommodate older clients outside of <%= vars.product_name %>. 
+By default, <%= vars.product_name %> uses a limited set of cipher suites to secure its internal communications. However, some components used in <%= vars.product_name %>, like the Gorouter and HAProxy, may support additional TLS cipher suites to accommodate older clients outside of <%= vars.product_name %>.
 
 <p class="note">The AWS Classic load balancer does not support the recommended TLS cipher suites. See <a href="../../adminguide/securing-traffic.html#ciphers">Securing Traffic into Cloud Foundry</a> for details and mitigations.</p>
 
@@ -234,7 +234,7 @@ The recommended TLS cipher suites for the Gorouter are:
 
 You can specify other cipher suites and a different minimum version of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by the Gorouter, see [Securing Traffic into Cloud Foundry](../../adminguide/securing-traffic.html#ciphers).
 
-For instructions on how to configure the TLS cipher suites for the Gorouter, see [Configuring PAS](../../customizing/configure-pas.html#networking). 
+For instructions on how to configure the TLS cipher suites for the Gorouter, see [Configuring PAS](../../customizing/configure-pas.html#networking).
 
 
 ### <a id="cipher_haproxy"></a> HAProxy Configuration
@@ -256,14 +256,4 @@ If you use the default and recommended Gorouter TLS cipher suites in PAS, then e
 
 If you change the default Gorouter TLS cipher suites in PAS, and you change the TLS cipher suites for HAProxy, ensure that you have at least one overlapping TLS cipher suite within the two sets.
 
-For instructions on how to configure the TLS cipher suites for HAProxy, see the PAS installation documentation for the IaaS of your deployment. For example, if you are deploying PAS on GCP, see see [Configuring PAS](../../customizing/configure-pas.html#networking). 
-
-
-
-
-
-
-
-
-
-
+For instructions on how to configure the TLS cipher suites for HAProxy, see the PAS installation documentation for the IaaS of your deployment. For example, if you are deploying PAS on GCP, see see [Configuring PAS](../../customizing/configure-pas.html#networking).
