@@ -3,15 +3,13 @@ title: Rotating Certificates
 owner: Ops Manager
 ---
 
-This topic describes how to check the expiration date of and rotate the Ops Manager root Certificate Authority (CA), BOSH NATS CA, and leaf certificates in <%= vars.product_name  %> that are visible to the Ops Manager API.
+This topic describes how to check the expiration date of and rotate the Pivotal Operations Manager root Certificate Authority (CA), BOSH NATS CA, and leaf certificates in <%= vars.product_name  %> that are visible to the Ops Manager API.
 
 <p class='note warning'><strong>Warning:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/credentials.html).
 
 For information about using trusted third-party certificates for both apps hosted on <%= vars.product_name %> and internal <%= vars.product_name %> components, see [Setting Trusted Certificates](../../customizing/trusted-certificates.html).
-
-<p class="note warning"><strong>Warning</strong>: After you upgrade to Ops Manager v2.7, you must reset any certificates that have been manually set in CredHub. This requirement is due to a change in CredHub metadata to identify generated certificates and must be performed before rotating any certificates in Ops Manager v2.8. For more information, see <a href="https://docs.pivotal.io/platform/2-7/pcf-release-notes/opsmanager-rn.html#credhub-generated-field">Operators Must Reset Manually Set Certificates in CredHub After Ops Manager v2.7 Upgrade</a> in the <i>Ops Manager v2.7 Release Notes</i>.</p>
 
 ## <a id='intro'></a> Overview
 
@@ -20,6 +18,13 @@ The Ops Manager API manages and lists internal Certificate Authorities (CAs) and
 For more information about the CAs and leaf certificates visible to the Ops Manager API, see [Certificate Types](certificate-types.html).
 
 Rotate CAs and leaf certificates before they expire to avoid downtime for your foundation.
+
+## <a id='prerequisite'></a> Prerequisite
+
+Before rotating any certificates in Ops Manager, you must reset any certificates that have been manually set in CredHub. 
+This requirement is due to a change in CredHub metadata in Ops Manager v2.7. Follow the procedure in [Reviewing Manually Set Certificates in CredHub](manual-credhub-certificate.html) to identify and reset any manually set certificates in CredHub.
+
+For more information, see <a href="https://docs.pivotal.io/platform/2-7/pcf-release-notes/opsmanager-rn.html#credhub-generated-field">Operators Must Reset Manually Set Certificates in CredHub After Ops Manager v2.7 Upgrade</a> in the <i>Ops Manager v2.7 Release Notes</i>.
 
 ## <a id='procedure'></a> Procedure
 
