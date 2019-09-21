@@ -9,7 +9,7 @@ set in CredHub.
 ## <a id="overview"></a> Overview
 
 A manually set certificate is a certificate that an operator has added 
-directly to CredHub through the CredHub CLI instead of having CredHub generate the certificate. 
+directly to CredHub through the CredHub CLI instead of using a CredHub-generated certificate. 
 
 For example, an operator may have provided an existing certificate to CredHub as described in the 
 [Preparing for TLS](https://docs.pivotal.io/p-mysql/2-5/prepare-tls.html) procedure 
@@ -18,12 +18,12 @@ of the _MySQL for PCF_ documentation.
 In the context of Ops Manager API output, a manually set certificate appears
 as a configurable certificate. However, to ensure that Ops Manager does not rotate 
 these CredHub certificates alongside generated certificates, 
-you must ensure that the `generated` field of manually set CredHub 
-certificates is set to `false`.
+you must ensure that the `generated` fields of any manually set 
+certificates are set to `false` in CredHub.
 
 In this procedure, you use the CredHub CLI to review existing certificates 
-and check for manually set certificates. If you find any manually set certificates 
-that require updates, boyou can use the CredHub CLI to reset the certificate.
+and then check for manually set certificates. If you find any manually set certificates 
+that require updates, you can use the CredHub CLI to reset the certificate.
 
 ###<a id='credhub-creds'></a> Find BOSH Client Credentials and BOSH Director IP Address
 
