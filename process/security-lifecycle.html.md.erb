@@ -1,87 +1,85 @@
 ---
-title: PCF Testing, Release, and Security Lifecycle
+title: Testing, Release, and Security Lifecycle
 owner: Security
 ---
 
+This topic explains how Pivotal's development practices, automated build tools, and organizational structures work together to create and support stable releases of <%= vars.platform_name %>.
 
-
-This topic explains how Pivotal's development practices, automated build tools, and organizational structures work together to create and support stable releases of <%= vars.product_name  %>.
-
-## Summary 
-* <%= vars.product_name %> teams building system components receive frequent feedback, which helps to secure code from exposure to vulnerability.
-* Every <%= vars.product_name %> release follows a strict workflow and passes through numerous quality and compliance checks before distribution. 
+## <a id='summary'></a>Summary
+* <%= vars.platform_name %> teams building system components receive frequent feedback, which helps to secure code from exposure to vulnerability.
+* Every <%= vars.platform_name %> release follows a strict workflow and passes through numerous quality and compliance checks before distribution.
 * Teams build tests into the product consistently and run them automatically with any code change.
 
-## Release Mechanics
+## <a id='mechanics'></a>Release Mechanics
 
-Pivotal releases, patches, and supports multiple versions of <%= vars.product_name %> simultaneously. This section explains the versioning and support conventions Pivotal follows.
+Pivotal releases, patches, and supports multiple versions of <%= vars.platform_name %> simultaneously. This section explains the versioning and support conventions Pivotal follows.
 
-### Versioning
-Pivotal numbers <%= vars.product_name %> releases following a [semantic versioning](http://semver.org/) style format, _X.Y.Z_, where _X_ and _Y_ indicate major and minor releases, and _Z_ designates patch releases. Major and minor releases change <%= vars.product_name %> functionality; patch releases are backward-compatible security patches or bug fixes.
+### <a id='versioning'></a>Versioning
+Pivotal numbers <%= vars.platform_name %> releases following a [semantic versioning](http://semver.org/) style format, _X.Y.Z_, where _X_ and _Y_ indicate major and minor releases, and _Z_ designates patch releases. Major and minor releases change <%= vars.platform_name %> functionality; patch releases are backward-compatible security patches or bug fixes.
 
-### Support
-As of <%= vars.product_name %> 1.8, Pivotal supports each major and minor <%= vars.product_name %> release according to the following criteria:
+### <a id='support'></a>Support
+As of <%= vars.platform_old %> v1.8, Pivotal supports each major and minor <%= vars.platform_name %> release according to the following criteria:
 
 * Pivotal supports the release for at least 9 months following its first publication date.
-* Pivotal supports the last three major or minor releases, even if this extends coverage beyond 9 months. 
+* Pivotal supports the last three major or minor releases, even if this extends coverage beyond 9 months.
 
-Support includes maintenance updates and upgrades, bug and security fixes, and technical assistance. The [Pivotal Support Policy](https://pivotal.io/support/lifecycle_policy) describes support standards, technical guidance, and publication phases in more detail. The Pivotal Support Services [Terms and Conditions](https://pivotal.io/support/support_terms_conditions) defines Pivotal support in legal terms.
+Support includes maintenance updates and upgrades, bug and security fixes, and technical help. The [Pivotal Support Policy](https://pivotal.io/support/lifecycle_policy) describes support standards, technical guidance, and publication phases in more detail. The Pivotal Support Services [Terms and Conditions](https://pivotal.io/support/support_terms_conditions) defines Pivotal support in legal terms.
 
-### Patch Releases
-Patch releases are more frequent and less predictable than major/minor releases. The v1.6.x line provides a good example of their frequency. <%= vars.product_name %> 1.6.1 was released on October 26, 2015. Through August 2016, 36 additional patches of Elastic Runtime 1.6.x and 18 patches of Ops Manager 1.6.x provided security and bug fixes to customers.
+### <a id='patch-releases'></a>Patch Releases
+Patch releases are more frequent and less predictable than major/minor releases. The v1.6.x line provides a good example of their frequency. <%= vars.platform_old %> v1.6.1 was released on October 26, 2015. Through August 2016, 36 additional patches of Elastic Runtime v1.6.x and 18 patches of Ops Manager v1.6.x provided security and bug fixes to customers.
 
-Pivotal identifies security issues using standard nomenclature from [Common Vulnerabilities and Exposures (CVE)](https://cve.mitre.org/), [Ubuntu Security Notices (USN)](https://www.ubuntu.com/usn/), and other third party sources. Read about security fixes in core Cloud Foundry code or packaged dependencies in the release notes for [Ops Manager](http://docs.pivotal.io/pivotalcf/2-1/pcf-release-notes/opsmanager-rn.html) and [Pivotal Application Service (PAS)](http://docs.pivotal.io/pivotalcf/2-1/pcf-release-notes/runtime-rn.html).
+Pivotal identifies security issues using standard nomenclature from [Common Vulnerabilities and Exposures (CVE)](https://cve.mitre.org/), [Ubuntu Security Notices (USN)](https://www.ubuntu.com/usn/), and other third party sources. Read about security fixes in core Cloud Foundry code or packaged dependencies in the release notes for [Ops Manager](http://docs.pivotal.io/platform/pcf-release-notes/opsmanager-rn.html) and [<%= vars.app_runtime_full %>](http://docs.pivotal.io/pivotalcf/pcf-release-notes/runtime-rn.html).
 
-[Pivotal.io/security](https://pivotal.io/security) maintains a running list of security fixes in <%= vars.product_name %> and <%= vars.product_name %> dependencies. Consult that page to see the most recent findings from Pivotal's security team.
+[Pivotal.io/security](https://pivotal.io/security) maintains a running list of security fixes in <%= vars.platform_name %> and <%= vars.platform_name %> dependencies. Consult that page to see the most recent findings from Pivotal's security team.
 
-### Upgrading
-All <%= vars.product_name %> releases pass through extensive test suites that include automated unit, integration, and acceptance tests on multiple IaaSes. Regardless of this extensive testing, Pivotal recommends that you test major and minor releases in a non-production environment before implementing them across your deployment. Upgrade your production environment as soon as possible after you validate the new release on your test environment.
+### <a id='upgrading'></a>Upgrading
+All <%= vars.platform_name %> releases pass through extensive test suites that include automated unit, integration, and acceptance tests on multiple IaaSes. Regardless of this extensive testing, Pivotal recommends that you test major and minor releases in a non-production environment before implementing them across your deployment. Upgrade your production environment as soon as possible after you validate the new release on your test environment.
 
-## Release Testing, Integration, and Validation
+## <a id='testing'></a>Release Testing, Integration, and Validation
 This section describes Pivotal's software development processes and explains compliance and regulatory standards to which Pivotal software adheres.
 
-### Test-Driven Development
+### <a id='tdd'></a>Test-Driven Development
 Pivotal's development process relies on a strict workflow with continuous automated testing. Pivotal R&D does not separate engineering and testing teams. Rather, every Pivot on each engineering team is responsible for ensuring the quality of their code. They write tests for all of the software components that they develop, often before writing the software itself.
 
 With every software change, automated build pipelines trigger these tests for the new software component and for everything it touches. If a new code check-in does not pass its tests or causes a failure elsewhere, it pauses the build pipeline for the entire team, or sometimes all of Pivotal R&D. The transparency of this process encourages developers to work together to address code issues quickly.
 
-Pivotal applies the following automated testing approaches, scenarios, and frameworks to <%= vars.product_name %> components and to the release as a whole:
+Pivotal applies the following automated testing approaches, scenarios, and frameworks to <%= vars.platform_name %> components and to the release as a whole:
 
 * **Unit tests**: Development teams write unit tests to express and validate desired functional behavior of product components. Typical frameworks used are [RSpec](http://rspec.info/) and [Ginkgo](https://onsi.github.io/ginkgo/). These tests run continuously throughout the development cycle.
 
 * **OSS integration tests**: The Release Integration team exercises a full deployment of open-source Cloud Foundry to validate all end-user features. They maintain the [Cloud Foundry Acceptance Test](https://github.com/cloudfoundry/cf-acceptance-tests) (CATs) suite alongside the OSS cf-release. Cloud Foundry component teams also contribute acceptance test suites at the OSS Integration Test level. These tests exercise and validate their components' functional, performance, and integration health.
 
-* **<%= vars.product_name %> integration tests**: The <%= vars.product_name %> Release Engineering (RelEng) team validates the quality and cross-product integration health of the commercial <%= vars.product_name %> release. RelEng runs OSS Acceptance Tests against all supported releases. These tests run on full <%= vars.product_name %> instances configured to represent diverse real-world customer scenarios on various IaaSes and using both internal and external load balancer, database, blobstore, and user store solutions.
+* **<%= vars.platform_name %> integration tests**: The <%= vars.platform_name %> Release Engineering (RelEng) team validates the quality and cross-product integration health of the commercial <%= vars.platform_name %> release. RelEng runs OSS Acceptance Tests against all supported releases. These tests run on full <%= vars.platform_name %> instances configured to represent diverse real-world customer scenarios on various IaaSes and using both internal and external load balancer, database, blobstore, and user store solutions.
 
-### Additional Pre-Release Gates: Internal, PWS, and Compliance
-In addition to its automated unit and integration testing, Pivotal deploys all upgrades slated for upcoming <%= vars.product_name %> releases on at-scale test environments. Prior to each Major or Minor commercial release, Pivotal runs the entire <%= vars.product_name %> Suite of services on several internally-managed large integration environments that run customer-like data and workloads.
+### <a id='release-gates'></a>Additional Pre-Release Gates: Internal, PWS, and Compliance
+In addition to its automated unit and integration testing, Pivotal deploys all upgrades slated for upcoming <%= vars.platform_name %> releases on at-scale test environments. Prior to each Major or Minor commercial release, Pivotal runs the entire <%= vars.platform_name %> Suite of services on several internally-managed large integration environments that run customer-like data and workloads.
 
-Pivotal also pushes upcoming <%= vars.product_name %> feature upgrades and patches to its [Pivotal Web Services](http://run.pivotal.io/) platform, where customers continually deploy and host hundreds of mission-critical applications at scale, 24/7. The PWS environment gives Pivotal a continuous source of real-world usage and performance metrics that inform product development teams.
+Pivotal also pushes upcoming <%= vars.platform_name %> feature upgrades and patches to its [Pivotal Web Services](http://run.pivotal.io/) (PWS) platform, where customers continually deploy and host hundreds of mission-critical apps at scale, 24/7. The PWS environment gives Pivotal a continuous source of real-world usage and performance metrics that inform product development teams.
 
-All <%= vars.product_name %> product teams participate in go-to-market steps for each release, as is often required for shipping a legally compliant product. Examples include [Open Source License File](https://network.pivotal.io/open-source) attribution and an Export Compliance classification.
+All <%= vars.platform_name %> product teams participate in go-to-market steps for each release, as is often required for shipping a legally compliant product. Examples include [Open Source License File](https://network.pivotal.io/open-source) attribution and an Export Compliance classification.
 
-## Patch Releases: Security and Bug Fixes
-Pivotal uses established processes to track, disclose, and remediate vulnerabilities in <%= vars.product_name %> and related dependent components. This section explains how Pivotal identifies vulnerabilities and implements fixes for them.
+## <a id='bug-fixes'></a>Patch Releases: Security and Bug Fixes
+Pivotal uses established processes to track, disclose, and remediate vulnerabilities in <%= vars.platform_name %> and related dependent components. This section explains how Pivotal identifies vulnerabilities and implements fixes for them.
 
-### Identifying Security Vulnerabilities
-Pivotal has an established process to track and patch vulnerabilities in software dependencies and <%= vars.product_name %> software. Additionally, [pivotal.io/security](https://pivotal.io/security) describes a responsible disclosure process for reporting vulnerabilities identified in Pivotal software by 3rd parties.
+### <a id='vulnerabilities'></a>Identifying Security Vulnerabilities
+Pivotal has an established process to track and patch vulnerabilities in software dependencies and <%= vars.platform_name %> software. Additionally, [pivotal.io/security](https://pivotal.io/security) describes a responsible disclosure process for reporting vulnerabilities identified in Pivotal software by 3rd parties.
 
 Pivotal uses multiple methods to identify security vulnerabilities in Pivotal software and dependencies internally, including:
 
 * Security notifications from [Canonical](http://www.canonical.com/) for their Ubuntu operating system, provided through Pivotal's commercial relationship with Canonical
-* Software component scans several times per day, using 3rd party security software which updates continuously from external security vulnerability sources
+* Software component scans that use third-party security software to update continuously from external security vulnerability sources
 * Dependency analysis software that identifies and catalogs software dependencies
 * Security vulnerability notifications from known software dependencies
 
 Pivotal also monitors externally-reported vulnerabilities from many sources, including:
 
-* 3rd party security analysis requested by Pivotal
+* Third-party security analysis requested by Pivotal
 * Cloud Foundry Foundation security notifications from member companies
-* Customer, prospect and other 3rd party security reports
+* Customer, prospect and other third-party security reports
 
-When Pivotal discovers a potential security vulnerability in <%= vars.product_name %>, the security team opens an issue to assess it. If it confirms the vulnerability exists, Pivotal identifies and updates affected components with plans to backport the fix to stable releases. Fixes are implemented on a target timeline based on the [severity level](./pcf-security.html) of the vulnerability.
+When Pivotal discovers a potential security vulnerability in <%= vars.platform_name %>, the security team opens an issue to assess it. If it confirms the vulnerability exists, Pivotal identifies and updates affected components with plans to backport the fix to stable releases. Fixes are implemented on a target timeline based on the [severity level](./pcf-security.html) of the vulnerability.
 
-## Fix, Test, and Release Lifecycle
+## <a id='lifecycle'></a>Fix, Test, and Release Lifecycle
 This flowchart details the steps that Pivotal performs on a typical high-priority CVE, to publish a patch release fix on [https://network.pivotal.io](https://network.pivotal.io):
 
 <%= image_tag("triage-flowchart.png") %>
