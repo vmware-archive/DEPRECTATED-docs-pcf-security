@@ -1,23 +1,24 @@
 ---
-title: Reviewing Manually Set Certificates in CredHub
+title: Reviewing Manually Set Certificates in BOSH CredHub
 owner: Ops Manager
 ---
 
 This topic describes how to identify and update certificates that have been manually 
-set in CredHub. 
+set in BOSH CredHub. 
 
 ## <a id="overview"></a> Overview
 
 A manually set certificate is a certificate that an operator has added 
-directly to CredHub through the CredHub CLI instead of using a CredHub-generated certificate. 
+directly to BOSH CredHub through the CredHub CLI instead of using 
+a CredHub-generated certificate. 
 
-For example, an operator may have provided an existing certificate to CredHub as described in the 
+For example, an operator may have provided an existing certificate to BOSH CredHub as described in the 
 [Preparing for TLS](https://docs.pivotal.io/p-mysql/2-5/prepare-tls.html) procedure 
 of the _MySQL for PCF_ documentation.
 
 In the context of Ops Manager API output, a manually set certificate appears
 as a configurable certificate. However, to ensure that Ops Manager does not rotate 
-these CredHub certificates alongside generated certificates, 
+these certificates alongside CredHub-generated certificates, 
 you must ensure that the `generated` fields of any manually set 
 certificates are set to `false` in CredHub.
 
@@ -51,7 +52,7 @@ To find the BOSH CredHub client name and client secret, do the following:
 
 1. In the BOSH Director row, locate and record the IP address of BOSH Director. For example, `10.0.0.5`.
 
-## <a id="login-credhub"></a> Target and Log in to the CredHub API Server
+## <a id="login-credhub"></a> Target and Log in to the BOSH CredHub API Server
 
 You can run CredHub CLI commands on the Ops Manager VM.
 
@@ -91,32 +92,19 @@ see [Advanced Troubleshooting with the BOSH CLI](../../customizing/trouble-advan
       --client-secret=abcdefghijklm123456789
     </pre>
 
-1. Retrieve a CredHub API authorization token by running the following command:
-
-    ```
-    credhub --token
-    ```
-
-1. Alternately, you can store the token in an environment variable by running the following command:
-    
-    ```
-    export CREDHUB_TOKEN=$(credhub --token)
-    ```
-
 ## <a id="check-credhub-certs"></a> Check Certificates in CredHub
 
-After you retrieve the CredHub API token, you can query the CredHub API on the command line.
+After logging in to CredHub, you can query the CredHub API on the command line.
 
 To retrieve a list of CredHub certificates, do the following:
 
 1. To retrieve a list of all the certificates stored in CredHub, run the following command:
 
     ```
-    curl "https://BOSH-DIRECTOR:8844/api/v1/certificates" -X GET -H "Authorization: $CREDHUB_TOKEN" -k | jq
+    credhub curl -p "/api/v1/certificates" -X GET | jq
     ```
-    Where `BOSH-DIRECTOR` is the IP address of the BOSH Director that you targeted in [Target and Log in to the CredHub API Server](#login-credhub).
 
-1. In the JSON output, check the value of the `generated` field for each certificate. For example:
+1. In the JSON output, check the value of the `generated` field of each certificate. For example:
 
     ```
   {
