@@ -3,8 +3,8 @@ title: Reviewing and Resetting Manually Set Certificates in BOSH CredHub
 owner: Ops Manager
 ---
 
-This topic describes how to identify and update certificates that have been manually 
-set in BOSH CredHub. 
+This topic describes how you can identify and update certificates that 
+either you or another operator have set manually in BOSH CredHub. 
 
 ## <a id="overview"></a> Overview
 
@@ -12,15 +12,15 @@ A manually set certificate is a certificate that an operator has added
 directly to BOSH CredHub through the CredHub CLI instead of using 
 a CredHub-generated certificate. 
 
-For example, an operator may have provided an existing certificate to BOSH CredHub as described in the 
+For example, you or another operator may have provided 
+an existing certificate to BOSH CredHub as described in the 
 [Preparing for TLS](https://docs.pivotal.io/p-mysql/2-5/prepare-tls.html) procedure 
 of the _MySQL for PCF_ documentation.
 
-In the context of Ops Manager API output, a manually set certificate appears
-as a configurable certificate. However, to ensure that Ops Manager does not rotate 
+To ensure that Ops Manager does not rotate 
 these certificates alongside CredHub-generated certificates, 
-you must ensure that the `generated` fields of any manually set 
-certificates are set to `false` in CredHub.
+you must ensure that the `generated` field of all manually set 
+certificates is set to `false` in CredHub.
 
 In this procedure, you use the CredHub CLI to review existing certificates 
 and then check for manually set certificates. If you find any manually set certificates 
@@ -34,8 +34,11 @@ To find the BOSH CredHub client name and client secret, do the following:
 
 1. In the Ops Manager Installation Dashboard, click the BOSH Director tile.
 1. Click the **Credentials** tab.
-1. In the BOSH Director section, click the link to the BOSH Commandline Credentials.
-	![CredHub Credentials](../images/bosh-client-creds.png)
+1. In the BOSH Director section, click the link next to the BOSH Commandline Credentials.
+  <%= image_tag("bosh-client-creds.png", :alt => "The 'Credentials'
+        page includes several rows of credentials that are used in BOSH Director's configuration. 
+        The table row called out in this screenshot is the BOSH Commandline Credentials.
+        Next to BOSH Commandline Credentials is a hyperlink entitled 'Link to Credential'.") %>
 1. Record the values for `BOSH_CLIENT` and `BOSH_CLIENT_SECRET`.
 
 
