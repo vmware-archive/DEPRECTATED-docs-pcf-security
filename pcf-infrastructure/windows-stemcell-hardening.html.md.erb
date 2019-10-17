@@ -34,3 +34,9 @@ The following list includes some of the key audit policies applied to Windows Se
 * Log audit events related to policy changes on Windows VMs.
 
 For more information about audit policies that apply to Windows stemcells, see [Microsoft Baseline Security Standard](#msft-baseline).
+
+## <a id='firewall'></a> Firewall Settings
+
+While Windows Server 2019 stemcells align with the firewall behavior recommended by the Microsoft Baseline Security Standard, they are not fully compliant. The stemcells broadly block all inbound requests and permit all outbound requests, although specific ports are opened up for communication between Pivotal Platform components and the Windows VM.
+
+For more information about firewall rules of the Windows Server 2019 stemcells, please contact Pivotal at pcf-windows@pivotal.io.
