@@ -34,6 +34,9 @@ For more information, see <a href="https://docs.pivotal.io/platform/2-7/pcf-rele
 
 This section explains how to rotate the Ops Manager root CA, BOSH NATS CA, and leaf certificates in <%= vars.product_name %>.
 
+<p class="note"><strong>Note:</strong>
+For more advanced rotation procedures, including the Services TLS CA rotation, as well as certificate garbage collection, see <a href="./advanced-certificate-rotation.html">Advanced Certificate Rotation with CredHub Maestro</a>.</p>
+
 <p class="note"><strong>Note:</strong> The BOSH NATS CA is automatically rotated when you rotate the Ops Manager root CA. For more information, see <a href="./certificate-types.html">Certificate Types</a>.</p>
 
 To rotate certificates in <%= vars.product_name %>, you first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, you follow a certificate rotation procedure to replace expiring certificates and redeploy BOSH to apply changes.
@@ -49,6 +52,8 @@ To rotate CAs and leaf certificates:
 This section describes how to check the expiration dates of the CAs and leaf certificates that the Ops Manager API lists and manages. It also explains how to identify the types of certificates that require manual rotation.
 
 After identifying the types of certificates that expire soon, you can determine which certificate rotation procedure to follow.
+
+<p class="note"><strong>Note:</strong> If you would like to set up your Concourse to keep track of expiring certificates, you can make use of Platform Automation's <a href="https://docs.pivotal.io/platform-automation/v4.1/tasks.html#expiring-certificates" target="_blank">expiring-certificates task</a></p>
 
 To check the expiration dates and certificate types of your CAs and leaf certificates:
 
