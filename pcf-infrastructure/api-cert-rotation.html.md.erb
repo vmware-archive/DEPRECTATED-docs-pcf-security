@@ -149,7 +149,7 @@ To rotate the Ops Manager root CA and leaf certificates:
 
 1. Rotate non-configurable leaf certificates. See [Rotate Non-Configurable Leaf Certificates from the New Root](#regenerate-from-new-root).
 
-1. (Optional) Delete the old CA. See [Delete the Old CA](#delete).
+1. Delete the old CA. See [Delete the Old CA](#delete).
 
 <a id='add-new-ca'></a> <strong>Step 1: Add a New Root CA</strong>
 
@@ -355,7 +355,7 @@ The API returns a successful response:
 
 1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes** to perform a second redeploy.
 
-<a id='delete'></a> <strong>(Optional) Step 5: Delete the Old CA</strong>
+<a id='delete'></a> <strong>Step 5: Delete the Old CA</strong>
 
 After activating a new root CA and rotating leaf certificates from the new root CA, Pivotal recommends deleting the old root CA from your foundation.
 
