@@ -103,8 +103,8 @@ To check the expiration dates of leaf certificates and identify the types of lea
       * `configurable` is `false`
       * `location` is either `ops_manager` or `credhub`
   * **Configurable Certificates**: Configurable leaf certificates have the following property value: `configurable` is `true`
-=======
-  1. For any certificates expiring soon, use the following rules to identify their types:
+
+1. For any certificates expiring soon, use the following rules to identify their types:
       * **Non-Rotatable Certificates**: Non-Rotatable certificates have the following property value:
           * `variable_path` is `/opsmgr/bosh_dns/tls_ca`
       * **Non-Configurable Certificates**: Non-Configurable leaf certificates have the following property values:
@@ -120,7 +120,6 @@ To check the expiration dates of leaf certificates and identify the types of lea
           * `location` is `ops_manager`
 
 1. Continue to [Rotate Certificates](#rotate) with your list of certificate types that expire soon.
->>>>>>> ac66f5b... Formatting and style fixes
 
 ### <a id='rotate'></a> Rotate Certificates
 
