@@ -128,13 +128,13 @@ To prevent system downtime, this procedure includes two BOSH deploys. The first 
 
 To rotate CAs and non-configurable leaf certificates:
 
-1. Add a new Ops Manager root CA. See [Add a New Root CA](#add-new-ca).
+1. Add a new Ops Manager root CA. This step also automatically adds new certificates for all CAs visible to the Ops Manager API. See [Add New CAs](#add-new-ca).
 
-1. Activate the root CA. [Activate the Root CA](#activate-new-ca).
+1. Activate the root CA. This step also automatically activates any other new CAs added in the previous step. [Activate the CAs](#activate-new-ca).
 
 1. (Optional) Rotate leaf configurable certificates. See [Rotate Configurable Leaf Certificates](#rotate-config-after-new-root).
 
-1. Rotate non-configurable leaf certificates. See [Rotate Non-Configurable Leaf Certificates from the New Root](#regenerate-from-new-root).
+1. Rotate non-configurable leaf certificates. See [Rotate Non-Configurable Leaf Certificates from the New CAs](#regenerate-from-new-root).
 
 1. Delete the old CA. See [Delete the Old CA](#delete).
 
@@ -274,9 +274,9 @@ To add new CAs:
 
 This procedure activates the CAs that you added in [Step 1: Add New CAs](#add-new-ca). 
 
-To activate the new root CA:
+To activate the new CAs:
 
-1. Use `curl` to make an Ops Manager API call that activates the new CA:
+1. Use `curl` to make an Ops Manager API call that activates the new CAs:
   <pre>curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/CERT-GUID/activate" \
       -X POST \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
@@ -312,13 +312,11 @@ To rotate configurable leaf certificates, do the following for each configurable
 1. Click **Save** at the bottom of each pane in which you added new certificates.
 
 
-#### <a id='regenerate-from-new-root'></a> Step 4: Rotate Non-Configurable Leaf Certificates from the New Root
+#### <a id='regenerate-from-new-root'></a> Step 4: Rotate Non-Configurable Leaf Certificates from the New CAs
 
-After activating the new root CA, you must rotate non-configurable leaf certificates from the root CA.
+After activating the new Ops Manager root CA and other CAs, you must rotate non-configurable leaf certificates from the new CAs.
 
-This procedure also rotates non-configurable leaf certificates from any other new CAs that you activated as part of [Step 2: Activate the CAs](#activate-new-ca).
-
-To rotate non-configurable leaf certificates from the new root CA:
+To rotate non-configurable leaf certificates:
 
 1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new root CA to your existing BOSH Director:
 <pre>
@@ -335,7 +333,7 @@ The API returns a successful response:
 
 1. Select the **Director Config** pane.
 
-1. Select **Recreate All VMs**. This propagates the new CA to all VMs to prevent downtime.
+1. Select **Recreate All VMs**. This propagates the new CAs to all VMs to prevent downtime.
 
 1. Go back to the Installation Dashboard. For each service tile you have installed, do the following:
 
@@ -349,13 +347,13 @@ The API returns a successful response:
 
 #### <a id='delete'></a> Step 5: Delete the Old CA
 
-After activating a new root CA and rotating leaf certificates from the new root CA, Pivotal recommends that you delete the old root CA from your foundation.
+After activating a new root CA and rotating leaf certificates from the new root CA, Pivotal recommends that you deactivate and delete the old root CA from your foundation.
 
 <p class="note"><strong>Note:</strong> This procedure does not delete certificates stored in CredHub. It marks CredHub certificates as transitional, which indicates that the certificate is inactive. To delete CredHub certificates, use the Maestro garbage collection feature. For information about Maestro certificate garbage collection, see <a href="./advanced-certificate-rotation.html">Advanced Certificate Rotation with CredHub Maestro</a>.</p>
 
-<p class="note warning"><strong>Warning:</strong> Ensure that you reviewed the <strong>Review Pending Changes</strong> page and clicked <strong>Apply Changes</strong> as part of <a href="#regenerate-from-new-root">Step 4: Rotate Non-Configurable Leaf Certificates from the New Root</a> before you delete the old CA.</p>
+<p class="note warning"><strong>Warning:</strong> Ensure that you reviewed the <strong>Review Pending Changes</strong> page and clicked <strong>Apply Changes</strong> as part of <a href="#regenerate-from-new-root">Step 4: Rotate Non-Configurable Leaf Certificates from the New CAs</a> before you delete the old CA.</p>
 
-To delete the old root CA and mark CredHub CAs as inactive, do the following:
+To delete the old Ops Manager root CA, do the following:
 
 1. List your root CAs to retrieve the GUID of your old, inactive CA:
 <pre>
