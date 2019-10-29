@@ -3,37 +3,31 @@ title: Advanced Certificate Rotation with CredHub Maestro
 owner: CredHub Maestro
 ---
 
-## <a id='overview'></a> CredHub Maestro Overview
+This topic describes how to rotate certificates in CredHub using the Maestro CLI.
 
-CredHub Maestro is a CLI that facilitates rotations of CredHub managed certificates. Using Maestro, you can do the following:
 
-* Gain visibility into the certificates in your foundation to determine if any CredHub certificates are expiring soon
+## <a id='overview'></a> Overview
+
+CredHub Maestro is a CLI that facilitates rotations of certificates in CredHub. Using Maestro, you can:
+
+* Determine if any of your CredHub certificates are expiring soon
+
 * Rotate CredHub certificates
-* Cleanup inactive certificate versions so that CredHub doesn’t run out of disk space
 
-## <a id='contents'></a> Contents
+* Clean up inactive certificate versions so that CredHub does not run out of disk space
 
-* <a href="#setup-usage">Setup and Usage</a>
-* <a href="#commands">Commands</a>
-* <a href="#rotation-workflow">Rotating CredHub Managed Certificates</a>
-    * <a href="#discovery">Discovering Expiring Certificates</a>
-    * <a href="#bulk-rotation">Rotating all CAs and Leaf Certificates</a>
-    * <a href="#services-rotation">Services TLS CA Rotation Workflow</a>
-    * <a href="#single-rotation">Rotating a Single CA and its Leaf Certificates</a>
-    * <a href="#leaf-rotation">Rotating all Leaf Certificates</a>
-* <a href="#garbage-collect-workflow">Cleaning Up Inactive Certificate Versions</a>
 
 ## <a id='setup-usage'></a> Setup and Usage
 
-Maestro is available on PCF 2.8+ OpsManager Environments. 
-<p class="note">
-<strong>Note:</strong> Contact your account team in order to use Maestro outside of OpsManager environments 
-</p>
+Maestro is available in Pivotal Platform Ops Manager v2.8 and later. 
 
-### Required Environment Variables
-<p class="note">
-<strong>Note:</strong> To set the BOSH environment variables follow <a href="https://docs.pivotal.io/platform/2-8/customizing/trouble-advanced.html" target="_blank">these instructions</a>. The CredHub environment variables can be set by following the table below. 
-</p>
+<p class="note"><strong>Note:</strong> If you want to use Maestro outside Ops Manager environments, contact your account team.</p>
+
+### <a id='required-env-vars'></a> Required Environment Variables
+
+To set the CredHub environment variables you need to set up Maestro, follow the guidance in the table below.
+
+To set BOSH environment variables, see [Advanced Troubleshooting with the BOSH CLI](https://docs.pivotal.io/platform/2-8/customizing/trouble-advanced.html).
 
 <table border="1">
   <tr>
@@ -42,7 +36,7 @@ Maestro is available on PCF 2.8+ OpsManager Environments.
   </tr>
   <tr>
     <td>BOSH_ENVIRONMENT</td>
-    <td>URL/IP Address of BOSH director</td>
+    <td>URL or IP address of BOSH director</td>
   </tr>
   <tr>
     <td>BOSH_CLIENT</td>
@@ -54,28 +48,30 @@ Maestro is available on PCF 2.8+ OpsManager Environments.
   </tr>
   <tr>
     <td>BOSH_CA_CERT</td>
-    <td>Path or value of BOSH director trusted CA cert</td>
+    <td>Path or value of BOSH Director trusted CA certificate</td>
   </tr>
   <tr>
   <td>CREDHUB_SERVER</td>
-  <td>URL of BOSH director CredHub server. This should be <code>BOSH_ENVIRONMENT:8844</code></td>
+  <td>URL of BOSH director CredHub server. This should be <code>BOSH_ENVIRONMENT:8844</code>.</td>
   </tr>
   <tr>
     <td>CREDHUB_CLIENT</td>
-    <td>Name of CredHub Client. This will be the same as <code>BOSH_CLIENT</code></td>
+    <td>Name of CredHub client. This is the same as <code>BOSH_CLIENT</code>.</td>
   </tr>
   <tr>
     <td>CREDHUB_SECRET</td>
-    <td>CredHub client secret. This will be the same as <code>BOSH_CLIENT_SECRET</code></td>
+    <td>CredHub client secret. This is the same as <code>BOSH_CLIENT_SECRET</code>.</td>
   </tr>
   <tr>
     <td>CREDHUB_CA_CERT</td>
-    <td>Path or value of CredHub trusted CA cert. This will be the same as <code>BOSH_CA_CERT</code></td>
+    <td>Path or value of CredHub trusted CA certificate. This is the same as <code>BOSH_CA_CERT</code>.</td>
   </tr>
 </table>
 
-### Using Maestro from outside of your foundation (via a jumpbox)
+### <a id='maestro-outside-foundation'></a> Using Maestro from Outside Your Foundation
+
 In addition to the required environment variables, the following variables must be set:
+
 <table border="1">
   <tr>
     <th>Environment Variable</th>
@@ -83,7 +79,7 @@ In addition to the required environment variables, the following variables must 
   </tr>
   <tr>
     <td>BOSH\_ALL\_PROXY</td>
-    <td>Socks5 proxy address of BOSH director jumpbox</td>
+    <td>Socks5 proxy address of BOSH Director jumpbox</td>
   </tr>
   <tr>
     <td>CREDHUB_PROXY</td>
@@ -91,7 +87,8 @@ In addition to the required environment variables, the following variables must 
   </tr>
 </table>
 
-### Optional Environment Variables
+### <a id='optional-env-vars'></a> Optional Environment Variables
+
 <table border="1">
   <tr>
     <th>Environment Variable</th>
@@ -99,288 +96,342 @@ In addition to the required environment variables, the following variables must 
   </tr>
   <tr>
     <td>MAESTRO_DEBUG</td>
-    <td>Enable Maestro/CredHub/BOSH debug logging</td>
+    <td>Enable debug logging</td>
   </tr>
   <tr>
     <td>MAESTRO_OUTPUT_JSON</td>
-    <td>Print all maestro command output as JSON</td>
+    <td>Print all Maestro command output as JSON</td>
   </tr>
 </table>
 
+
 ## <a id='commands'></a> Commands
-Run `maestro --help` for more information
 
-### List Command
-The list command (`maestro list`) is used to display expiry information for all actively deployed certificates in CredHub
+To review a list of Maestro commands in the CLI, run `maestro --help`.
 
-Flags:
+### <a id='list'></a> List
 
-```
-expires-within      Filter certificates by expiry window. Valid units are d (day), w (week), m (month), y (year)
-deployment-name     Filter certificates by deployment name
-name                Show metadata for single certificate
-include-all 		Include inactive certificates in response (default: false)
-ca-only 		    Filter certificates that are certificate authorities (default: false)
-leaf-only 		    Filter certificates that are end-entity certificates (default: false)
-generated-only 	    Include only certificates that have been generated by CredHub (default: false)
-```
+The list command (`maestro list`) is used to display expiry information for all actively deployed certificates in CredHub.
 
-The `deployment-name` and `include-all` flags are mutually exclusive
+You can use the following flags with `maestro list`:
 
-### Topology Command
-The topology command (`maestro topology`) is used to display expiry information for all actively deployed certificates in CredHub
+* `expires-within`: Filter certificates by expiry window. Valid units are `d` (day), `w` (week), `m` (month), and `y` (year).
 
-Flags:
+* `deployment-name`: Filter certificates by deployment name.
 
-```
-name            Display topology for single certificate
-include-all     Display topology for both active and inactive certificates
-```
+* `name`: Show metadata for a single certificate.
 
-#### Expected Sub-Command
-The Expected subcommand (`maestro topology expected`) is used to show the expected topology that would result from a BOSH deployment
+* `include-all`: Include inactive certificates in response. (default: false)
 
-Flags:
+* `ca-only`: Filter certificates that are Certificate Authorities (CAs). (default: false)
 
-```
-deployment-names     Allow expected topology to reflect a selective deployment (must be a comma-separated list)
-```
+* `leaf-only`: Filter certificates that are leaf certificates. (default: false)
 
-### Regenerate Command
-The regenerate command (`maestro regenerate`) is used to regenerate CredHub managed certificates. By default, certificates that have been set in CredHub will not be regenerated.
+* `generated-only`: Include only certificates that have been generated by CredHub. (default: false)
 
-#### Ca Sub-Command
-The regenerate ca sub-command (`maestro regenerate ca`) is used to regenerate actively deployed certificate authorities
+The `deployment-name` and `include-all` flags are mutually exclusive.
 
-Flags:
+### <a id='topology'></a> Topology
 
-```
-all 		Regenerate all actively deployed CAs (certificate authorities)
-name 		Regenerate single CA by name
-dry-run 	List CAs to be regenerated
-exclude 	Comma-separated list of CAs that will be excluded from being regenerated. All children of excluded CAs (i.e intermediates) will also be excluded
-force 		Regenerate both CredHub generated and set CAs
-```
+The topology command (`maestro topology`) is used to display expiry information for all actively deployed certificates in CredHub.
 
-#### Leaf Sub-Command
-The regenerate leaf sub-command (`maestro regenerate leaf`) is used to regenerate actively deployed end-entity (leaf) certificates
+You can use the following flags with `maestro topology`:
 
-Flags:
+* `name`: Display topology for a single certificate.
 
-```
-all 			    Regenerate all actively deployed leaf certificates
-name 			    Regenerate single leaf by name
-signed-by 		    Regenerate all actively deployed leaf certificates signed by a specific CA
-dry-run 		    List leafs to be regenerated
-exclude-signed-by 	Exclude all leafs signed by a list of CAs from being regenerated
-force 			    Regenerate both CredHub generated and set leaf certificates
-```
+* `include-all`: Display topology for both active and inactive certificates.
 
-### Update Transitional Command
-The update-transitional command (`maestro update-transitional`) is used to update the transitional flag for certificate authorities
+#### <a id='expected'></a> Expected
 
-#### Latest Sub-Command
-The latest sub-command (`maestro update-transitional latest`) is used to update the transitional flag for the latest version of the actively deployed certificate authority
+The expected sub-command (`maestro topology expected`) is used to show the expected topology that would result from a BOSH deployment.
 
-Flags:
+You can use the following flags with `maestro topology expected`:
 
-```
-all 		Bulk update the transitional flag for all actively deployed CAs
-name 		Update transitional flag for a single CA
-dry-run 	List CAs to be updated
-exclude 	Exclude a list of CAs (and their children) from being updated
-```
+* `deployment-names`: Allow expected topology to reflect a selective deployment. This must be a comma-separated list.
 
-#### Signing Sub-Command
-The signing sub-command (`maestro update-transitional signing`) is used to update the transitional flag for the version of the actively deployed CA that signed deployed leaf certificates
+### <a id='regenerate'></a> Regenerate
 
-Flags:
+The regenerate command (`maestro regenerate`) is used to regenerate CredHub managed certificates. By default, certificates that have been set in CredHub are not regenerated.
 
-```
-all 		Bulk update the transitional flag for all actively deployed CAs
-name 		Update transitional flag for a single CA
-dry-run 	List CAs to be updated
-exclude 	Exclude a list of CAs (and their children) from being updated
-```
+#### <a id='regenerate-ca'></a> Regenerate CA
 
-#### Remove Sub-Command
-The Remove sub-command (`maestro update-transitional remove`) is used to remove the transitional flag for all versions of the actively deployed CA
+The regenerate CA sub-command (`maestro regenerate ca`) is used to regenerate actively deployed certificate authorities.
 
-Flags:
+You can use the following flags with `maestro regenerate ca`:
 
-```
-all 		Bulk remove the transitional flag for all actively deployed CAs
-name 		Remove transitional flag for a single CA
-dry-run 	List CAs to be updated
-exclude 	Exclude a list of CAs (and their children) from being updated
-```
+* `all`: Regenerate all actively deployed CAs.
 
-### Garbage Collect Command
-The garbage collect command (`maestro garbage-collect`) is used to cleanup inactive certificate versions
+* `name`: Regenerate a single CA by name.
 
-#### Leaf Sub-Command
-The Leaf subcommand (`maestro garbage-collect leaf`) is used to cleanup inactive leaf certificate versions that are older than the active certificate version
+* `dry-run`: List CAs to be regenerated.
 
-Flags:
+* `exclude`: Comma-separated list of CAs to exclude from being regenerated. This includes all children of excluded CAs.
 
-```
-all 		Remove all inactive versions of deployed leaf certificates
-name 		Remove all inactive versions of a single leaf certificate
-dry-run 	List leaf certificate versions to be removed
-force 		Remove all inactive leaf certificates
-```
+* `force`: Regenerate both CredHub-generated and set CAs.
 
-#### Ca Sub-Command
-The Ca subcommand (`maestro garbage-collect ca`) is used to cleanup inactive certificate authority versions that are older than the active certificate authority version
+#### <a id='regenerate-leaf'></a> Regenerate Leaf
 
-Flags:
+The regenerate leaf sub-command (`maestro regenerate leaf`) is used to regenerate actively deployed leaf certificates.
 
-```
-all 		Remove all inactive versions of deployed certificate authorities
-name 		Remove all inactive versions of a single certificate authority
-dry-run 	List certificate authority versions to be removed
-force 		Remove all inactive certificate authorities
-```
+You can use the following flags with `maestro regenerate leaf`:
 
-## <a id='rotation-workflow'></a> Rotating CredHub Managed Certificates
+* `all`: Regenerate all actively deployed leaf certificates.
 
-### Prerequisites
+* `name`: Regenerate single leaf by name.
 
-* All Maestro rotation workflows ignore CredHub Set certificates by default. If you have recently upgraded to PCF 2.8 (CredHub v2.5.X) and have manually CredHub Set certificates, follow this [guide](manual-credhub-certificate.html) on how to mark them as `generated: false`
-* To ensure that there is no app availability downtime during a rotation, it is recommended that all instance groups are scaled up and an external blobstore is used.
+* `signed-by`: Regenerate all actively deployed leaf certificates signed by a specific CA.
 
-<p class="note">
-<strong>Note:</strong> This document only covers rotating CredHub managed certificates. If you would like to rotate both OpsManager and CredHub managed certificates, follow the existing <a href="api-cert-rotation.html">PCF certificate rotation workflow</a> for your PCF version
-</p>
+* `dry-run`: List leafs to be regenerated.
+
+* `exclude-signed-by`: Exclude all leaf certificates signed by a list of CAs from being regenerated.
+
+* `force`: Regenerate both CredHub generated and set leaf certificates.
+
+### <a id='update-transitional'></a> Update-Transitional
+
+The update-transitional command (`maestro update-transitional`) is used to update the transitional flag for CAs.
+
+#### <a id='ut-latest'></a> Update-Transitional Latest
+
+The latest sub-command (`maestro update-transitional latest`) is used to update the transitional flag for the latest version of the actively deployed certificate authority.
+
+You can use the following flags with `maestro update-transitional latest`:
+
+* `all`: Bulk update the transitional flag for all actively deployed CAs.
+
+* `name`: Update transitional flag for a single CA.
+
+* `dry-run`: List CAs to be updated.
+
+* `exclude`: Exclude a list of CAs and their children from being updated.
+
+#### <a id='signing'></a> Signing
+
+The signing sub-command (`maestro update-transitional signing`) is used to update the transitional flag for the version of the actively deployed CA that signed deployed leaf certificates.
+
+You can use the following flags with `maestro update-transitional signing`:
+
+* `all`: Bulk update the transitional flag for all actively deployed CAs.
+
+* `name`: Update transitional flag for a single CA.
+
+* `dry-run`: List CAs to be updated.
+
+* `exclude`: Exclude a list of CAs and their children from being updated.
+
+#### <a id='remove'></a> Remove
+
+The remove sub-command (`maestro update-transitional remove`) is used to remove the transitional flag for all versions of the actively deployed CA.
+
+You can use the following flags with `maestro update-transitional remove`:
+
+* `all`: Bulk remove the transitional flag for all actively deployed CAs.
+
+* `name`: Remove transitional flag for a single CA.
+
+* `dry-run`: List CAs to be updated.
+
+* `exclude`: Exclude a list of CAs and their children from being updated.
+
+### <a id='garbage-collect'></a> Garbage Collect
+
+The garbage collect command (`maestro garbage-collect`) is used to cleanup inactive certificate versions.
+
+#### <a id='gc-leaf'></a> Garbage-Collect Leaf
+
+The leaf sub-command (`maestro garbage-collect leaf`) is used to cleanup inactive leaf certificate versions that are older than the active certificate version.
+
+You can use the following flags with `maestro garbage-collect leaf`:
+
+* `all`: Remove all inactive versions of deployed leaf certificates.
+
+* `name`: Remove all inactive versions of a single leaf certificate.
+
+* `dry-run`: List leaf certificate versions to be removed.
+
+* `force`: Remove all inactive leaf certificates.
+
+#### <a id='gc-ca'> Garbage-Collect CA
+
+The CA sub-command (`maestro garbage-collect ca`) is used to cleanup inactive CA versions that are older than the active CA version.
+
+You can use the following flags with `maestro garbage-collect ca`:
+
+* `all`: Remove all inactive versions of deployed CAs.
+
+* `name`: Remove all inactive versions of a single CA.
+
+* `dry-run`: List CA versions to be removed.
+
+* `force`: Remove all inactive CAs.
+
+
+## <a id='rotation-workflow'></a> Rotating CredHub-Managed Certificates
+
+### <a id='prerequisites'></a> Prerequisites
+
+* All Maestro rotation workflows ignore CredHub-set certificates by default. If you have recently upgraded to Pivotal Platform v2.8 and have manually CredHub Set certificates, you must mark them as `generated: false`. For more information, see [Reviewing and Resetting Manually Set Certificates in BOSH CredHub](manual-credhub-certificate.html).
+
+* To ensure that there is no app availability downtime during a rotation, Pivotal recommends that you scale up all instance groups and use an external blobstore.
+
+<p class="note"><strong>Note:</strong> This document only covers rotating CredHub managed certificates. To rotate both Ops Manager- and CredHub-managed certificates, see <a href="api-cert-rotation.html">Rotating Certificates</a>.</p>
 
 ### <a id='discovery'></a> Discovering Expiring Certificates
 
-Before kicking off a rotation, you should use the `maestro list` command to determine if there are any certificates expiring soon, and which rotation procedure to follow
+Before kicking off a rotation, you should run the `maestro list` command to determine if there are any certificates expiring soon and which rotation procedure to follow.
 
-To retrieve a list of certificates expiring within a given timeframe run the following:
-`maestro list --expires-within <TIME-PERIOD>`    
+To retrieve a list of certificates expiring within a given timeframe, run:
 
-With this list of certificates expiring soon, determine the best rotation procedure to follow:
+```
+maestro list --expires-within TIME-PERIOD
+```
+Where `TIME-PERIOD` is the unit for which you want to check the expiry window. Valid units are `d` (day), `w` (week), `m` (month), and `y` (year).
 
-* If multiple Certificate Authorities (CAs) are expiring soon, follow the <a href="#bulk-rotation">Bulk CA Rotation Workflow</a>
-* If the only certificates expiring are end-entity (leaf) certificates, follow the <a href="#leaf-rotation">Leaf-only Certificate Rotation Workflow</a>
-* If you only desire to rotate a subset of CAs, follow the <a href="#single-rotation">Single CA Rotation Workflow</a>
-* If you need to rotate the Services TLS CA, follow the <a href="#services-rotation">Services TLS CA Rotation Workflow</a>
+With this list of certificates, determine the best rotation procedure to follow:
 
-<p class="note">
-<strong>Note:</strong> All of the maestro rotation commands have a dry-run flag that can be used to preview the certificates that will be modified
-</p>
+* If multiple CAs are expiring soon, see [Rotating All CAs and Leaf Certificates](#bulk-rotation).
+* If the only certificates expiring are leaf certificates, see [Rotating All Leaf Certificates](#leaf-rotation).
+* If you only desire to rotate a subset of CAs, see [Rotating a Single CA and Its Leaf Certificates](#single-rotation).
+* If you need to rotate the Services TLS CA, see [Rotating the Services TLS CA and Its Leaf Certificates](#services-rotation).
 
-### <a id='bulk-rotation'></a> Rotating all CAs and Leaf Certificates
-<p class="note">
-<strong>Note:</strong> If any of your deployments use a services CA, all maestro commands except regenerating the leaf should be run with <code>--exclude /services/tls_ca</code> and regenerating the leafs should be run with <code>--exclude-signed-by /services/tls_ca</code>. The process for rotating the services CA requires additional steps to ensure that there is no downtime, which is why it should get excluded from rotations. Follow <a href="#services-rotation">this procedure</a> to rotate a Services CA. 
-</p>
+<p class="note"><strong>Note:</strong> All of the maestro rotation commands have a dry-run flag that can be used to preview the certificates that will be modified.</p>
 
-1. Regenerate all CAs. This will create a new version of every CA.                                 
+### <a id='bulk-rotation'></a> Rotating All CAs and Leaf Certificates
+
+<p class="note"><strong>Note:</strong> If any of your deployments use a services CA, all Maestro commands except regenerating the leaf certificate should be run with <code>--exclude /services/tls_ca</code> and regenerating the leaf certificates should be run with <code>--exclude-signed-by /services/tls_ca</code>. The process for rotating the services CA requires additional steps to ensure that there is no downtime, which is why it should get excluded from rotations. To rotate a services, CA, see <a href="#services-rotation">Rotating the Services TLS CA and Its Leaf Certificates</a>.</p>
+
+1. Regenerate all CAs. This creates a new version of every CA.
 `maestro regenerate ca --all`
-1. Mark the latest version of each CA as transitional (inactive). This is so that all leafs trust the new CA version                                                                                                       
+
+1. Mark the latest version of each CA as transitional (inactive). This is so that all leaf certificates trust the new CA version.
 `maestro update-transitional latest --all`
-1. Redeploy all deployments
-1. Mark the signing version of each CA as transitional.                                               
+
+1. Redeploy all deployments.
+
+1. Mark the signing version of each CA as transitional.
 `maestro update-transitional signing --all`
-1. Regenerate all leaf certificates.                                                                                          
+
+1. Regenerate all leaf certificates.                                       
 `maestro regenerate leaf --all`
-1. Redeploy all deployments
-1. Remove the transitional flag on all certificate versions. This will remove the old, now in-active CA versions on the next deploy.                                                                                 
+
+1. Redeploy all deployments.
+
+1. Remove the transitional flag on all certificate versions. This removes the old, now inactive CA versions on the next deploy.
 `maestro update-transitional remove --all`
-1. Redeploy all deployments
 
-### <a id='single-rotation'></a> Rotating a Single CA and its Leaf Certificates
-<p class="note">
-<strong>Note:</strong> In each command, the <code>CA-NAME</code> snippet will represent the path to the CA that will be rotated. It is important that the provided name is the <strong>full path to the credential</strong>. 
-</p>
+1. Redeploy all deployments.
 
-1. Regenerate the desired CA. This will create a new version of this CA.                                 
-`maestro regenerate ca --name "<CA-NAME>"`
-1. Mark the latest version of the single CA as transitional (inactive).                                    
-`maestro update-transitional latest --name "<CA-NAME>"`
-1. Redeploy all deployments that use the CA that is being rotated
-1. Mark the signing version of the single CA as transitional.                                               
-`maestro update-transitional signing --name "<CA-NAME>"`
-1. Regenerate all leaf certificates signed by the CA being rotated.                                                                                          
-`maestro regenerate leaf --signed-by "<CA-NAME>"`
-1. Redeploy all deployments that use the CA that is being rotated
-1. Remove the transitional flag from the single CA. This will remove the old, now in-active CA version on the next deploy.                                                                                 
+### <a id='single-rotation'></a> Rotating a Single CA and Its Leaf Certificates
+
+<p class="note"><strong>Note:</strong> In each command, the <code>CA-NAME</code> snippet represents the path to the CA that you are rotating. It is important that the name you provide is the <strong>full path to the credential</strong>.</p>
+
+1. Regenerate the desired CA. This creates a new version of this CA.
+`maestro regenerate ca --name "CA-NAME"`
+
+1. Mark the latest version of the single CA as transitional (inactive).
+`maestro update-transitional latest --name "CA-NAME"`
+
+1. Redeploy all deployments that use the CA that is being rotated.
+
+1. Mark the signing version of the single CA as transitional.
+`maestro update-transitional signing --name "CA-NAME"`
+
+1. Regenerate all leaf certificates signed by the CA being rotated.
+`maestro regenerate leaf --signed-by "CA-NAME"`
+
+1. Redeploy all deployments that use the CA that is being rotated.
+
+1. Remove the transitional flag from the single CA. This removes the old, now inactive CA version on the next deploy.
 `maestro update-transitional remove --name "<CA-NAME>"`
-1. Redeploy all deployments that use the CA that is being rotated
 
-### <a id='leaf-rotation'></a> Rotating all Leaf Certificates
+1. Redeploy all deployments that use the CA that is being rotated.
+
+### <a id='leaf-rotation'></a> Rotating All Leaf Certificates
+
 1. Regenerate all leaf certificates.
 `maestro regenerate leaf --all`
-1. Redeploy all deployments
 
-### <a id='services-rotation'></a> Rotating the Services TLS CA its Leaf Certificates
-<p class="note warning">
-<strong>Warning:</strong> Upgrading your On-demand service instances is required in order to complete a rotation of the Services TLS CA. It is recommended that you set up your services for high availability to minimize any service downtime. 
-</p>
+1. Redeploy all deployments.
 
-1. Regenerate the services TLS CA. 
-    1. Run the list command (`maestro ls`) on the Services CA to see if your services CA was CredHub set. You will see one Services CA listed per deployment, but it is the same certificate. 
-    1. If the Services CA was CredHub set, run the regenerate command with the `--force` flag                                                                                                             
+### <a id='services-rotation'></a> Rotating the Services TLS CA and Its Leaf Certificates
 
-    `maestro regenerate ca --name "/services/tls_ca"`
-1. Mark the latest version of the services TLS CA as transitional (inactive).                                    
+<p class="note warning"><strong>Warning:</strong> Upgrading your on-demand service instances is required in order to complete a rotation of the Services TLS CA. Pivotal recommends that you set up your services for high availability to minimize any service downtime.</p>
+
+1. Regenerate the services TLS CA.
+    1. Run `maestro list` on the services CA to see if your services CA was CredHub-set. You will see one services CA listed per deployment, but it is the same certificate. 
+    1. If the Services CA was CredHub-set, run `maestro regenerate ca --name "/services/tls_ca" --force`.
+
+1. Mark the latest version of the services TLS CA as transitional (inactive).
 `maestro update-transitional latest --name "/services/tls_ca"`
-1. Redeploy all deployments that use the Services TLS CA
-    1. Make sure that you run the Upgrade all On-demand Instances errand for every services deployment. Note that the name of this errand may differ between services.
-    1. Rebind <strong>ANY</strong> applications that rely on services and do not use the trusted store. Note: this will most likely be all applications that are not written in Java with Spring. This will propagate the newly trusted services CA to the application instances.
-    1. Restage <strong>ANY</strong> applications that rely on services (including Java apps)
+
+1. Redeploy all deployments that use the services TLS CA.
+    1. Make sure that you run the **Upgrade all On-demand Instances** errand for every services deployment. The name of this errand may differ between services.
+    1. Rebind any apps that rely on services and do not use the trusted store. This will most likely be all apps that are not written in Java with Spring. This propagates the newly trusted services CA to the app instances.
+    1. Restage **any** apps that rely on services. including Java apps.
         1. The `bg-restage` command provided through the following <a href="https://github.com/orange-cloudfoundry/cf-plugin-bg-restage" target="_blank">plugin</a> allows for zero downtime Blue-Green restaging without access to the application source code. 
-1. Mark the signing version of the services CA as transitional.                                               
+
+1. Mark the signing version of the services CA as transitional.
 `maestro update-transitional signing --name "/services/tls_ca"`
-1. Regenerate all service instance certificates signed by the services CA.                                                                                          
+
+1. Regenerate all service instance certificates signed by the services CA.
 `maestro regenerate leaf --signed-by "/services/tls_ca"`
-1. Redeploy all deployments that use the Services TLS CA
-    1. Make sure that you run the Upgrade all On-demand Instances errand for every services deployment. Note that the name of this errand may differ between services.
-    1. Rebind <strong>ANY</strong> applications that rely on services and do not use the trusted store. Note: this will most likely be all applications that are not written in Java with Spring. This will propagate the newly trusted services CA to the application instances.
-    1. Restage <strong>ANY</strong> applications that rely on services (including Java apps)
-1. Remove the transitional flag from the services CA. This will remove the old, now in-active version of the Services CA on the next deployment.                                                                                 
+
+1. Redeploy all deployments that use the services TLS CA.
+    1. Make sure that you run the **Upgrade all On-demand Instances** errand for every services deployment. The name of this errand may differ between services.
+    1. Rebind any apps that rely on services and do not use the trusted store. This will most likely be all apps that are not written in Java with Spring. This propagates the newly trusted services CA to the app instances.
+    1. Restage **any** apps that rely on services. including Java apps.
+
+1. Remove the transitional flag from the services CA. This removes the old, now inactive version of the services CA on the next deployment.
 `maestro update-transitional remove --name "/services/tls_ca"`
-1. Redeploy all deployments that use the Services TLS CA
-    1. Make sure that you run the Upgrade all On-demand Instances* errand for every services deployment. Note that the name of this errand may differ between services.
-    1. Rebind ANY applications that rely on services and do not use the trusted store. Note: this will most likely be all applications that are not written in Java with Spring. This will propagate the newly trusted services CA to the application instances.
-    1. Restage ANY applications that rely on services (including Java apps)
+
+1. Redeploy all deployments that use the services TLS CA.
+    1. Make sure that you run the **Upgrade all On-demand Instances** errand for every services deployment. The name of this errand may differ between services.
+    1. Rebind any apps that rely on services and do not use the trusted store. This will most likely be all apps that are not written in Java with Spring. This propagates the newly trusted services CA to the app instances.
+    1. Restage **any** apps that rely on services. including Java apps.
+
 
 ## <a id='garbage-collect-workflow'></a> Cleaning Up Inactive Certificate Versions
-### Overview
-Over the course of many rotations, it is possible for the CredHub database to fill up. In order to prevent this, you can periodically use Maestro’s garbage collect functionality to cleanup old, unused certificate versions.
 
-To see if you need to run garbage collect, either manually check the BOSH Director’s VM vitals via your IaaS provider or by sshing onto the BOSH Director and running `df -h /var/vcap/store`.
+Over the course of many rotations, it is possible for the CredHub database to fill up. In order to prevent this, you can periodically use Maestro's garbage collect functionality to clean up old, unused certificate versions.
 
-### Cleaning Up All Leaf Certificates
-1. Determine which certificate versions will be deleted.                                               
+To see if you need to run garbage collect, either manually check the BOSH Director's VM vitals through your IaaS provider or SSH into the BOSH Director and run `df -h /var/vcap/store`.
+
+### <a id='leaf-cert-cleanup'></a> Cleaning Up All Leaf Certificates
+
+1. Determine which certificate versions you want to delete.
 `maestro garbage-collect leaf --all --dry-run`
-1. Delete the certificate versions  
+
+1. Delete the certificate versions.
 `maestro garbage-collect leaf --all`
 
-### Cleaning Up All Certificate Authorities
-<p class="note">
-<strong>Note:</strong> Generally, leaf certificate garbage collection will be more than enough to free up space in the database 
-</p>
+### <a id='ca-cleanup'> Cleaning Up All Certificate Authorities
 
-1. Determine which certificate versions will be deleted                                               
+<p class="note"><strong>Note:</strong> Generally, leaf certificate garbage collection is enough to free up space in the database.</p>
+
+1. Determine which certificate versions you want to delete.
 `maestro garbage-collect ca --all --dry-run`
-1. Delete the certificate versions							
+
+1. Delete the certificate versions.
 `maestro garbage-collect ca --all`
 
-### Cleaning Up a Single Certificate Authority
+### <a id='single-ca-cleanup'></a> Cleaning Up a Single Certificate Authority
+
+1. Determine which certificate versions you want to delete.
+`maestro garbage-collect leaf --name "LEAF-CERTIFICATE-NAME" --dry-run`
+
+1. Delete the certificate versions.
+`maestro garbage-collect leaf --name "LEAF-CERTIFICATE-NAME"`
+
+### <a id='single-leaf-cert-cleanup'></a> Cleaning Up a Single Leaf Certificate
+
 1. Determine which certificate versions will be deleted.
-`maestro garbage-collect leaf --name “<LEAF_NAME>” --dry-run`
-1. Delete the certificate versions							
-`maestro garbage-collect leaf --name “<LEAF_NAME>”`
+`maestro garbage-collect leaf --name "LEAF-CERTIFICATE-NAME" --dry-run`
 
-### Cleaning Up a Single Leaf Certificate
-1. Determine which certificate versions will be deleted.                                               
-`maestro garbage-collect leaf --name “<LEAF_NAME>” --dry-run`
-1. Delete the certificate versions							
-`maestro garbage-collect leaf --name “<LEAF_NAME>”`
+1. Delete the certificate versions.
+`maestro garbage-collect leaf --name "LEAF-CERTIFICATE-NAME"`
 
-### About the Force Flag
-To enhance the safety of the garbage collect command, by default, only versions of a certificate older than the currently active version will be deleted. This is done to prevent issues from arising if this command is done mid-rotation.
+### <a id='force-flag'></a> About the Force Flag
 
-If you would like to delete ALL inactive versions of CAs or leaf certificates , add the `--force` flag to the garbage collect command. This operation is not considered to be very safe so it is not recommended to be run unless absolutely necessary 
+To enhance the safety of the garbage collect command, by default, only versions of a certificate older than the currently active version are deleted. This is done to prevent issues from arising if this command is done mid-rotation.
+
+If you would like to delete all inactive versions of CAs or leaf certificates, add the `--force` flag to the garbage collect command. This operation is not considered safe. Pivotal recommends not running this operation unless absolutely necessary.
