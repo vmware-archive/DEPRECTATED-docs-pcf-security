@@ -120,7 +120,7 @@ To rotate certificates, do one of the following procedures:
 
 ### <a id='rotate-ca'></a> Rotate CAs and Leaf Certificates
 
-This procedure uses the Ops Manager API to rotate the Ops Manager root CA, BOSH NATS CA, other CAs stored in CredHub such as the Diego root CA, and non-configurable leaf certificates.
+This procedure uses the Ops Manager API to rotate the Ops Manager root CA and non-configurable leaf certificates. When you rotate the Ops Manager root CA, the Ops Manager API also automatically rotates the BOSH NATS CA and other CAs stored in CredHub, such as the Diego root CA.
 
 To prevent system downtime, this procedure includes two BOSH deploys. The first BOSH deploy applies new certificates to <%= vars.product_name %> components. The second BOSH deploy deletes the old certificates.
 
@@ -128,11 +128,11 @@ To prevent system downtime, this procedure includes two BOSH deploys. The first 
 
 To rotate CAs and non-configurable leaf certificates:
 
-1. Add a new Ops Manager root CA. This step also automatically adds new certificates for all CAs visible to the Ops Manager API. See [Add New CAs](#add-new-ca).
+1. Add a new Ops Manager root CA. This step also automatically adds new CAs for all CAs visible to the Ops Manager API. See [Add New CAs](#add-new-ca).
 
-1. Activate the root CA. This step also automatically activates any other new CAs added in the previous step. [Activate the CAs](#activate-new-ca).
+1. Activate the Ops Manager root CA. This step also automatically activates any other new CAs added in the previous step. See [Activate the CAs](#activate-new-ca).
 
-1. (Optional) Rotate leaf configurable certificates. See [Rotate Configurable Leaf Certificates](#rotate-config-after-new-root).
+1. (Optional) Rotate configurable leaf certificates. See [Rotate Configurable Leaf Certificates](#rotate-config-after-new-root).
 
 1. Rotate non-configurable leaf certificates. See [Rotate Non-Configurable Leaf Certificates from the New CAs](#regenerate-from-new-root).
 
@@ -142,7 +142,7 @@ To rotate CAs and non-configurable leaf certificates:
 
 Follow this procedure to add a new root CA for Ops Manager. The new root CA can be a Pivotal-generated CA or your own custom CA.
 
-This procedure also regenerates the BOSH NATS CA as well as CAs stored in CredHub, such as the BOSH DNS CA and the Diego root CA.
+This procedure also automatically regenerates the BOSH NATS CA as well as CAs stored in CredHub, such as the BOSH DNS CA and the Diego root CA.
 
 To add new CAs:
 
@@ -151,7 +151,7 @@ To add new CAs:
 
 1. Use Ops Manager to generate a new CA, or add your own custom CA:
   <p class ="note"><strong>Note:</strong> Elliptic Curve Digital Signature Algorithm (ECDSA) certificates are not supported in <%= vars.product_name %>.</p>
-  * **To use your own custom CA**, call the Ops Manager API `certificate_authorities` endpoint as follows:
+  * **To use your own custom CA**: Call the Ops Manager API `certificate_authorities` endpoint. Run:
     <pre>
       curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
           -X POST \
@@ -178,7 +178,7 @@ To add new CAs:
         ]
       }
     </pre>
-  * **To use a Pivotal-generated CA**, call the Ops Manager API `generate` endpoint as follows:
+  * **To use a Pivotal-generated CA**: Call the Ops Manager API `generate` endpoint. Run:
     <pre>
       curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/generate" \
             -X POST \
@@ -219,7 +219,7 @@ To add new CAs:
             "
     </pre>
 
-1. Confirm that the new CA is added by listing all the root CAs for Ops Manager:
+1. Confirm that the new CA is added by listing all the root CAs for Ops Manager. Run:
   <pre>
   curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
         -X GET \
@@ -276,7 +276,7 @@ This procedure activates the CAs that you added in [Step 1: Add New CAs](#add-ne
 
 To activate the new CAs:
 
-1. Use `curl` to make an Ops Manager API call that activates the new CAs:
+1. Make an Ops Manager API call that activates the new CAs. Run:
   <pre>curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/CERT-GUID/activate" \
       -X POST \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
@@ -289,7 +289,7 @@ To activate the new CAs:
   The API returns a successful response:
   <pre class="terminal">HTTP/1.1 200 OK</pre>
 
-1. List your CAs to confirm that the new Ops Manager root CA is active:
+1. List your CAs to confirm that the new Ops Manager root CA is active. Run:
   <pre>
   curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
         -X GET \
@@ -318,7 +318,7 @@ After activating the new Ops Manager root CA and other CAs, you must rotate non-
 
 To rotate non-configurable leaf certificates:
 
-1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new root CA to your existing BOSH Director:
+1. Make an API call to regenerate all non-configurable certificates and apply the new root CA to your existing BOSH Director. Run:
 <pre>
   curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/active/regenerate" \
         -X POST \
@@ -335,7 +335,7 @@ The API returns a successful response:
 
 1. Select **Recreate All VMs**. This propagates the new CAs to all VMs to prevent downtime.
 
-1. Go back to the Installation Dashboard. For each service tile you have installed, do the following:
+1. Go back to the Installation Dashboard. For each service tile you have installed:
 
     1. Click the tile.
 
@@ -345,30 +345,33 @@ The API returns a successful response:
 
 1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes** to perform a second redeploy.
 
-#### <a id='delete'></a> Step 5: Delete the Old CA
+#### <a id='delete'></a> Step 5: Delete the Old CAs
 
-After activating a new root CA and rotating leaf certificates from the new root CA, Pivotal recommends that you deactivate and delete the old root CA from your foundation.
+After activating new CAs and rotating leaf certificates from the new CAs, Pivotal recommends that you do the following:
+
+* Delete the old Ops Manager root CA from your foundation.
+* Mark the old CAs stored in CredHub as inactive.
 
 <p class="note"><strong>Note:</strong> This procedure does not delete certificates stored in CredHub. It marks CredHub certificates as transitional, which indicates that the certificate is inactive. To delete CredHub certificates, use the Maestro garbage collection feature. For information about Maestro certificate garbage collection, see <a href="./advanced-certificate-rotation.html">Advanced Certificate Rotation with CredHub Maestro</a>.</p>
 
 <p class="note warning"><strong>Warning:</strong> Ensure that you reviewed the <strong>Review Pending Changes</strong> page and clicked <strong>Apply Changes</strong> as part of <a href="#regenerate-from-new-root">Step 4: Rotate Non-Configurable Leaf Certificates from the New CAs</a> before you delete the old CA.</p>
 
-To delete the old Ops Manager root CA, do the following:
+To delete the old Ops Manager root CA and mark CredHub CAs as inactive:
 
-1. List your root CAs to retrieve the GUID of your old, inactive CA:
+1. List your root CAs to retrieve the GUID of the old, inactive Ops Manager root CA. Run:
 <pre>
   curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
         -X GET \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
 
-1. Use `curl` to make an API call to delete your old CA:
+1. Use `curl` to make an API call to delete the old Ops Manager root CA. Run:
 <pre>
   curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/OLD-CERT-GUID" \
         -X DELETE \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
-Where `OLD-CERT-GUID` is the GUID of your old, inactive CA.
+Where `OLD-CERT-GUID` is the GUID of the old Ops Manager root CA.
 </br>
 </br>
 The API returns a successful response.
@@ -382,7 +385,7 @@ This procedure rotates non-configurable leaf certificates visible to the Ops Man
 
 <p class='note warning'><strong>Warning:</strong> This procedure does not rotate the Ops Manager root CA or other CAs managed by Ops Manager or CredHub. To rotate both the root CA and non-configurable leaf certificates, see <a href="#rotate-ca">Rotate CAs and Leaf Certificates</a>.</p>
 
-To rotate non-configurable leaf certificates, do the following:
+To rotate non-configurable leaf certificates:
 
 1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
 <pre>
