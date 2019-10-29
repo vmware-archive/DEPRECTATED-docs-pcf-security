@@ -281,7 +281,6 @@ You can use the following flags with `maestro garbage-collect ca`:
 Before kicking off a rotation, you should run the `maestro list` command to determine if there are any certificates expiring soon and which rotation procedure to follow.
 
 To retrieve a list of certificates expiring within a given timeframe, run:
-
 ```
 maestro list --expires-within TIME-PERIOD
 ```
@@ -294,30 +293,40 @@ With this list of certificates, determine the best rotation procedure to follow:
 * If you only desire to rotate a subset of CAs, see [Rotating a Single CA and Its Leaf Certificates](#single-rotation).
 * If you need to rotate the Services TLS CA, see [Rotating the Services TLS CA and Its Leaf Certificates](#services-rotation).
 
-<p class="note"><strong>Note:</strong> All of the maestro rotation commands have a dry-run flag that can be used to preview the certificates that will be modified.</p>
+<p class="note"><strong>Note:</strong> All Maestro rotation commands have a dry-run flag that can be used to preview the certificates to be modified.</p>
 
 ### <a id='bulk-rotation'></a> Rotating All CAs and Leaf Certificates
 
 <p class="note"><strong>Note:</strong> If any of your deployments use a services CA, all Maestro commands except regenerating the leaf certificate should be run with <code>--exclude /services/tls_ca</code> and regenerating the leaf certificates should be run with <code>--exclude-signed-by /services/tls_ca</code>. The process for rotating the services CA requires additional steps to ensure that there is no downtime, which is why it should get excluded from rotations. To rotate a services, CA, see <a href="#services-rotation">Rotating the Services TLS CA and Its Leaf Certificates</a>.</p>
 
-1. Regenerate all CAs. This creates a new version of every CA.
-`maestro regenerate ca --all`
+1. Regenerate all CAs. This creates a new version of every CA. Run:
+    ```
+    maestro regenerate ca --all
+    ```
 
-1. Mark the latest version of each CA as transitional (inactive). This is so that all leaf certificates trust the new CA version.
-`maestro update-transitional latest --all`
-
-1. Redeploy all deployments.
-
-1. Mark the signing version of each CA as transitional.
-`maestro update-transitional signing --all`
-
-1. Regenerate all leaf certificates.                                       
-`maestro regenerate leaf --all`
+1. Mark the latest version of each CA as transitional (inactive). This is so that all leaf certificates trust the new CA version. Run:
+    ```
+    maestro update-transitional latest --all
+    ```
 
 1. Redeploy all deployments.
 
-1. Remove the transitional flag on all certificate versions. This removes the old, now inactive CA versions on the next deploy.
-`maestro update-transitional remove --all`
+1. Mark the signing version of each CA as transitional by running:
+    ```
+    maestro update-transitional signing --all
+    ```
+
+1. Regenerate all leaf certificates by running:                                      
+    ```
+    maestro regenerate leaf --all
+    ```
+
+1. Redeploy all deployments.
+
+1. Remove the transitional flag on all certificate versions. This removes the old, now inactive CA versions on the next deploy. Run:
+    ```
+    maestro update-transitional remove --all
+    ```
 
 1. Redeploy all deployments.
 
@@ -325,31 +334,43 @@ With this list of certificates, determine the best rotation procedure to follow:
 
 <p class="note"><strong>Note:</strong> In each command, the <code>CA-NAME</code> snippet represents the path to the CA that you are rotating. It is important that the name you provide is the <strong>full path to the credential</strong>.</p>
 
-1. Regenerate the desired CA. This creates a new version of this CA.
-`maestro regenerate ca --name "CA-NAME"`
+1. Regenerate the desired CA. This creates a new version of this CA. Run:
+    ```
+    maestro regenerate ca --name "CA-NAME"
+    ```
 
-1. Mark the latest version of the single CA as transitional (inactive).
-`maestro update-transitional latest --name "CA-NAME"`
-
-1. Redeploy all deployments that use the CA that is being rotated.
-
-1. Mark the signing version of the single CA as transitional.
-`maestro update-transitional signing --name "CA-NAME"`
-
-1. Regenerate all leaf certificates signed by the CA being rotated.
-`maestro regenerate leaf --signed-by "CA-NAME"`
+1. Mark the latest version of the single CA as transitional (inactive) by running:
+    ```
+    maestro update-transitional latest --name "CA-NAME"
+    ```
 
 1. Redeploy all deployments that use the CA that is being rotated.
 
-1. Remove the transitional flag from the single CA. This removes the old, now inactive CA version on the next deploy.
-`maestro update-transitional remove --name "<CA-NAME>"`
+1. Mark the signing version of the single CA as transitional by running:
+    ```
+    maestro update-transitional signing --name "CA-NAME"
+    ```
+
+1. Regenerate all leaf certificates signed by the CA being rotated by running:
+    ```
+    maestro regenerate leaf --signed-by "CA-NAME"
+    ```
+
+1. Redeploy all deployments that use the CA that is being rotated.
+
+1. Remove the transitional flag from the single CA. This removes the old, now inactive CA version on the next deploy. Run:
+    ```
+    maestro update-transitional remove --name "CA-NAME"
+    ```
 
 1. Redeploy all deployments that use the CA that is being rotated.
 
 ### <a id='leaf-rotation'></a> Rotating All Leaf Certificates
 
-1. Regenerate all leaf certificates.
-`maestro regenerate leaf --all`
+1. Regenerate all leaf certificates by running:
+    ```
+    maestro regenerate leaf --all
+    ```
 
 1. Redeploy all deployments.
 
@@ -361,28 +382,36 @@ With this list of certificates, determine the best rotation procedure to follow:
     1. Run `maestro list` on the services CA to see if your services CA was CredHub-set. You will see one services CA listed per deployment, but it is the same certificate. 
     1. If the Services CA was CredHub-set, run `maestro regenerate ca --name "/services/tls_ca" --force`.
 
-1. Mark the latest version of the services TLS CA as transitional (inactive).
-`maestro update-transitional latest --name "/services/tls_ca"`
+1. Mark the latest version of the services TLS CA as transitional (inactive) by running:
+    ```
+    maestro update-transitional latest --name "/services/tls_ca"
+    ```
 
 1. Redeploy all deployments that use the services TLS CA.
     1. Make sure that you run the **Upgrade all On-demand Instances** errand for every services deployment. The name of this errand may differ between services.
     1. Rebind any apps that rely on services and do not use the trusted store. This will most likely be all apps that are not written in Java with Spring. This propagates the newly trusted services CA to the app instances.
     1. Restage **any** apps that rely on services. including Java apps.
-        1. The `bg-restage` command provided through the following <a href="https://github.com/orange-cloudfoundry/cf-plugin-bg-restage" target="_blank">plugin</a> allows for zero downtime Blue-Green restaging without access to the application source code. 
+    <p class='note'><strong>Note:</strong> The bg-restage plugin enables zero-downtime blue-green restaging without access to the app source code. For more information, see <a href="https://github.com/orange-cloudfoundry/cf-plugin-bg-restage">bg-restage</a> on GitHub.</p>
 
-1. Mark the signing version of the services CA as transitional.
-`maestro update-transitional signing --name "/services/tls_ca"`
+1. Mark the signing version of the services CA as transitional by running:
+    ```
+    maestro update-transitional signing --name "/services/tls_ca"
+    ```
 
-1. Regenerate all service instance certificates signed by the services CA.
-`maestro regenerate leaf --signed-by "/services/tls_ca"`
+1. Regenerate all service instance certificates signed by the services CA by running:
+    ```
+    maestro regenerate leaf --signed-by "/services/tls_ca"
+    ```
 
 1. Redeploy all deployments that use the services TLS CA.
     1. Make sure that you run the **Upgrade all On-demand Instances** errand for every services deployment. The name of this errand may differ between services.
     1. Rebind any apps that rely on services and do not use the trusted store. This will most likely be all apps that are not written in Java with Spring. This propagates the newly trusted services CA to the app instances.
     1. Restage **any** apps that rely on services. including Java apps.
 
-1. Remove the transitional flag from the services CA. This removes the old, now inactive version of the services CA on the next deployment.
-`maestro update-transitional remove --name "/services/tls_ca"`
+1. Remove the transitional flag from the services CA. This removes the old, now inactive version of the services CA on the next deployment. Run:
+    ```
+    maestro update-transitional remove --name "/services/tls_ca"
+    ```
 
 1. Redeploy all deployments that use the services TLS CA.
     1. Make sure that you run the **Upgrade all On-demand Instances** errand for every services deployment. The name of this errand may differ between services.
@@ -398,40 +427,56 @@ To see if you need to run garbage collect, either manually check the BOSH Direct
 
 ### <a id='leaf-cert-cleanup'></a> Cleaning Up All Leaf Certificates
 
-1. Determine which certificate versions you want to delete.
-`maestro garbage-collect leaf --all --dry-run`
+1. Determine which certificate versions you want to delete by running:
+    ```
+    maestro garbage-collect leaf --all --dry-run
+    ```
 
-1. Delete the certificate versions.
-`maestro garbage-collect leaf --all`
+1. Delete the certificate versions by running:
+    ```
+    maestro garbage-collect leaf --all
+    ```
 
 ### <a id='ca-cleanup'> Cleaning Up All Certificate Authorities
 
 <p class="note"><strong>Note:</strong> Generally, leaf certificate garbage collection is enough to free up space in the database.</p>
 
-1. Determine which certificate versions you want to delete.
-`maestro garbage-collect ca --all --dry-run`
+1. Determine which CA versions you want to delete by running:
+    ```
+    maestro garbage-collect ca --all --dry-run
+    ```
 
-1. Delete the certificate versions.
-`maestro garbage-collect ca --all`
+1. Delete the CA versions by running:
+    ```
+    maestro garbage-collect ca --all
+    ```
 
 ### <a id='single-ca-cleanup'></a> Cleaning Up a Single Certificate Authority
 
-1. Determine which certificate versions you want to delete.
-`maestro garbage-collect leaf --name "LEAF-CERTIFICATE-NAME" --dry-run`
+1. Determine which certificate versions you want to delete by running:
+    ```
+    maestro garbage-collect leaf --name "LEAF-CERTIFICATE-NAME" --dry-run
+    ```
 
-1. Delete the certificate versions.
-`maestro garbage-collect leaf --name "LEAF-CERTIFICATE-NAME"`
+1. Delete the certificate versions by running:
+    ```
+    maestro garbage-collect leaf --name "LEAF-CERTIFICATE-NAME"
+    ```
 
 ### <a id='single-leaf-cert-cleanup'></a> Cleaning Up a Single Leaf Certificate
 
-1. Determine which certificate versions will be deleted.
-`maestro garbage-collect leaf --name "LEAF-CERTIFICATE-NAME" --dry-run`
+1. Determine which certificate versions you want to delete by running:
+    ```
+    maestro garbage-collect leaf --name "LEAF-CERTIFICATE-NAME" --dry-run
+    ```
 
-1. Delete the certificate versions.
-`maestro garbage-collect leaf --name "LEAF-CERTIFICATE-NAME"`
+1. Delete the certificate versions by running:
+    ```
+    maestro garbage-collect leaf --name "LEAF-CERTIFICATE-NAME"
+    ```
 
 ### <a id='force-flag'></a> About the Force Flag
 
 To enhance the safety of the garbage collect command, by default, only versions of a certificate older than the currently active version are deleted. This is done to prevent issues from arising if this command is done mid-rotation.
 
-If you would like to delete all inactive versions of CAs or leaf certificates, add the `--force` flag to the garbage collect command. This operation is not considered safe. Pivotal recommends not running this operation unless absolutely necessary.
+If you want to delete all inactive versions of CAs or leaf certificates, add the `--force` flag to the garbage collect command. This operation is not considered safe. Pivotal recommends not running this operation unless absolutely necessary.
