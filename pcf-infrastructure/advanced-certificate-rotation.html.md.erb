@@ -5,7 +5,7 @@ owner: CredHub Maestro
 
 This topic describes how to rotate certificates and Certificate Authorities (CAs) in CredHub using the Maestro CLI.
 
-This document only covers rotating CredHub-managed certificates. To rotate both Ops Manager- and CredHub-managed certificates, see [Rotating Certificates](api-cert-rotation.html).
+This topic only covers rotating CredHub-managed certificates. To rotate both Ops Manager- and CredHub-managed certificates, see [Rotating Certificates](api-cert-rotation.html).
 
 
 ## <a id='overview'></a> Overview
@@ -17,6 +17,8 @@ CredHub Maestro is a CLI that facilitates rotations of certificates in CredHub. 
 * Rotate CredHub certificates
 
 * Clean up inactive certificate versions so that CredHub does not run out of disk space
+
+For more information about setting up and using the Maestro CLI, see [Getting Started with Maestro CLI](getting-started-with-maestro-cli.html).
 
 Certificates and CAs stored in CredHub are automatically rotated when you use the Ops Manager API to rotate the Ops Manager root CA, excluding the Services TLS CA. To rotate a specific CredHub certificate or CA, follow the procedures below. To rotate CredHub certificates and CAs as you rotate the Ops Manager root CA, see [Rotating Certificates](api-cert-rotation.html).
 
