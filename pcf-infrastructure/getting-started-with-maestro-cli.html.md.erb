@@ -171,9 +171,9 @@ You can use the following flags with `maestro regenerate ca`:
 
 * `dry-run`: List CAs to be regenerated.
 
-* `exclude`: Comma-separated list of CAs to exclude from being regenerated. This includes all children of excluded CAs.
+* `exclude`: Comma-separated list of CAs to exclude from being regenerated. This includes all leaf certificates of excluded CAs.
 
-* `force`: Regenerate both CredHub-generated and set CAs.
+* `force`: Regenerate both CredHub-generated and manually set CAs.
 
 #### <a id='regenerate-leaf'></a> maestro regenerate leaf
 
@@ -191,7 +191,7 @@ You can use the following flags with `maestro regenerate leaf`:
 
 * `exclude-signed-by`: Exclude all leaf certificates signed by a list of CAs from being regenerated.
 
-* `force`: Regenerate both CredHub generated and set leaf certificates.
+* `force`: Regenerate both CredHub-generated and manually set leaf certificates.
 
 ### <a id='update-transitional'></a> maestro update-transitional
 
@@ -203,13 +203,13 @@ You can use the following flags with `maestro regenerate leaf`:
 
 You can use the following flags with `maestro update-transitional latest`:
 
-* `all`: Bulk update the transitional flag for all actively deployed CAs.
+* `all`: Update the transitional flag for all actively deployed CAs.
 
 * `name`: Update transitional flag for a single CA.
 
 * `dry-run`: List CAs to be updated.
 
-* `exclude`: Exclude a list of CAs and their children from being updated.
+* `exclude`: Exclude a list of CAs and their leaf certificates from being updated.
 
 #### <a id='signing'></a> maestro update-transitional signing
 
@@ -217,13 +217,13 @@ You can use the following flags with `maestro update-transitional latest`:
 
 You can use the following flags with `maestro update-transitional signing`:
 
-* `all`: Bulk update the transitional flag for all actively deployed CAs.
+* `all`: Update the transitional flag for all actively deployed CAs.
 
-* `name`: Update transitional flag for a single CA.
+* `name`: Update the transitional flag for a single CA.
 
 * `dry-run`: List CAs to be updated.
 
-* `exclude`: Exclude a list of CAs and their children from being updated.
+* `exclude`: Exclude a list of CAs and their leaf certificates from being updated.
 
 #### <a id='remove'></a> maestro update-transitional remove
 
@@ -231,9 +231,9 @@ You can use the following flags with `maestro update-transitional signing`:
 
 You can use the following flags with `maestro update-transitional remove`:
 
-* `all`: Bulk remove the transitional flag for all actively deployed CAs.
+* `all`: Remove the transitional flag for all actively deployed CAs.
 
-* `name`: Remove transitional flag for a single CA.
+* `name`: Remove the transitional flag for a single CA.
 
 * `dry-run`: List CAs to be updated.
 
