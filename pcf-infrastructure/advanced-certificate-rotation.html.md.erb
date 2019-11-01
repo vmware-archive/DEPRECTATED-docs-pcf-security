@@ -20,8 +20,9 @@ CredHub Maestro is a CLI that facilitates rotations of certificates in CredHub. 
 
 For more information about setting up and using the Maestro CLI, see [Getting Started with Maestro CLI](getting-started-with-maestro-cli.html).
 
-Certificates and CAs stored in CredHub are automatically rotated when you use the Ops Manager API to rotate the Ops Manager root CA, excluding the Services TLS CA. To rotate a specific CredHub certificate or CA, follow the procedures below. To rotate CredHub certificates and CAs as you rotate the Ops Manager root CA, see [Rotating Certificates](api-cert-rotation.html).
+Certificates and CAs stored in CredHub are automatically rotated when you use the Ops Manager API to rotate the Ops Manager root CA, excluding the Services TLS CA. To rotate a specific CredHub certificate or CA, follow the procedures in this topic.
 
+To rotate CredHub certificates and CAs as you rotate the Ops Manager root CA, see [Rotating Certificates](api-cert-rotation.html).
 
 ## <a id='prerequisites'></a> Prerequisites
 
@@ -185,7 +186,7 @@ This section describes the procedure for rotating the Services TLS CA and its le
 To rotate the Services TLS CA and its leaf certificates:
 
 1. Regenerate the Services TLS CA.
-    1. Run `maestro list` on the Services TLS CA to see if your Services TLS CA was CredHub-set. You will see one Services TLS CA listed per deployment, but it is the same certificate. 
+    1. Run `maestro list` on the Services TLS CA to see if your Services TLS CA was CredHub-set. You will see one Services TLS CA listed per deployment, but it is the same certificate.
     1. If the Services TLS CA was CredHub-set, run:
 
       ```
@@ -239,47 +240,48 @@ To rotate the Services TLS CA and its leaf certificates:
 1. Restage any apps that rely on services, including Java apps.
 
 
-### <a id='set-certificate-rotation'></a> RotateCredHub Set Certificates
+### <a id='set-certificate-rotation'></a> Rotate CredHub-Set Certificates
 
-To delete a CredHub Set Certificate
+This section describes the procedure for rotating CredHub-set certificates.
 
-1. Create a new CA using the same parameters you used originally
+To rotate a CredHub-set certificate:
 
-1. Use the <a href="https://github.com/cloudfoundry-incubator/credhub-cli" target="_blank">CredHub CLI</a> or <a href="https://credhub-api.cfapps.io/" target="_blank">CredHub API</a> to set that new CA at the same path as the original
+1. Create a new CA using the same parameters you used for the original CA.
 
-1. Mark the latest version of that single CA as transitional (inactive).
+1. Use the <a href="https://github.com/cloudfoundry-incubator/credhub-cli" target="_blank">CredHub CLI</a> or <a href="https://credhub-api.cfapps.io/" target="_blank">CredHub API</a> to set the new CA at the same path as the original.
 
-    ```
-    maestro update-transitional latest --name "<CA-NAME>"
-    ```
-
-1. Redeploy all deployments that use the CA that is being rotated
-
-1. Mark the signing version of the single CA as transitional.
+1. Mark the latest version of the single CA as transitional. This indicates that the certificate is inactive. Run:
 
     ```
-    maestro update-transitional signing --name "<CA-NAME>"
+    maestro update-transitional latest --name "CA-NAME"
     ```
+    <p class="note"><strong>Note:</strong> The CA name you provide must be the full path to the credential.</p>
 
-1. Regenerate all leaf certificates signed by the CA being rotated.
+1. Redeploy all deployments that use the CA you are rotating.
 
-    ```
-    maestro regenerate leaf --signed-by "<CA-NAME>"
-    ```
-<p class="note">
-<strong>Note:</strong> You may need to use the `--force` flag when regenerating leafs if they have been CredHub Set. Otherwise you will need to provide a new one at the same path.
-</p>
-
-1. Redeploy all deployments that use the CA that is being rotated
-
-1. Remove the transitional flag from the single CA. This will remove the old, now inactive CA version on the next deploy.
+1. Mark the signing version of the single CA as transitional by running:
 
     ```
-    maestro update-transitional remove --name "<CA-NAME>"
+    maestro update-transitional signing --name "CA-NAME"
     ```
 
-1. Redeploy all deployments that use the CA that is being rotated
+1. Regenerate all leaf certificates that are signed by the CA you are rotating. Run:
 
+    ```
+    maestro regenerate leaf --signed-by "CA-NAME"
+    ```
+
+    <p class="note"><strong>Note:</strong> You might need to use the <code>--force</code> flag when regenerating leaf certificates if they were set by CredHub. Otherwise, you must provide a new leaf certificate at the same path.</p>
+
+1. Redeploy all deployments that use the CA you are rotating.
+
+1. Remove the transitional flag from the single CA. This removes the old, inactive CA version on the next deploy. Run:
+
+    ```
+    maestro update-transitional remove --name "CA-NAME"
+    ```
+
+1. Redeploy all deployments that use the CA you are rotating.
 
 ## <a id='garbage-collection'></a> Delete Inactive Certificate Versions
 
