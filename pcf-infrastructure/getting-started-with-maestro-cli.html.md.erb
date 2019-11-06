@@ -1,14 +1,14 @@
 ---
-title: Getting Started with Maestro CLI
+title: Getting Started with CredHub Maestro
 owner: CredHub Maestro
 ---
 
-This topic describes setting up and using the Maestro CLI for CredHub.
+This topic describes setting up and using CredHub Maestro for CredHub.
 
 
 ## <a id='overview'></a> Overview
 
-CredHub Maestro is a CLI that facilitates rotations of certificates in CredHub. Using Maestro, you can:
+CredHub Maestro is a command-line interface (CLI) that facilitates rotations of certificates in CredHub. Using CredHub Maestro, you can:
 
 * Determine if any of your CredHub certificates are expiring soon
 
@@ -16,18 +16,18 @@ CredHub Maestro is a CLI that facilitates rotations of certificates in CredHub. 
 
 * Clean up inactive certificate versions so that CredHub does not run out of disk space
 
-Maestro is available in Pivotal Platform Ops Manager v2.8 and later.
+CredHub Maestro is available in Pivotal Platform Ops Manager v2.8 and later.
 
 To use Maestro outside Ops Manager environments, contact [Pivotal Support](https://pivotal.io/support).
 
 
 ## <a id='setup-usage'></a> Set Up Environment Variables
 
-This section describes setting up the environment variables you need to use the Maestro CLI.
+This section describes setting up the environment variables you need to use CredHub Maestro.
 
 ### <a id='required-env-vars'></a> Required Environment Variables
 
-To set the CredHub environment variables you need to set up the Maestro CLI, follow the guidance in the table below.
+To set the CredHub environment variables you need to set up CredHub Maestro, follow the guidance in the table below.
 
 To set BOSH environment variables, see [Advanced Troubleshooting with the BOSH CLI](https://docs.pivotal.io/platform/2-8/customizing/trouble-advanced.html).
 
@@ -70,9 +70,9 @@ To set BOSH environment variables, see [Advanced Troubleshooting with the BOSH C
   </tr>
 </table>
 
-### <a id='maestro-outside-foundation'></a> Using Maestro from Outside Your Foundation
+### <a id='maestro-outside-foundation'></a> Using CredHub Maestro from Outside Your Foundation
 
-To use Maestro from outside your foundation, you must also set the following variables in addition to the required environment variables:
+To use CredHub Maestro from outside your foundation, you must also set the following variables in addition to the required environment variables:
 
 <table border="1">
   <tr>
@@ -104,16 +104,16 @@ You can also set the following optional enviroment variables:
   </tr>
   <tr>
     <td>MAESTRO_OUTPUT_JSON</td>
-    <td>Print all Maestro command output as JSON</td>
+    <td>Print all CredHub Maestro command output as JSON</td>
   </tr>
 </table>
 
 
 ## <a id='commands'></a> Commands
 
-This section describes the commands you can use in the Maestro CLI.
+This section describes the commands you can use in CredHub Maestro.
 
-To review a list of Maestro commands in the Maestro CLI, run `maestro --help`.
+To review a list of commands in CredHub Maestro, run `maestro --help`.
 
 ### <a id='list'></a> maestro list
 
