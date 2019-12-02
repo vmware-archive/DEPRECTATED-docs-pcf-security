@@ -194,7 +194,7 @@ For more information about instance identity credentials, see [Instance Identity
 
 By default, <%= vars.platform_name %> uses a limited set of cipher suites to secure its internal communications. However, some components used in <%= vars.platform_name %>, like the Gorouter and HAProxy, may support additional TLS cipher suites to accommodate older clients outside of <%= vars.platform_name %>.
 
-<p class="note"><strong>Note:</strong> The AWS Classic load balancer does not support the recommended TLS cipher suites. For details and mitigations, see the <a href="../../adminguide/securing-traffic.html#ciphers">TLS Cipher Suite Support</a> section of the <em>Securing Traffic into Cloud Foundry</em> topic.</p>
+<p class="note"><strong>Note:</strong> The AWS Classic load balancer does not support the recommended TLS cipher suites. For details and mitigations, see the <a href="../../adminguide/securing-traffic.html#ciphers">TLS Cipher Suite Support</a> section of the <em>Securing Traffic into <%= vars.app_runtime_abbr %></em> topic.</p>
 
 For components that allow you to configure TLS cipher suites, only specify the TLS cipher suites that you need.
 
@@ -218,7 +218,7 @@ The recommended TLS cipher suites for the Gorouter are:
 * ECDHE-RSA-AES128-GCM-SHA256
 * ECDHE-RSA-AES256-GCM-SHA384
 
-You can specify other cipher suites and a different minimum version of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by the Gorouter, see the [TLS Cipher Suite Support](../../adminguide/securing-traffic.html#ciphers) section of the _Securing Traffic into Cloud Foundry_ topic.
+You can specify other cipher suites and a different minimum version of TLS support if your deployment requires it. For a list of other cipher suites and other versions of TLS that are optionally supported by the Gorouter, see the [TLS Cipher Suite Support](../../adminguide/securing-traffic.html#ciphers) section of the _Securing Traffic into <%= vars.app_runtime_abbr %>_ topic.
 
 For instructions on how to configure the TLS cipher suites for the Gorouter, see the [Configure Networking](../../customizing/configure-pas.html#networking) section of the _Configuring PAS_ topic.
 
