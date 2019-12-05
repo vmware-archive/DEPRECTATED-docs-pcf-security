@@ -29,7 +29,7 @@ To rotate CredHub certificates and CAs as you rotate the Ops Manager root CA, se
 
 Before you rotate CredHub-managed certificates:
 
-* All CredHub Maestro rotation workflows ignore CredHub-set certificates by default. If you have recently upgraded to Pivotal Platform v2.8 and have manually set CredHub certificates, you must mark them as `generated: false`. For more information, see [Reset Manually Set Certificates in CredHub Before Upgrade](https://docs.pivotal.io/platform/2-8/pcf-release-notes/breaking-changes.html#credhub-generated-field) in the _Pivotal Platform v2.8 Breaking Changes_ topic and [Reviewing and Resetting Manually Set Certificates in BOSH CredHub](manual-credhub-certificate.html).
+* All CredHub Maestro rotation workflows ignore CredHub-generated certificates by default. If you have recently upgraded to Pivotal Platform v2.8 and have manually set CredHub certificates, you must mark them as `generated: false`. For more information, see [Reset Manually Set Certificates in CredHub Before Rotating Certificates](https://docs.pivotal.io/platform/2-8/pcf-release-notes/breaking-changes.html#credhub-generated-field) in the _Pivotal Platform v2.8 Breaking Changes_ topic and [Reviewing and Resetting Manually Set Certificates in CredHub](manual-credhub-certificate.html).
 
 * To ensure that there is no app availability downtime during a rotation, Pivotal recommends that you scale up all instance groups and use an external blobstore.
 
