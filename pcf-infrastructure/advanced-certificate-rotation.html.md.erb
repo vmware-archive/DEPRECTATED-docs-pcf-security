@@ -5,8 +5,9 @@ owner: CredHub Maestro
 
 This topic describes how to rotate certificates and Certificate Authorities (CAs) in CredHub using CredHub Maestro.
 
-This topic only covers rotating CredHub-managed certificates. To rotate both Ops Manager- and CredHub-managed certificates, see [Rotating Certificates](api-cert-rotation.html).
+This topic only covers rotating CredHub-managed certificates. To rotate Ops Manager managed certificates, see [Rotating Certificates](api-cert-rotation.html).
 
+<p class="note warning"><strong>Warning:</strong> Not every tile currently supports certificate rotation so there is a potential for downtime.</p>
 
 ## <a id='overview'></a> Overview
 
@@ -19,11 +20,6 @@ CredHub Maestro is a command-line interface (CLI) that facilitates rotations of 
 * Clean up inactive certificate versions so that CredHub does not run out of disk space
 
 For more information about setting up and using CredHub Maestro, see [Getting Started with CredHub Maestro](getting-started-with-maestro-cli.html).
-
-Certificates and CAs stored in CredHub are automatically rotated when you use the Ops Manager API to rotate the Ops Manager root CA, excluding the Services TLS CA. To rotate a specific CredHub certificate or CA, follow the procedures in this topic.
-
-To rotate CredHub certificates and CAs as you rotate the Ops Manager root CA, see [Rotating Certificates](api-cert-rotation.html).
-
 
 ## <a id='prerequisites'></a> Prerequisites
 
@@ -182,64 +178,7 @@ To rotate a single CA and its leaf certificates:
 
 This section describes the procedure for rotating the Services TLS CA and its leaf certificates.
 
-<p class="note warning"><strong>Warning:</strong> Upgrading your on-demand service instances is required in order to complete a rotation of the Services TLS CA. Pivotal recommends that you set up your services for high availability to minimize any service downtime.</p>
-
-To rotate the Services TLS CA and its leaf certificates:
-
-1. Regenerate the Services TLS CA.
-    1. Run `maestro list` on the Services TLS CA to see if your Services TLS CA was CredHub-set. You will see one Services TLS CA listed per deployment, but it is the same certificate.
-    1. If the Services TLS CA was CredHub-set, run:
-
-      ```
-      maestro regenerate ca --name "/services/tls_ca" --force
-      ```
-
-1. Mark the latest version of the Services TLS CA as transitional by running:
-
-    ```
-    maestro update-transitional latest --name "/services/tls_ca"
-    ```
-
-1. Redeploy all deployments that use the Services TLS CA.
-    <p class='note'><strong>Note:</strong> Run the <strong>Upgrade all On-demand Instances</strong> errand for every services deployment. The name of this errand may differ between services.</p>
-
-1. Rebind any apps that rely on services and do not use the trusted store. For example, this often includes apps that are not written in Java with Spring. This propagates the newly trusted Services TLS CA to the app instances.
-
-1. Restage any apps that rely on services, including Java apps.
-    <p class='note'><strong>Note:</strong> The bg-restage plugin enables zero-downtime blue-green restaging without access to the app source code. For more information, see <a href="https://github.com/orange-cloudfoundry/cf-plugin-bg-restage">bg-restage</a> on GitHub.</p>
-
-1. Mark the signing version of the Services TLS CA as transitional by running:
-
-    ```
-    maestro update-transitional signing --name "/services/tls_ca"
-    ```
-
-1. Regenerate all service instance certificates signed by the Services TLS CA by running:
-
-    ```
-    maestro regenerate leaf --signed-by "/services/tls_ca"
-    ```
-
-1. Redeploy all deployments that use the Services TLS CA.
-    <p class='note'><strong>Note:</strong> Run the <strong>Upgrade all On-demand Instances</strong> errand for every services deployment. The name of this errand may differ between services.</p>
-
-1. Rebind any apps that rely on services and do not use the trusted store.
-
-1. Restage any apps that rely on services, including Java apps.
-
-1. Remove the transitional flag from the Services TLS CA. This removes the old, inactive version of the Services TLS CA on the next deployment. Run:
-
-    ```
-    maestro update-transitional remove --name "/services/tls_ca"
-    ```
-
-1. Redeploy all deployments that use the Services TLS CA.
-    <p class='note'><strong>Note:</strong> Run the <strong>Upgrade all On-demand Instances</strong> errand for every services deployment. The name of this errand may differ between services.</p>
-
-1. Rebind any apps that rely on services and do not use the trusted store.
-
-1. Restage any apps that rely on services, including Java apps.
-
+<p class="note warning"><strong>Warning:</strong> This is not yet supported so you should not attempt to rotate these certificates.</p>
 
 ### <a id='set-certificate-rotation'></a> Rotate CredHub-Set Certificates
 
