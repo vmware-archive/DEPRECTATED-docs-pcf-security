@@ -147,16 +147,6 @@ You can use the following flags with `maestro topology`:
 
 * `include-all`: Display topology for both active and inactive certificates.
 
-#### <a id='expected'></a> maestro topology expected
-
-`maestro topology expected` shows the expected topology that would result from a BOSH deployment.
-
-You can use the following flags with `maestro topology expected`:
-
-* `deployment-names`: Allow expected topology to reflect a selective deployment. This must be a comma-separated list.
-
-### <a id='regenerate'></a> maestro regenerate
-
 `maestro regenerate` regenerates CredHub-generated certificates. By default, certificates that have been manually set in CredHub are not regenerated.
 
 #### <a id='regenerate-ca'></a> maestro regenerate ca
@@ -174,6 +164,8 @@ You can use the following flags with `maestro regenerate ca`:
 * `exclude`: Comma-separated list of CAs to exclude from being regenerated. This includes all leaf certificates of excluded CAs.
 
 * `force`: Regenerate both CredHub-generated and manually set CAs.
+
+* `show-excluded`: Show all certificates excluded from regeneration.
 
 #### <a id='regenerate-leaf'></a> maestro regenerate leaf
 
@@ -193,6 +185,8 @@ You can use the following flags with `maestro regenerate leaf`:
 
 * `force`: Regenerate both CredHub-generated and manually set leaf certificates.
 
+* `show-excluded`: Show all certificates excluded from regeneration.
+
 ### <a id='update-transitional'></a> maestro update-transitional
 
 `maestro update-transitional` updates the transitional flag for CAs.
@@ -211,6 +205,8 @@ You can use the following flags with `maestro update-transitional latest`:
 
 * `exclude`: Exclude a list of CAs and their leaf certificates from being updated.
 
+* `show-excluded`: Show all certificates excluded from update.
+
 #### <a id='signing'></a> maestro update-transitional signing
 
 `maestro update-transitional signing` updates the transitional flag for the version of the actively deployed CA that signed deployed leaf certificates.
@@ -225,6 +221,8 @@ You can use the following flags with `maestro update-transitional signing`:
 
 * `exclude`: Exclude a list of CAs and their leaf certificates from being updated.
 
+* `show-excluded`: Show all certificates excluded from update.
+
 #### <a id='remove'></a> maestro update-transitional remove
 
 `maestro update-transitional remove`) removes the transitional flag for all versions of the actively deployed CA.
@@ -238,6 +236,8 @@ You can use the following flags with `maestro update-transitional remove`:
 * `dry-run`: List CAs to be updated.
 
 * `exclude`: Exclude a list of CAs and their children from being updated.
+
+* `show-excluded`: Show all certificates excluded from update.
 
 ### <a id='garbage-collect'></a> maestro garbage-collect
 
