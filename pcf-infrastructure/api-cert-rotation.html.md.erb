@@ -262,7 +262,13 @@ To add a new root CA for Ops Manager and regenerate the BOSH NATS CA:
 
     1. Click the **Errands** tab.
 
-    1. Enable the **Recreate All Service Instances** errand if provided. If you do not see this errand, contact [Pivotal Support](https://pivotal.io/support).
+    1. Enable the **Recreate All Service Instances** errand if provided.
+    
+    1. If you do not see this errand, manually push the BOSH NATS CA to each service instance VM. Run:
+      <pre>
+      bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
+      </pre>
+      Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance. You run this command for each service instance.
 
 1. Click **Review Pending Changes**, then **Apply Changes**. When the deploy finishes, continue to the next section.
 
