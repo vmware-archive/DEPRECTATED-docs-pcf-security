@@ -257,7 +257,13 @@ To add new CAs:
 
     1. Click the **Errands** tab.
 
-    1. Enable the **Recreate All Service Instances** errand if provided. If you do not see this errand, contact [Pivotal Support](https://pivotal.io/support).
+    1. Enable the **Recreate All Service Instances** errand if provided. 
+
+    1. If you do not see this errand, manually push the BOSH NATS CA by running the following command for each service instance:
+        ```
+        bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
+        ```
+        where `SERVICE-INSTANCE-DEPLOYMENT` is the name of your service instance BOSH deployment.
 
 1. Click **Review Pending Changes**, then **Apply Changes**. When the deploy finishes, continue to the next section.
 
