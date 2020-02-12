@@ -7,7 +7,7 @@ This topic describes how to rotate certificates and Certificate Authorities (CAs
 
 This topic only covers rotating CredHub-managed certificates. To rotate Ops Manager managed certificates, see [Rotating Certificates](api-cert-rotation.html).
 
-<p class="note warning"><strong>Warning:</strong> Not every <%= vars.platform_name %> tile currently supports certificate rotation so there is a potential for downtime. See <a href="maestro-tile-compatibility.html">Credhub Maestro Tile Compatibility</a> for more information on which tiles support certificate rotation.</p>
+<p class="note warning"><strong>Warning:</strong> Ops Manager and PAS must BOTH be on 2.9 in order to ensure safe cert rotation. If running 2.8, please update to 2.9 to use Maestro cert rotation.</p>
 
 ## <a id='overview'></a> Overview
 
@@ -20,6 +20,8 @@ CredHub Maestro is a command-line interface (CLI) that facilitates rotations of 
 * Clean up inactive certificate versions so that CredHub does not run out of disk space
 
 For more information about setting up and using CredHub Maestro, see [Getting Started with CredHub Maestro](getting-started-with-maestro-cli.html).
+
+<p class="note warning"><strong>Warning:</strong> Not every <%= vars.platform_name %> tile currently supports certificate rotation so there is a potential for downtime. See <a href="maestro-tile-compatibility.html">Credhub Maestro Tile Compatibility</a> for more information on which tiles support certificate rotation.</p>
 
 ## <a id='prerequisites'></a> Prerequisites
 
