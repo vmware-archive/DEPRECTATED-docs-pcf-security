@@ -257,15 +257,15 @@ To add new CAs:
 
     1. Click the **Errands** tab.
 
-    1. Enable the **Recreate All Service Instances** errand if provided.
+    1. Enable the **Recreate All Service Instances** errand if provided. If you do not see this errand, follow the step after applying changes but before activating the CAs.
 
-    1. If you do not see this errand, manually push the BOSH NATS CA to each service instance VM. Run:
-      <pre>
-      bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
-      </pre>
-      Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance. You run this command for each service instance.
+1. Click **Review Pending Changes**, then **Apply Changes**. When the deploy finishes, either perform the next step or continue the next section, _Step 2: Activate the CAs_, depending on the services in your deployment.
 
-1. Click **Review Pending Changes**, then **Apply Changes**. When the deploy finishes, continue to the next section.
+1. If a service tile does not have the **Recreate All Service Instances** errand, you must manually push the BOSH NATS CA to each of its service instances. Run:
+  <pre>
+  bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
+  </pre>
+  Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance. You run this command for each service instance.
 
 #### <a id='activate-new-ca'></a> Step 2: Activate the CAs
 
