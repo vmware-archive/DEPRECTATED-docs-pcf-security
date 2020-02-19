@@ -3,42 +3,35 @@ title: Certificates on Pivotal Platform
 owner: Security
 ---
 
-<% current_page.data.title = "Certificates on " + vars.product_name %>
+<% current_page.data.title = "Certificates on " + vars.platform_name %>
 
-This topic describes the sources and uses for certificates to secure both internal and
-external networking calls in <%= vars.product_name  %>.
+This topic describes the sources and uses for certificates to secure both internal and external networking calls in <%= vars.platform_name %>.
 
 
-## <a id="sources"></a>Certificate Sources
+## <a id="sources"></a> Certificate Sources
 
-Certificates in <%= vars.product_name %> originate from two of the following sources:
+Certificates in <%= vars.platform_name %> originate from these sources:
 
 * [Enterprise Root Certificate Authority (CA)](#enterprise-root-ca)
 
 * [CredHub](#credhub)
 
+### <a id="enterprise-root-ca"></a> Enterprise Root CA
 
-### <a id="enterprise-root-ca"></a>Enterprise Root CA
+An enterprise root CA is able to grant itself a certificate and create subordinate CAs. Domains require an enterprise root CA to allow clients to request certificates.
 
-An enterprise root CA is able to
-grant itself a certificate and create subordinate CAs. Domains require an enterprise root CA to allow
-clients to request certificates.
-
-Generating certificates against a root CA is a good implementation for systems that are
-static and do not need highly available certificate creation.
-
+Generating certificates against a root CA is a good implementation for systems that are static and do not need highly available certificate creation.
 
 ### <a id="credhub"></a>CredHub
 
-You can use CredHub as a source for certificates in <%= vars.product_name %>. These certificates can either
-be self-signed or signed by an imported trusted CA. Certificates are self-signed by default.
+You can use CredHub as a source for certificates in <%= vars.platform_name %>. These certificates can either be self-signed or signed by an imported trusted CA. Certificates are self-signed by default.
 
-Use CredHub for the following benefits:
+Use CredHub for:
 
 * High availability
 * Dynamic generation of certificates
-* More secure communication between platform components, applications, and services
+* More secure communication between platform components, apps, and services
 
-Pivotal recommends using CredHub for high availability and good security posture in <%= vars.product_name %>.
+<%= vars.recommended_by %> recommends using CredHub for high availability and good security posture in <%= vars.platform_name %>.
 
 For more information, see [CredHub](../../credhub/index.html).
