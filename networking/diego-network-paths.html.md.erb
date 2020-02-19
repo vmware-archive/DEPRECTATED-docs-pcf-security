@@ -86,7 +86,7 @@ The table below lists network communication paths that are internal for Diego:
 <tr>
   <td>diego_brain (SSH Proxy)</td>
   <td>diego_cell (App instances)</td>
-  <td>Varies</td>
+  <td>Varies<sup>&#8225;</sup></td>
   <td>TCP</td>
   <td>SSH</td>
   <td>SSH</td>
@@ -172,6 +172,8 @@ The table below lists network communication paths that are internal for Diego:
   <td>Mutual TLS</td>
 </tr>
 </table>
+
+<sup>&#8225;</sup>These are the host-side ports that map to port 2222 in app instance containers and are typically within the range 61001 to 65534.
 
 <sup>&#8258;</sup>The Diego File Server is responsible for distributing non-sensitive, static platform assets to internal platform components.
 
@@ -270,7 +272,5 @@ The table below lists network communication paths that are outbound from Diego:
 <sup>&#42;&#42;</sup>MySQL authentication uses the MySQL native password method.
 
 <sup>&#8224;</sup>Applies only to deployments where internal MySQL is selected as the database.
-
-<sup>&#8225;</sup>These are the host-side ports that map to port 2222 in app instance containers and are typically within the range 61001 to 65534.
 
 <%= partial "bosh-dns" %>
