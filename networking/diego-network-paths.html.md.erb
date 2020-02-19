@@ -3,11 +3,12 @@ title: Diego Network Communications
 owner: Diego
 ---
 
-This topic describes [Diego](../../concepts/diego/diego-architecture.html) internal network communication paths with other Pivotal Application Service (PAS) components.
+This topic describes [Diego](../../concepts/diego/diego-architecture.html) internal network communication paths with other <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) components.
+
 
 ## <a id="inbound"></a> Inbound Communications
 
-The following table lists network communication paths that are inbound to Diego.
+The table below lists network communication paths that are inbound to Diego:
 
 <table class="nice">
 <tr>
@@ -36,9 +37,10 @@ The following table lists network communication paths that are inbound to Diego.
 </tr>
 </table>
 
+
 ## <a id="internal"></a> Diego Internal Communications
 
-The following table lists network communication paths that are internal for Diego.
+The table below lists network communication paths that are internal for Diego:
 
 <table class="nice">
 <tr>
@@ -84,7 +86,7 @@ The following table lists network communication paths that are internal for Dieg
 <tr>
   <td>diego_brain (SSH Proxy)</td>
   <td>diego_cell (App instances)</td>
-  <td>Varies<sup>&#8225;</sup></td>
+  <td>Varies</td>
   <td>TCP</td>
   <td>SSH</td>
   <td>SSH</td>
@@ -122,7 +124,7 @@ The following table lists network communication paths that are internal for Dieg
   <td>None</td>
 </tr>
 <tr>
-  <td>diego_cell (Rep) in Isolation Segment, different subnet</td>
+  <td>diego_cell (Rep) in <%= vars.segment_runtime_full %>, different subnet</td>
   <td>diego_brain (File Server)</td>
   <td>8447</td>
   <td>TCP</td>
@@ -173,9 +175,10 @@ The following table lists network communication paths that are internal for Dieg
 
 <sup>&#8258;</sup>The Diego File Server is responsible for distributing non-sensitive, static platform assets to internal platform components.
 
-## <a id="outbound"></a> Outbound Communications ##
 
-The following table lists network communication paths that are outbound from Diego.
+## <a id="outbound"></a> Outbound Communications
+
+The table below lists network communication paths that are outbound from Diego:
 
 <table class="nice">
 <tr>
@@ -211,7 +214,7 @@ The following table lists network communication paths that are outbound from Die
   <td>TLS and OAuth 2.0</td>
 </tr>
 <tr>
-  <td>diego_cell (local Route Emitter)</td>
+  <td>diego_cell (local Route Emitter)<sup>&#8258;</sup></td>
   <td>nats</td>
   <td>4222</td>
   <td>TCP</td>
@@ -260,7 +263,9 @@ The following table lists network communication paths that are outbound from Die
 </tr>
 </table>
 
-<sup>&#42;</sup>The destination depends on your PAS blobstore configuration. If you use the internal blobstore, the Diego Cell communicates to the blobstore using TLS on port `4443`. 
+<sup>&#8258;</sup>In <%= vars.windows_runtime_full %> (<%= vars.windows_runtime_abbr %>), the local Route Emitter communicates with the `nats-tls` VM through port 4224 using mutual TLS (mTLS) protocol.
+
+<sup>&#42;</sup>The destination depends on your <%= vars.app_runtime_abbr %> blobstore configuration. If you use the internal blobstore, the Diego Cell communicates to the blobstore using TLS on port 4443. 
 
 <sup>&#42;&#42;</sup>MySQL authentication uses the MySQL native password method.
 
