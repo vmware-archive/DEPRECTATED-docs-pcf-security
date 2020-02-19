@@ -5,9 +5,10 @@ owner: Diego
 
 This topic describes [Diego](../../concepts/diego/diego-architecture.html) internal network communication paths with other Pivotal Application Service (PAS) components.
 
+
 ## <a id="inbound"></a> Inbound Communications
 
-The following table lists network communication paths that are inbound to Diego.
+The table below lists network communication paths that are inbound to Diego:
 
 <table class="nice">
 <tr>
@@ -36,9 +37,10 @@ The following table lists network communication paths that are inbound to Diego.
 </tr>
 </table>
 
+
 ## <a id="internal"></a> Diego Internal Communications
 
-The following table lists network communication paths that are internal for Diego.
+The table below lists network communication paths that are internal for Diego:
 
 <table class="nice">
 <tr>
@@ -175,9 +177,10 @@ The following table lists network communication paths that are internal for Dieg
 
 <sup>&#8258;</sup>The Diego File Server is responsible for distributing non-sensitive, static platform assets to internal platform components.
 
-## <a id="outbound"></a> Outbound Communications ##
 
-The following table lists network communication paths that are outbound from Diego.
+## <a id="outbound"></a> Outbound Communications
+
+The table below lists network communication paths that are outbound from Diego:
 
 <table class="nice">
 <tr>
@@ -262,7 +265,7 @@ The following table lists network communication paths that are outbound from Die
 </tr>
 </table>
 
-<sup>&#42;</sup>The destination depends on your PAS blobstore configuration. If you use the internal blobstore, the Diego Cell communicates to the blobstore using TLS on port `4443`. 
+<sup>&#42;</sup>The destination depends on your PAS blobstore configuration. If you use the internal blobstore, the Diego Cell communicates to the blobstore using TLS on port 4443. 
 
 <sup>&#42;&#42;</sup>MySQL authentication uses the MySQL native password method.
 
