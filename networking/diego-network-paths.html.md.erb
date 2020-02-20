@@ -257,7 +257,7 @@ The table below lists network communication paths that are outbound from Diego:
 </tr>
 </table>
 
-<sup>&#8258;</sup>In <%= vars.windows_runtime_full %> (<%= vars.windows_runtime_abbr %>), the local Route Emitter communicates with the `nats-tls` VM through port 4224 using mutual TLS (mTLS) protocol.
+<sup>&#8258;</sup>In <%= vars.windows_runtime_full %> (<%= vars.windows_runtime_abbr %>), the local Route Emitter communicates with the `nats-tls` VM through port 4224 using mutual TLS protocol.
 
 <sup>&#42;</sup>The destination depends on your <%= vars.app_runtime_abbr %> blobstore configuration. If you use the internal blobstore, the Diego Cell communicates to the blobstore using TLS on port 4443. 
 
