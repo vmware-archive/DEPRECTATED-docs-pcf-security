@@ -7,9 +7,10 @@ This topic describes how to rotate certificates and Certificate Authorities (CAs
 
 This topic only covers rotating CredHub-managed certificates. To rotate Ops Manager managed certificates, see [Rotating Certificates](api-cert-rotation.html).
 
-<p class="note warning"><strong>Warning:</strong> To ensure safe certificate rotation, you must use
-both Ops Manager v2.9 and PAS v2.9. Upgrade Ops Manager and PAS to v2.9 to use Maestro certificate
-rotation.</p>
+<p class="note warning"><strong>Warning:</strong> With Ops Manager v2.8 and PAS v2.8, you can use
+the Maestro CLI to rotate your CredHub certificates. To ensure safe certificate rotation, you must
+use both Ops Manager v2.9 and PAS v2.9. Pivotal recommends that you upgrade Ops Manager and PAS to
+v2.9 to use safe Maestro certificate rotation.</p>
 
 ## <a id='overview'></a> Overview
 
@@ -23,7 +24,10 @@ CredHub Maestro is a command-line interface (CLI) that facilitates rotations of 
 
 For more information about setting up and using CredHub Maestro, see [Getting Started with CredHub Maestro](getting-started-with-maestro-cli.html).
 
-<p class="note warning"><strong>Warning:</strong> Not every <%= vars.platform_name %> tile currently supports certificate rotation so there is a potential for downtime. See <a href="maestro-tile-compatibility.html">Credhub Maestro Tile Compatibility</a> for more information on which tiles support certificate rotation.</p>
+<p class="note warning"><strong>Warning:</strong> Not every <%= vars.platform_name %> tile
+supports certificate rotation so there is a potential for downtime. See
+<a href="maestro-tile-compatibility.html">CredHub Maestro Tile Compatibility</a> for more
+information about which tiles support certificate rotation.</p>
 
 ## <a id='prerequisites'></a> Prerequisites
 
@@ -186,7 +190,7 @@ This section describes the procedure for rotating the Services TLS CA and its le
 
 ### <a id='set-certificate-rotation'></a> Rotate Manually Set Certificates
 
-This section describes the procedure for rotating certificates that are manually set in Credhub.
+This section describes the procedure for rotating certificates that are manually set in CredHub.
 
 To rotate a manually set certificate:
 
