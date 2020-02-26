@@ -3,14 +3,11 @@ title: Advanced Certificate Rotation with CredHub Maestro
 owner: CredHub Maestro
 ---
 
-This topic describes how to rotate certificates and Certificate Authorities (CAs) in CredHub using CredHub Maestro.
+This topic describes how to rotate certificates and Certificate Authorities (CAs) in BOSH CredHub using CredHub Maestro.
 
 This topic only covers rotating CredHub-managed certificates. To rotate Ops Manager managed certificates, see [Rotating Certificates](api-cert-rotation.html).
 
-<p class="note warning"><strong>Warning:</strong> With Ops Manager v2.8 and PAS v2.8, you can use
-the Maestro CLI to rotate your CredHub certificates. To ensure safe certificate rotation, you must
-use both Ops Manager v2.9 and PAS v2.9. Pivotal recommends that you upgrade Ops Manager and PAS to
-v2.9 to use safe Maestro certificate rotation.</p>
+<p class="note warning"><strong>Warning:</strong> Pivotal recommends that you upgrade to Ops Manager v2.9 and PAS v2.9 to rotate certificates safely with CredHub Maestro. If you need to rotate a certificate or CA immediately in Ops Manager v2.8 and PAS v2.8, you can use the Maestro CLI, however you may experience app downtime.</p>
 
 ## <a id='overview'></a> Overview
 
