@@ -10,9 +10,15 @@ For more information about setting up and using CredHub Maestro, see [Getting St
 
 ## <a id='when-to-use'></a> When to Use CredHub Maestro for Certificate Rotation
 
-Only use this procedure if you need to target one or more specific CredHub-managed certificates or CAs for rotation and do not want to rotate any other certificates managed by Ops Manager or CredHub.
+Pivotal recommends that you use the Ops Manager API to perform bulk rotation of certificates. For more information, see [Rotating Certificates](api-cert-rotation.html).
 
-Otherwise, Pivotal recommends that you use the Ops Manager API to perform bulk rotation of certificates if possible. For more information, see [Rotating Certificates](api-cert-rotation.html). 
+However, there are some cases when you cannot use the Ops Manager API to do bulk certificate rotation. In these cases, you can use CredHub Maestro to rotate certificates.
+
+The following desribes when to use CredHub Maestro instead of the Ops Manager API for certificate rotation:
+
+* You need to rotate one or more specific CredHub-managed certificates and do not want to rotate any other certificates managed by Ops Manager or CredHub.
+* You have <%= vars.k8s_runtime_full %> installed and therefore cannot use the Ops Manager API to rotate CredHub-managed certificates.
+* You have a version of <%= vars.app_runtime_full %> earlier than <%= vars.v_major_version %> installed and therefore cannot use the Ops Manager API to rotate CredHub-managed certificates. 
 
 ## <a id='prerequisites'></a> Prerequisites
 
