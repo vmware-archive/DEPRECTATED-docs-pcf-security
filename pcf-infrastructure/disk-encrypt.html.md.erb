@@ -84,7 +84,7 @@ For more information about how BOSH integrates with IaaS-level disk encryption o
 
 ### <a id='recreate'></a> Recreate BOSH-Deployed Disks
 
-Unless you are using Azure Managed Disks, you need to manually recreate disks on BOSH-deployed VMs after you have added or rotated disk encryption keys. To manually recreate disks,:
+Unless you are using Azure Managed Disks, you need to manually recreate disks on BOSH-deployed VMs after you have added or rotated disk encryption keys. To manually recreate disks:
 
 1. Configure Ops Manager to encrypt VM root, ephemeral disk, and persistent disk on next deploy:
   - **Root File System**: To recreate the root file system for VMs, you must upload a new stemcell. If you are already running the latest stemcell, you can:
