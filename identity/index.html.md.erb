@@ -3,22 +3,7 @@ title: Credential and Identity Management
 owner: Security
 ---
 
-<<<<<<< HEAD
-This section provides links to different aspects of identity management, including credential management handled by CredHub, user creation and permissions management, and authentication for Pivotal Cloud Foundry (PCF).
-
-## <a id="general"></a> General Identity Management
-
-The following topics provide general information about credential and identity management in PCF.
-
-* <a href="/pivotalcf/customizing/user-types.html">Pivotal Cloud Foundry User Types</a>
-* <a href="/pivotalcf/customizing/credentials.html">Retrieving Credentials from Your Deployment</a>
-
-## <a id="credhub"></a> CredHub Documentation
-
-CredHub provides centralized credential management in Pivotal Cloud Foundry (PCF).
-Credentials can include passwords, certificates, and SSH keys.
-=======
-The topics in this section describe different aspects of identity management, including credential management handled by CredHub, user creation and permissions management, and authentication for <%= vars.product_name %>.
+The topics in this section describe different aspects of identity management, including credential management handled by CredHub, user creation and permissions management, and authentication for (<%= vars.product_name_full %> )<%= vars.product_name %>.
 
 
 ## <a id="general"></a> General Identity Management
@@ -32,53 +17,11 @@ These topics provide general information about credential and identity managemen
 ## <a id="credhub"></a> CredHub Documentation
 
 CredHub provides centralized credential management in <%= vars.product_name %>. Credentials can include passwords, certificates, and SSH keys.
->>>>>>> ec41c5c... Style/formatting/variable sweep [#170966065]
 
 CredHub centralizes and secures credential generation, storage, lifecycle management, and system access.
 
 These topics provide general information about CredHub:
 
-<<<<<<< HEAD
-* <a href="/pivotalcf/credhub/index.html">CredHub</a>:
-Provides an overview of CredHub.
-
-* <a href="/pivotalcf/credhub/index.html">CredHub Credential Types</a>:
-Provides a reference of credential types supported in CredHub.
-
-## <a id="uaa"></a> UAA Documentation
-
-PCF uses UAA to manage account roles and permissions in PCF runtimes.
-UAA supports access control as OAuth2 services and can store user information internally,
-or connect to external user stores through LDAP or SAML.
-
-For more information about UAA, see the following topics.
-
-* <a href="/pivotalcf/uaa/uaa-overview.html">UAA Overview</a>
-* <a href="/pivotalcf/uaa/uaa-concepts.html">UAA Concepts</a>
-* <a href="/pivotalcf/concepts/architecture/uaa.html">UAA Architecture</a>
-* <a href="/pivotalcf/uaa/identity-providers.html">Identity Providers in UAA</a>
-
-## <a id=""></a>PCF Roles and User Accounts
-
-The following topics describe how to manage PCF roles and user accounts in PCF.
-
-* <a href="/pivotalcf/uaa/uaa-user-management.html">Creating and Managing Users with the UAA CLI (UAAC)</a>
-* <a href="/pivotalcf/opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a PCF Deployment</a>
-
-### <a id="ops-man"></a> Ops Manager Roles and Permissions
-
-* <a href="/pivotalcf/customizing/opsmanager-create-bosh-client.html">Creating UAA Clients for BOSH Director</a>
-* <a href="/pivotalcf/opsguide/config-rbac.html">Configuring Role-Based Access Control (RBAC) in Ops Manager</a>
-* <a href="/pivotalcf/customizing/opsman-users.html">Creating and Managing Ops Manager User Accounts</a>
-
-### <a id="pas"></a> PAS Roles and Permissions
-
-This section provides links to Pivotal Application Service (PAS) roles and permissions documentation.
-
-* <a href="/pivotalcf/concepts/roles.html">Orgs, Spaces, Roles, and Permissions</a>:
-* <a href="/pivotalcf/opsguide/creating-account.html">Creating New PAS User Accounts</a>
-* <a href="/pivotalcf/console/console-roles.html">Managing User Roles with Apps Manager</a>
-=======
 * [CredHub](../credhub/index.html)
 * [CredHub Credential Types](../credhub/index.html)
 
@@ -88,7 +31,6 @@ This section provides links to Pivotal Application Service (PAS) roles and permi
 <%= vars.product_name %> uses User Account and Authentication (UAA) to manage account roles and permissions in <%= vars.product_name %> runtimes.
 
 UAA supports access control as OAuth2 services and can store user information internally, or connect to external user stores through LDAP or SAML.
->>>>>>> ec41c5c... Style/formatting/variable sweep [#170966065]
 
 These topics provide general information about UAA:
 
@@ -98,7 +40,7 @@ These topics provide general information about UAA:
 * [Identity Providers in UAA](../uaa/identity-providers.html)
 
 
-## <a id=""></a> <%= vars.product_name %> Roles and User Accounts
+## <a id="pcf"></a> <%= vars.product_name %> Roles and User Accounts
 
 These topics describe how to manage <%= vars.product_name %> roles and user accounts in <%= vars.product_name %>:
 
@@ -113,7 +55,7 @@ These topics provide information about <%= vars.ops_manager %> roles and permiss
 * [Configuring Role-Based Access Control (RBAC) in <%= vars.ops_manager %>](../opsguide/config-rbac.html)
 * [Creating and Managing <%= vars.ops_manager %> User Accounts](../customizing/opsman-users.html)
 
-### <a id="<%= vars.product_short %>"></a> <%= vars.product_runtime %> (<%= vars.product_short %>) Roles and Permissions
+### <a id="pas"></a> <%= vars.product_runtime %> (<%= vars.product_short %>) Roles and Permissions
 
 These topics provide information about <%= vars.product_short %> roles and permissions:
 
