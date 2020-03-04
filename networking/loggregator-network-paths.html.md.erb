@@ -3,178 +3,50 @@ title: Loggregator Network Communications
 owner: Loggregator
 ---
 
-This topic describes [Loggregator](../../loggregator/architecture.html) internal network communication paths with other Pivotal Application Service (PAS) components.
+This topic describes Loggregator internal network communication paths with other <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) components.
+
+For more information about Loggregator components and architecture, see [Loggregator Components and Architecture](../../loggregator/architecture.html).
+
 
 ## <a id="loggregator"></a> Loggregator Communications
 
-The following table lists network communication paths for Loggregator.
+The following table lists network communication paths for Loggregator:
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>Any&#42;</td>
-  <td>loggregator_trafficcontroller</td>
-  <td>8081</td>
-  <td>TCP</td>
-  <td>HTTP/WebSocket</td>
-  <td>OAuth</td>
-</tr>
-<tr>
-  <td>Any VM running Metron</td>
-  <td>doppler</td>
-  <td>8082</td>
-  <td>TCP</td>
-  <td>gRPC over HTTP/2</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller</td>
-  <td>doppler</td>
-  <td>8082</td>
-  <td>TCP</td>
-  <td>gRPC over HTTP/2</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller</td>
-  <td>uaa</td>
-  <td>8443</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>TLS</td>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller</td>
-  <td>cloud_controller</td>
-  <td>9023</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller (Reverse Log Proxy)</td>
-  <td>doppler</td>
-  <td>8082</td>
-  <td>TCP</td>
-  <td>gRPC over HTTP/2</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>Any&#42;</td>
-  <td>loggregator_trafficcontroller (cf auth proxy)</td>
-  <td>8083</td>
-  <td>TCP</td>
-  <td>HTTP</td>
-  <td>OAuth</td>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller (Route Registrar)</td>
-  <td>nats</td>
-  <td>4222</td>
-  <td>TCP</td>
-  <td>NATS</td>
-  <td>Basic authentication</td>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller (metrics_forwarder)</td>
-  <td>BOSH Director (metrics_server)</td>
-  <td>25595 and 8443</td>
-  <td>TCP</td>
-  <td>gRPC over HTTP/2</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller</td>
-  <td>doppler (Log Cache)</td>
-  <td>8080</td>
-  <td>TCP</td>
-  <td>gRPC over HTTP/2</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller (Reverse Log Proxy Gateway)</td>
-  <td>cloud_controller</td>
-  <td>9023</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>Any&#42;</td>
-  <td>loggregator_trafficcontroller (Reverse Log Proxy Gateway)</td>
-  <td>8088</td>
-  <td>TCP</td>
-  <td>HTTP/Server Sent Events</td>
-  <td>OAuth</td>
-</tr>
-</table>
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| Any&#42; | loggregator_trafficcontroller | 8081 | TCP | HTTP/WebSocket | OAuth |
+| Any VM running Metron | doppler | 8082 | TCP | gRPC over HTTP/2 | Mutual TLS |
+| loggregator_trafficcontroller | doppler | 8082 | TCP | gRPC over HTTP/2 | Mutual TLS |
+| loggregator_trafficcontroller | uaa | 8443 | TCP | HTTPS | TLS |
+| loggregator_trafficcontroller | cloud_controller | 9023 | TCP | HTTPS | Mutual TLS |
+| loggregator_trafficcontroller (Reverse Log Proxy) | doppler | 8082 | TCP | gRPC over HTTP/2 | Mutual TLS |
+| Any&#42; | loggregator_trafficcontroller (<%= vars.app_runtime_abbr %> authentication proxy) | 8083 | TCP | HTTP | OAuth |
+| loggregator_trafficcontroller (Route Registrar) | nats | 4222 | TCP | NATS | Basic authentication |
+| loggregator_trafficcontroller (Metrics Forwarder) | BOSH Director (Metrics Server) | 25595 and 8443 | TCP | gRPC over HTTP/2 | Mutual TLS |
+| loggregator_trafficcontroller | doppler (Log Cache) | 8080 | TCP | gRPC over HTTP/2 | Mutual TLS |
+| loggregator_trafficcontroller (Reverse Log Proxy Gateway) | cloud_controller | 9023 | TCP | HTTPS | Mutual TLS |
+| Any&#42; | loggregator_trafficcontroller (Reverse Log Proxy Gateway) | 8088 | TCP | HTTP/Server Sent Events | OAuth |
 
-<div><sup>&#42;</sup>Any source VM can send requests to the specified destination within its subnet.</div>
-<div><sup>&#42;&#42;</sup>Any host configured through a user-provided service binding with a syslog URL.</div>
-<div><sup>&#42;&#42;&#42;</sup>Any port configured through a user-provided service binding with syslog URL.</div>
-<div><sup>&#42;&#42;&#42;&#42;</sup>Basic authentication only supported for HTTPS syslog drains.</div>
+<sup>&#42;</sup>Any source VM can send requests to the specified destination within its subnet.
+
+<sup>&#42;&#42;</sup>Any host configured through a user-provided service binding with a syslog URL.
+
+<sup>&#42;&#42;&#42;</sup>Any port configured through a user-provided service binding with syslog URL.
+
+<sup>&#42;&#42;&#42;&#42;</sup>Basic authentication only supported for HTTPS syslog drains.
+
 
 ## <a id="log-cache"></a> Log Cache Communications
 
-The following table lists network communication paths for Log Cache.
+The following table lists network communication paths for Log Cache:
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller (Reverse Log Proxy)</td>
-  <td>log-cache (Nozzle)</td>
-  <td>8082</td>
-  <td>TCP</td>
-  <td>gRPC over HTTP/2</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>Any&#42;</td>
-  <td>log-cache</td>
-  <td>8080</td>
-  <td>TCP</td>
-  <td>gRPC over HTTP/2</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>gorouter</td>
-  <td>log-cache (Auth Proxy)</td>
-  <td>8083</td>
-  <td>TCP</td>
-  <td>HTTP</td>
-  <td>Oauth</td>
-</tr>
-<tr>
-  <td>log-cache (Auth Proxy)</td>
-  <td>uaa</td>
-  <td>8443</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>TLS</td>
-</tr>
-<tr>
-  <td>log-cache (Auth Proxy)</td>
-  <td>cloud_controller</td>
-  <td>9024</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>TLS</td>
-</tr>
-</table>
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| loggregator_trafficcontroller (Reverse Log Proxy) | log-cache (Nozzle) | 8082 | TCP | gRPC over HTTP/2 | Mutual TLS |
+| Any&#42; | log-cache | 8080 | TCP | gRPC over HTTP/2 | Mutual TLS |
+| gorouter | log-cache (Auth Proxy) | 8083 | TCP | HTTP | OAuth |
+| log-cache (Auth Proxy) | uaa | 8443 | TCP | HTTPS | TLS |
+| log-cache (Auth Proxy) | cloud_controller | 9024 | TCP | HTTPS | TLS |
 
 <sup>&#42;</sup>Any source VM can send requests to the specified destination within its subnet.
 
