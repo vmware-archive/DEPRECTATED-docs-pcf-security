@@ -3,119 +3,35 @@ title: Container-to-Container Networking Communications
 owner: Networking
 ---
 
-This topic describes [Container-to-Container Networking](../../concepts/understand-cf-networking.html) internal 
-network communication paths with other Pivotal Application Service (PAS) components.
+This topic describes container-to-container networking internal network communication paths with other <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) components.
+
+For more information about container-to-container networking, see [Container-to-Container Networking](../../concepts/understand-cf-networking.html).
+
 
 ## <a id="inbound"></a> Inbound Communications
 
-The following table lists network communication paths that are inbound to Container-to-Container Networking.
+The following table lists network communication paths that are inbound to container-to-container networking.
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td> diego_cell (Silk CNI) </td>
-  <td> diego_cell (Silk Daemon) </td>
-  <td> 23954 </td>
-  <td> TCP </td>
-  <td> HTTP </td>
-  <td> None </td>
-</tr>
-<tr>
-  <td> diego_cell (Silk Daemon) </td>
-  <td> diego_api (Silk Controller) </td>
-  <td> 4103 </td>
-  <td> TCP </td>
-  <td> HTTP </td>
-  <td> Mutual TLS </td>
-</tr>
-<tr>
-  <td> diego_cell (VXLAN Policy Agent) </td>
-  <td> diego_database (api - Policy Server Internal) </td>
-  <td> 4003 </td>
-  <td> TCP </td>
-  <td> HTTP </td>
-  <td> Mutual TLS </td>
-</tr>
-<tr>
-  <td> diego_cell (BOSH DNS Adapter) </td>
-  <td> diego_brain (Service Discovery Controller) </td>
-  <td> 8054 </td>
-  <td> TCP </td>
-  <td> HTTP </td>
-  <td> Mutual TLS </td>
-</tr>
-</table>
-#
-## <a id="outbound"></a> Outbound Communications ##
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| diego_cell (Silk CNI) | diego_cell (Silk Daemon) | 23954 | TCP | HTTP | None |
+| diego_cell (Silk Daemon) | diego_api (Silk Controller) | 4103 | TCP | HTTP | Mutual TLS |
+| diego_cell (VXLAN Policy Agent) | diego_database (api - Policy Server Internal) | 4003 | TCP | HTTP | Mutual TLS |
+| diego_cell (BOSH DNS Adapter) | diego_brain (Service Discovery Controller) | 8054 | TCP | HTTP | Mutual TLS |
 
-The following table lists network communication paths that are outbound from Container-to-Container Networking.
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-<tr>
-  <td> diego_database (api - Policy Server) </td>
-  <td> uaa </td>
-  <td> 8443 </td>
-  <td> TCP </td>
-  <td> HTTPS </td>
-  <td> TLS </td>
-</tr>
-<tr>
-  <td> diego_database (api - Policy Server) </td>
-  <td> cloud_controller (api - Cloud Controller) </td>
-  <td> 9022 </td>
-  <td> TCP </td>
-  <td> HTTP </td>
-  <td> OAuth 2.0 </td>
-</tr>
-<tr>
-  <td>diego_database (api - Policy Server)</td>
-  <td>mysql_proxy<sup>&#42;</sup></td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
-<tr>
-  <td> diego_brain (Service Discovery Controller) </td>
-  <td> nats (NATS) </td>
-  <td> 4222 </td>
-  <td> TCP </td>
-  <td> HTTP </td>
-  <td> Basic authentication </td>
-</tr>
-<tr>
-  <td> diego_cell (BOSH DNS) </td>
-  <td> diego_cell (BOSH DNS Adapter) </td>
-  <td> 8053 </td>
-  <td> TCP </td>
-  <td> HTTP </td>
-  <td> None </td>
-</tr>
-<tr>
-  <td>diego_cell (VXLAN Policy Agent)</td>
-  <td>mysql_proxy<sup>&#42;</sup></td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
-</table>
+## <a id="outbound"></a> Outbound Communications
+
+The following table lists network communication paths that are outbound from container-to-container networking:
+
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| diego_database (API - Policy Server) | uaa | 8443 | TCP | HTTPS | TLS |
+| diego_database (API - Policy Server) | cloud_controller (api - Cloud Controller) | 9022 | TCP | HTTP | OAuth 2.0 |
+| diego_database (API - Policy Server) | mysql_proxy<sup>&#42;</sup> | 3306 | TCP | MySQL | MySQL authentication |
+| diego_brain (Service Discovery Controller) | nats (NATS) | 4222 | TCP | HTTP | Basic authentication |
+| diego_cell (BOSH DNS) | diego_cell (BOSH DNS Adapter) | 8053 | TCP | HTTP | None |
+| diego_cell (VXLAN Policy Agent) | mysql_proxy<sup>&#42;</sup> | 3306 | TCP | MySQL | MySQL authentication |
 
 <sup>&#42;</sup>Applies only to deployments where internal MySQL is selected as the database.
 
