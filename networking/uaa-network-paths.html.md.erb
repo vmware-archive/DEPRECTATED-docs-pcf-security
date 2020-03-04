@@ -3,129 +3,47 @@ title: UAA Network Communications
 owner: UAA
 ---
 
-This topic describes [User Account and Authentication (UAA)](../../concepts/architecture/uaa.html) internal network communication paths with other Pivotal Application Service (PAS) components.
+This topic describes User Account and Authentication (UAA) internal network communication paths with other <%= vars.product_runtime %> (<%= vars.product_short %>) components.
+
+For more information about UAA, see [User Account and Authentication (UAA) Server](../../concepts/architecture/uaa.html).
+
 
 ## <a id="inbound"></a> Inbound Communications
 
-The following table lists network communication paths that are inbound to UAA.
+The following table lists network communication paths that are inbound to UAA:
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>cloud_controller</td>
-  <td>uaa</td>
-  <td>8443</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>OAuth 2.0 or none<sup>&#42;</sup></td>
-</tr>
-<tr>
-  <td>diego_brain (SSH Proxy)</td>
-  <td>uaa</td>
-  <td>443</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>OAuth 2.0</td>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller</td>
-  <td>uaa</td>
-  <td>8443</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>TLS</td>
-</tr>
-<tr>
-  <td>mysql_monitor</td>
-  <td>uaa</td>
-  <td>8443</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>OAuth</td>
-</tr>
-<tr>
-  <td>router</td>
-  <td>uaa</td>
-  <td>8443</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>OAuth 2.0</td>
-</tr>
-</table>
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| cloud_controller | uaa | 8443 | TCP | HTTPS | OAuth 2.0 or none<sup>&#42;</sup> |
+| diego_brain (SSH Proxy) | uaa | 443 | TCP | HTTPS | OAuth 2.0 |
+| loggregator_trafficcontroller | uaa | 8443 | TCP | HTTPS | TLS |
+| mysql_monitor | uaa | 8443 | TCP | HTTPS | OAuth |
+| router | uaa | 8443 | TCP | HTTPS | OAuth 2.0 |
 
 <sup>&#42;</sup>The authentication method depends on the type of request.
 
-## <a id="outbound-internal"></a> Outbound Communications: Internal to PCF ##
 
-The following table lists network communication paths that are outbound from UAA.
+## <a id="outbound-internal"></a> Outbound Communications: Internal to <%= vars.product_name %>
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>uaa</td>
-  <td>mysql_proxy<sup>&#42;</sup></td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication<sup>&#42;&#42;</sup></td>
-</tr>
-<tr>
-  <td>uaa (Route Registrar)</td>
-  <td>nats</td>
-  <td>4222</td>
-  <td>TCP</td>
-  <td>NATS</td>
-  <td>Basic authentication</td>
-</tr>
-</table>
+The following table lists network communication paths that are outbound from UAA:
+
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| uaa | mysql_proxy<sup>&#42;</sup> | 3306 | TCP | MySQL | MySQL authentication<sup>&#42;&#42;</sup> |
+| uaa (Route Registrar) | nats | 4222 | TCP | NATS | Basic authentication |
 
 <sup>&#42;</sup>Applies only to deployments where internal MySQL is selected as the database.
 
 <sup>&#42;&#42;</sup> MySQL authentication uses the MySQL native password method.
 
-## <a id="outbound-external"></a> Outbound Communications: External to PCF ##
 
-The following table lists network communication paths from UAA that are outbound to external systems.
+## <a id="outbound-external"></a> Outbound Communications: External to <%= vars.product_name %>
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Authentication</th>
-</tr>
-<tr>
-  <td>uaa</td>
-  <td>LDAP</td>
-  <td>LDAP server communication port</td>
-  <td>TCP</td>
-  <td>LDAP/LDAPS</td>
-  <td>Basic authentication (LDAP bind)</td>
-</tr>
-<tr>
-  <td>uaa</td>
-  <td>SAML/OIDC</td>
-  <td>80 or 443 (HTTP port)</td>
-  <td>TCP</td>
-  <td>HTTP/HTTPS</td>
-  <td>Key</td>
-</tr>
-</table>
+The following table lists network communication paths from UAA that are outbound to external systems:
+
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| uaa | LDAP | LDAP server communication port | TCP | LDAP/LDAPS | Basic authentication (LDAP bind) |
+| uaa | SAML/OIDC | 80 or 443 (HTTP port) | TCP | HTTP/HTTPS | Key |
 
 <%= partial "bosh-dns" %>
