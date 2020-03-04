@@ -3,78 +3,68 @@ title: Credential and Identity Management
 owner: Security
 ---
 
-This section provides links to different aspects of identity management, including credential management handled by CredHub, user creation and permissions management, and authentication for <%= vars.product_name  %>.
+The topics in this section describe different aspects of identity management, including credential management handled by CredHub, user creation and permissions management, and authentication for <%= vars.platform_name %>.
+
 
 ## <a id="general"></a> General Identity Management
 
-The following topics provide general information about credential and identity management in <%= vars.product_name %>.
+These topics provide general information about credential and identity management in <%= vars.platform_name %>:
 
-* <a href="/platform/customizing/user-types.html"><%= vars.product_name %> User Types</a>
-* <a href="/platform/customizing/credentials.html">Retrieving Credentials from Your Deployment</a>
+* [<%= vars.platform_name %> User Types](../customizing/user-types.html)
+* [Retrieving Credentials from Your Deployment](../customizing/credentials.html)
+
 
 ## <a id="credhub"></a> CredHub Documentation
 
-CredHub provides centralized credential management in <%= vars.product_name  %>.
-Credentials can include passwords, certificates, and SSH keys.
+CredHub provides centralized credential management in <%= vars.platform_name %>. Credentials can include passwords, certificates, and SSH keys.
 
 CredHub centralizes and secures credential generation, storage, lifecycle management, and system access.
 
-For more information about CredHub, see the following topics.
+These topics provide general information about CredHub:
 
-* <a href="/platform/credhub/index.html">CredHub</a>: 
-Provides an overview of CredHub.
+* [CredHub](../credhub/index.html)
+* [CredHub Credential Types](../credhub/index.html)
 
-* <a href="/platform/credhub/index.html">CredHub Credential Types</a>: 
-Provides a reference of credential types supported in CredHub.
 
 ## <a id="uaa"></a> UAA Documentation
 
-<%= vars.product_name %> uses UAA to manage account roles and permissions in <%= vars.product_name %> runtimes. 
-UAA supports access control as OAuth2 services and can store user information internally, 
-or connect to external user stores through LDAP or SAML.
+<%= vars.platform_name %> uses User Account and Authentication (UAA) to manage account roles and permissions in <%= vars.platform_name %> runtimes.
 
-For more information about UAA, see the following topics.
+UAA supports access control as OAuth2 services and can store user information internally, or connect to external user stores through LDAP or SAML.
 
-* <a href="/platform/uaa/uaa-overview.html">UAA Overview</a>
-* <a href="/platform/uaa/uaa-concepts.html">UAA Concepts</a>
-* <a href="/platform/concepts/architecture/uaa.html">UAA Architecture</a>
-* <a href="/platform/uaa/identity-providers.html">Identity Providers in UAA</a>
+These topics provide general information about UAA:
 
-## <a id=""></a><%= vars.product_name %> Roles and User Accounts
-
-The following topics describe how to manage <%= vars.product_name %> roles and user accounts in <%= vars.product_name %>.
-
-* <a href="/platform/uaa/uaa-user-management.html">Creating and Managing Users with the UAA CLI (UAAC)</a>
-* <a href="/platform/opsguide/external-user-management.html">Adding Existing SAML or LDAP Users to a <%= vars.product_name %> Deployment</a>
-
-### <a id="ops-man"></a> Ops Manager Roles and Permissions
-
-* <a href="/platform/customizing/opsmanager-create-bosh-client.html">Creating UAA Clients for BOSH Director</a>
-* <a href="/platform/opsguide/config-rbac.html">Configuring Role-Based Access Control (RBAC) in Ops Manager</a>
-* <a href="/platform/customizing/opsman-users.html">Creating and Managing Ops Manager User Accounts</a>
-
-### <a id="pas"></a> PAS Roles and Permissions
-
-This section provides links to Pivotal Application Service (PAS) roles and permissions documentation.
-
-* <a href="/platform/concepts/roles.html">Orgs, Spaces, Roles, and Permissions</a>: 
-* <a href="/platform/opsguide/creating-account.html">Creating New PAS User Accounts</a>
-* <a href="/platform/console/console-roles.html">Managing User Roles with Apps Manager</a>
-
-### <a id="pks"></a> PKS Roles and Permissions
-
-This section provides links to Pivotal Container Service (PKS) roles and permissions documentation.
-
-* <a href="https://docs.pivotal.io/pks/manage-users.html">Managing Users in PKS with UAA</a>
+* [UAA Overview](../uaa/uaa-overview.html)
+* [UAA Concepts](../uaa/uaa-concepts.html)
+* [UAA Architecture](../concepts/architecture/uaa.html)
+* [Identity Providers in UAA](../uaa/identity-providers.html)
 
 
+## <a id=""></a> <%= vars.platform_name %> Roles and User Accounts
 
+These topics describe how to manage <%= vars.platform_name %> roles and user accounts in <%= vars.platform_name %>:
 
+* [Creating and Managing Users with the UAA CLI (UAAC)](../uaa/uaa-user-management.html)
+* [Adding Existing SAML or LDAP Users to a <%= vars.platform_name %> Deployment](../opsguide/external-user-management.html)
 
+### <a id="ops-man"></a> <%= vars.ops_manager_full %> Roles and Permissions
 
+These topics provide information about <%= vars.ops_manager %> roles and permissions:
 
+* [Creating UAA Clients for BOSH Director](../customizing/opsmanager-create-bosh-client.html)
+* [Configuring Role-Based Access Control (RBAC) in <%= vars.ops_manager %>](../opsguide/config-rbac.html)
+* [Creating and Managing <%= vars.ops_manager %> User Accounts](../customizing/opsman-users.html)
 
+### <a id="<%= vars.app_runtime_abbr %>"></a> <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) Roles and Permissions
 
+These topics provide information about <%= vars.app_runtime_abbr %> roles and permissions:
 
+* [Orgs, Spaces, Roles, and Permissions](../concepts/roles.html):
+* [Creating New <%= vars.app_runtime_abbr %> User Accounts](../opsguide/creating-account.html)
+* [Managing User Roles with Apps Manager](../console/console-roles.html)
 
+### <a id="pks"></a> <%= vars.k8s_runtime_full %> (<%= vars.k8s_runtime_abbr %>) Roles and Permissions
 
+These topics provide information about <%= vars.k8s_runtime_abbr %> roles and permissions:
+
+* [Managing Users in <%= vars.k8s_runtime_abbr %> with UAA](https://docs.pivotal.io/pks/manage-users.html)
