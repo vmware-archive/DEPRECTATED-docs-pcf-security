@@ -3,187 +3,54 @@ title: MySQL Network Communications
 owner: Core Services
 ---
 
-This topic describes MySQL internal network communication paths with other Pivotal Application Service (PAS) components.
+This topic describes MySQL internal network communication paths with other <%= vars.product_runtime %> (<%= vars.product_short %>) components.
 
-<p class="note"><strong>Note:</strong>These communications only apply to deployments where internal MySQL is selected as the PAS database.</p>
+<p class="note"><strong>Note:</strong> These communications only apply to deployments where internal MySQL is selected as the <%= vars.product_short %> database.</p>
 
-## <a id="inbound"></a> Inbound Communications ##
 
-The following table lists network communication paths that are inbound to MySQL VMs.
+## <a id="inbound"></a> Inbound Communications
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>cloud_controller</td>
-  <td>mysql_proxy</td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
-<tr>
-  <td>cloud_controller_worker</td>
-  <td>mysql_proxy</td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
-<tr>
-  <td>clock_global</td>
-  <td>mysql_proxy</td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
-<tr>
-  <td>credhub</td>
-  <td>mysql_proxy</td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
-<tr>
-  <td>diego_cell (VXLAN Policy Agent)</td>
-  <td>mysql_proxy</td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
-<tr>
-  <td>diego_database (Policy Server)</td>
-  <td>mysql_proxy</td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
-<tr>
-  <td>diego_database (BBS)</td>
-  <td>mysql_proxy</td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
-<tr>
-  <td>diego_database (Locket)</td>
-  <td>mysql_proxy</td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
-<tr>
-  <td>uaa</td>
-  <td>mysql_proxy</td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
-</table>
+The following table lists network communication paths that are inbound to MySQL VMs:
 
-(\*) MySQL authentication uses the MySQL native password method.
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| cloud_controller | mysql_proxy | 3306 | TCP | MySQL | MySQL authentication* |
+| cloud\_controller\_worker | mysql_proxy | 3306 | TCP | MySQL | MySQL authentication* |
+| clock_global | mysql_proxy | 3306 | TCP | MySQL | MySQL authentication* |
+| credhub | mysql_proxy | 3306 | TCP | MySQL | MySQL authentication* |
+| diego_cell (VXLAN Policy Agent) | mysql_proxy | 3306 | TCP | MySQL | MySQL authentication* |
+| diego_database (Policy Server) | mysql_proxy | 3306 | TCP | MySQL | MySQL authentication* |
+| diego_database (BBS) | mysql_proxy | 3306 | TCP | MySQL | MySQL authentication* |
+| diego_database (Locket) | mysql_proxy | 3306 | TCP | MySQL | MySQL authentication* |
+| uaa | mysql_proxy | 3306 | TCP | MySQL | MySQL authentication* |
 
-## <a id="inbound"></a> Internal Communications ##
+<sup>&#42;</sup> MySQL authentication uses the MySQL native password method.
 
-The following table lists network communication paths that are internal to MySQL VMs.
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>mysql</td>
-  <td>mysql (Galera)</td>
-  <td>4567</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication*</td>
-</tr>
-<tr>
-  <td>mysql_monitor</td>
-  <td>mysql (MySQL Server)</td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>HTTP</td>
-  <td>Basic authentication</td>
-</tr>
-<tr>
-  <td>mysql_monitor</td>
-  <td>mysql_proxy (Proxy health check)</td>
-  <td>443/8080**</td>
-  <td>TCP</td>
-  <td>HTTP</td>
-  <td>Basic authentication</td>
-</tr>
-<tr>
-  <td>mysql_proxy</td>
-  <td>mysql (MySQL Server)</td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>HTTP</td>
-  <td>MySQL authentication*</td>
-</tr>
-<tr>
-  <td>mysql_proxy</td>
-  <td>mysql (Galera health check)</td>
-  <td>9200</td>
-  <td>TCP</td>
-  <td>HTTP</td>
-  <td>Basic authentication</td>
-</tr>
+## <a id="inbound"></a> Internal Communications
 
-</table>
+The following table lists network communication paths that are internal to MySQL VMs:
 
-(\*) MySQL authentication uses the MySQL native password method.<br/><br/>
-(**) Port 443 is used if mysql_proxy is registered with Gorouter. If not registered, mysql_proxy uses port 8080 instead.
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| mysql | mysql (Galera) | 4567 | TCP | MySQL | MySQL authentication* |
+| mysql_monitor | mysql (MySQL Server) | 3306 | TCP | HTTP | Basic authentication |
+| mysql_monitor | mysql_proxy (Proxy health check) | 443/8080** | TCP | HTTP | Basic authentication |
+| mysql_proxy | mysql (MySQL Server) | 3306 | TCP | HTTP | MySQL authentication* |
+| mysql_proxy | mysql (Galera health check) | 9200 | TCP | HTTP | Basic authentication |
 
-## <a id="outbound"></a> Outbound Communications ##
+<sup>&#42;</sup>MySQL authentication uses the MySQL native password method.
 
-The following table lists network communication paths that are outbound from MySQL.
+<sup>&#42;&#42;</sup>Port 443 is used if mysql\_proxy is registered with the Gorouter. If not registered, mysql\_proxy uses port 8080 instead.
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>mysql_monitor</td>
-  <td>uaa</td>
-  <td>8443</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>OAuth</td>
-</tr>
-<tr>
-  <td>mysql_proxy (Route Registrar)</td>
-  <td>nats</td>
-  <td>4222</td>
-  <td>TCP</td>
-  <td>NATS</td>
-  <td>Basic authentication</td>
-</tr>
-</table>
+
+## <a id="outbound"></a> Outbound Communications
+
+The following table lists network communication paths that are outbound from MySQL:
+
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| mysql_monitor | uaa | 8443 | TCP | HTTPS | OAuth |
+| mysql_proxy (Route Registrar) | nats | 4222 | TCP | NATS | Basic authentication |
 
 <%= partial "bosh-dns" %>

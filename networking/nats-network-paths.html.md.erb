@@ -3,96 +3,35 @@ title: NATS Network Communications
 owner: NATS
 ---
 
-This topic describes [NATS](../../concepts/architecture/messaging-nats.html) internal network communication paths with other Pivotal Application Service (PAS) components.
+This topic describes NATS internal network communication paths with other <%= vars.product_runtime %> (<%= vars.product_short %>) components.
 
-## <a id="publish"></a>Publish Communications
+For more information about NATS, see [Messaging (NATS)](../../concepts/architecture/messaging-nats.html).
 
-The following table lists network communications that are published to NATS.
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>cloud_controller<br>(Route Registrar)</td>
-  <td>nats</td>
-  <td>4222</td>
-  <td>TCP</td>
-  <td>NATS</td>
-  <td>Basic authentication</td>
-</tr>
-<tr>
-  <td>loggregator_trafficcontroller<br>(Route Registrar)</td>
-  <td>nats</td>
-  <td>4222</td>
-  <td>TCP</td>
-  <td>NATS</td>
-  <td>Basic authentication</td>
-</tr>
-<tr>
-  <td>mysql_proxy<br>(Route Registrar)<sup>&#42;</sup></td>
-  <td>nats</td>
-  <td>4222</td>
-  <td>TCP</td>
-  <td>NATS</td>
-  <td>Basic authentication</td>
-</tr>
-<tr>
-  <td>nfs_server<br>(Route Registrar)<sup>&#8224;</sup></td>
-  <td>nats</td>
-  <td>4222</td>
-  <td>TCP</td>
-  <td>NATS</td>
-  <td>Basic authentication</td>
-</tr>
-<tr>
-  <td>uaa<br>(Route Registrar)</td>
-  <td>nats</td>
-  <td>4222</td>
-  <td>TCP</td>
-  <td>NATS</td>
-  <td>Basic authentication</td>
-</tr>
-<tr>
-  <td>diego_cell<br>(local Route Emitter)</td>
-  <td>nats</td>
-  <td>4222</td>
-  <td>TCP</td>
-  <td>NATS</td>
-  <td>Basic authentication</td>
-</tr>
-</table>
+## <a id="publish"></a> Publish Communications
+
+The following table lists network communications that are published to NATS:
+
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| cloud_controller (Route Registrar) | nats | 4222 | TCP | NATS | Basic authentication |
+| loggregator_trafficcontroller (Route Registrar) | nats | 4222 | TCP | NATS | Basic authentication |
+| mysql_proxy (Route Registrar)<sup>&#42;</sup> | nats | 4222 | TCP | NATS | Basic authentication |
+| nfs_server (Route Registrar)<sup>&#8224;</sup> | nats | 4222 | TCP | NATS | Basic authentication |
+| uaa (Route Registrar) | nats | 4222 | TCP | NATS | Basic authentication |
+| diego_cell (local Route Emitter) | nats | 4222 | TCP | NATS | Basic authentication |
 
 <sup>&#42;</sup>Applies only to deployments where internal MySQL is selected as the database.
 
 <sup>&#8224;</sup>Applies only to deployments where the internal NFS server is selected for file storage.
 
-## <a id="subscribe"></a>Subscribe Communications
 
-The following table lists network communications that are subscribed to NATS.
+## <a id="subscribe"></a> Subscribe Communications
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>router</td>
-  <td>nats</td>
-  <td>4222</td>
-  <td>TCP</td>
-  <td>NATS</td>
-  <td>Basic authentication</td>
-</tr>
-</table>
+The following table lists network communications that are subscribed to NATS:
+
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| router | nats | 4222 | TCP | NATS | Basic authentication |
 
 <%= partial "bosh-dns" %>

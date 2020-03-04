@@ -3,167 +3,41 @@ title: Diego Network Communications
 owner: Diego
 ---
 
-This topic describes Diego internal network communication paths with other Pivotal Application Service (PAS) components. For more information about Diego components and architecture, see [Diego Components and Architecture](../../concepts/diego/diego-architecture.html).
+This topic describes Diego internal network communication paths with other <%= vars.product_runtime %> (<%= vars.product_short %>) components.
+
+For more information about Diego components and architecture, see [Diego Components and Architecture](../../concepts/diego/diego-architecture.html).
 
 
 ## <a id="inbound"></a> Inbound Communications
 
-The table below lists network communication paths that are inbound to Diego:
+The following table lists network communication paths that are inbound to Diego:
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>cloud_controller</td>
-  <td>diego_database (BBS)</td>
-  <td>8889</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>cloud_controller (Routing API)</td>
-  <td>diego_database (Locket)</td>
-  <td>8891</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-</table>
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| cloud_controller | diego_database (BBS) | 8889 | TCP | HTTPS | Mutual TLS |
+| cloud_controller (Routing API) | diego_database (Locket) | 8891 | TCP | HTTPS | Mutual TLS |
 
 
 ## <a id="internal"></a> Diego Internal Communications
 
-The table below lists network communication paths that are internal for Diego:
+The following table lists network communication paths that are internal for Diego:
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>diego_brain (Auctioneer)</td>
-  <td>diego_cell (Rep)</td>
-  <td>1801</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_brain (Auctioneer)</td>
-  <td>diego_database (BBS)</td>
-  <td>8889</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_brain (Auctioneer)</td>
-  <td>diego_database (Locket)</td>
-  <td>8891</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_brain (SSH Proxy)</td>
-  <td>diego_database (BBS)</td>
-  <td>8889</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_brain (SSH Proxy)</td>
-  <td>diego_cell (App instances)</td>
-  <td>Varies<sup>&#8225;</sup></td>
-  <td>TCP</td>
-  <td>SSH</td>
-  <td>SSH</td>
-</tr>
-<tr>
-  <td>diego_brain (TPS Watcher)</td>
-  <td>diego_database (Locket)</td>
-  <td>8891</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_cell (local Route Emitter)</td>
-  <td>diego_database (BBS)</td>
-  <td>8889</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_cell (Rep)</td>
-  <td>diego_brain (CC Uploader)</td>
-  <td>9091</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_cell (Rep)</td>
-  <td>diego_brain (File Server)<sup>&#8258;</sup></td>
-  <td>8080</td>
-  <td>TCP</td>
-  <td>HTTP</td>
-  <td>None</td>
-</tr>
-<tr>
-  <td>diego_cell (Rep)</td>
-  <td>diego_database (BBS)</td>
-  <td>8889</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_cell (Rep)</td>
-  <td>diego_database (Locket)</td>
-  <td>8891</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_database (BBS)</td>
-  <td>diego_brain (Auctioneer)</td>
-  <td>9016</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_database (BBS)</td>
-  <td>diego_cell (Rep)</td>
-  <td>1801</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_database (BBS)</td>
-  <td>diego_database (Locket)</td>
-  <td>8891</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-</table>
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| diego_brain (Auctioneer) | diego_cell (Rep) | 1801 | TCP | HTTPS | Mutual TLS |
+| diego_brain (Auctioneer) | diego_database (BBS) | 8889 | TCP | HTTPS | Mutual TLS |
+| diego_brain (Auctioneer) | diego_database (Locket) | 8891 | TCP | HTTPS | Mutual TLS |
+| diego_brain (SSH Proxy) | diego_database (BBS) | 8889 | TCP | HTTPS | Mutual TLS |
+| diego_brain (SSH Proxy) | diego_cell (App instances) | Varies<sup>&#8225;</sup> | TCP | SSH | SSH |
+| diego_brain (TPS Watcher) | diego_database (Locket) | 8891 | TCP | HTTPS | Mutual TLS |
+| diego_cell (local Route Emitter) | diego_database (BBS) | 8889 | TCP | HTTPS | Mutual TLS |
+| diego_cell (Rep) | diego_brain (CC Uploader) | 9091 | TCP | HTTPS | Mutual TLS |
+| diego_cell (Rep) | diego_brain (File Server)<sup>&#8258;</sup> | 8080 | TCP | HTTP | None |
+| diego_cell (Rep) | diego_database (BBS) | 8889 | TCP | HTTPS | Mutual TLS |
+| diego_cell (Rep) | diego_database (Locket) | 8891 | TCP | HTTPS | Mutual TLS |
+| diego_database (BBS) | diego_brain (Auctioneer) | 9016 | TCP | HTTPS | Mutual TLS |
+| diego_database (BBS) | diego_cell (Rep) | 1801 | TCP | HTTPS | Mutual TLS |
+| diego_database (BBS) | diego_database (Locket) | 8891 | TCP | HTTPS | Mutual TLS |
 
 <sup>&#8225;</sup>These are the host-side ports that map to port 2222 in app instance containers and are typically within the range 61001 to 65534.
 
@@ -172,92 +46,21 @@ The table below lists network communication paths that are internal for Diego:
 
 ## <a id="outbound"></a> Outbound Communications
 
-The table below lists network communication paths that are outbound from Diego:
+The following table lists network communication paths that are outbound from Diego:
 
-<table class="nice">
-<tr>
-  <th>Source VM</th>
-  <th>Destination VM</th>
-  <th>Port</th>
-  <th>Transport Layer Protocol</th>
-  <th>App Layer Protocol</th>
-  <th>Security and Authentication</th>
-</tr>
-<tr>
-  <td>diego_brain</td>
-  <td>cloud_controller</td>
-  <td>9023</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_brain (SSH Proxy)</td>
-  <td>cloud_controller</td>
-  <td>9024</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>OAuth 2.0</td>
-</tr>
-<tr>
-  <td>diego_brain (SSH Proxy)</td>
-  <td>uaa</td>
-  <td>443</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>TLS and OAuth 2.0</td>
-</tr>
-<tr>
-  <td>diego_cell (local Route Emitter)</td>
-  <td>nats</td>
-  <td>4222</td>
-  <td>TCP</td>
-  <td>NATS</td>
-  <td>Basic authentication</td>
-</tr>
-<tr>
-  <td>diego_cell (Rep)</td>
-  <td>cloud_controller</td>
-  <td>9023</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_cell (Rep)</td>
-  <td>nfs_server or other blobstore<sup>&#42;</sup></td>
-  <td>Varies</td>
-  <td>TCP</td>
-  <td>HTTP</td>
-  <td>Signed URLs/TLS</td>
-</tr>
-<tr>
-  <td>diego_database (BBS)</td>
-  <td>cloud_controller</td>
-  <td>9023</td>
-  <td>TCP</td>
-  <td>HTTPS</td>
-  <td>Mutual TLS</td>
-</tr>
-<tr>
-  <td>diego_database (BBS)</td>
-  <td>mysql_proxy<sup>&#8224;</sup></td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication<sup>&#42;&#42;</sup></td>
-</tr>
-<tr>
-  <td>diego_database (Locket)</td>
-  <td>mysql_proxy<sup>&#8224;</sup></td>
-  <td>3306</td>
-  <td>TCP</td>
-  <td>MySQL</td>
-  <td>MySQL authentication<sup>&#42;&#42;</sup></td>
-</tr>
-</table>
+| Source VM | Destination VM | Port | Transport Layer Protocol | App Layer Protocol | Security and Authentication |
+| --------- | -------------- | ---- | ------------------------ | ------------------ | ---------------------------- |
+| diego_brain | cloud_controller | 9023 | TCP | HTTPS | Mutual TLS |
+| diego_brain (SSH Proxy) | cloud_controller | 9024 | TCP | HTTPS | OAuth 2.0 |
+| diego_brain (SSH Proxy) | uaa | 443 | TCP | HTTPS | TLS and OAuth 2.0 |
+| diego_cell (local Route Emitter) | nats | 4222 | TCP | NATS | Basic authentication |
+| diego_cell (Rep) | cloud_controller | 9023 | TCP | HTTPS | Mutual TLS |
+| diego_cell (Rep) | nfs_server or other blobstore<sup>&#42;</sup> | Varies | TCP | HTTP | Signed URLs/TLS |
+| diego_database (BBS) | cloud_controller | 9023 | TCP | HTTPS | Mutual TLS |
+| diego_database (BBS) | mysql_proxy<sup>&#8224;</sup> | 3306 | TCP | MySQL | MySQL authentication<sup>&#42;&#42;</sup> |
+| diego_database (Locket) | mysql_proxy<sup>&#8224;</sup> | 3306 | TCP | MySQL | MySQL authentication<sup>&#42;&#42;</sup> |
 
-<sup>&#42;</sup>The destination depends on your PAS blobstore configuration. If you use the internal blobstore, the Diego Cell communicates to the blobstore using TLS on port 4443. 
+<sup>&#42;</sup>The destination depends on your <%= vars.product_short %> blobstore configuration. If you use the internal blobstore, the Diego Cell communicates to the blobstore using TLS on port 4443.
 
 <sup>&#42;&#42;</sup>MySQL authentication uses the MySQL native password method.
 
