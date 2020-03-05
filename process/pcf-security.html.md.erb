@@ -5,9 +5,9 @@ owner: Security
 
 <% current_page.data.title = vars.platform_name + " Security Overview and Policy"  %>
 
-This document outlines Pivotal's security policy and is addressed to operators deploying [<%= vars.platform_name %>](https://network.pivotal.io/products/pivotal-cf) using Pivotal Operations Manager.
+This document outlines Pivotal's security policy and is addressed to operators deploying [<%= vars.platform_name %>](https://network.pivotal.io/products/pivotal-cf) using <%= vars.ops_manager %>.
 
-For a comprehensive overview of the security architecture of each <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) component, see [PAS Security](../../concepts/security.html).
+For a comprehensive overview of the security architecture of each <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) component, see [<%= vars.app_runtime_abbr %> Security](../../concepts/security.html).
 
 
 ## <a id='monitor'></a> How Pivotal Monitors for Security Vulnerabilities
@@ -62,6 +62,6 @@ Low vulnerabilities are all other issues that have a security impact. These incl
 <%= vars.platform_name %> schedules regular monthly releases of software in the <%= vars.platform_name %> Suite to address Low / Medium severity vulnerability exploits. When High severity vulnerability exploits are identified, <%= vars.platform_name %> releases fixes to software in the <%= vars.platform_name %> Suite on-demand, with as fast a turnaround as possible.
 
 
-## <a id='alerts'></a> Alerts/Actions Archive
+## <a id='alerts'></a> Alerts and Actions Archive
 
-[http://www.pivotal.io/security](http://www.pivotal.io/security)
+To review an archive of <%= vars.platform_name %> vulnerability reports, see [Pivotal Product Vulnerability Reports](http://www.pivotal.io/security).
