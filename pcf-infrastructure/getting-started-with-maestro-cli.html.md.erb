@@ -16,9 +16,9 @@ CredHub Maestro is a command-line interface (CLI) that facilitates rotations of 
 
 * Clean up inactive certificate versions so that CredHub does not run out of disk space
 
-CredHub Maestro is available in Pivotal Platform Ops Manager v2.8 and later.
+CredHub Maestro is available in <%= vars.platform_name %> v2.8 and later.
 
-To use Maestro outside Ops Manager environments, contact [Pivotal Support](https://pivotal.io/support).
+To use CredHub Maestro outside <%= vars.ops_manager %> environments, contact [Pivotal Support](https://pivotal.io/support).
 
 
 ## <a id='setup-usage'></a> Set Up Environment Variables
@@ -29,84 +29,36 @@ This section describes setting up the environment variables you need to use Cred
 
 To set the CredHub environment variables you need to set up CredHub Maestro, follow the guidance in the table below.
 
-To set BOSH environment variables, see [Advanced Troubleshooting with the BOSH CLI](https://docs.pivotal.io/platform/2-8/customizing/trouble-advanced.html).
+To set BOSH environment variables, see [Advanced Troubleshooting with the BOSH CLI](../../customizing/trouble-advanced.html).
 
-<table border="1">
-  <tr>
-    <th>Environment Variable</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>BOSH_ENVIRONMENT</td>
-    <td>URL or IP address of BOSH director</td>
-  </tr>
-  <tr>
-    <td>BOSH_CLIENT</td>
-    <td>Name of BOSH client</td>
-  </tr>
-  <tr>
-    <td>BOSH_CLIENT_SECRET</td>
-    <td>BOSH client secret</td>
-  </tr>
-  <tr>
-    <td>BOSH_CA_CERT</td>
-    <td>Path or value of BOSH Director trusted CA certificate</td>
-  </tr>
-  <tr>
-  <td>CREDHUB_SERVER</td>
-  <td>URL of BOSH director CredHub server. This should be <code>BOSH_ENVIRONMENT:8844</code>.</td>
-  </tr>
-  <tr>
-    <td>CREDHUB_CLIENT</td>
-    <td>Name of CredHub client. This is the same as <code>BOSH_CLIENT</code>.</td>
-  </tr>
-  <tr>
-    <td>CREDHUB_SECRET</td>
-    <td>CredHub client secret. This is the same as <code>BOSH_CLIENT_SECRET</code>.</td>
-  </tr>
-  <tr>
-    <td>CREDHUB_CA_CERT</td>
-    <td>Path or value of CredHub trusted CA certificate. This is the same as <code>BOSH_CA_CERT</code>.</td>
-  </tr>
-</table>
+| Environment Variable | Description |
+| -------------------- | ----------- |
+| BOSH_ENVIRONMENT | BOSH Director URL or IP address. |
+| BOSH_CLIENT | Name of BOSH client. |
+| BOSH_CLIENT_SECRET | BOSH client secret. |
+| BOSH_CA_CERT | Path or value of BOSH Director trusted CA certificate. |
+| CREDHUB_SERVER | URL of BOSH Director CredHub server. This should be `BOSH_ENVIRONMENT:8844`. |
+| CREDHUB_CLIENT | Name of CredHub client. This is the same as `BOSH_CLIENT`. |
+| CREDHUB_SECRET | CredHub client secret. This is the same as `BOSH_CLIENT_SECRET`. |
+| CREDHUB_CA_CERT | Path or value of CredHub trusted CA certificate. This is the same as `BOSH_CA_CERT`. |
 
 ### <a id='maestro-outside-foundation'></a> Using CredHub Maestro from Outside Your Foundation
 
 To use CredHub Maestro from outside your foundation, you must also set the following variables in addition to the required environment variables:
 
-<table border="1">
-  <tr>
-    <th>Environment Variable</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>BOSH_ALL_PROXY</td>
-    <td>Socks5 proxy address of BOSH Director jumpbox</td>
-  </tr>
-  <tr>
-    <td>CREDHUB_PROXY</td>
-    <td>Socks5 proxy address of CredHub jumpbox</td>
-  </tr>
-</table>
+| Environment Variable | Description |
+| -------------------- | ----------- |
+| BOSH_ALL_PROXY | Socks5 proxy address of BOSH Director jumpbox. |
+| CREDHUB_PROXY | Socks5 proxy address of CredHub jumpbox. |
 
 ### <a id='optional-env-vars'></a> Optional Environment Variables
 
 You can also set the following optional enviroment variables:
 
-<table border="1">
-  <tr>
-    <th>Environment Variable</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>MAESTRO_DEBUG</td>
-    <td>Enable debug logging</td>
-  </tr>
-  <tr>
-    <td>MAESTRO_OUTPUT_JSON</td>
-    <td>Print all CredHub Maestro command output as JSON</td>
-  </tr>
-</table>
+| Environment Variable | Description |
+| -------------------- | ----------- |
+| MAESTRO_DEBUG | Enable debug logging. |
+| MAESTRO_OUTPUT_JSON | rint all CredHub Maestro command output as JSON. |
 
 
 ## <a id='commands'></a> Commands
@@ -129,7 +81,7 @@ You can use the following flags with `maestro list`:
 
 * `include-all`: Include inactive certificates in response.
 
-* `ca-only`: Filter certificates that are Certificate Authorities (CAs).
+* `ca-only`: Filter certificates that are certificate authorities (CAs).
 
 * `leaf-only`: Filter certificates that are leaf certificates.
 
@@ -227,7 +179,7 @@ You can use the following flags with `maestro update-transitional signing`:
 
 #### <a id='remove'></a> maestro update-transitional remove
 
-`maestro update-transitional remove`) removes the transitional flag for all versions of the actively deployed CA.
+`maestro update-transitional remove` removes the transitional flag for all versions of the actively deployed CA.
 
 You can use the following flags with `maestro update-transitional remove`:
 

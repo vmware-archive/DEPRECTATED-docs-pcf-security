@@ -3,43 +3,33 @@ title: Security-Related Pivotal Platform Tiles and Add-ons
 owner: Security
 ---
 
-<% current_page.data.title = "Security-Related " + vars.product_name + " Tiles and Add-ons"  %>
+<% current_page.data.title = "Security-Related " + vars.platform_name + " Tiles and Add-ons"  %>
 
-This section provides links to other security-related services available for
-<%= vars.product_name  %> deployments.
+This section provides links to other security-related services available for <%= vars.platform_name %> deployments.
 
-For information about other security-related tiles provided by Pivotal partners,
-refer to [Pivotal Network](https://network.pivotal.io/) and [Pivotal Documentation](https://docs.pivotal.io).
+For information about other security-related tiles provided by Pivotal partners, see [Pivotal Network](https://network.pivotal.io/) and the [Pivotal documentation](https://docs.pivotal.io).
 
-##<a id="tiles"></a> Tiles
 
-This section provides links to security-related tiles available for <%= vars.product_name  %> deployments.
+## <a id="tiles"></a> Tiles
 
-* <a href="https://docs.pivotal.io/p-identity/index.html">Single Sign-On (SSO)</a>:
-Provides support for native authentication, federated single sign-on, and authorization.
+This section provides links to security-related tiles available for <%= vars.platform_name %> deployments.
 
-* <a href="https://docs.pivotal.io/credhub-service-broker/index.html">CredHub Service Broker</a>:
-Allows apps running on Pivotal Application Service (PAS) to access secure credentials in CredHub.
+* [Single Sign-On (SSO)](https://docs.pivotal.io/p-identity/index.html): Provides support for native authentication, federated single sign-on, and authorization.
 
-* <a href="https://docs.pivotal.io/addon-compliance-tools/index.html">Compliance Scanner</a>:
-Enables operators and auditors to conduct compliance scanning of BOSH-managed Xenial
-VMs against configuration hardening guidelines.
+* [CredHub Service Broker](https://docs.pivotal.io/credhub-service-broker/index.html): Allows apps running on <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) to access secure credentials in CredHub.
 
-##<a id="add-ons"></a> Add-ons
+* [Compliance Scanner](https://docs.pivotal.io/addon-compliance-tools/index.html): Enables operators and auditors to conduct compliance scanning of BOSH-managed Xenial VMs against configuration hardening guidelines.
 
-This section provides links to security-related BOSH add-ons available for <%= vars.product_name  %> deployments.
 
-* <a href="https://docs.pivotal.io/addon-fim/index.html">File Integrity Monitoring Add-on for <%= vars.product_name %></a>:
-Provides File Integrity Monitoring (FIM) protection within the <%= vars.product_name %> environment.
-This monitoring is sometimes required for compliance purposes.
+## <a id="add-ons"></a> Add-ons
 
-* <a href="https://docs.pivotal.io/addon-ipsec/index.html">IPsec Add-on for <%= vars.product_name %></a>:
-Adds security to the network layer for each BOSH-deployed virtual machine (VM), increasing internal protection if a malicious actor breaches your firewall.
+This section provides links to security-related BOSH add-ons available for <%= vars.platform_name %> deployments.
 
+* [File Integrity Monitoring Add-on for <%= vars.platform_name %>](https://docs.pivotal.io/addon-fim/index.html): Provides File Integrity Monitoring (FIM) protection within the <%= vars.platform_name %> environment. This monitoring is sometimes required for compliance purposes.
+
+* [IPsec Add-on for <%= vars.platform_name %>](https://docs.pivotal.io/addon-ipsec/index.html): Adds security to the network layer for each BOSH-deployed virtual machine (VM), increasing internal protection if a malicious actor breaches your firewall.
   * [Securing Data in Transit with the IPsec Add-on](http://docs.pivotal.io/addon-ipsec/)
   * [Rotating IPsec Credentials](http://docs.pivotal.io/addon-ipsec/credentials.html)
-  * [Installing the <%= vars.product_name %> IPsec Add-On](http://docs.pivotal.io/addon-ipsec/installing.html)
+  * [Installing the <%= vars.platform_name %> IPsec Add-On](http://docs.pivotal.io/addon-ipsec/installing.html)
 
-* <a href="https://docs.pivotal.io/addon-antivirus/index.html">ClamAV Add-on for <%= vars.product_name %></a>:
-Provides antivirus protection within the <%= vars.product_name %> environment.
-This protection is sometimes required for compliance purposes.
+* [ClamAV Add-on for <%= vars.platform_name %>](https://docs.pivotal.io/addon-antivirus/index.html): Provides antivirus protection within the <%= vars.platform_name %> environment. This protection is sometimes required for compliance purposes.

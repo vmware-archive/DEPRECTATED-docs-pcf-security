@@ -6,7 +6,7 @@ owner: Security
 This topic explains how Pivotal's development practices, automated build tools, and organizational structures work together to create and support stable releases of <%= vars.platform_name %>.
 
 
-## <a id='summary'></a> Summary
+## <a id='overview'></a> Overview
 
 * <%= vars.platform_name %> teams building system components receive frequent feedback, which helps to secure code from exposure to vulnerability.
 
@@ -25,7 +25,7 @@ Pivotal numbers <%= vars.platform_name %> releases following a semantic versioni
 
 ### <a id='support'></a> Support
 
-As of <%= vars.platform_old %> v1.8, Pivotal supports each major and minor <%= vars.platform_name %> release according to the following criteria:
+As of <%= vars.platform_old_pivotal %> v1.8, Pivotal supports each major and minor <%= vars.platform_name %> release according to the following criteria:
 
 * Pivotal supports the release for at least 9 months following its first publication date.
 * Pivotal supports the last three major or minor releases, even if this extends coverage beyond 9 months.
@@ -34,22 +34,22 @@ Support includes maintenance updates and upgrades, bug and security fixes, and t
 
 ### <a id='patch-releases'></a> Patch Releases
 
-Patch releases are more frequent and less predictable than major/minor releases. The v1.6.x line provides a good example of their frequency. <%= vars.platform_old %> v1.6.1 was released on October 26, 2015. Through August 2016, 36 additional patches of Elastic Runtime v1.6.x and 18 patches of Ops Manager v1.6.x provided security and bug fixes to customers.
+Patch releases are more frequent and less predictable than major/minor releases. The v1.6.x line provides a good example of their frequency. <%= vars.platform_old_pivotal %> v1.6.1 was released on October 26, 2015. Through August 2016, 36 additional patches of Elastic Runtime v1.6.x and 18 patches of <%= vars.ops_manager %> v1.6.x provided security and bug fixes to customers.
 
-Pivotal identifies security issues using standard nomenclature from [Common Vulnerabilities and Exposures (CVE)](https://cve.mitre.org/), [Ubuntu Security Notices (USN)](https://www.ubuntu.com/usn/), and other third party sources. Read about security fixes in core <%= vars.platform_name %> code or packaged dependencies in the release notes for [Ops Manager](http://docs.pivotal.io/platform/pcf-release-notes/opsmanager-rn.html) and [<%= vars.app_runtime_full %>](http://docs.pivotal.io/pivotalcf/pcf-release-notes/runtime-rn.html).
+Pivotal identifies security issues using standard nomenclature from [Common Vulnerabilities and Exposures (CVE)](https://cve.mitre.org/), [Ubuntu Security Notices (USN)](https://www.ubuntu.com/usn/), and other third party sources. Read about security fixes in core <%= vars.platform_name %> code or packaged dependencies in the release notes for [<%= vars.ops_manager %>](http://docs.pivotal.io/platform/pcf-release-notes/opsmanager-rn.html) and [<%= vars.app_runtime_full %>](http://docs.pivotal.io/pivotalcf/pcf-release-notes/runtime-rn.html).
 
 [Pivotal.io/security](https://pivotal.io/security) maintains a running list of security fixes in <%= vars.platform_name %> and <%= vars.platform_name %> dependencies. Consult that page to see the most recent findings from Pivotal's security team.
 
 ### <a id='upgrading'></a> Upgrading
 
-All <%= vars.platform_name %> releases pass through extensive test suites that include automated unit, integration, and acceptance tests on multiple IaaSes. Regardless of this extensive testing, Pivotal recommends that you test major and minor releases in a non-production environment before implementing them across your deployment. Upgrade your production environment as soon as possible after you validate the new release on your test environment.
+All <%= vars.platform_name %> releases pass through extensive test suites that include automated unit, integration, and acceptance tests on multiple IaaSes. Regardless of this extensive testing, <%= vars.recommended_by %> recommends that you test major and minor releases in a non-production environment before implementing them across your deployment. Upgrade your production environment as soon as possible after you validate the new release on your test environment.
 
 
 ## <a id='testing'></a> Release Testing, Integration, and Validation
 
 This section describes Pivotal's software development processes and explains compliance and regulatory standards to which Pivotal software adheres.
 
-### <a id='tdd'></a> Test-Driven Development   
+### <a id='tdd'></a> Test-Driven Development
 
 Pivotal's development process relies on a strict workflow with continuous automated testing. Pivotal R&D does not separate engineering and testing teams. Rather, every Pivot on each engineering team is responsible for ensuring the quality of their code. They write tests for all of the software components that they develop, often before writing the software itself.
 
@@ -98,6 +98,6 @@ When Pivotal discovers a potential security vulnerability in <%= vars.platform_n
 
 ## <a id='lifecycle'></a> Fix, Test, and Release Lifecycle
 
-This flowchart details the steps that Pivotal performs on a typical high-priority CVE, to publish a patch release fix on [https://network.pivotal.io](https://network.pivotal.io):
+The following flowchart details the steps that Pivotal performs on a typical high-priority CVE, to publish a patch release fix on [Pivotal Network](https://network.pivotal.io):
 
 <%= image_tag("triage-flowchart.png") %>
