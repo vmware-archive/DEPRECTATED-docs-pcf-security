@@ -5,50 +5,50 @@ owner: Security CONSULT LEGAL BEFORE MAKING ANY CHANGES TO THIS DOC
 
 <p class="note"><strong>Note:</strong> This document applies to stemcell v3263 and later.</p>
 
-Customers and prospects often ask for details on stemcell hardening, i.e., the process by which 
-we secure <%= vars.product_name %> by reducing its vulnerability surface from outside access. 
+Customers and prospects often ask for details on stemcell hardening, i.e., the process by which
+we secure <%= vars.platform_name %> by reducing its vulnerability surface from outside access.
 This document provides responses to some commonly-asked questions regarding the security configuration enhancements
-and hardening tests that Pivotal applies to the Cloud Foundry ("CF") stemcell. 
-This information will be helpful to customer accreditation teams who are responsible for 
-running configuration scans of a Cloud Foundry deployment, and also to auditors who need a 
-documentation artifact to feed into the customers’ existing security assessment processes. 
+and hardening tests that Pivotal applies to the Cloud Foundry ("CF") stemcell.
+This information will be helpful to customer accreditation teams who are responsible for
+running configuration scans of a Cloud Foundry deployment, and also to auditors who need a
+documentation artifact to feed into the customers’ existing security assessment processes.
 
-1. **WHAT IS A STEMCELL?** A stemcell is a versioned Operating System ("OS") image wrapped 
-with IaaS specific packaging. A typical stemcell contains a bare minimum OS skeleton with a 
-few common utilities pre-installed, a BOSH Agent, and a few configuration files to securely 
-configure the OS by default. For example: with vSphere, the official stemcell for Ubuntu 
+1. **WHAT IS A STEMCELL?** A stemcell is a versioned Operating System ("OS") image wrapped
+with IaaS specific packaging. A typical stemcell contains a bare minimum OS skeleton with a
+few common utilities pre-installed, a BOSH Agent, and a few configuration files to securely
+configure the OS by default. For example: with vSphere, the official stemcell for Ubuntu
 Trusty is an approximately 500MB VMDK file. With AWS, official stemcells are published as MIs that can be used in an AWS account. Stemcells do not contain any specific information about any software that will be installed once that stemcell becomes a specialized machine in the cluster; nor do they contain any sensitive information which would make them unable to be shared with other BOSH users. This clear separation between base OS and later-installed software is what makes stemcells a powerful concept. In addition to being generic, stemcells for one OS (e.g. all Ubuntu Trusty and Xenial stemcells) are exactly the same for all infrastructures. This property of stemcells allows BOSH users to quickly and reliably switch between different infrastructures without worrying about the differences between OS images. The CF BOSH team is responsible for producing and maintaining an official set of stemcells. Cloud Foundry currently supports Ubuntu Trusty and Xenial on vSphere, AWS, OpenStack, Google, and Azure infrastructures.
 
-2. **WHAT IS STEMCELL HARDENING?** Stemcell hardening is the process of securing a stemcell 
-by reducing its surface of vulnerability, which is larger when a system performs more functions; 
-in principle a single-function system is more secure than a multipurpose one.   There are 
+2. **WHAT IS STEMCELL HARDENING?** Stemcell hardening is the process of securing a stemcell
+by reducing its surface of vulnerability, which is larger when a system performs more functions;
+in principle a single-function system is more secure than a multipurpose one.   There are
 various methods of hardening Linux systems. Common techniques include reducing available methods
-of attack by implementing more restrictive and/or conservative configurations of the OS kernel 
-and system services, changing default passwords, the removal of unnecessary software, unnecessary 
+of attack by implementing more restrictive and/or conservative configurations of the OS kernel
+and system services, changing default passwords, the removal of unnecessary software, unnecessary
 usernames and logins, and the disabling or removal of unnecessary services.
 
-3. **WHAT IS OUR GENERAL APPROACH TO STEMCELL HARDENING?** The CF stemcell is essentially 
-a distinct Linux distribution. As such, industry-standard benchmarks are not entirely appropriate 
-when assessing the security posture of the stemcell, but Pivotal has considered and incorporated 
-hardening guidance from various sources both commercial and government. Some parts of the 
-existing recommended industry-standard hardening configurations will certainly apply, but 
-some other parts do not apply. In addition, because each stemcell is a unique Linux distribution, 
-existing industry-standard benchmarks are silent on some important aspects of hardening the 
-stemcell configurations. The following paragraphs describe the different categories of stemcell 
-hardening configurations, and provide a count of the number of tests currently in each category. 
-**Note**: The most current description of what has been delivered is always available in the BOSH public Pivotal Trackers. 
+3. **WHAT IS OUR GENERAL APPROACH TO STEMCELL HARDENING?** The CF stemcell is essentially
+a distinct Linux distribution. As such, industry-standard benchmarks are not entirely appropriate
+when assessing the security posture of the stemcell, but Pivotal has considered and incorporated
+hardening guidance from various sources both commercial and government. Some parts of the
+existing recommended industry-standard hardening configurations will certainly apply, but
+some other parts do not apply. In addition, because each stemcell is a unique Linux distribution,
+existing industry-standard benchmarks are silent on some important aspects of hardening the
+stemcell configurations. The following paragraphs describe the different categories of stemcell
+hardening configurations, and provide a count of the number of tests currently in each category.
+**Note**: The most current description of what has been delivered is always available in the BOSH public Pivotal Trackers.
 
-    1. **Baseline Passing:** common hardening tests that pass without any changes to the 
+    1. **Baseline Passing:** common hardening tests that pass without any changes to the
 stemcell or to test procedures. **_(130 tests)_**
 
-    2. **Test Amended:** Stemcells are optimized for cloud deployment and some configuration 
-settings are not stored in traditionally-expected locations. The industry standard test was 
-changed to conform with stemcell design to accurately check the recommended setting. This 
-new test reflects the changes to the industry standard test but the stemcell adheres to commonly 
+    2. **Test Amended:** Stemcells are optimized for cloud deployment and some configuration
+settings are not stored in traditionally-expected locations. The industry standard test was
+changed to conform with stemcell design to accurately check the recommended setting. This
+new test reflects the changes to the industry standard test but the stemcell adheres to commonly
 accepted guidance. **_(36 tests)_**
 
-    3. **Additional Hardening:**Configuration hardening improvements that have been made 
-to the stemcell. As with most software, a stemcell’s security improves over time and every 
+    3. **Additional Hardening:**Configuration hardening improvements that have been made
+to the stemcell. As with most software, a stemcell’s security improves over time and every
 stemcell release is tested to ensure that it is suitable for use with its associated CF release.
 Later releases of a stemcell may include additional security features that were not present in
 earlier releases. **_(86 tests)_**
@@ -67,7 +67,7 @@ tests)_**
 
     6. **File System Hardening**
 
-        2. The /tmp directory is configured to be on a separate partition. 
+        2. The /tmp directory is configured to be on a separate partition.
 
         3. Users cannot create character or block special devices in the /tmp filesystem.
 
@@ -77,14 +77,14 @@ tests)_**
 
         6. The temporary storage directories such as /tmp and /var/tmp are mounted on a dedicated partition, and configured with appropriately limiting options such as nodev, nosuid, and noexec.
 
-        7. Each of the following directories is in a separate partition, with mount options managed via BOSH agent: 
+        7. Each of the following directories is in a separate partition, with mount options managed via BOSH agent:
            + /var
-           + /var/log 
-           + /var/log/audit 
-           + /home 
+           + /var/log
+           + /var/log/audit
+           + /home
            + /tmp
 
-        8. File system mount options for users’ home directories are limited via appropriate mount options including nodev. 
+        8. File system mount options for users’ home directories are limited via appropriate mount options including nodev.
 
         9. Removable media may not be mounted as character or block special device.
 
@@ -94,21 +94,21 @@ tests)_**
 
         12. Users cannot create special devices in shared memory partitions.
 
-        13. Users cannot put privileged programs onto shared memory partitions. 
+        13. Users cannot put privileged programs onto shared memory partitions.
 
-        14. Users cannot execute programs from shared memory partitions. 
+        14. Users cannot execute programs from shared memory partitions.
 
         15. Users cannot delete or rename files in world-writable directories such as /tmp that are owned by other users.
 
-        16. Supplementary and exotic Linux file systems that are unused in CF have been disabled. 
+        16. Supplementary and exotic Linux file systems that are unused in CF have been disabled.
 
-        17. Additional supplementary and exotic Linux file systems that are unused in CF have been disabled. 
+        17. Additional supplementary and exotic Linux file systems that are unused in CF have been disabled.
 
         18. Automount of USB drives or disks is not permitted.
 
     7. **Boot Security**
 
-        19. The owner and group for the bootloader config (/boot/grub/grub.cfg) is set to root. Only root has read and write access to this file. 
+        19. The owner and group for the bootloader config (/boot/grub/grub.cfg) is set to root. Only root has read and write access to this file.
 
         20. Boot loader has been configured so that a password is required to reboot the system.
 
@@ -116,9 +116,9 @@ tests)_**
 
     8. **Process Security**
 
-        22. Users cannot override the soft limit for core dumps. 
+        22. Users cannot override the soft limit for core dumps.
 
-        23. Randomized virtual memory region placement is enabled. 
+        23. Randomized virtual memory region placement is enabled.
 
         24. Prelinking of shared libraries is disabled.
 
@@ -177,7 +177,7 @@ tests)_**
 
         41. IPv4 networking is configured such that ICMP redirects are not accepted.
 
-        42. ICMP echo and timestamp requests with broadcast or multicast destinations will be ignored. 
+        42. ICMP echo and timestamp requests with broadcast or multicast destinations will be ignored.
 
         43. The stemcell will ignore malformed ICMP error responses.
 
@@ -187,11 +187,11 @@ tests)_**
 
         46. Stemcells are set to refuse IPv6 router advertisements.
 
-        47. The /etc/hosts.allow file exists and is empty. 
+        47. The /etc/hosts.allow file exists and is empty.
 
         48. The /etc/hosts.allow and /etc/hosts.deny files are protected from unauthorized write access.
 
-        49. The /etc/hosts.deny file exists and is empty. 
+        49. The /etc/hosts.deny file exists and is empty.
 
         50. The following protocols are not used in CF and are disabled:
             + SCTP
@@ -208,7 +208,7 @@ tests)_**
 
         53. Audit log file size is configured for a manageable maximum size of 6 MB.
 
-        54. The system auditd logs have been configured such that the system is resilient in the event of a denial of service attack on the auditd daemon. 
+        54. The system auditd logs have been configured such that the system is resilient in the event of a denial of service attack on the auditd daemon.
 
         55. Auditd daemon is configured such that all auditd logs are kept after rotation.
 
@@ -234,11 +234,11 @@ tests)_**
 
         68. Only the vcap user is whitelisted to use the cron and at utilities.
 
-        69. Password requirements follow industry best practice guidance and enforce a minimum length of 14 characters, with at least one each of: digit, uppercase, lowercase and special characters. 
+        69. Password requirements follow industry best practice guidance and enforce a minimum length of 14 characters, with at least one each of: digit, uppercase, lowercase and special characters.
 
         70. Password reuse: users cannot reuse their twenty most recent passwords.
 
-        71. SSH protocol version is configured for SSH-2. 
+        71. SSH protocol version is configured for SSH-2.
 
         72. Logging level for SSH event is INFO.
 
@@ -248,7 +248,7 @@ tests)_**
 
         75. The MaxAuthTries parameter for SSH is set to 3 attempts per connection.
 
-        76. SSH is configured to require passwords and ignore host-based authentication. 
+        76. SSH is configured to require passwords and ignore host-based authentication.
 
         77. Root logins are not allowed over SSH.
 
@@ -265,7 +265,7 @@ tests)_**
 
         82. The SSH login banner may be configured to display site-specific text before user authentication is permitted (via BOSH Add-on).
 
-        83. Root login is only permitted via console, not via tty devices. 
+        83. Root login is only permitted via console, not via tty devices.
 
         84. Only the vcap user is authorized in the sudo group.
 
@@ -285,9 +285,9 @@ tests)_**
 
         90. Use and/or presence of any world-writable files has been audited, and minimized to the extent possible for CF.
 
-        91. By default, all stemcell files are owned by a known user and group, and may not belong to a non-existent user or group. 
+        91. By default, all stemcell files are owned by a known user and group, and may not belong to a non-existent user or group.
 
-        92. Use of SUID and GUID is restricted, and only the /usr/bin/sudo and /bin/su programs are authorized as SUID and/or GUID programs. 
+        92. Use of SUID and GUID is restricted, and only the /usr/bin/sudo and /bin/su programs are authorized as SUID and/or GUID programs.
 
     15. **User Account Management**
 
@@ -297,7 +297,7 @@ tests)_**
 
         95. Interactive logins are disabled for system accounts.
 
-        96. The GID for the root account is 0. 
+        96. The GID for the root account is 0.
 
         97. User accounts may not have empty passwords.
 
@@ -313,10 +313,10 @@ tests)_**
 
         103. Any group present in the /etc/passwd file must also exist in the /etc/group file.
 
-        104. Users defined in /etc/password must have a valid home directory. 
+        104. Users defined in /etc/password must have a valid home directory.
 
         105. Users must own their home directories.
 
-        106. All references to user and group names, as well as UID and/or GID identifiers, are self consistent, with no duplicates or orphans allowed. 
+        106. All references to user and group names, as well as UID and/or GID identifiers, are self consistent, with no duplicates or orphans allowed.
 
         107. By default, the shadow group is not used in CF and must be empty.
