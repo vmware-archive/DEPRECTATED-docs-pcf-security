@@ -16,7 +16,7 @@ For information about using trusted third-party certificates for both apps hoste
 
 ## <a id='overview'></a> Overview
 
-The <%= vars.ops_manager %> API manages and lists internal Certificate Authorities (CAs) and leaf certificates that enable <%= vars.platform_name %> components to communicate with each other securely using TLS. It can also list certificates used externally, such as SAML certificates that authenticate to an external identity provider.
+The <%= vars.ops_manager %> API manages and lists internal Certificate Authorities (CAs) and leaf certificates that enable <%= vars.platform_name %> components to communicate with each other securely using TLS. It can also list certificates used externally, such as SAML certificates that authenticate to an external identity provider (IDP).
 
 For more information about the CAs and leaf certificates visible to the <%= vars.ops_manager %> API, see [Certificate Types](certificate-types.html).
 
@@ -485,27 +485,27 @@ To rotate configurable leaf certificates:
 
 ### <a id='rotate-saml-ca'></a> Rotate Identity Provider SAML Certificates
 
-SAML service provider credentials are one example of configurable certificates in <%= vars.app_runtime_abbr %>. When <%= vars.app_runtime_abbr %> is configured to use SAML as an identity provider, it uses a configurable CA certificate to authenticate to an external SAML server, by generating ephemeral certificates that <%= vars.app_runtime_abbr %> includes in its outbound request message headers. This CA has a two-year expiration period.
+SAML service provider (SP) credentials are one example of configurable certificates in <%= vars.app_runtime_abbr %>. When <%= vars.app_runtime_abbr %> is configured to use SAML as an IDP, it uses a configurable CA certificate to authenticate to an external SAML server, by generating ephemeral certificates that <%= vars.app_runtime_abbr %> includes in its outbound request message headers. This CA has a two-year expiration period.
 
-In addition, the Pivotal Single Sign-On (SSO) service shares the use of <%= vars.app_runtime_abbr %> SAML certificates for every SAML external Identity Provider (IDP) integration, such as trust, partnership, or federation. You must rotate these in lockstep with <%= vars.app_runtime_abbr %>. For more information about SSO, see the [Pivotal Single Sign-On documentation](https://docs.pivotal.io/p-identity/index.html).
+In addition, the Pivotal Single Sign-On (SSO) service shares the use of <%= vars.app_runtime_abbr %> SAML certificates for every SAML external IDP integration, such as trust, partnership, or federation. You must rotate these in lockstep with <%= vars.app_runtime_abbr %>. For more information about SSO, see the [Pivotal Single Sign-On documentation](https://docs.pivotal.io/p-identity/index.html).
 
 The following procedure provides an example of how to rotate certificates for each IDP, including temporarily disabling certificate validation on the IDP side during the rotation.
 
 For more information about rotating SAML certificates, see [PCF Advisory - SAML Service Provider Credential Certificates Expire after 2 Years](https://community.pivotal.io/s/article/PCF-Advisory---SAML-Service-Provider-Credential-Certificates-Expire-after-2-Years) in the Pivotal Knowledge Base.
 
-SAML service provider credentials are only required for your <%= vars.app_runtime_abbr %> deployment if all of these conditions are met:
+SAML SP credentials are only required for your <%= vars.app_runtime_abbr %> deployment if all of these conditions are met:
 
 * You are using SSO in production for login to <%= vars.app_runtime_abbr %> or using the SSO service for login to apps.
 
-* You are using SAML identity providers for <%= vars.app_runtime_abbr %> or SSO service plans.
+* You are using SAML IDPs for <%= vars.app_runtime_abbr %> or SSO service plans.
 
 * You had <%= vars.ops_manager %> generate a certificate for you by clicking the **Generate RSA Certificate** button.
 
-* You are validating the signature of SAML authentication request with your identity provider.
+* You are validating the signature of SAML authentication request with your IDP.
 
-To regenerate and rotate SAML service provider certificates without disrupting <%= vars.app_runtime_abbr %> or your apps using the SSO service:
+To regenerate and rotate SAML SP certificates without disrupting <%= vars.app_runtime_abbr %> or your apps using the SSO service:
 
-1. Disable certificate validation in your identity provider.
+1. Disable certificate validation in your IDP.
 
 1. For <%= vars.app_runtime_abbr %>, follow the procedure in the table below that corresponds to your use case. This includes downloading and importing a new certificate and updated SAML metadata in your IDP.
   <table border="1">
@@ -527,7 +527,7 @@ To regenerate and rotate SAML service provider certificates without disrupting <
   </tr>
 </table>
 
-1. For the SSO service, follow the procedure in the table below that corresponds to your use case. This includes downloading the SAML service provider (SP) metadata for each SAML IDP integration, such as trust, partnership, or federation, and importing the updated SAML SP metadata in your identity provider.
+1. For the SSO service, follow the procedure in the table below that corresponds to your use case. This includes downloading the SAML SP metadata for each SAML IDP integration, such as trust, partnership, or federation, and importing the updated SAML SP metadata in your IDP.
   <table border="1">
   <tr>
     <th>Solution Name</th>
