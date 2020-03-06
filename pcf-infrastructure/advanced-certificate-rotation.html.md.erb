@@ -210,7 +210,7 @@ To rotate a single CA and its leaf certificates:
 
 This section describes the procedure for rotating the Services TLS CA and its leaf certificates.
 
-<p class="note warning"><strong>Warning:</strong> Upgrading your on-demand service instances is required in order to complete a rotation of the Services TLS CA. <%= vars.recommended_by %>recommends that you set up your services for high availability to minimize any service downtime.</p>
+<p class="note warning"><strong>Warning:</strong> Upgrading your on-demand service instances is required in order to complete a rotation of the Services TLS CA. <%= vars.recommended_by %> recommends that you set up your services for high availability to minimize any service downtime.</p>
 
 To rotate the Services TLS CA and its leaf certificates:
 
@@ -221,10 +221,10 @@ To rotate the Services TLS CA and its leaf certificates:
     1. Run `maestro list` on the Services TLS CA to see if your Services TLS CA was CredHub-set. You will see one Services TLS CA listed per deployment, but it is the same certificate.
     1. If the Services TLS CA was CredHub-set, run:
 
-      ```
-      maestro regenerate ca --name "/services/tls_ca" --force
-      ```
-      Where `CA-NAME` is the name of the CA you want to rotate.
+       ```
+       maestro regenerate ca --name "/services/tls_ca" --force
+       ```
+       Where `CA-NAME` is the name of the CA you want to rotate.
 
 
 1. Mark the latest version of the Services TLS CA as transitional by running:
