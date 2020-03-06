@@ -8,7 +8,7 @@ This topic provides an overview of using custom certificate authorities (CAs) in
 
 ## <a id='overview'></a>Overview
 
-To secure traffic in your <%= vars.platform_name %> deployment, you must provide a CA to issue digital certificates. This can be either a Pivotal-generated or custom CA. When you add and activate a new CA, a digital certificate is issued to BOSH Director. BOSH Director then passes the certificate to other components in your <%= vars.platform_name %> deployment.
+To secure traffic in your <%= vars.platform_name %> deployment, you must provide a CA to issue digital certificates. This can be either a <%= vars.platform_name %>-generated or custom CA. When you add and activate a new CA, a digital certificate is issued to BOSH Director. BOSH Director then passes the certificate to other components in your <%= vars.platform_name %> deployment.
 
 <%= vars.recommended_by %> recommends you supply a CA from a trusted provider when using a production environment. While you can create your own custom CAs if necessary, a trusted CA is more secure because it has been authenticated by the trusted entities permitted to issue them.
 

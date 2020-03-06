@@ -7,7 +7,7 @@ This topic describes how to check the expiration date of and rotate Certificate 
 
 This includes the <%= vars.ops_manager %> root CA, BOSH NATS CA, the Diego root CA, and other CAs and leaf certificates stored in <%= vars.ops_manager %> and CredHub that are visible to the <%= vars.ops_manager %> API.
 
-<p class='note warning'><strong>Warning:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
+<p class='note warning'><strong>Warning:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Support</a> for guidance.</p>
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/credentials.html).
 
@@ -108,7 +108,7 @@ You can determine which rotation procedure to follow based on the types of certi
 
 To rotate certificates, do one of these procedures:
 
-* To rotate non-rotatable certificates, call [Pivotal Support](http://support.pivotal.io).
+* To rotate non-rotatable certificates, call [Support](http://support.pivotal.io).
 
 * To rotate CAs stored in <%= vars.ops_manager %> and CredHub, see [Rotate CAs and Leaf Certificates](#rotate-ca). This procedure also rotates all non-configurable leaf certificates and the BOSH NATS CA. You can also optionally rotate configurable leaf certificates as part of this procedure.
 
@@ -138,7 +138,7 @@ To rotate CAs and non-configurable leaf certificates:
 
 #### <a id='add-new-ca'></a> Step 1: Add New CAs
 
-This section describes how to add a new root CA for <%= vars.ops_manager %>. The new root CA can be a Pivotal-generated CA or your own custom CA.
+This section describes how to add a new root CA for <%= vars.ops_manager %>. The new root CA can be a <%= vars.platform_name %>-generated CA or your own custom CA.
 
 This procedure also automatically regenerates the BOSH NATS CA as well as CAs stored in CredHub, such as the BOSH DNS CA and the Diego root CA.
 
@@ -181,7 +181,7 @@ To add new CAs:
             ]
           }
         </pre>
-  * **To use a Pivotal-generated CA**: Call the <%= vars.ops_manager %> API `generate` endpoint. Run:
+  * **To use a <%= vars.platform_name %>-generated CA**: Call the <%= vars.ops_manager %> API `generate` endpoint. Run:
 
         ```
         curl "https://OPS-MANAGER-FQDN/api/v0/certificate\_authorities/generate" \
@@ -200,7 +200,7 @@ To add new CAs:
             HTTP/1.1 200 OK
         {
             "guid": "f7bc18f34f2a7a9403c3",
-            "issuer": "Pivotal",
+            "issuer": "<%= vars.platform_name %>",
             "created\_on": "2017-01-19",
             "expires\_on": "2021-01-19",
             "active": false,
@@ -244,7 +244,7 @@ To add new CAs:
         "certificate\_authorities": [
           {
             "guid": "f7bc18f34f2a7a9403c3",
-            "issuer": "Pivotal",
+            "issuer": "<%= vars.platform_name %>",
             "created\_on": "2017-01-09",
             "expires\_on": "2021-01-09",
             "active": true,
@@ -252,7 +252,7 @@ To add new CAs:
           }
           {
             "guid": "a8ee01e33e3e3e3303e3",
-            "issuer": "Pivotal",
+            "issuer": "<%= vars.platform_name %>",
             "created\_on": "2017-04-09",
             "expires\_on": "2021-04-09",
             "active": false,
@@ -373,7 +373,7 @@ To rotate non-configurable leaf certificates:
 1. Navigate to the <%= vars.ops_manager %> Installation Dashboard. For each service tile you have installed:
     1. Click the tile.
     1. Select the **Errands** tab.
-    1. Enable the **Recreate All Service Instances** errand if provided. If you do not see this errand, contact [Pivotal Support](https://pivotal.io/support).
+    1. Enable the **Recreate All Service Instances** errand if provided. If you do not see this errand, contact [Support](https://pivotal.io/support).
 
 1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
@@ -494,11 +494,11 @@ To rotate configurable leaf certificates:
 
 SAML service provider (SP) credentials are one example of configurable certificates in <%= vars.app_runtime_abbr %>. When <%= vars.app_runtime_abbr %> is configured to use SAML as an IDP, it uses a configurable CA certificate to authenticate to an external SAML server, by generating ephemeral certificates that <%= vars.app_runtime_abbr %> includes in its outbound request message headers. This CA has a two-year expiration period.
 
-In addition, the Pivotal Single Sign-On (SSO) service shares the use of <%= vars.app_runtime_abbr %> SAML certificates for every SAML external IDP integration, such as trust, partnership, or federation. You must rotate these in lockstep with <%= vars.app_runtime_abbr %>. For more information about SSO, see the [Pivotal Single Sign-On documentation](https://docs.pivotal.io/p-identity/index.html).
+In addition, the Single Sign-On (SSO) service shares the use of <%= vars.app_runtime_abbr %> SAML certificates for every SAML external IDP integration, such as trust, partnership, or federation. You must rotate these in lockstep with <%= vars.app_runtime_abbr %>. For more information about SSO, see the [Single Sign-On documentation](https://docs.pivotal.io/p-identity/index.html).
 
 The following procedure provides an example of how to rotate certificates for each IDP, including temporarily disabling certificate validation on the IDP side during the rotation.
 
-For more information about rotating SAML certificates, see [PCF Advisory - SAML Service Provider Credential Certificates Expire after 2 Years](https://community.pivotal.io/s/article/PCF-Advisory---SAML-Service-Provider-Credential-Certificates-Expire-after-2-Years) in the Pivotal Knowledge Base.
+For more information about rotating SAML certificates, see [PCF Advisory - SAML Service Provider Credential Certificates Expire after 2 Years](https://community.pivotal.io/s/article/PCF-Advisory---SAML-Service-Provider-Credential-Certificates-Expire-after-2-Years) in the VMware Tanzu Knowledge Base.
 
 SAML SP credentials are only required for your <%= vars.app_runtime_abbr %> deployment if all of these conditions are met:
 
