@@ -53,14 +53,12 @@ The following table lists network communication paths that are outbound from Die
 | diego_brain | cloud_controller | 9023 | TCP | HTTPS | Mutual TLS |
 | diego_brain (SSH Proxy) | cloud_controller | 9024 | TCP | HTTPS | OAuth 2.0 |
 | diego_brain (SSH Proxy) | uaa | 443 | TCP | HTTPS | TLS and OAuth 2.0 |
-| diego_cell (local Route Emitter)<sup>&#8258;</sup> | nats | 4222 | TCP | NATS | Basic authentication |
+| diego_cell (local Route Emitter) | nats | 4222 | TCP | NATS | Basic authentication |
 | diego_cell (Rep) | cloud_controller | 9023 | TCP | HTTPS | Mutual TLS |
 | diego_cell (Rep) | nfs_server or other blobstore<sup>&#42;</sup> | Varies | TCP | HTTP | Signed URLs/TLS |
 | diego_database (BBS) | cloud_controller | 9023 | TCP | HTTPS | Mutual TLS |
 | diego_database (BBS) | mysql_proxy<sup>&#8224;</sup> | 3306 | TCP | MySQL | MySQL authentication<sup>&#42;&#42;</sup> |
 | diego_database (Locket) | mysql_proxy<sup>&#8224;</sup> | 3306 | TCP | MySQL | MySQL authentication<sup>&#42;&#42;</sup> |
-
-<sup>&#8258;</sup>In <%= vars.windows_runtime_full %> (<%= vars.windows_runtime_abbr %>), the local Route Emitter communicates with the `nats-tls` VM through port 4224 using mutual TLS protocol.
 
 <sup>&#42;</sup>The destination depends on your <%= vars.app_runtime_abbr %> blobstore configuration. If you use the internal blobstore, the Diego Cell communicates to the blobstore using TLS on port 4443.
 
