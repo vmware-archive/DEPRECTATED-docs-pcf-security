@@ -93,12 +93,12 @@ To check the Ops Manager root CA expiration date, do the following:
 1. To determine its expiration date of the active CA, refer to its `expires_on` value. For example, the root CA shown below expires on September 5, 2019:
     <pre class='terminal'>
 {
-  "certificate\_authorities": [
+  "certificate_authorities": [
     {
       "guid": "9c9a110c8f82a1e4aaca",
       "issuer": "Pivotal",
-      "created\_on": "2017-09-05T22:47:53Z",
-      "expires\_on": "2019-09-05T22:47:53Z",
+      "created_on": "2017-09-05T22:47:53Z",
+      "expires_on": "2019-09-05T22:47:53Z",
       "active": true,
       "cert_pem": "\-\-\-\-\-BEGIN CERTIFICATE\-\-\-\-\-\
       [...]
@@ -199,21 +199,21 @@ To add a new root CA for Ops Manager, do the following:
     <pre class="terminal">
       HTTP/1.1 200 OK
       {
-        "certificate\_authorities": [
+        "certificate_authorities": [
           {
             "guid": "f7bc18f34f2a7a9403c3",
             "issuer": "YOUR-CA",
-            "created\_on": "2017-01-09",
-            "expires\_on": "2021-01-09",
+            "created_on": "2017-01-09",
+            "expires_on": "2021-01-09",
             "active": true,
-            "cert\_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
+            "cert_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
           }
         ]
       }
     </pre>
   * **To use a Pivotal-generated CA**, call the Ops Manager API `generate` endpoint as follows:
     <pre>
-    $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/generate" \
+    $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/generate" \
           -X POST \
           -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
           -H "Content-Type: application/json" \
@@ -225,10 +225,10 @@ To add a new root CA for Ops Manager, do the following:
       {
           "guid": "f7bc18f34f2a7a9403c3",
           "issuer": "Pivotal",
-          "created\_on": "2017-01-19",
-          "expires\_on": "2021-01-19",
+          "created_on": "2017-01-19",
+          "expires_on": "2021-01-19",
           "active": false,
-          "cert\_pem": "-----BEGIN EXAMPLE CERTIFICATE-----
+          "cert_pem": "-----BEGIN EXAMPLE CERTIFICATE-----
           MIIC+zCCAeOgAwIBAgIBADANBgkqhkiG9w0BAQsFADAfMQswCQYDVQQGEwJVUzEQ
           EXAMPLEoCgwHUGl2b3RhbDAeFw0xNDarthgyMTQyMjVaFw0yMTAxMTkyMTQyMjVa
           EXAMPLEoBgNVBAYTAlVTMRAwDgYDVVaderdQaXZvdGFsMIIBIjANBgkqhkiG9w0B
@@ -251,7 +251,7 @@ To add a new root CA for Ops Manager, do the following:
 
 1. Confirm that your new CA has been added by listing all of the root CAs for Ops Manager:
   <pre>
-  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
+  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
         -X GET \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
   </pre>
@@ -259,22 +259,22 @@ To add a new root CA for Ops Manager, do the following:
   <pre class="terminal">
     HTTP/1.1 200 OK
     {
-      "certificate\_authorities": [
+      "certificate_authorities": [
         {
           "guid": "f7bc18f34f2a7a9403c3",
           "issuer": "Pivotal",
-          "created\_on": "2017-01-09",
-          "expires\_on": "2021-01-09",
+          "created_on": "2017-01-09",
+          "expires_on": "2021-01-09",
           "active": true,
-          "cert\_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
+          "cert_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
         }
         {
           "guid": "a8ee01e33e3e3e3303e3",
           "issuer": "Pivotal",
-          "created\_on": "2017-04-09",
-          "expires\_on": "2021-04-09",
+          "created_on": "2017-04-09",
+          "expires_on": "2021-04-09",
           "active": false,
-          "cert\_pem": "-----BEGIN CERTIFICATE-----\zBBBC+eAAAe1gAwAAAeZ....etc"
+          "cert_pem": "-----BEGIN CERTIFICATE-----\zBBBC+eAAAe1gAwAAAeZ....etc"
         }
       ]
     }
@@ -289,8 +289,7 @@ To add a new root CA for Ops Manager, do the following:
 
 1. Select **Recreate All VMs**. This propagates the new CA to all VMs to prevent downtime.
 
-1. Go back to the Installation Dashboard. For each service tile you have installed, do the following:
-
+1. Navigate to the Ops Manager Installation Dashboard. For each service tile you have installed:
     1. Click the tile.
 
     1. Click the **Errands** tab.
@@ -302,10 +301,11 @@ To add a new root CA for Ops Manager, do the following:
     1. If the service tile does not have the **Recreate All Service Instances** errand:
         1. Click **Review Pending Changes**, then **Apply Changes**. 
         1. When the deploy finishes, manually push the BOSH NATS CA to each of its service instances. For each service instance, run:
-          <pre>
-          bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
-          </pre>
-          Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
+
+            ```
+            bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
+            ```
+            Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
 
 Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
 
@@ -313,8 +313,12 @@ Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
 
 To activate the new CA, do the following:
 
-1. Use `curl` to make an Ops Manager API call that activates the new CA, replacing `CERT-GUID` with the GUID of your CA that you retrieved in the previous section:
-  <pre>$ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/CERT-GUID/activate" \
+<a id='activate-new-ca'></a> <strong>Step 2: Activate the Root CA</strong>
+
+To activate the new root CA:
+
+1. Use `curl` to make an Ops Manager API call that activates the new CA:
+  <pre>curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/CERT-GUID/activate" \
       -X POST \
       -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
       -H "Content-Type: application/json" \
@@ -324,8 +328,8 @@ To activate the new CA, do the following:
   <pre class="terminal">HTTP/1.1 200 OK</pre>
 
 1. List your root CAs again to confirm that the new CA is active:
-<pre>
-  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
+  <pre>
+  curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
         -X GET \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
   </pre>
@@ -341,7 +345,7 @@ To rotate non-configurable certificates from the new root CA, do the following:
 
 1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
 <pre>
-  curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/active/regenerate" \
+  curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/active/regenerate" \
         -X POST \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
         -H "Content-Type: application/json" \
@@ -359,12 +363,20 @@ The API returns a successful response:
 1. Go back to the Installation Dashboard. For each service tile you have installed, do the following:
 
     1. Click the tile.
-
     1. Click the **Errands** tab.
+    1. If the service tile has the **Recreate All Service Instances** errand:
+        1. Enable the **Recreate All Service Instances** errand.
+        1. Click **Review Pending Changes**, then **Apply Changes** to perform a second redeploy.
+    1. If the service tile does not have the **Recreate All Service Instances** errand:
+        1. Click **Review Pending Changes**, then **Apply Changes** to perform a second redeploy.
+        1. When the deploy finishes, manually push the BOSH NATS CA to each of its service instances. For each service instance, run:
 
-    1. Enable the **Recreate All Service Instances** errand if provided. If you do not see this errand, contact [Pivotal Support](https://pivotal.io/support).
+            ```
+            bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
+            ```
+            Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
 
-1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes** to perform a second redeploy.
+Continue to the next section, [Step 5: Delete the Old CAs](#delete).
 
 #### <a id='delete'></a> Step 5: (Optional) Delete the Old CA
 
@@ -401,7 +413,7 @@ To rotate non-configurable certificates, do the following:
 
 1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
 <pre>
-  $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/active/regenerate" \
+  curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/active/regenerate" \
         -X POST \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
         -H "Content-Type: application/json" \
@@ -428,11 +440,11 @@ The information for each configurable certificate looks like this:
   <pre class="terminal">
     {
       "configurable": true,
-      "property\_reference": ".properties.networking\_poe\_ssl\_certs[0].certificate",
-      "property\_type": "rsa_cert_credentials",
-      "product\_guid": "cf-36066831c119c39736d3",
+      "property_reference": ".properties.networking_poe_ssl_certs[0].certificate",
+      "property_type": "rsa_cert_credentials",
+      "product_guid": "cf-36066831c119c39736d3",
       ...
-      "valid\_until": "2019-01-25T22:07:58Z"
+      "valid_until": "2019-01-25T22:07:58Z"
     },
   </pre>
 
