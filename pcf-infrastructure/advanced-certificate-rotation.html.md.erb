@@ -97,7 +97,8 @@ To rotate all CAs and leaf certificates in CredHub:
     maestro update-transitional latest --all
     ```
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, verify that the **Recreate all service instances** errand is disabled.
     1. Click **Apply Changes**.
@@ -114,7 +115,8 @@ To rotate all CAs and leaf certificates in CredHub:
     maestro regenerate leaf --all
     ```
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, verify that the **Recreate all service instances** errand is disabled.
     1. Click **Apply Changes**.
@@ -125,7 +127,8 @@ To rotate all CAs and leaf certificates in CredHub:
     maestro update-transitional remove --all
     ```
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, verify that the **Recreate all service instances** errand is disabled.
     1. Click **Apply Changes**.
@@ -144,7 +147,8 @@ To rotate all leaf certificates in CredHub:
     maestro regenerate leaf --all
     ```
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, verify that the **Recreate all service instances** errand is disabled.
     1. Click **Apply Changes**.
@@ -170,7 +174,8 @@ To rotate a single CA and its leaf certificates:
     ```
     Where `CA-NAME` is the name of the CA you want to mark as transitional.
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, verify that the **Recreate all service instances** errand is disabled.
     1. Click **Apply Changes**.
@@ -189,7 +194,8 @@ To rotate a single CA and its leaf certificates:
     ```
     Where `CA-NAME` is the name of the CA for which you want to regenerate leaf certificates.
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, verify that the **Recreate all service instances** errand is disabled.
     1. Click **Apply Changes**.
@@ -201,7 +207,8 @@ To rotate a single CA and its leaf certificates:
     ```
     Where `CA-NAME` is the name of the CA you want to mark as transitional.
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, verify that the **Recreate all service instances** errand is disabled.
     1. Click **Apply Changes**.
@@ -233,7 +240,8 @@ To rotate the Services TLS CA and its leaf certificates:
     maestro update-transitional latest --name "/services/tls_ca"
     ```
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, enable the **Upgrade all service instances** errand.
     <p class='note'><strong>Note:</strong> The name of this errand may differ between services.</p>
@@ -256,7 +264,8 @@ To rotate the Services TLS CA and its leaf certificates:
     maestro regenerate leaf --signed-by "/services/tls_ca"
     ```
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, enable the **Upgrade all service instances** errand.
     <p class='note'><strong>Note:</strong> The name of this errand may differ between services.</p>
@@ -272,7 +281,8 @@ To rotate the Services TLS CA and its leaf certificates:
     maestro update-transitional remove --name "/services/tls_ca"
     ```
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, enable the **Upgrade all service instances** errand.
     <p class='note'><strong>Note:</strong> The name of this errand may differ between services.</p>
@@ -299,7 +309,8 @@ To rotate a manually set certificate:
     ```
     <p class="note"><strong>Note:</strong> The CA name you provide must be the full path to the credential.</p>
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, verify that the **Recreate all service instances** errand is disabled.
     1. Click **Apply Changes**.
@@ -318,7 +329,8 @@ To rotate a manually set certificate:
 
     <p class="note"><strong>Note:</strong> You might need to use the <code>--force</code> flag when regenerating leaf certificates if they were set by CredHub. Otherwise, you must provide a new leaf certificate at the same path.</p>
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, verify that the **Recreate all service instances** errand is disabled.
     1. Click **Apply Changes**.
@@ -329,7 +341,8 @@ To rotate a manually set certificate:
     maestro update-transitional remove --name "CA-NAME"
     ```
 
-1. Return to the Ops Manager Installation Dashboard.
+1. Redeploy:
+    1. Return to the Ops Manager Installation Dashboard.
     1. In the **Review Pending Changes** page, enable **Select All Products**.
     1. For service tiles, verify that the **Recreate all service instances** errand is disabled.
     1. Click **Apply Changes**.
