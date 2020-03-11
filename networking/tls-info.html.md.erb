@@ -78,7 +78,7 @@ The following diagram illustrates TLS communication between apps and managed, on
 <%= image_tag("apps-services.png", :class => "no-border") %>
 [//]: https://docs.google.com/drawings/d/16WDbrSCLR9-avP0-DvnsJHwDG3tc8vMJTNiU-6rFLNo/edit?usp=sharing
 
-BOSH CredHub issues certificates to the Pivotal Cloud Cache components. For the app, the developer must retrieve a copy of this certificate using the CredHub API and place it in the truststore for the app. For more information, see [Developing an App Under TLS](https://docs.pivotal.io/p-cloud-cache/tls-enabled-app.html) in the Pivotal Cloud Cache documentation.
+BOSH CredHub issues certificates to the VMware Tanzu GemFire components. For the app, the developer must retrieve a copy of this certificate using the CredHub API and place it in the truststore for the app. For more information, see [Developing an App Under TLS](https://docs.pivotal.io/p-cloud-cache/tls-enabled-app.html) in the VMware Tanzu GemFire documentation.
 
 Separately, <%= vars.app_runtime_abbr %> Runtime CredHub might store credentials for the app to access a service over the TLS connection, adding a second layer of security. For more information, see [Securing Services Instance Credentials with Runtime CredHub](../../opsguide/secure-si-creds.html).
 
@@ -202,9 +202,9 @@ For components that allow you to configure TLS cipher suites, only specify the T
 
 ### <a id="cipher_recs"></a> TLS Cipher Suite Recommendations
 
-The default version of TLS is TLS v1.2. <%= vars.recommended_by %> recommends using this version.
+The default version of TLS is TLS v1.2. <%= vars.company_name %> recommends using this version.
 
-The TLS cipher suites <%= vars.recommended_by %> recommends using within <%= vars.platform_name %> are:
+The TLS cipher suites <%= vars.company_name %> recommends using within <%= vars.platform_name %> are:
 
 * TLS\_DHE\_RSA\_WITH\_AES\_128\_GCM\_SHA256
 * TLS\_DHE\_RSA\_WITH\_AES\_256\_GCM\_SHA384
@@ -215,7 +215,7 @@ The TLS cipher suites <%= vars.recommended_by %> recommends using within <%= var
 
 As part of your <%= vars.app_runtime_abbr %> networking configuration, you must specify the TLS cipher suites that the Gorouter uses to secure its communications. Only specify the cipher suites that you need.
 
-The TLS cipher suites <%= vars.recommended_by %> recommends for the Gorouter are:
+The TLS cipher suites <%= vars.company_name %> recommends for the Gorouter are:
 
 * ECDHE-RSA-AES128-GCM-SHA256
 * ECDHE-RSA-AES256-GCM-SHA384
@@ -228,7 +228,7 @@ For instructions on how to configure the TLS cipher suites for the Gorouter, see
 
 As part of your <%= vars.app_runtime_abbr %> networking configuration, you must specify the TLS cipher suites that HAProxy uses to secure its communications. Only specify the cipher suites that you need.
 
-The TLS cipher suites <%= vars.recommended_by %> recommends for HAProxy are:
+The TLS cipher suites <%= vars.company_name %> recommends for HAProxy are:
 
 * DHE-RSA-AES128-GCM-SHA256
 * DHE-RSA-AES256-GCM-SHA384

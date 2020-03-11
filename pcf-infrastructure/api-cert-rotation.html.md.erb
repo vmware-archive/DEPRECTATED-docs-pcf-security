@@ -327,7 +327,7 @@ To activate the CAs that you added in [Step 1: Add New CAs](#add-new-ca):
 
 #### <a id='rotate-config-after-new-root'></a> (Optional) Step 3: Rotate Configurable Leaf Certificates
 
-If there are any configurable certificates in your foundation expiring soon, <%= vars.recommended_by %> recommends that you rotate them now. Rotating configurable leaf certificates now ensures that your next BOSH deploy includes both new configurable and non-configurable leaf certificates.
+If there are any configurable certificates in your foundation expiring soon, <%= vars.company_name %> recommends that you rotate them now. Rotating configurable leaf certificates now ensures that your next BOSH deploy includes both new configurable and non-configurable leaf certificates.
 
 To rotate configurable leaf certificates, do the following for each configurable certificate that expires soon:
 
@@ -383,7 +383,7 @@ To rotate non-configurable leaf certificates:
 
 #### <a id='delete'></a> Step 5: Delete the Old CAs
 
-After activating new CAs and rotating leaf certificates from the new CAs, <%= vars.recommended_by %> recommends that you:
+After activating new CAs and rotating leaf certificates from the new CAs, <%= vars.company_name %> recommends that you:
 
 * Delete the old <%= vars.ops_manager %> root CA from your foundation.
 * Mark the old CAs stored in CredHub as inactive.
