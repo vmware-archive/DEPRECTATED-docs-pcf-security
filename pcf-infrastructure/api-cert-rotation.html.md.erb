@@ -378,7 +378,7 @@ To rotate non-configurable leaf certificates:
         1. Click **Review Pending Changes**, then **Apply Changes** to perform a second redeploy.
     1. If the service tile does not have the **Recreate All Service Instances** errand:
         1. Click **Review Pending Changes**, then **Apply Changes** to perform a second redeploy.
-        1. When the deploy finishes, manually push the BOSH NATS CA to each of its service instances. For each service instance, run:
+        1. When the deploy finishes, manually push the certificate updates to each of its service instances. For each service instance, run:
 
             ```
             bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
