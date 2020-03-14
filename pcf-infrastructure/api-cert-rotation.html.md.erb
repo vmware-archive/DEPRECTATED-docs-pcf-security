@@ -3,18 +3,18 @@ title: Rotating Certificates
 owner: Ops Manager
 ---
 
-This topic describes how to check the expiration date of and rotate the Ops Manager root Certificate Authority (CA), BOSH NATS CA, and leaf certificates in <%= vars.first_product_name  %> that are visible to the Ops Manager API.
+This topic describes how to check the expiration date of and rotate the <%= vars.ops_manager %> root certificate authority (CA), BOSH NATS CA, and leaf certificates in <%= vars.product_name_full %> ( <%= vars.product_name %>) that are visible to the <%= vars.ops_manager %> API.
 
 <p class='note'><strong>Note:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](../../../addon-ipsec/1-8/credentials.html).
 
-For information about using trusted third-party certificates for both apps hosted on PCF and internal PCF components, see [Setting Trusted Certificates](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/trusted-certificates.html).
+For information about using trusted third-party certificates for both apps hosted on <%= vars.product_name %> and internal <%= vars.product_name %> components, see [Setting Trusted Certificates](/platform/ops-manager/<%= vars.current_major_version.sub('.', '-') %>/trusted-certificates.html).
 
 
 ## <a id='intro'></a> Overview
 
-The Ops Manager API manages and lists internal Certificate Authorities (CAs) and leaf certificates that enable PCF components to communicate with each other securely using TLS. It can also list certificates used externally, such as SAML certificates that authenticate to an external identity provider. 
+The <%= vars.ops_manager %> API manages and lists internal CAs and leaf certificates that enable <%= vars.product_name %> components to communicate with each other securely using TLS. It can also list certificates used externally, such as SAML certificates that authenticate to an external identity provider (IDP).
 
 For more information about root CAs and leaf certificates, see [Certificate Types](certificate-types.html).
 
@@ -23,257 +23,281 @@ Rotate root CAs and leaf certificates before they expire to avoid downtime for y
 
 ## <a id='procedure'></a> Procedure
 
-This section explains how to rotate the Ops Manager root CA, BOSH NATS CA, and leaf certificates in <%= vars.product_name %>.
+This section explains how to rotate the <%= vars.ops_manager %> root CA, BOSH NATS CA, and leaf certificates in <%= vars.product_name %>.
 
-<p class="note"><strong>Note:</strong> The BOSH NATS CA is automatically rotated when you rotate the Ops Manager root CA. For more information, see <a href="./certificate-types.html">Certificate Types</a>.</p>
+<p class="note"><strong>Note:</strong> The BOSH NATS CA is automatically rotated when you rotate the <%= vars.ops_manager %> root CA. For more information, see <a href="./certificate-types.html">Certificate Types</a>.</p>
 
-To rotate root CAs and leaf certificates in PCF, do the following:
+To rotate root CAs and leaf certificates in <%= vars.product_name %>:
 
-1. Check the expiration dates of the root CA and leaf certificates, and identify the types of leaf certificates that require rotation. See [Check Expiration Dates and Certificate Types](#checks).
+1. Check the expiration dates of the root CA and leaf certificates, and identify the types of leaf certificates that require rotation. For more information, see [Check Expiration Dates and Certificate Types](#checks).
 
-1. Rotate the certificates that expire soon. See [Rotate Certificates](#rotate).
+1. Rotate the certificates that expire soon. For more information, see [Rotate Certificates](#rotate).
 
 
 ## <a id='checks'></a> Check Expiration Dates and Certificate Types
 
-This section describes how to check the expiration dates of the root CA and leaf certificates that the Ops Manager API lists and manages. It also explains how to identify the types of leaf certificates that expire soon and require manual rotation. 
+This section describes how to check the expiration dates of the root CA and leaf certificates that the <%= vars.ops_manager %> API lists and manages. It also explains how to identify the types of leaf certificates that expire soon and require manual rotation.
 
-After identifying the types of certificates that expire soon, you can determine which certificate rotation procedure to follow. 
+After identifying the types of certificates that expire soon, you can determine which certificate rotation procedure to follow.
 
 
 ### <a id='root-expiry'></a> Check Root CA Expiration Date
 
-This procedure describes how to check the expiration date for the Ops Manager root CA. The Ops Manager root CA expires four years after creation. 
+This procedure describes how to check the expiration date for the <%= vars.ops_manager %> root CA. The <%= vars.ops_manager %> root CA expires four years after creation.
 
-To check the Ops Manager root CA expiration date, do the following:
+To check the <%= vars.ops_manager %> root CA expiration date:
 
-1. Perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the steps below.
-  <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
+1. Follow the procedure in [Using <%= vars.ops_manager %> API](../../customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> User Account and Authentication (UAA) server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the following steps.
+  <p class="note"><strong>Note:</strong> When you record your <%= vars.ops_manager %> access token, remove any newline characters such as <code>\n</code>.</p>
 
-1. To retrieve the Ops Manager root CA, use `curl` to make an Ops Manager API call to the `https://OPS-MAN-FQDN/api/v0/certificate_authorities` endpoint. For example:
-    <pre class='terminal'>
-    curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
-          -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-    </pre>
+1.  To retrieve the <%= vars.ops_manager %> certificates, use `curl` to call the `/deployed/certificates` endpoint of the <%= vars.ops_manager %> API. Run:
 
-1. To make the JSON output more readable, you can pipe it to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.
+      ```
+      curl "https://OPS-MANAGER-FQDN/api/v0/deployed/certificates" \
+            -H "Authorization: Bearer UAA-ACCESS-TOKEN"
+      ```
+      Where:
+      * `OPS-MANAGER-FQDN` is the fully-qualified domain name (FQDN) of your <%= vars.ops_manager %> deployment.
+      * `UAA-ACCESS-TOKEN` is the `access_token` value you recorded in the previous step.
+      <p class='note'><strong>Note:</strong> To make the JSON output more readable, pipe it to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.</p>
 
 1. In the `certificate_authorities` list returned, if there is more than one, find the CA with `"active": true`.
 
 1. To determine its expiration date of the active CA, refer to its `expires_on` value. For example, the root CA shown below expires on September 5, 2019:
     <pre class='terminal'>
-{
-  "certificate_authorities": [
     {
-      "guid": "9c9a110c8f82a1e4aaca",
-      "issuer": "Pivotal",
-      "created_on": "2017-09-05T22:47:53Z",
-      "expires_on": "2019-09-05T22:47:53Z",
-      "active": true,
-      "cert_pem": "\-\-\-\-\-BEGIN CERTIFICATE\-\-\-\-\-\
-      [...]
-      \n-----END CERTIFICATE\-\-\-\-\-\n"
+      "certificate_authorities": [
+        {
+          "guid": "9c9a110c8f82a1e4aaca",
+          "issuer": "Pivotal",
+          "created_on": "2017-09-05T22:47:53Z",
+          "expires_on": "2019-09-05T22:47:53Z",
+          "active": true,
+          "cert_pem": "\-\-\-\-\-BEGIN CERTIFICATE\-\-\-\-\-\
+          [...]
+          \n-----END CERTIFICATE\-\-\-\-\-\n"
     </pre>
 
 ### <a id='leaf-expiry'></a> Check Leaf Certificate Expiration Dates and Types
 
-This procedure describes how to check the expiration dates of leaf certificates using the `deployed/certificates` endpoint. It also describes how to identify non-configurable, configurable, and non-rotatable leaf certificates in the output from the `deployed/certificates` endpoint.  
+This procedure describes how to check the expiration dates of leaf certificates using the `deployed/certificates` endpoint. It also describes how to identify non-configurable, configurable, and non-rotatable leaf certificates in the output from the `deployed/certificates` endpoint.
 
-To check the expiration dates of leaf certificates and identify the types of leaf certificates that expire soon, do the following:
+To check the expiration dates of leaf certificates and identify the types of leaf certificates that expire soon:
 
-1. If you haven't already, perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the steps below.
-  <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
+1. If you have not already done so, follow the procedure in [Using <%= vars.ops_manager %> API](../../customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> UAA server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the following steps.
+  <p class="note"><strong>Note:</strong> When you record your <%= vars.ops_manager %> access token, remove any newline characters such as <code>\n</code>.</p>
 
-1. To check the system for certificates that expire within a given time interval, use `curl` to call the `https://OPS-MAN-FQDN/api/v0/deployed/certificates?expires_within=TIME` API endpoint, replacing `TIME` with an integer-letter code.
-    Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.<br><br>
-    For example, the following command searches for certificates expiring within six months:
-    <pre>
-    curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates?expires\_within=6m" \
-          -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-    </pre>
-    Where `YOUR-UAA-ACCESS-TOKEN` is the <code>access\_token</code> value you recorded in the previous step.
+1. To check the system for certificates that expire within a given time interval, run:
 
-1. To make the JSON output more readable, pipe it to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.
+    ```
+    curl "https://OPS-MANAGER-FQDN/api/v0/deployed/certificates?expires_within=TIME" \
+          -H "Authorization: Bearer UAA-ACCESS-TOKEN"
+    ```
+    Where:
+    * `OPS-MANAGER-FQDN` is the fully-qualified domain name (FQDN) of your <%= vars.ops_manager %> deployment.
+    * `UAA-ACCESS-TOKEN` is the `access_token` value you recorded in the previous step.
+    * `TIME` is integer-letter code.
+        * Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years. For example, querying to `https://OPS-MANAGER-FQDN/api/v0/deployed/certificates?expires_within=6m` searches for certificates expiring within six months.
+        <p class='note'><strong>Note:</strong> To make the JSON output more readable, pipe it to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.</p>
 
-1. To determine the expiration date of each certificate, refer to its `expires_on` value.
+1. To determine the expiration date of each certificate, see its `expires_on` value.
 
 1. Identify the types of leaf certificates requiring rotation. The following rules identify the type of each leaf certificate:
-  * **Non-Rotatable Certificates**: Non-Rotatable leaf certificates have the following property value: `variable_path` is `/opsmgr/bosh_dns/tls_ca`  
-  * **Non-Configurable Certificates**: Non-Configurable leaf certificates have the following property values and are not non-rotatable as identified above:
-      * `configurable` is `false`
-      * `location` is either `ops_manager` or `credhub`
-  * **Configurable Certificates**: Configurable leaf certificates have the following property value: `configurable` is `true`
+  * **Non-rotatable certificates**: Non-rotatable leaf certificates have the following property value:
+    * `variable_path` is `/opsmgr/bosh_dns/tls_ca`.
+  * **Non-configurable certificates**: Non-configurable leaf certificates have the following property values and are not non-rotatable as identified above:
+    * `configurable` is `false`.
+    * `location` is either `ops_manager` or `credhub`.
+  * **Configurable certificates**: Configurable leaf certificates have the following property value:
+    * `configurable` is `true`.
 
 1. Continue to [Rotate Certificates](#rotate) with your list of certificate types that expire soon.
 
+
 ## <a id='rotate'></a> Rotate Certificates
 
-This section includes procedures for rotating root CAs and leaf certificates. There are different rotation procedures for each type of certificate that requires rotation. 
+This section includes procedures for rotating root CAs and leaf certificates. There are different rotation procedures for each type of certificate that requires rotation.
 
-You can determine which rotation procedure to follow based on the types of certificates in your foundation that must be rotated.  For more information about identifying the types of certificates in your foundation that expire soon, see [Check Expiration Dates and Certificate Types](#checks).
+You can determine which rotation procedure to follow based on the types of certificates in your foundation that must be rotated. For more information about identifying the types of certificates in your foundation that expire soon, see [Check Expiration Dates and Certificate Types](#checks).
 
-To rotate certificates, do one of the following procedures:
+To rotate certificates, follow one of the following procedures:
 
 * To rotate non-rotatable certificates, call [Pivotal Support](http://support.pivotal.io).
 
-* To rotate the Ops Manager root CA, follow the [Rotate the Root CA and Leaf Certificates](#rotate-ca) procedure. This procedure automatically rotates all non-configurable leaf certificates and the BOSH NATS CA. You can also optionally rotate configurable leaf certificates as part of this procedure.
+* To rotate the <%= vars.ops_manager %> root CA, see [Rotate the Root CA and Leaf Certificates](#rotate-ca). This procedure automatically rotates all non-configurable leaf certificates and the BOSH NATS CA. You can also optionally rotate configurable leaf certificates as part of this procedure.
 
-* To rotate non-configurable leaf certificates, but not the root CA, follow the [Rotate Non-Configurable Leaf Certificates](#regenerate) procedure.
+* To rotate non-configurable leaf certificates, but not the root CA, see [Rotate Non-Configurable Leaf Certificates](#regenerate).
 
-* To rotate configurable leaf certificates, but not the root CA, follow the [Rotate Configurable Leaf Certificates](#rotate-config) procedure.
+* To rotate configurable leaf certificates, but not the root CA, see [Rotate Configurable Leaf Certificates](#rotate-config).
 
 ### <a id='rotate-ca'></a> Rotate the Root CA and Leaf Certificates
 
-This procedure uses the Ops Manager API to rotate the Ops Manager root CA, BOSH NATS CA, and non-configurable leaf certificates. Rotating the Ops Manager root CA automatically rotates the BOSH NATS CA and all non-configurable leaf certificates.
+This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA, BOSH NATS CA, and non-configurable leaf certificates. Rotating the <%= vars.ops_manager %> root CA automatically rotates the BOSH NATS CA and all non-configurable leaf certificates.
 
 To prevent system downtime, this procedure includes two BOSH deploys. The first BOSH deploy applies new certificates to <%= vars.product_name %> components. The second BOSH deploy deletes the old certificates.
 
 <p class="note warning"><strong>Warning:</strong> You must complete these steps in the exact order specified. Otherwise, you may damage your deployment.</p>
 
-To rotate the Ops Manager root CA and leaf certificates:
+To rotate the <%= vars.ops_manager %> root CA and leaf certificates:
 
-1. Add a new root CA. See [Add a New Root CA](#add-new-ca).
+1. Add a new root CA. For more information, see [Add a New Root CA](#add-new-ca).
 
-1. Activate the root CA. [Activate the Root CA](#activate-new-ca).
+1. Activate the root CA. For more information, see [Activate the Root CA](#activate-new-ca).
 
-1. (Optional) Rotate leaf configurable certificates. See [Rotate Configurable Leaf Certificates](#rotate-config-after-new-root). 
+1. (Optional) Rotate leaf configurable certificates. For more information, see [Rotate Configurable Leaf Certificates](#rotate-config-after-new-root).
 
-1. Rotate non-configurable leaf certificates. See [Rotate Non-Configurable Leaf Certificates from the New Root](#regenerate-from-new-root).
+1. Rotate non-configurable leaf certificates. For more information, see [Rotate Non-Configurable Leaf Certificates from the New Root](#regenerate-from-new-root).
 
-1. (Optional) Delete the old CA. See [Delete the Old CA](#delete).
+1. (Optional) Delete the old CA. For more information, see [Delete the Old CA](#delete).
 
-<a id='add-new-ca'></a> <strong>Step 1: Add a New Root CA</strong>
+#### <a id='add-new-ca'></a> Step 1: Add a New Root CA
 
-Follow this procedure to add a new root CA for Ops Manager. The new root CA can be a Pivotal-generated CA or your own custom CA.
+Follow this procedure to add a new root CA for <%= vars.ops_manager %>. The new root CA can be a Pivotal-generated CA or your own custom CA.
 
 This procedure also automatically regenerates the BOSH NATS CA.
 
-To add a new root CA for Ops Manager and regenerate the BOSH NATS CA:
+To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA:
 
-1. If you haven't already, perform the steps in the [Using Ops Manager API](../../customizing/ops-man-api.html) topic to target and authenticate with the Ops Manager User Account and Authentication (UAA) server. Record your Ops Manager access token, and use it for `YOUR-UAA-ACCESS-TOKEN` in the following steps.
-  <p class="note"><strong>Note:</strong> When you record your Ops Manager access token, remove any newline characters such as <code>\n</code>.</p>
+1. If you have not already done so, follow the procedure in [Using <%= vars.ops_manager %> API](../../customizing/ops-man-api.html) topic to target and authenticate with the <%= vars.ops_manager %> UAA server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the following steps.
+  <p class="note"><strong>Note:</strong> When you record your <%= vars.ops_manager %> access token, remove any newline characters such as <code>\n</code>.</p>
 
-1. Use Ops Manager to generate a new CA, or else add your own custom CA:
+1. Use <%= vars.ops_manager %> to generate a new CA, or else add your own custom CA:
   <p class ="note"><strong>Note:</strong> Elliptic Curve Digital Signature Algorithm (ECDSA) certificates are not supported in <%= vars.product_name %>.</p>
-  * **To use your own custom CA**, call the Ops Manager API `certificate_authorities` endpoint as follows:
-    <pre>
-      curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
-          -X POST \
-          -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
-          -H "Content-Type: application/json" \
-          -d '{"cert\_pem": "-----BEGIN CERTIFICATE-----\YOUR-CERTIFICATE", "private\_key\_pem": "-----BEGIN RSA PRIVATE KEY-----\YOUR-KEY"}'
-    </pre>
-    Where:
-    <ul><li>`YOUR-CERTIFICATE` is your custom CA.</li> 
-      <li>`YOUR-KEY` is your RSA key.</li>
-      <li>`YOUR-UAA-ACCESS-TOKEN` is your UAA access token.</li></ul><p>If the command succeeds, the API returns a response that includes the new CA certificate:</p> 
-    <pre class="terminal">
-      HTTP/1.1 200 OK
-      {
-        "certificate_authorities": [
+  * **To use your own custom CA:** Call the <%= vars.ops_manager %> API `certificate_authorities` endpoint. Run:
+
+          ```
+          curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities" \
+              -X POST \
+              -H "Authorization: Bearer UAA-ACCESS-TOKEN" \
+              -H "Content-Type: application/json" \
+              -d '{"cert_pem": "-----BEGIN CERTIFICATE-----\CUSTOM-CERTIFICATE", "private_key_pem": "-----BEGIN RSA PRIVATE KEY-----\RSA-KEY"}'
+          ```
+          Where:
+          * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
+          * `CUSTOM-CERTIFICATE` is your custom CA.
+          * `RSA-KEY` is your RSA key.
+          * `UAA-ACCESS-TOKEN` is your UAA access token.
+          <br>
+          <br>
+          If the command succeeds, the API returns a response that includes the new CA certificate:
+          <pre class="terminal">
+            HTTP/1.1 200 OK
+            {
+              "certificate_authorities": [
+                {
+                  "guid": "f7bc18f34f2a7a9403c3",
+                  "issuer": "YOUR-CA",
+                  "created_on": "2017-01-09",
+                  "expires_on": "2021-01-09",
+                  "active": true,
+                  "cert_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
+                }
+              ]
+            }
+          </pre>
+    * **To use a Pivotal-generated CA:** Call the <%= vars.ops_manager %> API `generate` endpoint. Run:
+
+          ```
+          curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/generate" \
+                -X POST \
+                -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
+                -H "Content-Type: application/json" \
+                -d '{}'
+          ```
+          Where:
+          * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
+          * `UAA-ACCESS-TOKEN` is your UAA access token.
+          </br>
+          </br>
+          If the command succeeds, the API returns a response that includes the new CA certificate:
+          <pre class="terminal">
+              HTTP/1.1 200 OK
           {
-            "guid": "f7bc18f34f2a7a9403c3",
-            "issuer": "YOUR-CA",
-            "created_on": "2017-01-09",
-            "expires_on": "2021-01-09",
-            "active": true,
-            "cert_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
-          }
-        ]
-      }
-    </pre> 
-  * **To use a Pivotal-generated CA**, call the Ops Manager API `generate` endpoint as follows:
-    <pre>
-      curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/generate" \
-            -X POST \
-            -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{}'
-    </pre>
-      Where `YOUR-UAA-ACCESS-TOKEN` is your UAA access token.
-    </br>
-    </br>
-      If the command succeeds, the API returns a response that includes the new CA certificate:
-    <pre class="terminal">
-          HTTP/1.1 200 OK
-      {
-          "guid": "f7bc18f34f2a7a9403c3",
-          "issuer": "Pivotal",
-          "created_on": "2017-01-19",
-          "expires_on": "2021-01-19",
-          "active": false,
-          "cert_pem": "-----BEGIN EXAMPLE CERTIFICATE-----
-          MIIC+zCCAeOgAwIBAgIBADANBgkqhkiG9w0BAQsFADAfMQswCQYDVQQGEwJVUzEQ
-          EXAMPLEoCgwHUGl2b3RhbDAeFw0xNDarthgyMTQyMjVaFw0yMTAxMTkyMTQyMjVa
-          EXAMPLEoBgNVBAYTAlVTMRAwDgYDVVaderdQaXZvdGFsMIIBIjANBgkqhkiG9w0B
-          EXAMPLEoAQ8AMIIBCgKCAQEAyV4OhPIIZTEym9OcdcNVip9Ev0ijPPLo9WPLUMzT
-          EXAMPLEo/TgD+DP09mwVXfqwBlJmoj9DqRED1x/6bc0Ki/BAFo/P4MmOKm3QnDCt
-          EXAMPLEooqgA++2HYrNTKWJ5fsXmERs8lK9AXXT7RKXhktyWWU3oNGf7zo0e3YKp
-          EXAMPLEoh1NwIbNcGT1AurIDsxyOZy1HVzBLTisMyDogJmSCLsOw3qUDQjatjXKw
-          EXAMPLEojG3nv2hvD4/aTOiHuKM3+AGbnaS2MdIOvFOh/7Y79tUp89csK0gs6uOd
-          EXAMPLEohe4DcKw5CzUTfHKNXgHyeoVOBPcVQTp4lJp1iQIDAQABo0IwQDAdBgNV
-          EXAMPLEoyH4y7VEuImLStXM0CKR8uVqxX/gwDwYDVR0TAQH/BAUwAwEB/zAOBgNV
-          EXAMPLEoBAMCAQYwDQYJKoZIhvcNAQELBQADggEBALmHOPxdyBGnuR0HgR9V4TwJ
-          EXAMPLEoGLKVT7am5z6G2Oq5cwACFHWAFfrPG4W9Jm577QtewiY/Rad/PbkY0YSY
-          EXAMPLEokrfNjxjxI0H2sr7qLBFjJ0wBZHhVmDsO6A9PkfAPu4eJvqRMuL/xGmSQ
-          EXAMPLEoCynMNz7FgHyFbd9D9X5YW8fWGSeVBPPikcONdRvjw9aEeAtbGEh8eZCP
-          EXAMPLEob33RuR+CTNqThXY9k8d7/7ba4KVdd4gP8ynFgwvnDQOjcJZ6Go5QY5HA
-          EXAMPLEoPFW8pAYcvWrXKR0rE8fL5o9qgTyjmO+5yyyvWIYrKPqqIUIvMCdNr84=
-            -----END EXAMPLE CERTIFICATE-----
-            "
-    </pre>
+              "guid": "f7bc18f34f2a7a9403c3",
+              "issuer": "Pivotal",
+              "created_on": "2017-01-19",
+              "expires_on": "2021-01-19",
+              "active": false,
+              "cert_pem": "-----BEGIN EXAMPLE CERTIFICATE-----
+              MIIC+zCCAeOgAwIBAgIBADANBgkqhkiG9w0BAQsFADAfMQswCQYDVQQGEwJVUzEQ
+              EXAMPLEoCgwHUGl2b3RhbDAeFw0xNDarthgyMTQyMjVaFw0yMTAxMTkyMTQyMjVa
+              EXAMPLEoBgNVBAYTAlVTMRAwDgYDVVaderdQaXZvdGFsMIIBIjANBgkqhkiG9w0B
+              EXAMPLEoAQ8AMIIBCgKCAQEAyV4OhPIIZTEym9OcdcNVip9Ev0ijPPLo9WPLUMzT
+              EXAMPLEo/TgD+DP09mwVXfqwBlJmoj9DqRED1x/6bc0Ki/BAFo/P4MmOKm3QnDCt
+              EXAMPLEooqgA++2HYrNTKWJ5fsXmERs8lK9AXXT7RKXhktyWWU3oNGf7zo0e3YKp
+              EXAMPLEoh1NwIbNcGT1AurIDsxyOZy1HVzBLTisMyDogJmSCLsOw3qUDQjatjXKw
+              EXAMPLEojG3nv2hvD4/aTOiHuKM3+AGbnaS2MdIOvFOh/7Y79tUp89csK0gs6uOd
+              EXAMPLEohe4DcKw5CzUTfHKNXgHyeoVOBPcVQTp4lJp1iQIDAQABo0IwQDAdBgNV
+              EXAMPLEoyH4y7VEuImLStXM0CKR8uVqxX/gwDwYDVR0TAQH/BAUwAwEB/zAOBgNV
+              EXAMPLEoBAMCAQYwDQYJKoZIhvcNAQELBQADggEBALmHOPxdyBGnuR0HgR9V4TwJ
+              EXAMPLEoGLKVT7am5z6G2Oq5cwACFHWAFfrPG4W9Jm577QtewiY/Rad/PbkY0YSY
+              EXAMPLEokrfNjxjxI0H2sr7qLBFjJ0wBZHhVmDsO6A9PkfAPu4eJvqRMuL/xGmSQ
+              EXAMPLEoCynMNz7FgHyFbd9D9X5YW8fWGSeVBPPikcONdRvjw9aEeAtbGEh8eZCP
+              EXAMPLEob33RuR+CTNqThXY9k8d7/7ba4KVdd4gP8ynFgwvnDQOjcJZ6Go5QY5HA
+              EXAMPLEoPFW8pAYcvWrXKR0rE8fL5o9qgTyjmO+5yyyvWIYrKPqqIUIvMCdNr84=
+                -----END EXAMPLE CERTIFICATE-----
+                "
+          </pre>
 
-1. Confirm that your new CA has been added by listing all of the root CAs for Ops Manager:
-  <pre>
-  curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
-        -X GET \
-        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-  </pre>
-  The API call returns the GUID of the newly added CA. For example:
-  <pre class="terminal">
-    HTTP/1.1 200 OK
-    {
-      "certificate_authorities": [
-        {
-          "guid": "f7bc18f34f2a7a9403c3",
-          "issuer": "Pivotal",
-          "created_on": "2017-01-09",
-          "expires_on": "2021-01-09",
-          "active": true,
-          "cert_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
-        }
-        {
-          "guid": "a8ee01e33e3e3e3303e3",
-          "issuer": "Pivotal",
-          "created_on": "2017-04-09",
-          "expires_on": "2021-04-09",
-          "active": false,
-          "cert_pem": "-----BEGIN CERTIFICATE-----\zBBBC+eAAAe1gAwAAAeZ....etc"
-        }
-      ]
-    }
-  </pre>
-  Identify your newly added CA, which has `active` set to `false`. Record its GUID.
+1. Confirm that the new CA is added by listing all the root CAs for <%= vars.ops_manager %> by running:
 
-1. Navigate to `https://OPS-MAN-FQDN` in a browser and log in to Ops Manager.
+      ```
+      curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities" \
+            -X GET \
+            -H "Authorization: Bearer UAA-ACCESS-TOKEN"
+      ```
+      Where:
+      * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
+      * `UAA-ACCESS-TOKEN` is your UAA access token.
+      </br>
+      </br>
+      The API call returns the GUID of the newly added CA. For example:
+      <pre class="terminal">
+        HTTP/1.1 200 OK
+          {
+            "certificate_authorities": [
+              {
+                "guid": "f7bc18f34f2a7a9403c3",
+                "issuer": "Pivotal",
+                "created_on": "2017-01-09",
+                "expires_on": "2021-01-09",
+                "active": true,
+                "cert_pem": "-----BEGIN CERTIFICATE-----\nMIIC+zCCAeOgAwIBAgI....etc"
+              }
+              {
+                "guid": "a8ee01e33e3e3e3303e3",
+                "issuer": "Pivotal",
+                "created_on": "2017-04-09",
+                "expires_on": "2021-04-09",
+                "active": false,
+                "cert_pem": "-----BEGIN CERTIFICATE-----\nzBBBC+eAAAe1gAwAAAeZ....etc"
+                    }
+                  ]
+              }
+        </pre>
 
-1. Click the **BOSH Director** tile in the **Installation Dashboard**.
+1. Identify the newly added CA, which has `active` set to `false`. Record its GUID.
 
-1. Select the **Director Config** pane.
+1. Navigate to `https://OPS-MANAGER-FQDN` in a browser, where `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
 
-1. Select **Recreate All VMs**. This propagates the new CA to all VMs to prevent downtime.
+1. Log in to <%= vars.ops_manager %>.
 
-1. Navigate to the <%= vars.ops_manager %> Installation Dashboard. For each service tile you have installed:
+1. Click the BOSH Director tile.
+
+1. Select **Director Config**.
+
+1. Enable the **Recreate All VMs** checkbox. This propagates the new CA to all VMs deployed by the BOSH Director to prevent downtime.
+
+1. Return to the <%= vars.ops_manager %> Installation Dashboard.
+
+1. For each service tile you have installed:
     1. Click the tile.
-
     1. Click the **Errands** tab.
-
-    1. If the service tile has the **Recreate All Service Instances** errand: 
-        1. Enable the **Recreate All Service Instances** errand. 
+    1. If the service tile has the **Recreate All Service Instances** errand:
+        1. Enable the **Recreate All Service Instances** errand.
         1. Click **Review Pending Changes**, then **Apply Changes**.
-
     1. If the service tile does not have the **Recreate All Service Instances** errand:
-        1. Click **Review Pending Changes**, then **Apply Changes**. 
+        1. Click **Review Pending Changes**, then **Apply Changes**.
         1. When the deploy finishes, manually push the BOSH NATS CA to each of its service instances. For each service instance, run:
 
             ```
@@ -281,80 +305,101 @@ To add a new root CA for Ops Manager and regenerate the BOSH NATS CA:
             ```
             Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
 
-Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
+1. Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
 
-<a id='activate-new-ca'></a> <strong>Step 2: Activate the Root CA</strong>
+#### <a id='activate-new-ca'></a> Step 2: Activate the Root CA
 
 To activate the new root CA:
 
-1. Use `curl` to make an Ops Manager API call that activates the new CA:
-  <pre>curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/CERT-GUID/activate" \
+1. Make an <%= vars.ops_manager %> API call that activates the new CAs. Run:
+
+    ```
+    curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/CERTIFICATE-GUID/activate" \
       -X POST \
-      -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
+      -H "Authorization: Bearer UAA-ACCESS-TOKEN" \
       -H "Content-Type: application/json" \
       -d '{}'
-  </pre>
-  Where `CERT-GUID` is the GUID of your CA that you retrieved in the previous section.
-  </br>
-  </br>
-  The API returns a successful response:
-  <pre class="terminal">HTTP/1.1 200 OK</pre>
+    ```
+    Where:
+    * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
+    * `CERTIFICATE-GUID` is the GUID of your CA that you retrieved in the previous section.
+    * `UAA-ACCESS-TOKEN` is your UAA access token.
+    </br>
+    </br>
+    The API returns a successful response:
+    <pre class="terminal">HTTP/1.1 200 OK</pre>
 
-1. List your root CAs again to confirm that the new CA is active:
-  <pre>
-  curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
-        -X GET \
-        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-  </pre>
-  Examine the response to ensure that your new CA has `active` set to `true`.
+1. List your root CAs again to confirm that the new <%= vars.ops_manager %> root CA is active. Run:
 
-<a id='rotate-config-after-new-root'></a> <strong>(Optional) Step 3: Rotate Configurable Leaf Certificates</strong>
+    ```
+    curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities" \
+          -X GET \
+          -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+    ```
+    Where:
+    * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
+    * `UAA-ACCESS-TOKEN` is your UAA access token.
+    <br>
+    <br>
+    Examine the response to ensure that your new CA has the `active` property set to `true`.
 
-If there are any configurable certificates in your foundation expiring soon, Pivotal recommends rotating them now. Rotating configurable leaf certificates now ensures that your next BOSH deploy includes both new configurable and non-configurable leaf certificates.
+#### <a id='rotate-config-after-new-root'></a> (Optional) Step 3: Rotate Configurable Leaf Certificates
+
+If there are any configurable certificates in your foundation expiring soon, <%= vars.recommended_by %> recommends that you rotate them now. Rotating configurable leaf certificates now ensures that your next BOSH deploy includes both new configurable and non-configurable leaf certificates.
 
 To rotate configurable leaf certificates, do the following for each configurable certificate that expires soon:
 
-1. Find the text field where the certificate is configured within the Ops Manager interface. You might have to look through multiple configuration panes to identify the location of the certificate configuration text field. Use the following fields to identify the location of the certificate configuration text field:
-    * The `product_guid` field in the API output can help identify in which tile the certificate is configured. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the PAS tile.
-    * The `property_reference` field in the API output can help identify in which **Settings** pane the certificate is configured. For example, the `uaa.service_provider_key_credentials` property is configured in the PAS tile > **UAA** pane.
+1. Find the text field where the certificate is configured within the <%= vars.ops_manager %> interface. You might have to look through multiple configuration panes to identify the location of the certificate configuration text field. Use the following fields to identify the location of the certificate configuration text field:
+  * The `product_guid` field in the API output can help identify in which tile the certificate is configured. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the <%= vars.product_runtime %> (<%= vars.product_short %>) tile.
+  * The `property_reference` field in the API output can help identify in which **Settings** pane the certificate is configured. For example, the `uaa.service_provider_key_credentials` property is configured in the **UAA** pane of the <%= vars.product_short %> tile.
 
 1. Paste a new value for the certificate into the text field.
 
 1. Click **Save** at the bottom of each pane in which you added new certificates.
 
+#### <a id='regenerate-from-new-root'></a> Step 4: Rotate Non-Configurable Leaf Certificates from the New Root
 
-<a id='regenerate-from-new-root'></a> <strong>Step 4: Rotate Non-Configurable Leaf Certificates from the New Root</strong>
-
-After activating the new root CA, you must rotate non-configurable leaf certificates from the root CA. 
+After activating the new root CA, you must rotate non-configurable leaf certificates from the root CA.
 
 To rotate non-configurable leaf certificates from the new root CA:
 
-1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
-<pre>
-  curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/active/regenerate" \
-        -X POST \
-        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
-        -H "Content-Type: application/json" \
-        -d '{}'
-</pre>
-The API returns a successful response:
-<pre class="terminal">HTTP/1.1 200 OK</pre>
+1. Make an API call to regenerate all non-configurable certificates and apply the new root CA to your existing BOSH Director. Run:
 
-1. Click the **BOSH Director** tile in the **Installation Dashboard**.
+    ```
+      curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/active/regenerate" \
+            -X POST \
+            -H "Authorization: Bearer UAA-ACCESS-TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{}'
+    ```
+    Where:
+    * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
+    * `UAA-ACCESS-TOKEN` is your UAA access token.
+    <br>
+    <br>
+    The API returns a successful response:
+    <pre class="terminal">HTTP/1.1 200 OK</pre>
 
-1. Select the **Director Config** pane.
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Select **Recreate All VMs**. This propagates the new CA to all VMs to prevent downtime.
+1. Click the BOSH Director tile.
 
-1. Go back to the Installation Dashboard. For each service tile you have installed, do the following:
+1. Select **Director Config**.
 
+1. Enable the **Recreate All VMs** checkbox. This propagates the new CAs to all VMs deployed by the BOSH Director to prevent downtime.
+
+1. Return to the <%= vars.ops_manager %> Installation Dashboard.
+
+1. For each service tile you have installed:
     1. Click the tile.
     1. Click the **Errands** tab.
     1. If the service tile has the **Recreate All Service Instances** errand:
         1. Enable the **Recreate All Service Instances** errand.
-        1. Click **Review Pending Changes**, then **Apply Changes** to perform a second redeploy.
+        1. Click **Review Pending Changes**.
+        1. Click **Apply Changes** to perform a second redeploy.
     1. If the service tile does not have the **Recreate All Service Instances** errand:
-        1. Click **Review Pending Changes**, then **Apply Changes** to perform a second redeploy.
+        1. Click **Review Pending Changes**.
+        1. Click **Apply Changes** to perform a second redeploy.
         1. When the deploy finishes, manually push certificate updates to each service instance. For each service instance, run:
 
             ```
@@ -362,70 +407,91 @@ The API returns a successful response:
             ```
             Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
 
-Continue to the next section, [Step 5: Delete the Old CAs](#delete).
+1. Continue to the next section, [Step 5: Delete the Old CAs](#delete).
 
-<a id='delete'></a> <strong>(Optional) Step 5: Delete the Old CA</strong>
+#### <a id='delete'></a> (Optional) Step 5: Delete the Old CA
 
-After activating a new root CA and rotating leaf certificates from the new root CA, Pivotal recommends deleting the old root CA from your foundation.
+After activating a new root CA and rotating leaf certificates from the new root CA, <%= vars.recommended_by %> recommends that you delete the old <%= vars.ops_manager %> root CA from your foundation.
 
-<p class="note warning"><strong>Warning:</strong> Include the <strong>Review Pending Changes</strong> and <strong>Apply Changes</strong> from <a href="#regenerate-from-new-root">Step 4: Rotate Non-Configurable Leaf Certificates from the New Root</a> before you delete the old CA.</p>
+<p class="note warning"><strong>Warning:</strong> Before you delete the old CA, ensure that you reviewed the <strong>Review Pending Changes</strong> page and clicked <strong>Apply Changes</strong> as part of <a href="#regenerate-from-new-root">Step 4: Rotate Non-Configurable Leaf Certificates from the New CAs</a>.</p>
 
-To delete the old root CA, do the following:
+To delete the old <%= vars.ops_manager %> root CA:
 
-1. List your root CAs to retrieve the GUID of your old, inactive CA:
-<pre>
-  curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
-        -X GET \
-        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-</pre>
+1. List your root CAs to retrieve the GUID of the old, inactive <%= vars.ops_manager %> root CA. Run:
 
-1. Use `curl` to make an API call to delete your old CA:
-<pre>
-  curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/OLD-CERT-GUID" \
-        -X DELETE \
-        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
-</pre>
-Where `OLD-CERT-GUID` is the GUID of your old, inactive CA.
-</br>
-</br>
-The API returns a successful response.
-<pre class="terminal">HTTP/1.1 200 OK</pre>
+    ```
+    curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities" \
+          -X GET \
+          -H "Authorization: Bearer UAA-ACCESS-TOKEN"
+    ```
+    Where:
+    * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
+    * `UAA-ACCESS-TOKEN` is your UAA access token.
 
-1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes**.
+1. Use `curl` to make an API call to delete the old <%= vars.ops_manager %> root CA. Run:
+
+    ```
+    curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/OLD-CERTIFICATE-GUID" \
+          -X DELETE \
+          -H "Authorization: Bearer UAA-ACCESS-TOKEN"
+    ```
+    Where:
+    * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
+    * `OLD-CERTIFICATE-GUID` is the GUID of the old <%= vars.ops_manager %> root CA.
+    * `UAA-ACCESS-TOKEN` is your UAA access token.
+    </br>
+    </br>
+    The API returns a successful response:
+    <pre class="terminal">HTTP/1.1 200 OK</pre>
+
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
+
+1. Click **Review Pending Changes**.
+
+1. Click **Apply Changes**.
 
 ### <a id='regenerate'></a> Rotate Non-Configurable Leaf Certificates
 
-This procedure rotates non-configurable leaf certificates visible to the Ops Manager API, whether they are managed and stored by Ops Manager directly, or by CredHub at Ops Manager request.
+This procedure rotates non-configurable leaf certificates visible to the <%= vars.ops_manager %> API, whether they are managed and stored by <%= vars.ops_manager %> directly, or by CredHub at <%= vars.ops_manager %> request.
 
-<p class='note warning'><strong>Warning:</strong> This procedure does not rotate the Ops Manager root CA. To rotate both the root CA and non-configurable leaf certificates, see <a href="#rotate-ca">Rotate the Root CA and Leaf Certificates</a>.</p>
+<p class='note warning'><strong>Warning:</strong> This procedure does not rotate the <%= vars.ops_manager %> root CA. To rotate both the root CA and non-configurable leaf certificates, see <a href="#rotate-ca">Rotate the Root CA and Leaf Certificates</a>.</p>
 
-To rotate non-configurable leaf certificates, do the following:
+To rotate non-configurable leaf certificates:
 
-1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director:
-<pre>
-  curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/active/regenerate" \
-        -X POST \
-        -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
-        -H "Content-Type: application/json" \
-        -d '{}'
-</pre>
-The API returns a successful response:
-<pre class="terminal">HTTP/1.1 200 OK</pre>
+1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director. Run:
 
-1. Navigate to Ops Manager, click **Review Pending Changes**, and click **Apply Changes** to perform a second redeploy.
+    ```
+    curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/active/regenerate" \
+          -X POST \
+          -H "Authorization: Bearer UAA-ACCESS-TOKEN" \
+          -H "Content-Type: application/json" \
+          -d '{}'
+    ```
+    Where:
+    * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
+    * `UAA-ACCESS-TOKEN` is your UAA access token.
+    </br>
+    </br>
+    The API returns a successful response:
+    <pre class="terminal">HTTP/1.1 200 OK</pre>
 
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
+
+1. Click **Review Pending Changes**.
+
+1. Click **Apply Changes** to perform a second redeploy.
 
 ### <a id='rotate-config'></a> Rotate Configurable Leaf Certificates
 
-Configurable certificates are generated by the user and pasted into Ops Manager configuration panes where needed. Examples include certificates that terminate SSL traffic into PAS, or authenticate a Single Sign-On (SSO) service plan to an external SAML server.
+Configurable certificates are generated by the user and pasted into <%= vars.ops_manager %> configuration panes where needed. Examples include certificates that terminate SSL traffic into <%= vars.product_short %>, or authenticate a Single Sign-On (SSO) for <%= vars.product_name %> service plan to an external SAML server.
 
-For instructions on how to rotate SAML certificates for both PAS and the SSO service, see [Rotate Identity Provider SAML Certificates](#rotate-saml-ca).
+For instructions on how to rotate SAML certificates for both <%= vars.product_short %> and the SSO service, see [Rotate Identity Provider SAML Certificates](#rotate-saml-ca).
 
-<p class="note warning"><strong>Warning:</strong> This procedure does not rotate the Ops Manager root CA. To rotate both the root CA and non-configurable leaf certificates, see <a href="#rotate-ca">Rotate the Root CA and Leaf Certificates</a>.</p>
+<p class="note warning"><strong>Warning:</strong> This procedure does not rotate the <%= vars.ops_manager %> root CA. To rotate both the root CA and non-configurable leaf certificates, see <a href="#rotate-ca">Rotate the Root CA and Leaf Certificates</a>.</p>
 
 To rotate configurable leaf certificates:
 
-1. If you have not already done so, use the Ops Manager API `deployed/certificates` endpoint to retrieve information about your expiring configurable certificates, as described in the procedures [Check Expiration Dates and Certificate Types](#checks). The information for each configurable certificate looks like this:
+1. If you have not already done so, use the <%= vars.ops_manager %> API `deployed/certificates` endpoint to retrieve information about your expiring configurable certificates, as described in the procedures [Check Expiration Dates and Certificate Types](#checks). The information for each configurable certificate looks like the following example:
   <pre class="terminal">
     {
       "configurable": true,
@@ -438,37 +504,40 @@ To rotate configurable leaf certificates:
   </pre>
 
 1. For each configurable certificate that expires soon:
-  1. Find the text field the certificate is configured within the Ops Manager interface.
-      * The `product_guid` field in the API output can help identify which tile the certificate is configured in. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the PAS tile.
-      * The `property_reference` field in the API output can often help identify which **Settings** pane the certificate is configured in. For example, the `uaa.service_provider_key_credentials` property is configured in the PAS tile > **UAA** pane.
+  1. Find the text field the certificate is configured within the <%= vars.ops_manager %> interface.
+      * The `product_guid` field in the API output can help identify which tile the certificate is configured in. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the <%= vars.product_short %> tile.
+      * The `property_reference` field in the API output can often help identify which **Settings** pane the certificate is configured in. For example, the `uaa.service_provider_key_credentials` property is configured in the **UAA** pane of the <%= vars.product_short %> tile.
       * You might have to look through multiple configuration panes to identify where a certificate is configured.
-  1. Paste a new value for the certificate into the field
+  1. Paste a new value for the certificate into the field.
   1. Click **Save** at the bottom of each pane in which you have provided new certificates.
 
-1. If you are rotating configurable certificates within the [Rotate Root and Leaf Certificates](#rotate-ca) procedure, continue to the next step. Otherwise, if you are rotating configurable leaf certificates only, return to the **Installation Dashboard**, click **Review Pending Changes**, and click **Apply Changes**.
+1. If you are rotating configurable certificates within the [Rotate Root and Leaf Certificates](#rotate-ca) procedure, continue to the next step. Otherwise, if you are rotating configurable leaf certificates only, return to the <%= vars.ops_manager %> Installation Dashboard, click **Review Pending Changes**, and click **Apply Changes**.
 
 ### <a id='rotate-saml-ca'></a> Rotate Identity Provider SAML Certificates
 
-SAML service provider credentials are one example of configurable certificates in PCF. When PAS is configured to use SAML as an identity provider, it uses a configurable CA certificate to authenticate to an external SAML server, by generating ephemeral certificates that PAS includes in its outbound request message headers. This CA has a two-year expiration period.
+SAML service provider (SP) credentials are one example of configurable certificates in <%= vars.product_short %>. When <%= vars.product_short %> is configured to use SAML as an IDP, it uses a configurable CA certificate to authenticate to an external SAML server, by generating ephemeral certificates that <%= vars.product_short %> includes in its outbound request message headers. This CA has a two-year expiration period.
 
-In addition, the [SSO](https://docs.pivotal.io/p-identity/index.html) service shares the use of PAS SAML certificates for every SAML external Identity Provider (IdP) integration, such as trust,  partnership, or Federation. You must rotate these in lockstep with PAS.
+In addition, the SSO service shares the use of <%= vars.product_short %> SAML certificates for every SAML external IDP integration, such as trust, partnership, or federation. You must rotate these in lockstep with <%= vars.product_short %>.
 
-The following procedure provides an example of how to rotate certificates for each IdP, including temporarily disabling certificate validation on the IdP side during the rotation.
+The following procedure provides an example of how to rotate certificates for each IDP, including temporarily disabling certificate validation on the IDP side during the rotation.
 
-The Knowledge Base article [PCF Advisory - SAML Service Provider Credential Certificates Expire after 2 Years](https://community.pivotal.io/s/article/PCF-Advisory---SAML-Service-Provider-Credential-Certificates-Expire-after-2-Years) provides more information about rotating SAML certificates.
+For more information about rotating SAML certificates, see [PCF Advisory - SAML Service Provider Credential Certificates Expire after 2 Years](https://community.pivotal.io/s/article/PCF-Advisory---SAML-Service-Provider-Credential-Certificates-Expire-after-2-Years) in the Pivotal Knowledge Base.
 
-SAML service provider credentials are only required for your PAS deployment if all of these conditions are met:
+SAML SP credentials are only required for your <%= vars.product_short %> deployment if all of these conditions are met:
 
-* You are using SSO in production for login to PAS or using the SSO service for login to apps.
-* You are using SAML identity providers for PAS or SSO service plans.
-* You had Ops Manager generate a certificate for you by clicking the **Generate RSA Certificate** button.
-* You are validating the signature of SAML authentication request with your identity provider.
+* You are using SSO in production for login to <%= vars.product_short %> or using the SSO service for login to apps.
 
-To regenerate and rotate SAML service provider certificates without disrupting PAS or your apps using the SSO service:
+* You are using SAML IDPs for <%= vars.product_short %> or SSO service plans.
 
-1. Disable certificate validation in your identity provider.
+* You had <%= vars.ops_manager %> generate a certificate for you by clicking the **Generate RSA Certificate** button.
 
-1. For PAS, follow the procedure in the table below that corresponds to your use case. This includes downloading and importing a new certificate and updated SAML metadata in your identity provider. 
+* You are validating the signature of SAML authentication request with your IDP.
+
+To regenerate and rotate SAML service provider certificates without disrupting <%= vars.product_short %> or your apps using the SSO service:
+
+1. Disable certificate validation in your IDP.
+
+1. For <%= vars.product_short %>, follow the procedure in the table below that corresponds to your use case. This includes downloading and importing a new certificate and updated SAML metadata in your IDP.
   <table border="1">
   <tr>
     <th>Solution Name</th>
@@ -483,19 +552,19 @@ To regenerate and rotate SAML service provider certificates without disrupting P
     <td><a href="../../opsguide/ping-federate-sso-configuration.html">Configuring PingFederate as an Identity Provider</a></td>
   </tr>
   <tr>
-    <td><a href='https://technet.microsoft.com/en-us/windowsserver/dd448613.aspx'>Active Directory Federation Services</a></td>
-    <td><a href="../../opsguide/adfs-sso-configuration.html">Configuring ADFS as an Identity Provider</a></td>
+    <td><a href='https://technet.microsoft.com/en-us/windowsserver/dd448613.aspx'>Active Directory Federation Services (AD FS)</a></td>
+    <td><a href="../../opsguide/adfs-sso-configuration.html">Configuring AD FS as an Identity Provider</a></td>
   </tr>
 </table>
 
-1. For the SSO service, follow the procedure in the table below that corresponds to your use case. This includes downloading the SAML Service Provider metadata for each SAML identity provider integration, such as trust, partnership, or Federation, and importing the updated SAML Service Provider metadata in your identity provider.
+1. For the SSO service, follow the procedure in the table below that corresponds to your use case. This includes downloading the SAML SP metadata for each SAML IDP integration, such as trust, partnership, or federation, and importing the updated SAML SP metadata in your IDP.
   <table border="1">
   <tr>
     <th>Solution Name</th>
     <th>Procedure</th>
   </tr>
   <tr>
-    <td>ADFS</td>
+    <td>AD FS</td>
     <td><a href="https://docs.pivotal.io/p-identity/adfs/config-sso.html">Configuring a Single Sign-On Service Provider</a></td>
   </tr>
   <tr>
@@ -516,4 +585,4 @@ To regenerate and rotate SAML service provider certificates without disrupting P
   </tr>
   </table>
 
-1. Re-enable certificate validation in your identity provider.
+1. Re-enable certificate validation in your IDP.
