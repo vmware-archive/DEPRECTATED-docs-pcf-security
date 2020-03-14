@@ -7,7 +7,7 @@ This topic describes how to rotate certificates and certificate authorities (CAs
 
 This topic only covers rotating CredHub-managed certificates. To rotate <%= vars.ops_manager %>-managed certificates, see [Rotating Certificates](api-cert-rotation.html).
 
-<p class="note warning"><strong>Warning:</strong> <%= vars.recommended_by %> recommends that you upgrade to <%= vars.ops_manager %> v2.9 and <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) v2.9 to rotate certificates safely with CredHub Maestro. If you need to rotate a certificate or CA immediately in <%= vars.ops_manager %> v2.8 and <%= vars.app_runtime_abbr %> v2.8, you can use the Maestro CLI, but you may experience app downtime.</p>
+<p class="note warning"><strong>Warning:</strong> <%= vars.recommended_by %> recommends that you upgrade to <%= vars.ops_manager %> v2.9 and <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) v2.9 to rotate certificates safely with CredHub Maestro. If you need to rotate a certificate or CA immediately in <%= vars.ops_manager %> v2.8 and <%= vars.app_runtime_abbr %> v2.8, you can use the CredHub Maestro CLI, but you may experience app downtime.</p>
 
 
 ## <a id='overview'></a> Overview
@@ -49,7 +49,7 @@ To check certificate expiration dates and types:
     ```
     Where `TIME-PERIOD` is the unit for which you want to check the expiry window. Valid units are `d` for days, `w` for weeks, `m` for months, and `y` for years.
 
-1. After you identify the list of certificates that expire soon, complete the [Rotate Certificates](#rotate-certs) procedure below.
+1. After you identify the list of certificates that expire soon, follow the procedure in [Rotate Certificates](#rotate-certs).
 
 
 ## <a id='rotate-certs'></a> Rotate Certificates
@@ -235,13 +235,14 @@ To rotate a manually set certificate:
 
 1. Redeploy all deployments that use the CA you are rotating.
 
+
 ## <a id='garbage-collection'></a> Delete Inactive Certificate Versions
 
 Over the course of many rotations, it is possible for the CredHub database to fill up. In order to prevent this, you can periodically use CredHub Maestro's garbage collection functionality to delete old, unused certificate versions.
 
 You can run garbage collection on leaf certificates and CAs. Generally, deleting leaf certificates is enough to free up space in the database.
 
-To see if you need to run garbage collection, do either of these steps:
+To see if you need to run garbage collection, do one of the following:
 
 * Manually check the BOSH Director's VM vitals through your IaaS provider.
 
