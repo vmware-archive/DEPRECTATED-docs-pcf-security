@@ -137,7 +137,7 @@ To rotate CAs and non-configurable leaf certificates:
 
 #### <a id='add-new-ca'></a> Step 1: Add New CAs
 
-This section describes how to add a new root CA for <%= vars.ops_manager %>. The new root CA can be a <%= vars.platform_name %>-generated CA or your own custom CA.
+This section describes how to add a new root CA for <%= vars.ops_manager %>. The new root CA can be an <%= vars.platform_name %>-generated CA or your own custom CA.
 
 This procedure also automatically regenerates the BOSH NATS CA as well as CAs stored in CredHub, such as the BOSH DNS CA and the Diego root CA.
 
@@ -180,7 +180,7 @@ To add new CAs:
             ]
           }
         </pre>
-  * **To use a <%= vars.platform_name %>-generated CA**: Call the <%= vars.ops_manager %> API `generate` endpoint. Run:
+  * **To use an <%= vars.platform_name %>-generated CA**: Call the <%= vars.ops_manager %> API `generate` endpoint. Run:
 
         ```
         curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/generate" \
