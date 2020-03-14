@@ -115,20 +115,20 @@ To reset a certificate in CredHub:
     credhub get -n SET-CERTIFICATE -k ca > /tmp/ca.yml
     credhub get -n SET-CERTIFICATE -k private_key > /tmp/private_key.yml
     ```
-   Where `SET-CERTIFICATE` is the value of the `name` field in the manually set certificate you want to retrieve.
+    Where `SET-CERTIFICATE` is the value of the `name` field in the manually set certificate you want to retrieve.
 
 1. Reset the certificate depending on the certificate type.
    * If the retrieved certificate is a root CA certificate, run:
 
-      ```
-      credhub set -n SET-CERTIFICATE -t certificate -r /tmp/ca.yml -c /tmp/certificate.yml -p /tmp/private_key.yml
-      ```
-      Where `SET-CERTIFICATE` is the name of the manually set certificate you want to reset.
+        ```
+        credhub set -n SET-CERTIFICATE -t certificate -r /tmp/ca.yml -c /tmp/certificate.yml -p /tmp/private_key.yml
+        ```
+        Where `SET-CERTIFICATE` is the name of the manually set certificate you want to reset.
    * If the retrieved certificate is an intermediate or leaf certificate, run:
 
-      ```
-      credhub set -n SET-CERTIFICATE -t certificate -c /tmp/certificate.yml -p /tmp/private_key.yml -m SIGNING-CA
-      ```
-      Where:
-      * `SET-CERTIFICATE` is the name of the manually set certificate you want to reset.
-      * `SIGNING-CA` is the name of the signing root CA certificate.
+        ```
+        credhub set -n SET-CERTIFICATE -t certificate -c /tmp/certificate.yml -p /tmp/private_key.yml -m SIGNING-CA
+        ```
+        Where:
+        * `SET-CERTIFICATE` is the name of the manually set certificate you want to reset.
+        * `SIGNING-CA` is the name of the signing root CA certificate.
