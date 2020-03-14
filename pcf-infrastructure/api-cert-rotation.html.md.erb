@@ -18,7 +18,7 @@ For information about how to rotate certificates managed by CredHub and the Serv
 
 ## <a id='overview'></a> Overview
 
-The <%= vars.ops_manager %> API manages and lists internal Certificate Authorities (CAs) and leaf certificates that enable <%= vars.platform_name %> components to communicate with each other securely using TLS. It can also list certificates used externally, such as SAML certificates that authenticate to an external identity provider (IDP).
+The <%= vars.ops_manager %> API manages and lists internal CAs and leaf certificates that enable <%= vars.platform_name %> components to communicate with each other securely using TLS. It can also list certificates used externally, such as SAML certificates that authenticate to an external identity provider (IDP).
 
 For more information about the CAs and leaf certificates visible to the <%= vars.ops_manager %> API, see [Certificate Types](certificate-types.html).
 
@@ -49,8 +49,7 @@ To check certificate expiration dates and types:
     <br>
     More options:
       * To limit command output to certificates that expire within a given time interval, append `?expires_within=TIME` to the endpoint, replacing `TIME` with an integer-letter code.<br>
-          * Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.
-          * For example, querying to `https://OPS-MANAGER-FQDN/api/v0/deployed/certificates?expires_within=6m` searches for certificates expiring within six months.
+          * Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years. For example, querying to `https://OPS-MANAGER-FQDN/api/v0/deployed/certificates?expires_within=6m` searches for certificates expiring within six months.
       * To make the JSON output more readable, you can pipe your `curl` command to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.
 
 1. The `deployed/certificates` output lists all CAs and leaf certificates visible to the <%= vars.ops_manager %> API, whether they are stored in <%= vars.ops_manager %> directly or stored in CredHub. To determine the expiration date and type for each certificate listed:
@@ -71,18 +70,18 @@ To check certificate expiration dates and types:
     </pre>
   1. For any certificates expiring soon, use the following rules to identify their types:
       * **Non-rotatable certificates:** Non-rotatable certificates have the following property value:
-          * `variable_path` is `/opsmgr/bosh_dns/tls_ca`
+          * `variable_path` is `/opsmgr/bosh_dns/tls_ca`.
       * **Non-configurable certificates:** Non-configurable leaf certificates have the following property values:
-          * `variable_path` is not `/opsmgr/bosh_dns/tls_ca`
-          * `configurable` is `false`
-          * `location` is `ops_manager`
-          * `is_ca` is `false`
+          * `variable_path` is not `/opsmgr/bosh_dns/tls_ca`.
+          * `configurable` is `false`.
+          * `location` is `ops_manager`.
+          * `is_ca` is `false`.
       * **Configurable certificates:** Configurable leaf certificates have the following property values:
-          * `configurable` is `true`
-          * `is_ca` is `false`
+          * `configurable` is `true`.
+          * `is_ca` is `false`.
       * **CAs:** CAs have the following property values:
-          * `is_ca` is `true`
-          * `location` is `ops_manager`
+          * `is_ca` is `true`.
+          * `location` is `ops_manager`.
 
 1. After you identify the list of certificates that expire soon, complete the [Rotate Certificates](#rotate) procedure below.
 
@@ -93,7 +92,7 @@ This section explains how to rotate certificates in <%= vars.platform_name %>, i
 
 You can determine which rotation procedure to follow based on the types of certificates in your foundation that must be rotated.
 
-To rotate certificates, do one of these procedures:
+To rotate certificates, follow one of these procedures:
 
 * To rotate non-rotatable certificates, call [Pivotal Support](http://support.pivotal.io).
 
@@ -173,7 +172,7 @@ To add new CAs:
         ```
         curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/generate" \
               -X POST \
-              -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
+              -H "Authorization: Bearer UAA-ACCESS-TOKEN" \
               -H "Content-Type: application/json" \
               -d '{}'
         ```
@@ -268,9 +267,11 @@ To add new CAs:
     1. Click the **Errands** tab.
     1. If the service tile has the **Recreate All Service Instances** errand:
         1. Enable the **Recreate All Service Instances** errand.
-        1. Click **Review Pending Changes**, then **Apply Changes**.
+        1. Click **Review Pending Changes**.
+        1. Click **Apply Changes**.
     1. If the service tile does not have the **Recreate All Service Instances** errand:
-        1. Click **Review Pending Changes**, then **Apply Changes**.
+        1. Click **Review Pending Changes**.
+        1. Click **Apply Changes**.
         1. When the deploy finishes, manually push the BOSH NATS CA to each of its service instances. For each service instance, run:
 
             ```
@@ -323,7 +324,7 @@ If there are any configurable certificates in your foundation expiring soon, <%=
 To rotate configurable leaf certificates, do the following for each configurable certificate that expires soon:
 
 1. Find the text field where the certificate is configured within the <%= vars.ops_manager %> interface. You might need to look through multiple configuration panes to identify the location of the certificate configuration text field. Use the following fields to identify the location of the certificate configuration text field:
-    * The `product_guid` field in the API output can help identify in which tile the certificate is configured. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the <%= vars.platform_name %> tile.
+    * The `product_guid` field in the API output can help identify in which tile the certificate is configured. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) tile.
     * The `property_reference` field in the API output can help identify in which **Settings** pane the certificate is configured. For example, the `uaa.service_provider_key_credentials` property is configured in the **UAA** pane of the <%= vars.app_runtime_abbr %> tile.
 
 1. Paste a new value for the certificate into the text field.
@@ -368,7 +369,8 @@ To rotate non-configurable leaf certificates:
     1. Click the **Errands** tab.
     1. If the service tile has the **Recreate All Service Instances** errand:
         1. Enable the **Recreate All Service Instances** errand.
-        1. Click **Review Pending Changes**, then **Apply Changes** to perform a second redeploy.
+        1. Click **Review Pending Changes**.
+        1. Click **Apply Changes** to perform a second redeploy.
     1. If the service tile does not have the **Recreate All Service Instances** errand:
         1. Click **Review Pending Changes**, then **Apply Changes** to perform a second redeploy.
         1. When the deploy finishes, manually push certificate updates to each service instance. For each service instance, run:
@@ -456,7 +458,7 @@ To rotate non-configurable leaf certificates:
 
 ### <a id='rotate-config'></a> Rotate Configurable Leaf Certificates
 
-Configurable certificates are generated by the user and pasted into <%= vars.ops_manager %> configuration panes where needed. Examples include certificates that terminate SSL traffic into <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>), or authenticate a Single Sign-On (SSO) service plan to an external SAML server.
+Configurable certificates are generated by the user and pasted into <%= vars.ops_manager %> configuration panes where needed. Examples include certificates that terminate SSL traffic into <%= vars.app_runtime_abbr %>, or authenticate a Single Sign-On (SSO) service plan to an external SAML server.
 
 For instructions on how to rotate SAML certificates for both <%= vars.app_runtime_abbr %> and the SSO service, see [Rotate Identity Provider SAML Certificates](#rotate-saml-ca).
 
@@ -464,7 +466,7 @@ For instructions on how to rotate SAML certificates for both <%= vars.app_runtim
 
 To rotate configurable leaf certificates:
 
-1. If you have not already done so, use the <%= vars.ops_manager %> API `deployed/certificates` endpoint to retrieve information about your expiring configurable certificates, as described in the procedures [Check Expiration Dates and Certificate Types](#checks). The information for each configurable certificate looks like this:
+1. If you have not already done so, use the <%= vars.ops_manager %> API `deployed/certificates` endpoint to retrieve information about your expiring configurable certificates, as described in the procedures [Check Expiration Dates and Certificate Types](#checks). The information for each configurable certificate looks like the following example:
   <pre class="terminal">
     {
       "configurable": true,
@@ -525,7 +527,7 @@ To regenerate and rotate SAML SP certificates without disrupting <%= vars.app_ru
     <td><a href="../../opsguide/ping-federate-sso-configuration.html">Configuring PingFederate as an Identity Provider</a></td>
   </tr>
   <tr>
-    <td><a href='https://technet.microsoft.com/en-us/windowsserver/dd448613.aspx'>Active Directory Federation Services</a></td>
+    <td><a href='https://technet.microsoft.com/en-us/windowsserver/dd448613.aspx'>Active Directory Federation Services (AD FS)</a></td>
     <td><a href="../../opsguide/adfs-sso-configuration.html">Configuring AD FS as an Identity Provider</a></td>
   </tr>
 </table>
