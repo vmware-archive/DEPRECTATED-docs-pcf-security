@@ -59,7 +59,7 @@ To check the <%= vars.ops_manager %> root CA expiration date:
       Where:
       * `OPS-MANAGER-FQDN` is the fully-qualified domain name (FQDN) of your <%= vars.ops_manager %> deployment.
       * `UAA-ACCESS-TOKEN` is the `access_token` value you recorded in the previous step.
-      <p class='note'><strong>Note:</strong> To make the JSON output more readable, pipe it to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.</p>
+      <p class='note'><strong>Note:</strong> To make the JSON output more readable, pipe it to <a href="https://stedolan.github.io/jq/">jq</a> or another text editor with JSON formatting.</p>
 
 1. In the `certificate_authorities` list returned, if there is more than one, find the CA with `"active": true`.
 
@@ -100,7 +100,7 @@ To check the expiration dates of leaf certificates and identify the types of lea
         * Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.
         <br>
         For example, querying to `https://OPS-MANAGER-FQDN/api/v0/deployed/certificates?expires_within=6m` searches for certificates expiring within six months.
-        <p class='note'><strong>Note:</strong> To make the JSON output more readable, pipe it to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.</p>
+        <p class='note'><strong>Note:</strong> To make the JSON output more readable, pipe it to <a href="https://stedolan.github.io/jq/">jq</a> or another text editor with JSON formatting.</p>
 
 1. To determine the expiration date of each certificate, see its `expires_on` value.
 
@@ -181,7 +181,7 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
           * `UAA-ACCESS-TOKEN` is your UAA access token.
           <br>
           <br>
-          If the command succeeds, the API returns a response that includes the new CA certificate:
+          If the command succeeds, the API returns a response that includes the new CA certificate. For example:
           <pre class="terminal">
             HTTP/1.1 200 OK
             {
@@ -202,7 +202,7 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
           ```
           curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/generate" \
                 -X POST \
-                -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
+                -H "Authorization: Bearer UAA-ACCESS-TOKEN" \
                 -H "Content-Type: application/json" \
                 -d '{}'
           ```
@@ -211,7 +211,7 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
           * `UAA-ACCESS-TOKEN` is your UAA access token.
           </br>
           </br>
-          If the command succeeds, the API returns a response that includes the new CA certificate:
+          If the command succeeds, the API returns a response that includes the new CA certificate. For example:
           <pre class="terminal">
               HTTP/1.1 200 OK
           {
@@ -253,7 +253,7 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
       * `UAA-ACCESS-TOKEN` is your UAA access token.
       </br>
       </br>
-      The API call returns the GUID of the newly added CA. For example:
+      The API returns the GUID of the newly added CA. For example:
       <pre class="terminal">
         HTTP/1.1 200 OK
           {
@@ -336,14 +336,13 @@ To activate the new root CA:
     ```
     curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities" \
           -X GET \
-          -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
+          -H "Authorization: Bearer UAA-ACCESS-TOKEN"
     ```
     Where:
     * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
     * `UAA-ACCESS-TOKEN` is your UAA access token.
-    <br>
-    <br>
-    Examine the response to ensure that your new CA has the `active` property set to `true`.
+
+1. Examine the response to ensure that your new CA has the `active` property set to `true`.
 
 #### <a id='rotate-config-after-new-root'></a> (Optional) Step 3: Rotate Configurable Leaf Certificates
 
