@@ -55,11 +55,11 @@ After identifying the types of certificates that expire soon, you can determine 
     ```
     Where:
     * `OPS-MANAGER-FQDN` is the fully-qualified domain name (FQDN) of your <%= vars.ops_manager %> deployment.
-    * `UAA-ACCESS-TOKEN` is the <code>access_token</code> value you recorded in the previous step.
+    * `UAA-ACCESS-TOKEN` is the `access_token` value you recorded in the previous step.
     <br>
     <br>
     More options:
-      * To limit command output to certificates that expire within a given time interval, append `?expires_within=TIME` to the endpoint, replacing `TIME` with an integer-letter code.<br />
+      * To limit command output to certificates that expire within a given time interval, append `?expires_within=TIME` to the endpoint, replacing `TIME` with an integer-letter code.<br>
           * Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.
           * For example, querying to `https://OPS-MANAGER-FQDN/api/v0/deployed/certificates?expires_within=6m` searches for certificates expiring within six months.
       * To make the JSON output more readable, you can pipe your `curl` command to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.
@@ -81,17 +81,17 @@ After identifying the types of certificates that expire soon, you can determine 
     },
     </pre>
   1. For any certificates expiring soon, use the following rules to identify their types:
-      * **Non-rotatable certificates**: Non-rotatable certificates have the following property value:
+      * **Non-rotatable certificates:** Non-rotatable certificates have the following property value:
           * `variable_path` is `/opsmgr/bosh_dns/tls_ca`
-      * **Non-configurable certificates**: Non-configurable leaf certificates have the following property values:
+      * **Non-configurable certificates:** Non-configurable leaf certificates have the following property values:
           * `variable_path` is not `/opsmgr/bosh_dns/tls_ca`
           * `configurable` is `false`
           * `location` is either `ops_manager` or `credhub`
           * `is_ca` is `false`
-      * **Configurable certificates**: Configurable leaf certificates have the following property values:
+      * **Configurable certificates:** Configurable leaf certificates have the following property values:
           * `configurable` is `true`
           * `is_ca` is `false`
-      * **<%= vars.ops_manager %> root CA and matching BOSH NATS CA**: CAs have the following property values:
+      * **<%= vars.ops_manager %> root CA and matching BOSH NATS CA:** CAs have the following property values:
           * `is_ca` is `true`
           * `location` is `ops_manager`
 
@@ -142,12 +142,12 @@ This procedure also automatically regenerates the BOSH NATS CA.
 
 To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA:
 
-1. If you have not already done so, follow the procedure in [Using <%= vars.ops_manager %> API](../../customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> User Account and Authentication (UAA) server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the following steps.
+1. If you have not already done so, follow the procedure in [Using <%= vars.ops_manager %> API](../../customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> UAA server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the following steps.
   <p class="note"><strong>Note:</strong> When you record your <%= vars.ops_manager %> access token, remove any newline characters such as <code>\n</code>.</p>
 
 1. Use <%= vars.ops_manager %> to generate a new CA, or add your own custom CA:
   <p class ="note"><strong>Note:</strong> Elliptic Curve Digital Signature Algorithm (ECDSA) certificates are not supported in <%= vars.platform_name %>.</p>
-  * **To use your own custom CA**: Call the <%= vars.ops_manager %> API `certificate_authorities` endpoint. Run:
+  * **To use your own custom CA:** Call the <%= vars.ops_manager %> API `certificate_authorities` endpoint. Run:
 
         ```
         curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities" \
@@ -179,7 +179,7 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
             ]
           }
         </pre>
-  * **To use a Pivotal-generated CA**: Call the <%= vars.ops_manager %> API `generate` endpoint. Run:
+  * **To use a Pivotal-generated CA:** Call the <%= vars.ops_manager %> API `generate` endpoint. Run:
 
         ```
         curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/generate" \
@@ -262,15 +262,19 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
 
 1. Identify the newly added CA, which has `active` set to `false`. Record its GUID.
 
-1. Navigate to `https://OPS-MANAGER-FQDN` in a browser, where `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment, and log in to <%= vars.ops_manager %>.
+1. Navigate to `https://OPS-MANAGER-FQDN` in a browser, where `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
 
-1. Click the **BOSH Director**.
+1. Log in to <%= vars.ops_manager %>.
+
+1. Click the BOSH Director tile.
 
 1. Select **Director Config**.
 
 1. Enable the **Recreate All VMs** checkbox. This propagates the new CA to all VMs deployed by the BOSH Director to prevent downtime.
 
-1. Navigate to the <%= vars.ops_manager %> Installation Dashboard. For each service tile you have installed:
+1. Return to the <%= vars.ops_manager %> Installation Dashboard.
+
+1. For each service tile you have installed:
     1. Click the tile.
     1. Click the **Errands** tab.
     1. If the service tile has the **Recreate All Service Instances** errand:
@@ -285,7 +289,7 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
             ```
             Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
 
-Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
+1. Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
 
 #### <a id='activate-new-ca'></a> Step 2: Activate Root CA
 
@@ -368,7 +372,9 @@ To rotate non-configurable leaf certificates from the new root CA:
 
 1. Enable the **Recreate All VMs** checkbox. This propagates the new CAs to all VMs deployed by the BOSH Director to prevent downtime.
 
-1. Navigate to the <%= vars.ops_manager %> Installation Dashboard. For each service tile you have installed:
+1. Return to the <%= vars.ops_manager %> Installation Dashboard.
+
+1. For each service tile you have installed:
     1. Click the tile.
     1. Click the **Errands** tab.
     1. If the service tile has the **Recreate All Service Instances** errand:
@@ -383,7 +389,7 @@ To rotate non-configurable leaf certificates from the new root CA:
             ```
             Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
 
-Continue to the next section, [Step 5: Delete the Old CAs](#delete).
+1. Continue to the next section, [Step 5: Delete the Old CAs](#delete).
 
 #### <a id='delete'></a> Step 5: Delete the Old CA
 
