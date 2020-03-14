@@ -36,7 +36,7 @@ To set BOSH environment variables, see [Advanced Troubleshooting with the BOSH C
 | BOSH_ENVIRONMENT | BOSH Director URL or IP address. |
 | BOSH_CLIENT | Name of BOSH client. |
 | BOSH_CLIENT_SECRET | BOSH client secret. |
-| BOSH_CA_CERT | Path or value of BOSH Director trusted CA certificate. |
+| BOSH_CA_CERT | Path or value of BOSH Director trusted certificate authority (CA). |
 | CREDHUB_SERVER | URL of BOSH Director CredHub server. This should be `BOSH_ENVIRONMENT:8844`. |
 | CREDHUB_CLIENT | Name of CredHub client. This is the same as `BOSH_CLIENT`. |
 | CREDHUB_SECRET | CredHub client secret. This is the same as `BOSH_CLIENT_SECRET`. |
@@ -48,8 +48,8 @@ To use CredHub Maestro from outside your foundation, you must also set the follo
 
 | Environment Variable | Description |
 | -------------------- | ----------- |
-| BOSH_ALL_PROXY | Socks5 proxy address of BOSH Director jumpbox. |
-| CREDHUB_PROXY | Socks5 proxy address of CredHub jumpbox. |
+| BOSH_ALL_PROXY | SOCKS5 proxy address of BOSH Director jumpbox. |
+| CREDHUB_PROXY | SOCKS5 proxy address of CredHub jumpbox. |
 
 ### <a id='optional-env-vars'></a> Optional Environment Variables
 
@@ -58,7 +58,7 @@ You can also set the following optional enviroment variables:
 | Environment Variable | Description |
 | -------------------- | ----------- |
 | MAESTRO_DEBUG | Enable debug logging. |
-| MAESTRO_OUTPUT_JSON | rint all CredHub Maestro command output as JSON. |
+| MAESTRO_OUTPUT_JSON | Print all CredHub Maestro command output as JSON. |
 
 
 ## <a id='commands'></a> Commands
@@ -81,7 +81,7 @@ You can use the following flags with `maestro list`:
 
 * `include-all`: Include inactive certificates in response.
 
-* `ca-only`: Filter certificates that are certificate authorities (CAs).
+* `ca-only`: Filter certificates that are CAs.
 
 * `leaf-only`: Filter certificates that are leaf certificates.
 
