@@ -3,7 +3,7 @@ title: Rotating Certificates
 owner: Ops Manager
 ---
 
-This topic describes how to check the expiration date of and rotate the <%= vars.ops_manager %> root certificate authority (CA), BOSH NATS CA, and leaf certificates in <%= vars.product_name_full %> ( <%= vars.product_name %>) that are visible to the <%= vars.ops_manager %> API.
+This topic describes how to check the expiration date of and rotate the <%= vars.ops_manager %> root certificate authority (CA), BOSH NATS CA, and leaf certificates in <%= vars.product_name_full %> (<%= vars.product_name %>) that are visible to the <%= vars.ops_manager %> API.
 
 <p class='note'><strong>Note:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
 
@@ -97,19 +97,21 @@ To check the expiration dates of leaf certificates and identify the types of lea
     * `OPS-MANAGER-FQDN` is the fully-qualified domain name (FQDN) of your <%= vars.ops_manager %> deployment.
     * `UAA-ACCESS-TOKEN` is the `access_token` value you recorded in the previous step.
     * `TIME` is integer-letter code.
-        * Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years. For example, querying to `https://OPS-MANAGER-FQDN/api/v0/deployed/certificates?expires_within=6m` searches for certificates expiring within six months.
+        * Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.
+        <br>
+        For example, querying to `https://OPS-MANAGER-FQDN/api/v0/deployed/certificates?expires_within=6m` searches for certificates expiring within six months.
         <p class='note'><strong>Note:</strong> To make the JSON output more readable, pipe it to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.</p>
 
 1. To determine the expiration date of each certificate, see its `expires_on` value.
 
 1. Identify the types of leaf certificates requiring rotation. The following rules identify the type of each leaf certificate:
-  * **Non-rotatable certificates**: Non-rotatable leaf certificates have the following property value:
-    * `variable_path` is `/opsmgr/bosh_dns/tls_ca`.
-  * **Non-configurable certificates**: Non-configurable leaf certificates have the following property values and are not non-rotatable as identified above:
-    * `configurable` is `false`.
-    * `location` is either `ops_manager` or `credhub`.
-  * **Configurable certificates**: Configurable leaf certificates have the following property value:
-    * `configurable` is `true`.
+  * **Non-rotatable certificates:** Non-rotatable leaf certificates have the following property value:
+      * `variable_path` is `/opsmgr/bosh_dns/tls_ca`.
+  * **Non-configurable certificates:** Non-configurable leaf certificates have the following property values and are not non-rotatable as identified above:
+      * `configurable` is `false`.
+      * `location` is either `ops_manager` or `credhub`.
+  * **Configurable certificates:** Configurable leaf certificates have the following property value:
+      * `configurable` is `true`.
 
 1. Continue to [Rotate Certificates](#rotate) with your list of certificate types that expire soon.
 
