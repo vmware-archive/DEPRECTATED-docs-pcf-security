@@ -12,7 +12,7 @@ This topic describes the different paths through which external clients, interna
 
 This section describes the different types of network communication in <%= vars.platform_name %> and how they are secured with TLS.
 
-Within an <%= vars.platform_name %> deployment, TLS secures connections between components like the BOSH Director and service tiles. <%= vars.platform_name %> components also use TLS connections to secure communications with external hardware, such as customer load balancers.
+Within a <%= vars.platform_name %> deployment, TLS secures connections between components like the BOSH Director and service tiles. <%= vars.platform_name %> components also use TLS connections to secure communications with external hardware, such as customer load balancers.
 
 ### <a id="client-to-app"></a> Between an External Client and an App
 
@@ -73,7 +73,7 @@ Developers specify which apps are allowed to communicate using container network
 
 ### <a id="app-to-service"></a> Between Apps and On-Platform Services
 
-The following diagram illustrates TLS communication between apps and managed, on-platform services. It uses Cloud Cache as an example of a managed service.
+The following diagram illustrates TLS communication between apps and managed, on-platform services. It uses Pivotal Cloud Cache as an example of a managed service.
 
 <%= image_tag("apps-services.png", :class => "no-border") %>
 [//]: https://docs.google.com/drawings/d/16WDbrSCLR9-avP0-DvnsJHwDG3tc8vMJTNiU-6rFLNo/edit?usp=sharing
@@ -89,7 +89,7 @@ The following diagram illustrates communications between apps and external, brok
 <%= image_tag("apps-external-services.png", :class => "no-border") %>
 [//]: https://docs.google.com/drawings/d/1pUQUeC9_XBq_wTJu6Ws0vPTPO8Xz4FQfqj5PRflQ5_M/edit?usp=sharing
 
-The developer must retrieve the certificate from the external service and provide it to their app. One way to do this is by placing the certificate in Runtime CredHub and modifying your app to consume the certificate through CredHub Service Broker. For more information, see the [CredHub Service Broker](https://docs.pivotal.io/credhub-service-broker/) documentation.
+The developer must retrieve the certificate from the external service and provide it to their app. One way to do this is by placing the certificate in Runtime CredHub and modifying your app to consume the certificate through Pivotal CredHub Service Broker. For more information, see the [Pivotal CredHub Service Broker](https://docs.pivotal.io/credhub-service-broker/) documentation.
 
 
 ## <a id="container-creds"></a> App Instance Container Identity Credentials
