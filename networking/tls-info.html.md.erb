@@ -181,7 +181,7 @@ If you want to enable secure TLS communications from an app using container inst
         <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_KEY'</code></td>
       </tr>
     </table>
-    Where: `APP-NAME` is the name of your app.
+    Where `APP-NAME` is the name of your app.
 
 * **Reload the credential files before they expire:** <%= vars.platform_name %> rotates the credentials shortly before the current certificate expires. Apps that use these credentials must reload the certificate and key file contents either periodically or in reaction to filesystem watcher events.
 
