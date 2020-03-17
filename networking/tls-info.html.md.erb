@@ -25,7 +25,7 @@ The following table describes each component involved in receiving a client requ
 
 | Component | Certificate Source |
 | --------- | ------------------ |
-| External Load Balancer | Enterprise root CA. |
+| External Load Balancer | Enterprise root certificate authority (CA). |
 | Gorouter | Enterprise root CA. |
 | App | <%= vars.platform_name %> root CA dedicated to app instance identity. For more information, see [App Instance Container Identity Credentials](#container-creds). |
 
@@ -135,7 +135,7 @@ To learn about app instance identity credentials, see the following table:
     <td>
       <ul>
         <li>The <strong>Common Name</strong> is the app instance GUID.</li>
-        <li>The <strong>Subject</strong> of the certificate contains an <em>Organizational Unit</em> in the form of <code>app:APP-GUID</code>.</li>
+        <li>The <strong>Subject</strong> of the certificate contains an <em>Organizational Unit</em> in the form of <code>app:APP-GUID</code>, where <code>APP-GUID</code> is the app instance GUID.</li>
         <li>The certificate contains a <strong>Subject Alternative Name</strong> (SAN) with the IP address for the app instance container.</li>
         <li>The certificate is valid for 24 hours after being issued.</li>
       </ul>
@@ -163,29 +163,29 @@ To learn about app instance identity credentials, see the following table:
 
 If you want to enable secure TLS communications from an app using container instance identity credentials, ensure that you:
 
-* **Add the credentials to your development stack configuration:**
-  * The credentials must be present in your development stack configuration for your app to use them. You can retrieve the credentials through following environment variables, which <%= vars.platform_name %> sets to the locations of key and certificate files.
-        <table id='instance-certs' border="1" class="nice" >
-          <tr>
-            <th>Credential/Keypair Element</th>
-            <th>Environment Variable</th>
-            <th>Command to Retrieve Credential Value</th>
-          </tr><tr>
-            <td>Certificate Chain</td>
-            <td><code>CF_INSTANCE_CERT</code></td>
-            <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_CERT'</code></td>
-          </tr><tr>
-            <td>Private Key</td>
-            <td><code>CF_INSTANCE_KEY</code></td>
-            <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_KEY'</code></td>
-          </tr>
-        </table>
+* **Add the credentials to your development stack configuration:** The credentials must be present in your development stack configuration for your app to use them. You can retrieve the credentials through following environment variables, which <%= vars.platform_name %> sets to the locations of key and certificate files.
+    <table id='instance-certs' border="1" class="nice" >
+      <tr>
+        <th>Credential/Keypair Element</th>
+        <th>Environment Variable</th>
+        <th>Command to Retrieve Credential Value</th>
+      </tr>
+      <tr>
+        <td>Certificate Chain</td>
+        <td><code>CF_INSTANCE_CERT</code></td>
+        <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_CERT'</code></td>
+      </tr>
+      <tr>
+        <td>Private Key</td>
+        <td><code>CF_INSTANCE_KEY</code></td>
+        <td><code>cf ssh APP-NAME -c 'cat $CF_INSTANCE_KEY'</code></td>
+      </tr>
+    </table>
+    Where `APP-NAME` is the name of your app.
 
-* **Reload the credential files before they expire:**
-  * <%= vars.platform_name %> rotates the credentials shortly before the current certificate expires. Apps that use these credentials must reload the certificate and key file contents either periodically or in reaction to filesystem watcher events.
+* **Reload the credential files before they expire:** <%= vars.platform_name %> rotates the credentials shortly before the current certificate expires. Apps that use these credentials must reload the certificate and key file contents either periodically or in reaction to filesystem watcher events.
 
-* **Configure external clients or servers to trust the root CA:**
-  * To enable secure TLS communication between an app and a client or server external to <%= vars.platform_name %>, you must configure the external client or server to trust the CA that issues app instance container identity credentials. For more information, see the _Issuing Authority_ row of the table in [About App Instance Identity Credentials](#cred-details).
+* **Configure external clients or servers to trust the root CA:** To enable secure TLS communication between an app and a client or server external to <%= vars.platform_name %>, you must configure the external client or server to trust the CA that issues app instance container identity credentials. For more information, see the _Issuing Authority_ row of the table in [About App Instance Identity Credentials](#cred-details).
 
 ### <a id="more-info"></a> Additional Information
 
