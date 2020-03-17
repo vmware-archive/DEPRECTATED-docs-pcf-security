@@ -5,7 +5,7 @@ owner: Ops Manager
 
 This topic describes how to check the expiration date of and rotate certificate authorities (CAs) and leaf certificates in <%= vars.platform_name %>.
 
-This includes the <%= vars.ops_manager %> root CA, BOSH NATS CA, the Diego root CA, and other CAs and leaf certificates stored in <%= vars.ops_manager %> and CredHub that are visible to the <%= vars.ops_manager %> API.
+This includes the <%= vars.ops_manager %> root CA, BOSH NATS CA, BOSH DNS CA, the Diego root CA, and other CAs and leaf certificates stored in <%= vars.ops_manager %> and CredHub that are visible to the <%= vars.ops_manager %> API.
 
 <p class='note warning'><strong>Warning:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Support</a> for guidance.</p>
 
@@ -13,7 +13,7 @@ For information about rotating IPsec certificates, see [Rotating IPsec Certifica
 
 For information about using trusted third-party certificates for both apps hosted on <%= vars.platform_name %> and internal <%= vars.platform_name %> components, see [Setting Trusted Certificates](../../customizing/trusted-certificates.html).
 
-For information about how to rotate certificates managed by CredHub and the Services TLS CA, see [Advanced Certificate Rotation with CredHub Maestro](./advanced-certificate-rotation.html).
+For information about how to rotate certificates managed by CredHub, including the Services TLS CA (`/services/tls_ca`), see [Advanced Certificate Rotation with CredHub Maestro](./advanced-certificate-rotation.html).
 
 
 ## <a id='overview'></a> Overview
@@ -83,9 +83,8 @@ To check certificate expiration dates and types:
     </pre>
   1. For any certificates expiring soon, use the following rules to identify their types:
       * **Non-rotatable certificates:** Non-rotatable certificates have the following property value:
-          * `variable_path` is `/opsmgr/bosh_dns/tls_ca`.
+          * `variable_path` matches '/p-bosh/service-instance_*/pxc_*', '/p-bosh/service-instance_*/tls_certificate', or '/p-bosh/service-instance_*/redis_certificate'
       * **Non-configurable certificates:** Non-configurable leaf certificates have the following property values:
-          * `variable_path` is not `/opsmgr/bosh_dns/tls_ca`.
           * `configurable` is `false`.
           * `location` is either `ops_manager` or `credhub`.
           * `is_ca` is `false`.
@@ -278,6 +277,8 @@ To add new CAs:
 1. For each service tile you have installed:
     1. Click the tile.
     1. Click the **Errands** tab.
+    1. Enable the **Upgrade All Service Instances** errand.
+        1. This is necessary to push CredHub certificate updates to each service instance.
     1. If the service tile has the **Recreate All Service Instances** errand:
         1. Enable the **Recreate All Service Instances** errand.
         1. Click **Review Pending Changes**.
@@ -285,7 +286,7 @@ To add new CAs:
     1. If the service tile does not have the **Recreate All Service Instances** errand:
         1. Click **Review Pending Changes**.
         1. Click **Apply Changes**.
-        1. When the deploy finishes, manually push the BOSH NATS CA to each of its service instances. For each service instance, run:
+        1. When the deploy finishes, manually push BOSH agent certificate updates to each service instance. For each service instance, run:
 
             ```
             bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
@@ -379,13 +380,15 @@ To rotate non-configurable leaf certificates:
 1. For each service tile you have installed:
     1. Click the tile.
     1. Click the **Errands** tab.
+    1. Enable the **Upgrade All Service Instances** errand.
+        1. This is necessary to push CredHub certificate updates to each service instance.
     1. If the service tile has the **Recreate All Service Instances** errand:
         1. Enable the **Recreate All Service Instances** errand.
         1. Click **Review Pending Changes**.
         1. Click **Apply Changes** to perform a second redeploy.
     1. If the service tile does not have the **Recreate All Service Instances** errand:
         1. Click **Review Pending Changes**, then **Apply Changes** to perform a second redeploy.
-        1. When the deploy finishes, manually push certificate updates to each service instance. For each service instance, run:
+        1. When the deploy finishes, manually push BOSH agent certificate updates to each service instance. For each service instance, run:
 
             ```
             bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
