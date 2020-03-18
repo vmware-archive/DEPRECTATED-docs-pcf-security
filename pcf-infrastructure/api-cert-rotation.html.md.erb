@@ -119,10 +119,10 @@ To check the expiration dates for non-configurable and configurable leaf certifi
     Valid letter codes are `d` for days, `w` for weeks, `m` for months, and `y` for years.<br><br>
     For example, the following command searches for certificates expiring within six months:
     <pre>
-    $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates?expires\_within=6m" \
+    $ curl "https<span>:</span>//OPS-MAN-FQDN/api/v0/deployed/certificates?expires_within=6m" \
           -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
     </pre>
-    Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access\_token</code> value you recorded in the previous step.
+    Replace `YOUR-UAA-ACCESS-TOKEN` with the <code>access_token</code> value you recorded in the previous step.
 
 1. To make the JSON output more readable, you can pipe it to [jq](https://stedolan.github.io/jq/) or another text editor with JSON formatting.
 
@@ -186,11 +186,11 @@ To add a new root CA for Ops Manager, do the following:
   <p class ="note"><b>Note:</b> Elliptic Curve Digital Signature Algorithm (ECDSA) certificates are not supported in PCF.</p>
   * **To use your own custom CA**, call the Ops Manager API `certificate_authorities` endpoint as follows:
     <pre>
-      curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
+      curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
           -X POST \
           -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN" \
           -H "Content-Type: application/json" \
-          -d '{"cert\_pem": "-----BEGIN CERTIFICATE-----\YOUR-CERTIFICATE", "private\_key\_pem": "-----BEGIN RSA PRIVATE KEY-----\YOUR-KEY"}'
+          -d '{"cert_pem": "-----BEGIN CERTIFICATE-----\YOUR-CERTIFICATE", "private_key_pem": "-----BEGIN RSA PRIVATE KEY-----\YOUR-KEY"}'
     </pre>
     Where:
     <ul><li>`YOUR-CERTIFICATE` is your custom CA.</li> 
@@ -289,25 +289,33 @@ To add a new root CA for Ops Manager, do the following:
 
 1. Select **Recreate All VMs**. This propagates the new CA to all VMs to prevent downtime.
 
-1. Navigate to the Ops Manager Installation Dashboard. For each service tile you have installed:
+1. Return to the Ops Manager Installation Dashboard. 
+
+1. For each service tile you have installed:
     1. Click the tile.
 
     1. Click the **Errands** tab.
 
     1. If the service tile has the **Recreate All Service Instances** errand: 
         1. Enable the **Recreate All Service Instances** errand. 
-        1. Click **Review Pending Changes**, then **Apply Changes**.
+        1. Click **Review Pending Changes**.
+        1. Click **Apply Changes**.
 
     1. If the service tile does not have the **Recreate All Service Instances** errand:
-        1. Click **Review Pending Changes**, then **Apply Changes**. 
+        1. Click **Review Pending Changes**
+        1. Click **Apply Changes**. 
         1. When the deploy finishes, manually push certificate updates to each service instance. For each service instance, run:
 
             ```
             bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
             ```
             Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
+    1. Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
 
-Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
+1. If you do not have any service tiles installed:
+    1. Click **Review Pending Changes**.
+    1. Click **Apply Changes**.
+    1. Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
 
 #### <a id='activate-new-ca'></a> Step 2: Activate the New CA
 
@@ -360,23 +368,31 @@ The API returns a successful response:
 
 1. Select **Recreate All VMs**. This propagates the new CA to all VMs to prevent downtime.
 
-1. Go back to the Installation Dashboard. For each service tile you have installed, do the following:
+1. Return to the Installation Dashboard. 
+
+1. For each service tile you have installed, do the following:
 
     1. Click the tile.
     1. Click the **Errands** tab.
     1. If the service tile has the **Recreate All Service Instances** errand:
         1. Enable the **Recreate All Service Instances** errand.
-        1. Click **Review Pending Changes**, then **Apply Changes** to perform a second redeploy.
+        1. Click **Review Pending Changes**.
+        1. Click **Apply Changes** to perform a second deploy.
     1. If the service tile does not have the **Recreate All Service Instances** errand:
-        1. Click **Review Pending Changes**, then **Apply Changes** to perform a second redeploy.
+        1. Click **Review Pending Changes**.
+        1. Click **Apply Changes** to perform a second deploy.
         1. When the deploy finishes, manually push the BOSH NATS CA to each of its service instances. For each service instance, run:
 
             ```
             bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
             ```
             Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
+    1. Continue to the next section, [Step 5: Delete the Old CAs](#delete).
 
-Continue to the next section, [Step 5: Delete the Old CAs](#delete).
+1. If you do not have any service tiles installed:
+    1. Click **Review Pending Changes**.
+    1. Click **Apply Changes**.
+    1. Continue to the next section, [Step 5: Delete the Old CAs](#delete).
 
 #### <a id='delete'></a> Step 5: (Optional) Delete the Old CA
 
@@ -386,14 +402,14 @@ If you want to delete the old CA, do the following:
 
 1. List your root CAs to retrieve the GUID of your old, inactive CA:
 <pre>
-  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate\_authorities" \
+  $ curl "http<span>s:</span>//OPS-MAN-FQDN/api/v0/certificate_authorities" \
         -X GET \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
 
 1. Use `curl` to make an API call to delete your old CA, replacing `OLD-CERT-GUID` with the GUID of your old, inactive CA:
 <pre>
-  $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate\_authorities/OLD-CERT-GUID" \
+  $ curl "http<span>s</span>://OPS-MAN-FQDN/api/v0/certificate_authorities/OLD-CERT-GUID" \
         -X DELETE \
         -H "Authorization: Bearer YOUR-UAA-ACCESS-TOKEN"
 </pre>
