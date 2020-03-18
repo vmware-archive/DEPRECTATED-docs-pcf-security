@@ -306,8 +306,12 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
             bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
             ```
             Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
+    1. Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
 
-1. Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
+1. If you do not have any service tiles installed:
+    1. Click **Review Pending Changes**.
+    1. Click **Apply Changes**.
+    1. Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
 
 #### <a id='activate-new-ca'></a> Step 2: Activate the Root CA
 
@@ -407,8 +411,12 @@ To rotate non-configurable leaf certificates from the new root CA:
             bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
             ```
             Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
+    1. Continue to the next section, [Step 5: Delete the Old CAs](#delete).
 
-1. Continue to the next section, [Step 5: Delete the Old CAs](#delete).
+1. If you do not have any service tiles installed:
+    1. Click **Review Pending Changes**.
+    1. Click **Apply Changes**.
+    1. Continue to the next section, [Step 5: Delete the Old CAs](#delete).
 
 #### <a id='delete'></a> (Optional) Step 5: Delete the Old CA
 
