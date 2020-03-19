@@ -262,7 +262,7 @@ To add new CAs:
 
 1. Return to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. For each service tile you have installed:
+1. If you have service tiles installed, for each service tile:
     1. Click the tile.
     1. Click the **Errands** tab.
     1. If the service tile has the **Recreate All Service Instances** errand:
@@ -278,12 +278,12 @@ To add new CAs:
             bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
             ```
             Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
-    1. Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
-
+            
 1. If you do not have any service tiles installed:
     1. Click **Review Pending Changes**.
     1. Click **Apply Changes**.
-    1. Continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
+
+1. When the deploy finishes and you have completed all necessary tasks to update service instances, continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
 
 #### <a id='activate-new-ca'></a> Step 2: Activate the CAs
 
@@ -367,7 +367,7 @@ To rotate non-configurable leaf certificates:
 
 1. Return to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. For each service tile you have installed:
+1. If you have service tiles installed, for each service tile:
     1. Click the tile.
     1. Click the **Errands** tab.
     1. If the service tile has the **Recreate All Service Instances** errand:
@@ -382,12 +382,12 @@ To rotate non-configurable leaf certificates:
             bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
             ```
             Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
-    1. Continue to the next section, [Step 5: Delete the Old CAs](#delete).
 
 1. If you do not have any service tiles installed:
     1. Click **Review Pending Changes**.
     1. Click **Apply Changes** to perform a second deploy.
-    1. Continue to the next section, [Step 5: Delete the Old CAs](#delete).
+
+1. When the deploy finishes and you have completed all necessary tasks to update service instances, continue to the next section, [Step 5: Delete the Old CAs](#delete).
 
 #### <a id='delete'></a> Step 5: Delete the Old CAs
 
