@@ -7,7 +7,7 @@ This topic describes how to check the expiration date of and rotate certificate 
 
 This includes the <%= vars.ops_manager %> root CA, BOSH NATS CA, BOSH DNS CA, the Diego root CA, and other CAs and leaf certificates stored in <%= vars.ops_manager %> and CredHub that are visible to the <%= vars.ops_manager %> API.
 
-<p class='note warning'><strong>Warning:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Support</a> for guidance.</p>
+<p class='note warning'><strong>Warning:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <%= vars.support_link %> for guidance.</p>
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/credentials.html).
 
@@ -106,7 +106,7 @@ You can determine which rotation procedure to follow based on the types of certi
 
 To rotate certificates, follow one of these procedures:
 
-* To rotate non-rotatable certificates, call [Support](http://support.pivotal.io).
+* To rotate non-rotatable certificates, contact <%= vars.support_link %>
 
 * To rotate CAs stored in <%= vars.ops_manager %> and CredHub, see [Rotate CAs and Leaf Certificates](#rotate-ca). This procedure also rotates all non-configurable leaf certificates and the BOSH NATS CA. You can also optionally rotate configurable leaf certificates as part of this procedure.
 
@@ -142,9 +142,13 @@ This section describes how to add a new root CA for <%= vars.ops_manager %>. The
 
 This procedure also automatically regenerates the BOSH NATS CA as well as CAs stored in CredHub, such as the BOSH DNS CA and the Diego root CA.
 
-<p class="note warning"><strong>Warning:</strong> The Services CA, `/services/tls_ca`, is excluded from rotation. To rotate this, see this [KB article](https://community.pivotal.io/s/article/rotating-ca-certificates-for-pivotal-cloud-foundry-services)</p>
+<p class="note warning"><strong>Warning:</strong> The Services CA, <code>/services/tls_ca</code>,
+is excluded from rotation. For Services CA rotation instructions, see
+<a href="https://community.pivotal.io/s/article/rotating-ca-certificates-for-pivotal-cloud-foundry-services">Rotating CA Certificates for Pivotal Services Suite</a>.</p>
 
-<p class="note warning"><strong>Warning:</strong>The CAs for certain versions of the mysql, redis and rabbitmq tiles are also excluded from rotation. Please check tile specific documentation for details on rotating these CAs.</p>
+<p class="note warning"><strong>Warning:</strong>The CAs for certain versions of the MySQL, Redis,
+and RabbitMQ tiles are also excluded from rotation. See the tile-specific documentation for
+information about rotating these CAs.</p>
 
 To add new CAs:
 
@@ -341,7 +345,9 @@ To activate the CAs that you added in [Step 1: Add New CAs](#add-new-ca):
 
 #### <a id='rotate-config-after-new-root'></a> (Optional) Step 3: Rotate Configurable Leaf Certificates
 
-Any configurable certificates generated from the Ops Manager root CA will need to be rotated. Any certificates generated via the `Generate RSA Certificate` links in the Ops Manager UI will have to be regenerated.
+Any configurable certificates generated from the <%= vars.ops_manager %> root CA must be rotated.
+Any certificates that you generated using the `Generate RSA Certificate` links in the
+<%= vars.ops_manager %> UI must be regenerated.
 
 To rotate configurable leaf certificates, do the following for each configurable certificate that expires soon:
 
@@ -349,7 +355,8 @@ To rotate configurable leaf certificates, do the following for each configurable
     * The `product_guid` field in the API output can help identify in which tile the certificate is configured. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) tile.
     * The `property_reference` field in the API output can help identify in which **Settings** pane the certificate is configured. For example, the `uaa.service_provider_key_credentials` property is configured in the **UAA** pane of the <%= vars.app_runtime_abbr %> tile.
 
-1. Paste a new value for the certificate into the text field or generate a new certificate using the `Generate RSA Certificate` link.
+1. Copy a new value for the certificate into the text field or generate a new certificate using the
+`Generate RSA Certificate` link.
 
 1. Click **Save** at the bottom of each pane in which you added new certificates.
 
@@ -357,9 +364,13 @@ To rotate configurable leaf certificates, do the following for each configurable
 
 After activating the new <%= vars.ops_manager %> root CA and other CAs, you must rotate non-configurable leaf certificates from the new CAs.
 
-<p class="note warning"><strong>Warning:</strong> The certificates generated from the Services CA, `/services/tls_ca`, are excluded from rotation. To rotate these, see this [KB article](https://community.pivotal.io/s/article/rotating-ca-certificates-for-pivotal-cloud-foundry-services)</p>
+<p class="note warning"><strong>Warning:</strong> The Services CA, <code>/services/tls_ca</code>,
+is excluded from rotation. For Services CA rotation instructions, see
+<a href="https://community.pivotal.io/s/article/rotating-ca-certificates-for-pivotal-cloud-foundry-services">Rotating CA Certificates for Pivotal Services Suite</a>.</p>
 
-<p class="note warning"><strong>Warning:</strong>Some certificates for certain versions of the mysql, redis and rabbitmq tiles are also excluded from rotation. Please check tile specific documentation for details on rotating these certificates.</p>
+<p class="note warning"><strong>Warning:</strong>The CAs for certain versions of the MySQL, Redis,
+and RabbitMQ tiles are also excluded from rotation. See the tile-specific documentation for
+information about rotating these CAs.</p>
 
 To rotate non-configurable leaf certificates:
 
@@ -557,7 +568,7 @@ To regenerate and rotate SAML SP certificates without disrupting <%= vars.app_ru
     <th>Procedure</th>
   </tr>
   <tr>
-    <td><a href='http://www.ca.com/us/securecenter/ca-single-sign-on.aspx'>CA Single Sign-On aka CA SiteMinder</a></td>
+    <td><a href='https://www.ca.com/us/securecenter/ca-single-sign-on.aspx'>CA Single Sign-On aka CA SiteMinder</a></td>
     <td><a href="../../opsguide/ca-sso-config.html">Configuring CA as an Identity Provider</a></td>
   </tr>
   <tr>
