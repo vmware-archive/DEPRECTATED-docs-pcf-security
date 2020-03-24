@@ -83,7 +83,7 @@ To check certificate expiration dates and types:
     </pre>
   1. For any certificates expiring soon, use the following rules to identify their types:
       * **Non-rotatable certificates:** Non-rotatable certificates have the following property value:
-          * `variable_path` matches '/p-bosh/service-instance_*/pxc_*', '/p-bosh/service-instance_*/tls_certificate', or '/p-bosh/service-instance_*/redis_certificate'
+          * `variable_path` matches `/p-bosh/service-instance_*/pxc_*`, `/p-bosh/service-instance_*/tls_certificate`, or `/p-bosh/service-instance_*/redis_certificate`
       * **Non-configurable certificates:** Non-configurable leaf certificates have the following property values:
           * `configurable` is `false`.
           * `location` is either `ops_manager` or `credhub`.
