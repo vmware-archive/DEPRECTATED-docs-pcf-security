@@ -142,6 +142,10 @@ This section describes how to add a new root CA for <%= vars.ops_manager %>. The
 
 This procedure also automatically regenerates the BOSH NATS CA as well as CAs stored in CredHub, such as the BOSH DNS CA and the Diego root CA.
 
+<p class="note warning"><strong>Warning:</strong> The Services CA, `/services/tls_ca`, is excluded from rotation. To rotate this, see this [KB article](https://community.pivotal.io/s/article/rotating-ca-certificates-for-pivotal-cloud-foundry-services)</p>
+
+<p class="note warning"><strong>Warning:</strong>The CAs for certain versions of the mysql, redis and rabbitmq tiles are also excluded from rotation. Please check tile specific documentation for details on rotating these CAs.</p>
+
 To add new CAs:
 
 1. If you have not already done so, follow the procedure in [Using <%= vars.ops_manager %> API](../../customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> UAA server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the following steps.
@@ -337,7 +341,7 @@ To activate the CAs that you added in [Step 1: Add New CAs](#add-new-ca):
 
 #### <a id='rotate-config-after-new-root'></a> (Optional) Step 3: Rotate Configurable Leaf Certificates
 
-If there are any configurable certificates in your foundation expiring soon, <%= vars.company_name %> recommends that you rotate them now. Rotating configurable leaf certificates now ensures that your next BOSH deploy includes both new configurable and non-configurable leaf certificates.
+Any configurable certificates generated from the Ops Manager root CA will need to be rotated. Any certificates generated via the `Generate RSA Certificate` links in the Ops Manager UI will have to be regenerated.
 
 To rotate configurable leaf certificates, do the following for each configurable certificate that expires soon:
 
@@ -345,13 +349,17 @@ To rotate configurable leaf certificates, do the following for each configurable
     * The `product_guid` field in the API output can help identify in which tile the certificate is configured. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) tile.
     * The `property_reference` field in the API output can help identify in which **Settings** pane the certificate is configured. For example, the `uaa.service_provider_key_credentials` property is configured in the **UAA** pane of the <%= vars.app_runtime_abbr %> tile.
 
-1. Paste a new value for the certificate into the text field.
+1. Paste a new value for the certificate into the text field or generate a new certificate using the `Generate RSA Certificate` link.
 
 1. Click **Save** at the bottom of each pane in which you added new certificates.
 
 #### <a id='regenerate-from-new-root'></a> Step 4: Rotate Non-Configurable Leaf Certificates from the New CAs
 
 After activating the new <%= vars.ops_manager %> root CA and other CAs, you must rotate non-configurable leaf certificates from the new CAs.
+
+<p class="note warning"><strong>Warning:</strong> The certificates generated from the Services CA, `/services/tls_ca`, are excluded from rotation. To rotate these, see this [KB article](https://community.pivotal.io/s/article/rotating-ca-certificates-for-pivotal-cloud-foundry-services)</p>
+
+<p class="note warning"><strong>Warning:</strong>Some certificates for certain versions of the mysql, redis and rabbitmq tiles are also excluded from rotation. Please check tile specific documentation for details on rotating these certificates.</p>
 
 To rotate non-configurable leaf certificates:
 
