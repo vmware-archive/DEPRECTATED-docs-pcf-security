@@ -108,7 +108,7 @@ To rotate certificates, follow one of these procedures:
 
 * To rotate non-rotatable certificates, contact <%= vars.support_link %>
 
-* To rotate CAs stored in <%= vars.ops_manager %> and CredHub, see [Rotate CAs and Leaf Certificates](#rotate-ca). This procedure also rotates all non-configurable leaf certificates and the BOSH NATS CA. You can also optionally rotate configurable leaf certificates as part of this procedure.
+* To rotate CAs stored in <%= vars.ops_manager %> and CredHub, see [Rotate CAs and Leaf Certificates](#rotate-ca). This procedure also rotates all non-configurable leaf certificates and the BOSH NATS CA. You should also rotate configurable leaf certificates as part of this procedure.
 
 * To rotate non-configurable leaf certificates, but not the <%= vars.ops_manager %> root CA or BOSH NATS CA, see [Rotate Non-Configurable Leaf Certificates](#regenerate).
 
@@ -130,7 +130,7 @@ To rotate CAs and non-configurable leaf certificates:
 
 1. Activate the <%= vars.ops_manager %> root CA. This step also automatically activates any other new CAs added in the previous step. For more information, see [Activate the CAs](#activate-new-ca).
 
-1. (Optional) Rotate configurable leaf certificates. For more information, see [Rotate Configurable Leaf Certificates](#rotate-config-after-new-root).
+1. Rotate configurable leaf certificates. For more information, see [Rotate Configurable Leaf Certificates](#rotate-config-after-new-root).
 
 1. Rotate non-configurable leaf certificates. For more information, see [Rotate Non-Configurable Leaf Certificates from the New CAs](#regenerate-from-new-root).
 
@@ -343,7 +343,7 @@ To activate the CAs that you added in [Step 1: Add New CAs](#add-new-ca):
 
 1. Examine the response to ensure that your new CA has the `active` property set to `true`.
 
-#### <a id='rotate-config-after-new-root'></a> (Optional) Step 3: Rotate Configurable Leaf Certificates
+#### <a id='rotate-config-after-new-root'></a> Step 3: Rotate Configurable Leaf Certificates
 
 Any configurable certificates generated from the <%= vars.ops_manager %> root CA must be rotated.
 Any certificates that you generated using the `Generate RSA Certificate` links in the
