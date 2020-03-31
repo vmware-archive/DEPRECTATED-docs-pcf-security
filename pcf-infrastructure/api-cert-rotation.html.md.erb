@@ -96,7 +96,8 @@ To rotate certificates, follow one of these procedures:
 
 * To rotate non-rotatable certificates, call [Pivotal Support](http://support.pivotal.io).
 
-* To rotate CAs stored in <%= vars.ops_manager %> and CredHub, see [Rotate CAs and Leaf Certificates](#rotate-ca). This procedure also rotates all non-configurable leaf certificates and the BOSH NATS CA. You should also rotate configurable leaf certificates as part of this procedure.
+* To rotate CAs stored in <%= vars.ops_manager %> and CredHub, see [Rotate CAs and Leaf Certificates](#rotate-ca).
+  This procedure also rotates all configurable and non-configurable leaf certificates and the BOSH NATS CA.
 
 * To rotate non-configurable leaf certificates, but not the <%= vars.ops_manager %> root CA or BOSH NATS CA, see [Rotate Non-Configurable Leaf Certificates](#regenerate).
 
@@ -110,7 +111,7 @@ To prevent system downtime, this procedure includes two BOSH deploys. The first 
 
 <p class="note warning"><strong>Warning:</strong> You must complete these steps in the exact order specified. Otherwise, you may damage your deployment.</p>
 
-To rotate CAs and non-configurable leaf certificates:
+To rotate CAs, configurable leaf certificates and non-configurable leaf certificates:
 
 1. Add a new <%= vars.ops_manager %> root CA. This step also automatically adds new CAs for all CAs visible to the <%= vars.ops_manager %> API. For more information, see [Add New CAs](#add-new-ca).
 
