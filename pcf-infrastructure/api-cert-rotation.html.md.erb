@@ -108,9 +108,11 @@ To rotate certificates, follow one of these procedures:
 ### <a id='rotate-ca'></a> Rotate CAs and Leaf Certificates
 
 This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA
-and non-configurable leaf certificates.
-When you rotate the <%= vars.ops_manager %> root CA, the <%= vars.ops_manager %> API also
-automatically rotates the BOSH NATS CA.
+and non-configurable leaf certificates. When you rotate the <%= vars.ops_manager %> root CA, the
+<%= vars.ops_manager %> API automatically rotates the BOSH NATS CA.
+
+If you used the **Generate RSA Certificate** feature to rotate the configurable certificates, this
+procedure instructs you to rotate the configurable leaf certificates by regenerating them.
 
 To prevent system downtime, this procedure includes two BOSH deploys. The first BOSH deploy applies new certificates to <%= vars.platform_name %> components. The second BOSH deploy deletes the old certificates.
 
