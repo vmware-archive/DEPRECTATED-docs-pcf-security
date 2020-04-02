@@ -22,7 +22,7 @@ The <%= vars.ops_manager %> API manages and lists internal CAs and leaf certific
 
 For more information about the CAs and leaf certificates visible to the <%= vars.ops_manager %> API, see [Certificate Types](certificate-types.html).
 
-Rotate CAs and leaf certificates before they expire to avoid downtime for your foundation. To rotate certificates in <%= vars.platform_name %>, first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, follow a certificate rotation procedure to replace expiring certificates and redeploy BOSH to apply changes.
+Rotate CAs and leaf certificates before they expire to avoid downtime for your foundation. To rotate certificates in <%= vars.platform_name %>, first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, follow a certificate rotation procedure to replace expiring certificates and deploy BOSH to apply changes.
 
 
 ## <a id='prerequisite'></a> Prerequisites
@@ -117,9 +117,12 @@ To rotate certificates, follow one of these procedures:
 
 ### <a id='rotate-ca'></a> Rotate CAs and Leaf Certificates
 
-This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA and leaf certificates.
-When you rotate the <%= vars.ops_manager %> root CA, the <%= vars.ops_manager %> API also
-automatically rotates the BOSH NATS CA and other CAs stored in CredHub, such as the Diego root CA.
+This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA
+and non-configurable leaf certificates. When you rotate the <%= vars.ops_manager %> root CA, the
+<%= vars.ops_manager %> API automatically rotates the BOSH NATS CA.
+
+If you used the **Generate RSA Certificate** feature to rotate the configurable certificates, this
+procedure instructs you to rotate the configurable leaf certificates by regenerating them.
 
 To prevent system downtime, this procedure includes two BOSH deploys. The first BOSH deploy applies new certificates to <%= vars.platform_name %> components. The second BOSH deploy deletes the old certificates.
 
@@ -513,7 +516,7 @@ To rotate non-configurable leaf certificates:
 
 1. Click **Review Pending Changes**.
 
-1. Click **Apply Changes** to perform a second redeploy.
+1. Click **Apply Changes** to perform a second deploy.
 
 ### <a id='rotate-config'></a> Rotate Configurable Leaf Certificates
 
