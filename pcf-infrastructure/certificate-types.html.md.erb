@@ -14,11 +14,7 @@ Leaf certificates are signed by a CA and are used to identify resources in <%= v
 
 CAs and leaf certificates are stored in <%= vars.ops_manager %> or CredHub. You can manage both <%= vars.ops_manager %> and CredHub certificates with the <%= vars.ops_manager %> API. You can also manage CredHub certificates with CredHub Maestro.
 
-<<<<<<< HEAD
-CAs and leaf certificates are stored in Ops Manager or CredHub. You can manage Ops Manager certificates with the Ops Manager API. You can manage CredHub certificates with CredHub Maestro.
-=======
 In addition to the types of certificates listed in this topic, some Pivotal products issue their own tile certificates that are not managed by or visible to the <%= vars.ops_manager %> API. These tile certificates do not require planned rotation because they rotate automatically with product upgrades.
->>>>>>> fef41df... Style/formatting/variable sweep [#170966065]
 
 <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) and <%= vars.k8s_runtime_full %> (<%= vars.k8s_runtime_abbr %>) both use tile certificates in addition to their <%= vars.ops_manager %> certificates.
 
