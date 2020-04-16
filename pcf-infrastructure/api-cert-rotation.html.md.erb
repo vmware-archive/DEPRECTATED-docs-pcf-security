@@ -404,7 +404,9 @@ To rotate non-configurable leaf certificates:
 
 #### <a id='delete'></a> Step 5: Delete the Old Root CA
 
-After activating new CAs and rotating leaf certificates from the new CAs, you should delete the old <%= vars.ops_manager %> root CA from your foundation. If your old root CA or leaf certificates have been compromised, you must delete the old root CA immediately. Otherwise, the old root CA and its leaf certificates may still be trusted, which compromises your foundation's security. If your old root CA or leaf certificates have not been compromised, <%= vars.recommended_by %> recommends that you delete the old root CA as soon as possible, but you can also delete it at a later time, such as in conjunction with another deploy.
+After activating new CAs and rotating leaf certificates from the new CAs, you should delete the old <%= vars.ops_manager %> root CA from your foundation.
+
+If your old root CA or leaf certificates have been compromised, you must delete the old root CA immediately. Otherwise, the old root CA and its leaf certificates may still be trusted, which compromises your foundation's security. If your old root CA or leaf certificates have not been compromised, <%= vars.recommended_by %> recommends that you delete the old root CA as soon as possible, but you can also delete it at a later time, such as in conjunction with another deploy.
 
 <p class="note"><strong>Note:</strong> To delete CredHub leaf certificates, use the CredHub Maestro garbage collection feature. For information about CredHub Maestro certificate garbage collection, see <a href="./advanced-certificate-rotation.html#garbage-collection">Delete Inactive Certificate Versions</a> in <em>Advanced Certificate Rotation with CredHub Maestro</em>.</p>
 
