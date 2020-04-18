@@ -361,7 +361,7 @@ To activate the new root CA:
 
 #### <a id='rotate-config-after-new-root'></a> Step 3: Rotate Configurable Leaf Certificates
 
-Any configurable certificates generated from the <%= vars.ops_manager %> root CA must be rotated. These are the certificates that you generated using **Generate RSA Certificate** in the <%= vars.ops_manager %> UI. For example, see [Providing a Certificate for Your TLS Termination Point](https://docs.pivotal.io/pivotalcf/2-6/opsguide/security_config.html).
+Any configurable certificates generated from the <%= vars.ops_manager %> root CA must be rotated. These are the certificates that you generated using **Generate RSA Certificate** in the <%= vars.ops_manager %> UI. For example, see [Providing a Certificate for Your TLS Termination Point](https://docs.pivotal.io/pivotalcf/2-5/opsguide/security_config.html).
 
 To regenerate and rotate configurable leaf certificates, do the following for each configurable certificate that expires soon:
 
@@ -369,8 +369,7 @@ To regenerate and rotate configurable leaf certificates, do the following for ea
   * The `product_guid` field in the <%= vars.ops_manager %> API output can help identify in which tile the certificate is configured. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the <%= vars.product_runtime %> (<%= vars.product_short %>) tile.
   * The `property_reference` field in the API output can help identify in which **Settings** pane the certificate is configured. For example, the `uaa.service_provider_key_credentials` property is configured in the **UAA** pane of the <%= vars.product_short %> tile.
 
-1. Copy a new value for the certificate into the text field or generate a new certificate using the
-**Generate RSA Certificate** button.
+1. Copy a new value for the certificate into the text field or generate a new certificate using the **Generate RSA Certificate** button.
 
 1. Click **Save** at the bottom of each pane in which you added new certificates.
 
