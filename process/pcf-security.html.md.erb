@@ -3,20 +3,20 @@ title: Pivotal Cloud Foundry Security Overview and Policy
 owner: Security
 ---
 
-This document outlines Pivotal's security policy and is addressed to operators deploying [<%= vars.first_product_name %>](https://network.pivotal.io/products/pivotal-cf) using Pivotal Operations Manager.
+This document outlines Pivotal's security policy and is addressed to operators deploying <%= vars.product_name_full %> (<%= vars.product_name %>) using <%= vars.ops_manager_full %>.
 
-For a comprehensive overview of the security architecture of each <%= vars.product_runtime %> component, see [PAS Security](../../concepts/security.html).
+For a comprehensive overview of the security architecture of each <%= vars.product_runtime %> (<%= vars.product_short %>) component, see [<%= vars.product_short %> Security](../../concepts/security.html).
 
 
 ## <a id='monitor'></a> How Pivotal Monitors for Security Vulnerabilities
 
-Pivotal receives private reports on vulnerabilities from customers and from field personnel through Pivotal's secure disclosure process. We also monitor public repositories of software security vulnerabilities to identify newly discovered vulnerabilities that might affect one or more of Pivotal's products.
+Pivotal receives private reports on vulnerabilities from customers and from field personnel through Pivotal's secure disclosure process. Pivotal also monitors public repositories of software security vulnerabilities to identify newly discovered vulnerabilities that might affect one or more of Pivotal's products.
 
 ### <a id='report'></a> How to Report a Vulnerability
 
 Pivotal encourages users who become aware of a security vulnerability in Pivotal's products to contact Pivotal with details of the vulnerability. Please send descriptions of any vulnerabilities found to security@pivotal.io. Include details about the software and hardware configuration of your system so that Pivotal can reproduce the issue.
 
-<p class="note"><strong>Note:</strong> Pivotal encourages use of encrypted email. Pivotal's public PGP key is located at <a href="http://www.pivotal.io/security">http://www.pivotal.io/security</a>.</p>
+<p class="note"><strong>Note:</strong> Pivotal encourages use of encrypted email. For Pivotal's public PGP key, see <a href="http://www.pivotal.io/security">Pivotal Application Security Team</a> on the Pivotal website.</p>
 
 
 ## <a id='notification-policy'></a> Notification Policy
@@ -25,30 +25,30 @@ Pivotal encourages users who become aware of a security vulnerability in Pivotal
 
 1. Assess the impact to <%= vars.product_name %>.
 
-1. If the vulnerability would affect an <%= vars.product_name %> component, Pivotal schedules an update for the impacted component(s).
+1. If the vulnerability would affect an <%= vars.product_name %> component, Pivotal schedules an update for the impacted components.
 
-1. Update the affected component(s) and perform system tests.
+1. Update the affected components and perform system tests.
 
 1. Announce the fix publicly through the following channels:
   1. Automated notification to end users who have downloaded or subscribed to an <%= vars.product_name %> product on [Pivotal Network](https://network.pivotal.io) when a new, fixed version is available.
-  1. Adding a new post to [http://www.pivotal.io/security](http://www.pivotal.io/security).
+  1. Adding a new post to the [Pivotal Application Security Team](http://www.pivotal.io/security) page.
 
 
 ## <a id='classes'></a> Classes of Vulnerabilities
 
-Attackers can exploit vulnerabilities to compromise user data and processing resources. This can affect data confidentiality, integrity, and availability to different degrees. For vulnerabilities related to Ubuntu provided packages, Pivotal follows [Canonical's priority levels](http://people.canonical.com/~ubuntu-security/cve/priority.html). For other vulnerabilities, Pivotal follows [Common Vulnerability Scoring System v3.0 standards](https://www.first.org/cvss/specification-document) when assessing severity.
+For vulnerabilities related to Ubuntu provided packages, Pivotal follows Canonical's priority levels. For other vulnerabilities, Pivotal follows Common Vulnerability Scoring System v3.0 standards when assessing severity. For more information about Canonical's priority levels, see [CVE Priority](http://people.canonical.com/~ubuntu-security/cve/priority.html) in Ubuntu CVE Tracker. For more information about Common Vulnerability Scoring System v3.0 standards, see [Common Vulnerability Scoring System version 3.1: Specification Document](https://www.first.org/cvss/specification-document) on the FIRST website.
 
-Pivotal uses Canonical's Ubuntu distribution of Linux for <%= vars.product_name %> Ubuntu stemcells and rootfs. Canonical provides Pivotal with support services allowing Pivotal to escalate CVEs that Pivotal determine might affect <%= vars.product_name %>. In general, Pivotal does not escalate to upstream open source software components or vendors for Medium or Low CVEs that are not yet patched. <%= vars.product_name %> can escalate on behalf of a customer for High or Critical CVEs. <%= vars.product_name %> customers who are interested in addressing CVEs in Ubuntu that are not yet patched can establish their own support relationship with [Canonical](https://www.ubuntu.com/support).
+Pivotal uses Canonical's Ubuntu distribution of Linux for <%= vars.product_name %> Ubuntu stemcells and rootfs. Canonical provides Pivotal with support services allowing Pivotal to escalate CVEs that Pivotal determine might affect <%= vars.product_name %>. In general, Pivotal does not escalate to upstream open source software components or vendors for Medium or Low CVEs that are not yet patched. <%= vars.product_name %> can escalate on behalf of a customer for High or Critical CVEs. <%= vars.product_name %> customers who are interested in addressing CVEs in Ubuntu that are not yet patched can establish their own support relationship with Canonical through the [Support](https://www.ubuntu.com/support) page on the Ubuntu website.
 
 Pivotal reports the severity of vulnerabilities using the following severity classes:
 
 ### <a id='high'></a> High
 
-High severity vulnerabilities are those that can be exploited by an unauthenticated or authenticated attacker, from the Internet or those that break the guest/host Operating System isolation. The exploitation could result in the complete compromise of confidentiality, integrity, and availability of user data and/or processing resources without user interaction. Exploitation could be leveraged to propagate an Internet worm or execute arbitrary code between Virtual Machines and/or the Host Operating System. This rating also applies to those vulnerabilities that could lead to the complete compromise of availability when the exploitation is by a remote unauthenticated attacker from the Internet or through a breach of virtual machine isolation.
+High severity vulnerabilities are those that can be exploited by an unauthenticated or authenticated attacker, from the Internet or those that break the guest/host Operating System isolation. The exploitation could result in the complete compromise of confidentiality, integrity, and availability of user data and/or processing resources without user interaction. Exploitation could be leveraged to propagate an Internet worm or execute arbitrary code between Virtual Machines (VMs) and/or the Host Operating System. This rating also applies to those vulnerabilities that could lead to the complete compromise of availability when the exploitation is by a remote unauthenticated attacker from the Internet or through a breach of VM isolation.
 
-### <a id='moderate'></a> Moderate
+### <a id='medium'></a> Medium
 
-Moderate vulnerabilities are those in which the ability to exploit is mitigated to a significant degree by configuration or difficulty of exploitation, but in certain deployment scenarios could still lead to the compromise of confidentiality, integrity, or availability of user data and/or processing resources.
+Medium vulnerabilities are those in which the ability to exploit is mitigated to a significant degree by configuration or difficulty of exploitation, but in certain deployment scenarios could still lead to the compromise of confidentiality, integrity, or availability of user data and/or processing resources.
 
 ### <a id='low'></a> Low
 
@@ -57,9 +57,9 @@ Low vulnerabilities are all other issues that have a security impact. These incl
 
 ## <a id='release-policy'></a> Release Policy
 
-<%= vars.product_name %> schedules regular monthly releases of software in the <%= vars.product_name %> Suite to address Low / Medium severity vulnerability exploits. When High severity vulnerability exploits are identified, <%= vars.product_name %> releases fixes to software in the <%= vars.product_name %> Suite on-demand, with as fast a turnaround as possible.
+<%= vars.product_name %> schedules regular monthly releases of software in the <%= vars.product_name %> suite to address Low and Medium severity vulnerability exploits. When High severity vulnerability exploits are identified, <%= vars.product_name %> releases fixes to software in the <%= vars.product_name %> suite on-demand, with as fast a turnaround as possible.
 
 
-## <a id='alerts'></a> Alerts/Actions Archive
+## <a id='alerts'></a> Alerts and Actions Archive
 
-[http://www.pivotal.io/security](http://www.pivotal.io/security)
+To review an archive of <%= vars.product_name %> vulnerability reports, see the Pivotal Product Vulnerability Reports on the [Pivotal Application Security Team](http://www.pivotal.io/security) page.

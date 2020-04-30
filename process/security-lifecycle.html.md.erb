@@ -25,20 +25,20 @@ Pivotal numbers <%= vars.product_name %> releases following a semantic versionin
 
 ### <a id='support'></a> Support
 
-As of <%= vars.product_name %> v1.8, Pivotal supports each major and minor <%= vars.product_name %> release according to the following criteria:
+As of <%= vars.product_name %> v1.8, Pivotal supports each major and minor platform release according to the following criteria:
 
-* Pivotal supports the release for at least 9 months following its first publication date.
-* Pivotal supports the last three major or minor releases, even if this extends coverage beyond 9 months. 
+* Pivotal supports the release for at least nine months following its first publication date.
+* Pivotal supports the last three major or minor releases, even if this extends coverage beyond nine months.
 
-Support includes maintenance updates and upgrades, bug and security fixes, and technical assistance. The [Pivotal Support Policy](https://pivotal.io/support/lifecycle_policy) describes support standards, technical guidance, and publication phases in more detail. The Pivotal Support Services [Terms and Conditions](https://pivotal.io/support/support_terms_conditions) defines Pivotal support in legal terms.
+Support includes maintenance updates and upgrades, bug and security fixes, and technical help. For more details about support standards, technical guidance, and publication phases, see [Support Lifecycle Policy](https://pivotal.io/support/lifecycle_policy) on the Pivotal website. For a definition of Pivotal support in legal terms, see [Pivotal Support Services Terms & Conditions](https://pivotal.io/support/support_terms_conditions) on the Pivotal website.
 
 ### <a id='patch-releases'></a> Patch Releases
 
-Patch releases are more frequent and less predictable than major/minor releases. The v1.6.x line provides a good example of their frequency. <%= vars.product_name %> v1.6.1 was released on October 26, 2015. Through August 2016, 36 additional patches of Elastic Runtime v1.6.x and 18 patches of Ops Manager v1.6.x provided security and bug fixes to customers.
+Patch releases are more frequent and less predictable than major and minor releases. The <%= vars.product_name %> v1.6.x line provides a good example of their frequency. <%= vars.product_name %> v1.6.1 was released on October 26, 2015. Through August 2016, 36 additional patches of Elastic Runtime v1.6.x and 18 patches of <%= vars.ops_manager %> v1.6.x provided security and bug fixes to customers.
 
-Pivotal identifies security issues using standard nomenclature from [Common Vulnerabilities and Exposures (CVE)](https://cve.mitre.org/), [Ubuntu Security Notices (USN)](https://www.ubuntu.com/usn/), and other third party sources. Read about security fixes in core <%= vars.product_name %> code or packaged dependencies in the release notes for [Ops Manager](http://docs.pivotal.io/pivotalcf/2-6/pcf-release-notes/opsmanager-rn.html) and [Pivotal Application Service (PAS)](http://docs.pivotal.io/pivotalcf/2-6/pcf-release-notes/runtime-rn.html).
+Pivotal identifies security issues using standard nomenclature from [Common Vulnerabilities and Exposures (CVE)](https://cve.mitre.org/), [Ubuntu Security Notices (USN)](https://www.ubuntu.com/usn/), and other third-party sources. For more information about security fixes in core <%= vars.product_name %> code or packaged dependencies, see [<%= vars.ops_manager %> <%= vars.v_major_version %> Release Notes](http://docs.pivotal.io/pivotalcf/2-6/pcf-release-notes/opsmanager-rn.html) and [<%= vars.product_runtime %> <%= vars.v_major_version %> Release Notes](http://docs.pivotal.io/pivotalcf/2-6/pcf-release-notes/runtime-rn.html).
 
-[Pivotal.io/security](https://pivotal.io/security) maintains a running list of security fixes in <%= vars.product_name %> and <%= vars.product_name %> dependencies. Consult that page to see the most recent findings from Pivotal's security team.
+The Pivotal Application Security Team maintains a running list of security fixes in <%= vars.product_name %> and <%= vars.product_name %> dependencies. To see their most recent findings, see [Pivotal Application Security Team](https://pivotal.io/security) on the Pivotal website.
 
 ### <a id='upgrading'></a> Upgrading
 
@@ -57,15 +57,15 @@ With every software change, automated build pipelines trigger these tests for th
 
 Pivotal applies the following automated testing approaches, scenarios, and frameworks to <%= vars.product_name %> components and to the release as a whole:
 
-* **Unit tests**: Development teams write unit tests to express and validate desired functional behavior of product components. Typical frameworks used are [RSpec](http://rspec.info/) and [Ginkgo](https://onsi.github.io/ginkgo/). These tests run continuously throughout the development cycle.
+* **Unit tests:** Development teams write unit tests to express and validate desired functional behavior of product components. Typical frameworks used are [RSpec](http://rspec.info/) and [Ginkgo](https://onsi.github.io/ginkgo/). These tests run continuously throughout the development cycle.
 
-* **OSS integration tests**: The Release Integration team exercises a full deployment of open-source Cloud Foundry to validate all end-user features. They maintain the [Cloud Foundry Acceptance Test](https://github.com/cloudfoundry/cf-acceptance-tests) (CATs) suite alongside the OSS cf-release. Cloud Foundry component teams also contribute acceptance test suites at the OSS Integration Test level. These tests exercise and validate their components' functional, performance, and integration health.
+* **OSS integration tests:** The Release Integration team exercises a full deployment of open-source Cloud Foundry to validate all end-user features. They maintain the [Cloud Foundry Acceptance Test](https://github.com/cloudfoundry/cf-acceptance-tests) (CATs) suite alongside the OSS cf-release. Cloud Foundry component teams also contribute acceptance test suites at the OSS Integration Test level. These tests exercise and validate their components' functional, performance, and integration health.
 
-* **<%= vars.product_name %> integration tests**: The <%= vars.product_name %> Release Engineering (RelEng) team validates the quality and cross-product integration health of the commercial <%= vars.product_name %> release. RelEng runs OSS Acceptance Tests against all supported releases. These tests run on full <%= vars.product_name %> instances configured to represent diverse real-world customer scenarios on various IaaSes and using both internal and external load balancer, database, blobstore, and user store solutions.
+* **<%= vars.product_name %> integration tests:** The <%= vars.product_name %> Release Engineering (RelEng) team validates the quality and cross-product integration health of the commercial <%= vars.product_name %> release. RelEng runs OSS Acceptance Tests against all supported releases. These tests run on full <%= vars.product_name %> instances configured to represent diverse real-world customer scenarios on various IaaSes and using both internal and external load balancer, database, blobstore, and user store solutions.
 
 ### <a id='release-gates'></a> Additional Pre-Release Gates: Internal, PWS, and Compliance
 
-In addition to its automated unit and integration testing, Pivotal deploys all upgrades slated for upcoming <%= vars.product_name %> releases on at-scale test environments. Prior to each Major or Minor commercial release, Pivotal runs the entire <%= vars.product_name %> Suite of services on several internally-managed large integration environments that run customer-like data and workloads.
+In addition to its automated unit and integration testing, Pivotal deploys all upgrades slated for upcoming <%= vars.product_name %> releases on at-scale test environments. Prior to each major or minor commercial release, Pivotal runs the entire <%= vars.product_name %> suite of services on several internally-managed large integration environments that run customer-like data and workloads.
 
 Pivotal also pushes upcoming <%= vars.product_name %> feature upgrades and patches to its [Pivotal Web Services](http://run.pivotal.io/) platform, where customers continually deploy and host hundreds of mission-critical applications at scale, 24/7. The PWS environment gives Pivotal a continuous source of real-world usage and performance metrics that inform product development teams.
 
@@ -78,7 +78,7 @@ Pivotal uses established processes to track, disclose, and remediate vulnerabili
 
 ### <a id='vulnerabilities'></a> Identifying Security Vulnerabilities
 
-Pivotal has an established process to track and patch vulnerabilities in software dependencies and <%= vars.product_name %> software. Additionally, [pivotal.io/security](https://pivotal.io/security) describes a responsible disclosure process for reporting vulnerabilities identified in Pivotal software by third parties.
+Pivotal has an established process to track and patch vulnerabilities in software dependencies and <%= vars.product_name %> software. Additionally, [Additionally, the [Pivotal Application Security Team](https://pivotal.io/security) page describes a responsible disclosure process for reporting vulnerabilities identified in Pivotal software by third parties.
 
 Pivotal uses multiple methods to identify security vulnerabilities in Pivotal software and dependencies internally, including:
 
@@ -93,11 +93,11 @@ Pivotal also monitors externally-reported vulnerabilities from many sources, inc
 * Cloud Foundry Foundation security notifications from member companies
 * Customer, prospect and other 3rd party security reports
 
-When Pivotal discovers a potential security vulnerability in <%= vars.product_name %>, the security team opens an issue to assess it. If it confirms the vulnerability exists, Pivotal identifies and updates affected components with plans to backport the fix to stable releases. Fixes are implemented on a target timeline based on the [severity level](./pcf-security.html) of the vulnerability.
+When Pivotal discovers a potential security vulnerability in <%= vars.product_name %>, the security team opens an issue to assess it. If it confirms the vulnerability exists, Pivotal identifies and updates affected components with plans to backport the fix to stable releases. Fixes are implemented on a target timeline based on the severity level of the vulnerability. For more information, see [<%= vars.product_name %> Security Overview and Policy](pcf-security.html).
 
 
 ## <a id='lifecycle'></a> Fix, Test, and Release Lifecycle
 
-This flowchart details the steps that Pivotal performs on a typical high-priority CVE, to publish a patch release fix on [https://network.pivotal.io](https://network.pivotal.io):
+This flowchart details the steps that Pivotal performs on a typical high-priority CVE, to publish a patch release fix on [Pivotal Network](https://network.pivotal.io):
 
 <%= image_tag("triage-flowchart.png") %>
