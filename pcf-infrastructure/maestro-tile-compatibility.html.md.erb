@@ -74,7 +74,7 @@ owner: CredHub Maestro
     <td>pivotal-mysql</td>
     <td><em>n/a</em></td>
     <td>No</td>
-    <td>Services are not currently compatible with rotation, and the <code>/services/tls_ca</code> is excluded by default.</td>
+    <td>Some services are not currently compatible with rotation, and the <code>/services/tls_ca</code> is excluded by default in Ops Manager Rotations. Make sure ALL installed service tiles are compatible before rotating</td>
   </tr>
   <tr>
     <td>PCF Event Alerts</td>
@@ -116,7 +116,7 @@ owner: CredHub Maestro
     <td>p-cloudcache</td>
     <td><em>n/a</em></td>
     <td>No</td>
-    <td>Services are not currently compatible with rotation, and the <code>/services/tls_ca</code> is excluded by default.</td>
+    <td>Some services are not currently compatible with rotation, and the <code>/services/tls_ca</code> is excluded by default in Ops Manager Rotations. Make sure ALL installed service tiles are compatible before rotating</td>
   </tr>
   <tr>
     <td>Pivotal Compliance Scanner</td>
@@ -158,14 +158,14 @@ owner: CredHub Maestro
     <td>p-rabbitmq</td>
     <td><em>n/a</em></td>
     <td>No</td>
-    <td>Services are not currently compatible with rotation, and the <code>/services/tls_ca</code> is excluded by default.</td>
+    <td>Some services are not currently compatible with rotation, and the <code>/services/tls_ca</code> is excluded by default in Ops Manager Rotations. Make sure ALL installed service tiles are compatible before rotating</td>
   </tr>
   <tr>
     <td>Redis for PCF</td>
     <td>p-redis</td>
-    <td><em>n/a</em></td>
-    <td>No</td>
-    <td>Services are not currently compatible with rotation, and the <code>/services/tls_ca</code> is excluded by default.</td>
+    <td><em>2.4.0</em></td>
+    <td>Yes</td>
+    <td>Some services are not currently compatible with rotation, and the <code>/services/tls_ca</code> is excluded by default in Ops Manager Rotations. Make sure ALL installed service tiles are compatible before rotating</td>
   </tr>
   <tr>
     <td>Reliability View Exporter for <%= vars.app_runtime_abbr %> (Beta)</td>
