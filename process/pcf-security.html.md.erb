@@ -5,20 +5,20 @@ owner: Security
 
 <% current_page.data.title = vars.platform_name + " Security Overview and Policy"  %>
 
-This document outlines <%= vars.company_name %>'s security policy and is addressed to operators deploying [<%= vars.platform_name %>](https://network.pivotal.io/products/pivotal-cf).
+This document outlines <%= vars.company_name %>'s security policy and is addressed to operators deploying <%= vars.platform_name %>.
 
 For a comprehensive overview of the security architecture of each <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) component, see [<%= vars.app_runtime_abbr %> Security](../../concepts/security.html).
 
 
 ## <a id='monitor'></a> How <%= vars.company_name %> Monitors for Security Vulnerabilities
 
-<%= vars.company_name %> receives private reports on vulnerabilities from customers and from field personnel through <%= vars.company_name %>'s secure disclosure process. We also monitor public repositories of software security vulnerabilities to identify newly discovered vulnerabilities that might affect one or more of <%= vars.company_name %>'s products.
+<%= vars.company_name %> receives private reports on vulnerabilities from customers and from field personnel through <%= vars.company_name %>'s secure disclosure process. <%= vars.company_name %> also monitors public repositories of software security vulnerabilities to identify newly discovered vulnerabilities that might affect one or more of <%= vars.company_name %>'s products.
 
 ### <a id='report'></a> How to Report a Vulnerability
 
 <%= vars.company_name %> encourages users who become aware of a security vulnerability in <%= vars.company_name %>'s products to contact <%= vars.company_name %> with details of the vulnerability. Please send descriptions of any vulnerabilities found to security@pivotal.io. Include details about the software and hardware configuration of your system so that <%= vars.company_name %> can reproduce the issue.
 
-<p class="note"><strong>Note:</strong> <%= vars.company_name %> encourages use of encrypted email. <%= vars.company_name %>'s public PGP key is located at <a href="http://www.pivotal.io/security">http://www.pivotal.io/security</a>.</p>
+<p class="note"><strong>Note:</strong> <%= vars.company_name %> encourages use of encrypted email. For <%= vars.company_name %>'s public PGP key, see <a href="https://tanzu.vmware.com/security">VMware Tanzu Application Security Team</a> on the VMware Tanzu website.</p>
 
 
 ## <a id='notification-policy'></a> Notification Policy
@@ -27,26 +27,26 @@ For a comprehensive overview of the security architecture of each <%= vars.app_r
 
 1. Assess the impact to <%= vars.platform_name %>.
 
-1. If the vulnerability would affect an <%= vars.platform_name %> component, <%= vars.company_name %> schedules an update for the impacted component(s).
+1. If the vulnerability would affect an <%= vars.platform_name %> component, <%= vars.company_name %> schedules an update for the impacted components.
 
-1. Update the affected component(s) and perform system tests.
+1. Update the affected components and perform system tests.
 
 1. Announce the fix publicly through the following channels:
   1. Automated notification to end users who have downloaded or subscribed to an <%= vars.platform_name %> product on [<%= vars.product_network %>](https://network.pivotal.io) when a new, fixed version is available.
-  1. Adding a new post to [http://www.pivotal.io/security](http://www.pivotal.io/security).
+  1. Adding a new post to the [VMware Tanzu Application Security Team](https://tanzu.vmware.com/security) page.
 
 
 ## <a id='classes'></a> Classes of Vulnerabilities
 
-Attackers can exploit vulnerabilities to compromise user data and processing resources. This can affect data confidentiality, integrity, and availability to different degrees. For vulnerabilities related to Ubuntu provided packages, <%= vars.company_name %> follows [Canonical's priority levels](http://people.canonical.com/~ubuntu-security/cve/priority.html). For other vulnerabilities, <%= vars.company_name %> follows [Common Vulnerability Scoring System v3.0 standards](https://www.first.org/cvss/specification-document) when assessing severity.
+Attackers can exploit vulnerabilities to compromise user data and processing resources. This can affect data confidentiality, integrity, and availability to different degrees. For vulnerabilities related to Ubuntu provided packages, <%= vars.company_name %> follows Canonical's priority levels. For other vulnerabilities, <%= vars.company_name %> follows Common Vulnerability Scoring System v3.0 standards when assessing severity. For more information about Canonical's priority levels, see [CVE Priority](http://people.canonical.com/~ubuntu-security/cve/priority.html) in Ubuntu CVE Tracker. For more information about Common Vulnerability Scoring System v3.0 standards, see [Common Vulnerability Scoring System version 3.1: Specification Document](https://www.first.org/cvss/specification-document) on the FIRST website.
 
-<%= vars.company_name %> uses Canonical's Ubuntu distribution of Linux for <%= vars.platform_name %> Ubuntu stemcells and rootfs. Canonical provides <%= vars.company_name %> with support services allowing <%= vars.company_name %> to escalate CVEs that <%= vars.company_name %> determine might affect <%= vars.platform_name %>. In general, <%= vars.company_name %> does not escalate to upstream open source software components or vendors for Medium or Low CVEs that are not yet patched. <%= vars.platform_name %> can escalate on behalf of a customer for High or Critical CVEs. <%= vars.platform_name %> customers who are interested in addressing CVEs in Ubuntu that are not yet patched can establish their own support relationship with [Canonical](https://www.ubuntu.com/support).
+<%= vars.company_name %> uses Canonical's Ubuntu distribution of Linux for <%= vars.platform_name %> Ubuntu stemcells and rootfs. Canonical provides <%= vars.company_name %> with support services allowing <%= vars.company_name %> to escalate CVEs that <%= vars.company_name %> determine might affect <%= vars.platform_name %>. In general, <%= vars.company_name %> does not escalate to upstream open source software components or vendors for Medium or Low CVEs that are not yet patched. <%= vars.platform_name %> can escalate on behalf of a customer for High or Critical CVEs. <%= vars.platform_name %> customers who are interested in addressing CVEs in Ubuntu that are not yet patched can establish their own support relationship with Canonical through the [Support](https://www.ubuntu.com/support) page on the Ubuntu website.
 
 <%= vars.company_name %> reports the severity of vulnerabilities using the following severity classes:
 
 ### <a id='high'></a> High
 
-High severity vulnerabilities are those that can be exploited by an unauthenticated or authenticated attacker, from the internet or those that break the guest/host Operating System isolation. The exploitation could result in the complete compromise of confidentiality, integrity, and availability of user data and/or processing resources without user interaction. Exploitation could be leveraged to propagate an internet worm or execute arbitrary code between Virtual Machines and/or the Host Operating System. This rating also applies to those vulnerabilities that could lead to the complete compromise of availability when the exploitation is by a remote unauthenticated attacker from the internet or through a breach of VM isolation.
+High severity vulnerabilities are those that can be exploited by an unauthenticated or authenticated attacker, from the Internet or those that break the guest/host Operating System isolation. The exploitation could result in the complete compromise of confidentiality, integrity, and availability of user data and/or processing resources without user interaction. Exploitation could be leveraged to propagate an Internet worm or execute arbitrary code between Virtual Machines (VMs) and/or the Host Operating System. This rating also applies to those vulnerabilities that could lead to the complete compromise of availability when the exploitation is by a remote unauthenticated attacker from the Internet or through a breach of VM isolation.
 
 ### <a id='moderate'></a> Moderate
 
@@ -59,9 +59,9 @@ Low vulnerabilities are all other issues that have a security impact. These incl
 
 ## <a id='release-policy'></a> Release Policy
 
-<%= vars.company_name %> schedules regular monthly releases of software in the <%= vars.platform_name %> Suite to address Low / Medium severity vulnerability exploits. When High severity vulnerability exploits are identified, <%= vars.company_name %> releases fixes to software in the <%= vars.platform_name %> Suite on-demand, with as fast a turnaround as possible.
+<%= vars.company_name %> schedules regular monthly releases of software in the <%= vars.platform_name %> suite to address Low / Medium severity vulnerability exploits. When High severity vulnerability exploits are identified, <%= vars.company_name %> releases fixes to software in the <%= vars.platform_name %> Suite on-demand, with as fast a turnaround as possible.
 
 
 ## <a id='alerts'></a> Alerts and Actions Archive
 
-To review an archive of <%= vars.platform_name %> vulnerability reports, see [<%= vars.company_name %> Product Vulnerability Reports](http://www.pivotal.io/security).
+To review an archive of <%= vars.platform_name %> vulnerability reports, see the <%= vars.company_name %> Product Vulnerability Reports on the [VMware Tanzu Application Security Team](https://tanzu.vmware.com/security) page.

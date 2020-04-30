@@ -25,20 +25,20 @@ This topic explains how <%= vars.company_name %>'s development practices, automa
 
 ### <a id='support'></a> Support
 
-As of <%= vars.platform_old_pivotal %> v1.8, <%= vars.company_name %> supports each major and minor <%= vars.platform_name %> release according to the following criteria:
+As of <%= vars.platform_old_pivotal %> (<%= vars.platform_code_pivotal %>) v1.8, <%= vars.company_name %> supports each major and minor platform release according to the following criteria:
 
-* <%= vars.company_name %> supports the release for at least 9 months following its first publication date.
-* <%= vars.company_name %> supports the last three major or minor releases, even if this extends coverage beyond 9 months.
+* <%= vars.company_name %> supports the release for at least nine months following its first publication date.
+* <%= vars.company_name %> supports the last three major or minor releases, even if this extends coverage beyond nine months.
 
-Support includes maintenance updates and upgrades, bug and security fixes, and technical help. The [<%= vars.company_name %> Support Policy](https://pivotal.io/support/lifecycle_policy) describes support standards, technical guidance, and publication phases in more detail. The <%= vars.company_name %> Support Services [Terms and Conditions](https://pivotal.io/support/support_terms_conditions) defines <%= vars.company_name %> support in legal terms.
+Support includes maintenance updates and upgrades, bug and security fixes, and technical help. For more details about support standards, technical guidance, and publication phases, see [Support Lifecycle Policy](https://tanzu.vmware.com/support/lifecycle_policy) on the VMware Tanzu website. For a definition of <%= vars.company_name %> support in legal terms, see [VMware Tanzu Software Support Services Terms & Conditions](https://pivotal.io/support/support_terms_conditions) on the VMware Tanzu website.
 
 ### <a id='patch-releases'></a> Patch Releases
 
-Patch releases are more frequent and less predictable than major/minor releases. The v1.6.x line provides a good example of their frequency. <%= vars.platform_old_pivotal %> v1.6.1 was released on October 26, 2015. Through August 2016, 36 additional patches of Elastic Runtime v1.6.x and 18 patches of <%= vars.ops_manager %> v1.6.x provided security and bug fixes to customers.
+Patch releases are more frequent and less predictable than major and minor releases. The <%= vars.platform_code_pivotal %> v1.6.x line provides a good example of their frequency. <%= vars.platform_code_pivotal %> v1.6.1 was released on October 26, 2015. Through August 2016, 36 additional patches of Elastic Runtime v1.6.x and 18 patches of <%= vars.ops_manager %> v1.6.x provided security and bug fixes to customers.
 
-<%= vars.company_name %> identifies security issues using standard nomenclature from [Common Vulnerabilities and Exposures (CVE)](https://cve.mitre.org/), [Ubuntu Security Notices (USN)](https://www.ubuntu.com/usn/), and other third party sources. Read about security fixes in core <%= vars.platform_name %> code or packaged dependencies in the release notes for [<%= vars.ops_manager %>](http://docs.pivotal.io/platform/pcf-release-notes/opsmanager-rn.html) and [<%= vars.app_runtime_full %>](http://docs.pivotal.io/pivotalcf/pcf-release-notes/runtime-rn.html).
+<%= vars.company_name %> identifies security issues using standard nomenclature from [Common Vulnerabilities and Exposures (CVE)](https://cve.mitre.org/), [Ubuntu Security Notices (USN)](https://www.ubuntu.com/usn/), and other third-party sources. For more information about security fixes in core <%= vars.platform_name %> code or packaged dependencies, see [<%= vars.ops_manager %> <%= vars.v_major_version %> Release Notes](http://docs.pivotal.io/platform/pcf-release-notes/opsmanager-rn.html) and [<%= vars.app_runtime_full %> <%= vars.v_major_version %> Release Notes](http://docs.pivotal.io/pivotalcf/pcf-release-notes/runtime-rn.html).
 
-[Pivotal.io/security](https://pivotal.io/security) maintains a running list of security fixes in <%= vars.platform_name %> and <%= vars.platform_name %> dependencies. Consult that page to see the most recent findings from <%= vars.company_name %>'s security team.
+The VMware Tanzu Application Security Team maintains a running list of security fixes in <%= vars.platform_name %> and <%= vars.platform_name %> dependencies. To see their most recent findings, see [VMware Tanzu Application Security Team](https://tanzu.vmware.com/security) on the VMware Tanzu website.
 
 ### <a id='upgrading'></a> Upgrading
 
@@ -51,7 +51,7 @@ This section describes <%= vars.company_name %>'s software development processes
 
 ### <a id='tdd'></a> Test-Driven Development
 
-<%= vars.company_name %>'s development process relies on a strict workflow with continuous automated testing. <%= vars.company_name %> R&D does not separate engineering and testing teams. Rather, every Pivot on each engineering team is responsible for ensuring the quality of their code. They write tests for all of the software components that they develop, often before writing the software itself.
+<%= vars.company_name %>'s development process relies on a strict workflow with continuous automated testing. <%= vars.company_name %> R&D does not separate engineering and testing teams. Rather, every member of each engineering team is responsible for ensuring the quality of their code. They write tests for all of the software components that they develop, often before writing the software itself.
 
 With every software change, automated build pipelines trigger these tests for the new software component and for everything it touches. If a new code check-in does not pass its tests or causes a failure elsewhere, it pauses the build pipeline for the entire team, or sometimes all of <%= vars.company_name %> R&D. The transparency of this process encourages developers to work together to address code issues quickly.
 
@@ -65,7 +65,7 @@ With every software change, automated build pipelines trigger these tests for th
 
 ### <a id='release-gates'></a> Additional Pre-Release Gates: Internal, PWS, and Compliance
 
-In addition to its automated unit and integration testing, <%= vars.company_name %> deploys all upgrades slated for upcoming <%= vars.platform_name %> releases on at-scale test environments. Prior to each Major or Minor commercial release, <%= vars.company_name %> runs the entire <%= vars.platform_name %> Suite of services on several internally-managed large integration environments that run customer-like data and workloads.
+In addition to its automated unit and integration testing, <%= vars.company_name %> deploys all upgrades slated for upcoming <%= vars.platform_name %> releases on at-scale test environments. Prior to each major or minor commercial release, <%= vars.company_name %> runs the entire <%= vars.platform_name %> suite of services on several internally-managed large integration environments that run customer-like data and workloads.
 
 <%= vars.company_name %> also pushes upcoming <%= vars.platform_name %> feature upgrades and patches to its [Pivotal Web Services](http://run.pivotal.io/) (PWS) platform, where customers continually deploy and host hundreds of mission-critical apps at scale, 24/7. The PWS environment gives <%= vars.company_name %> a continuous source of real-world usage and performance metrics that inform product development teams.
 
@@ -78,7 +78,7 @@ All <%= vars.platform_name %> product teams participate in go-to-market steps fo
 
 ### <a id='vulnerabilities'></a> Identifying Security Vulnerabilities
 
-<%= vars.company_name %> has an established process to track and patch vulnerabilities in software dependencies and <%= vars.platform_name %> software. Additionally, [pivotal.io/security](https://pivotal.io/security) describes a responsible disclosure process for reporting vulnerabilities identified in <%= vars.company_name %> software by third parties.
+<%= vars.company_name %> has an established process to track and patch vulnerabilities in software dependencies and <%= vars.platform_name %> software. Additionally, the [VMware Tanzu Application Security Team](https://tanzu.vmware.com/security) page describes a responsible disclosure process for reporting vulnerabilities identified in <%= vars.company_name %> software by third parties.
 
 <%= vars.company_name %> uses multiple methods to identify security vulnerabilities in <%= vars.company_name %> software and dependencies internally, including:
 
@@ -93,7 +93,7 @@ All <%= vars.platform_name %> product teams participate in go-to-market steps fo
 * Cloud Foundry Foundation security notifications from member companies
 * Customer, prospect and other third-party security reports
 
-When <%= vars.company_name %> discovers a potential security vulnerability in <%= vars.platform_name %>, the security team opens an issue to assess it. If it confirms the vulnerability exists, <%= vars.company_name %> identifies and updates affected components with plans to backport the fix to stable releases. Fixes are implemented on a target timeline based on the [severity level](./pcf-security.html) of the vulnerability.
+When <%= vars.company_name %> discovers a potential security vulnerability in <%= vars.platform_name %>, the security team opens an issue to assess it. If it confirms the vulnerability exists, <%= vars.company_name %> identifies and updates affected components with plans to backport the fix to stable releases. Fixes are implemented on a target timeline based on the severity level of the vulnerability. For more information, see [<%= vars.platform_name %> Security Overview and Policy](pcf-security.html)
 
 
 ## <a id='lifecycle'></a> Fix, Test, and Release Lifecycle
