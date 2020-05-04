@@ -254,7 +254,9 @@ This section describes the procedure for rotating the Services TLS CA and its le
 To rotate the Services TLS CA and its leaf certificates:
 
 1. Before proceeding, check [CredHub Maestro Tile Compatibility](maestro-tile-compatibility.html) to ensure that all services versions currently deployed are compatible with Maestro.
-    <p class="note warning"><strong>Warning:</strong> If you have any service tiles that are not compatible with CredHub Maestro and you follow this procedure, you may experience extended downtime or data loss.</p>
+    <p class="note warning"><strong>Warning:</strong> If you have any service tiles
+       that are not compatible with CredHub Maestro do not follow this procedure.
+       If you do, you might experience extended downtime or data loss.</p>
 
 1. Regenerate the Services TLS CA.
     1. On the Services TLS CA, see if your Services TLS CA was CredHub-set by running:
