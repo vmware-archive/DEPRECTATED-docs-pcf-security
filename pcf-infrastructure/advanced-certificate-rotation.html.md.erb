@@ -31,7 +31,10 @@ Before you rotate CredHub-managed certificates with CredHub Maestro:
 
 * To ensure that there is no app availability downtime during a rotation, <%= vars.company_name %> recommends that you scale up all instance groups and use an external blobstore.
 
-* Check which tiles in your installation support certificate rotation with CredHub Maestro. Not every <%= vars.platform_name %> tile currently supports certificate rotation so there is a potential for downtime. For more information about which tiles support certificate rotation, see [CredHub Maestro Tile Compatibility](maestro-tile-compatibility.html).
+* Check which tiles in your installation support certificate rotation with CredHub Maestro.
+  Not every tile currently supports certificate rotation so there is a potential for downtime.
+  For more information about which tiles support certificate rotation,
+  see [CredHub Maestro Tile Compatibility](maestro-tile-compatibility.html).
 
 <p class="note warning"><strong>Warning:</strong> <%= vars.company_name %> recommends that you rotate certificates with both <%= vars.ops_manager %> <%= vars.v_major_version %> and <%= vars.app_runtime_abbr %> <%= vars.v_major_version %> already installed. You can follow this procedure if you are using an earlier version of <%= vars.app_runtime_abbr %> but you may experience app downtime.</p>
 
