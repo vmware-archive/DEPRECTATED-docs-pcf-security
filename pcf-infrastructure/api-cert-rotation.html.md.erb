@@ -117,6 +117,10 @@ To rotate certificates, follow one of these procedures:
 
 ### <a id='rotate-ca'></a> Rotate CAs and Leaf Certificates
 
+<p class="note warning"><strong>Warning:</strong> The Services CA, <code>/services/tls_ca</code>,
+should not be rotated using this procedure. For Services CA rotation instructions, see
+<a "https://docs.pivotal.io/p-cloud-cache/1-11/rotating-ca.html">Managing Certificates (pre-Maestro)</a> in the <em>VMware Tanzu GemFire Guide</em>.</p>
+
 This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA
 and non-configurable leaf certificates. When you rotate the <%= vars.ops_manager %> root CA, the
 <%= vars.ops_manager %> API automatically rotates the BOSH NATS CA.
@@ -147,10 +151,6 @@ To rotate CAs, configurable leaf certificates and non-configurable leaf certific
 This section describes how to add a new root CA for <%= vars.ops_manager %>. The new root CA can be an <%= vars.platform_name %>-generated CA or your own custom CA.
 
 This procedure also automatically regenerates the BOSH NATS CA as well as CAs stored in CredHub, such as the BOSH DNS CA and the Diego root CA.
-
-<p class="note warning"><strong>Warning:</strong> The Services CA, <code>/services/tls_ca</code>,
-is excluded from rotation. For Services CA rotation instructions, see
-<a href="https://community.pivotal.io/s/article/rotating-ca-certificates-for-pivotal-cloud-foundry-services">Rotating CA Certificates for Pivotal Services Suite</a> in the Knowledge Base.</p>
 
 <p class="note warning"><strong>Warning:</strong>The CAs for certain versions of the MySQL, Redis,
 RabbitMQ, and VMware Tanzu GemFire tiles are also excluded from rotation. See the tile-specific documentation for
@@ -372,12 +372,8 @@ To regenerate and rotate configurable leaf certificates, do the following for ea
 
 After activating the new <%= vars.ops_manager %> root CA and other CAs, you must rotate non-configurable leaf certificates from the new CAs.
 
-<p class="note warning"><strong>Warning:</strong> The Services CA, <code>/services/tls_ca</code>,
-is excluded from rotation. For Services CA rotation instructions, see
-<a href="https://community.pivotal.io/s/article/rotating-ca-certificates-for-pivotal-cloud-foundry-services">Rotating CA Certificates for Pivotal Services Suite</a> in the Knowledge Base.</p>
-
 <p class="note warning"><strong>Warning:</strong>The CAs for certain versions of the MySQL, Redis,
-and RabbitMQ tiles are also excluded from rotation. See the tile-specific documentation for
+RabbitMQ, and VMware Tanzu GemFire tiles are also excluded from rotation. See the tile-specific documentation for
 information about rotating these CAs.</p>
 
 To rotate non-configurable leaf certificates:
