@@ -118,8 +118,8 @@ To rotate certificates, follow one of these procedures:
 ### <a id='rotate-ca'></a> Rotate CAs and Leaf Certificates
 
 <p class="note warning"><strong>Warning:</strong> The Services CA, <code>/services/tls_ca</code>,
-should not be rotated using this procedure. For Services CA rotation instructions, see
-<a "https://docs.pivotal.io/p-cloud-cache/1-11/rotating-ca.html">Managing Certificates (pre-Maestro)</a> in the <em>VMware Tanzu GemFire Guide</em>.</p>
+cannot be rotated using this procedure. For Services CA rotation instructions, see
+<a href="https://docs.pivotal.io/p-cloud-cache/1-11/rotating-ca.html">Managing Certificates (pre-Maestro)</a> in the VMware Tanzu GemFire documentation.</p>
 
 This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA
 and non-configurable leaf certificates. When you rotate the <%= vars.ops_manager %> root CA, the
