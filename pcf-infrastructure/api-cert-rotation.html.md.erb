@@ -32,6 +32,10 @@ This section explains how to rotate the <%= vars.ops_manager %> root CA, BOSH NA
 
 To rotate certificates in <%= vars.platform_name %>, you first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, you follow a certificate rotation procedure to replace expiring certificates and redeploy BOSH to apply changes.
 
+<p class="note warning"><strong>Warning:</strong> The Services CA, <code>/services/tls_ca</code>,
+cannot be rotated using this procedure. See the tile-specific documentation for
+information about rotating these CAs.</p>
+
 To rotate CAs and leaf certificates:
 
 1. Check the expiration dates of the <%= vars.ops_manager %> root CA and leaf certificates, and identify the types of leaf certificates that require rotation. For more information, see [Check Expiration Dates and Certificate Types](#checks).
@@ -148,6 +152,10 @@ To rotate the <%= vars.ops_manager %> root CA and leaf certificates:
 This section describes how to add a new root CA for <%= vars.ops_manager %>. The new root CA can be a Pivotal-generated CA or your own custom CA.
 
 This procedure also automatically regenerates the BOSH NATS CA.
+
+<p class="note warning"><strong>Warning:</strong>The CAs for certain versions of the MySQL, Redis,
+RabbitMQ, and Pivotal Cloud Cache tiles are excluded from rotation. See the tile-specific documentation for
+information about rotating these CAs.</p>
 
 To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA:
 
