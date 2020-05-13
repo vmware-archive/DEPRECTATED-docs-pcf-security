@@ -107,6 +107,10 @@ To rotate certificates, follow one of these procedures:
 
 ### <a id='rotate-ca'></a> Rotate CAs and Leaf Certificates
 
+<p class="note warning"><strong>Warning:</strong> The Services CA, <code>/services/tls_ca</code>,
+cannot be rotated using this procedure. See the tile-specific documentation for
+information about rotating these CAs.</p>
+
 This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA
 and non-configurable leaf certificates. When you rotate the <%= vars.ops_manager %> root CA, the
 <%= vars.ops_manager %> API automatically rotates the BOSH NATS CA.
@@ -135,6 +139,10 @@ To rotate CAs, configurable leaf certificates and non-configurable leaf certific
 This section describes how to add a new root CA for <%= vars.ops_manager %>. The new root CA can be a Pivotal-generated CA or your own custom CA.
 
 This procedure also automatically regenerates the BOSH NATS CA.
+
+<p class="note warning"><strong>Warning:</strong>The CAs for certain versions of the MySQL, Redis,
+RabbitMQ, and VMware Tanzu GemFire (formerly Pivotal Cloud Cache) tiles are also excluded from rotation. See the tile-specific documentation for
+information about rotating these CAs.</p>
 
 To add new CAs:
 
