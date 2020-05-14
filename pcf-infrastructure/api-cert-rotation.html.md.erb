@@ -107,9 +107,9 @@ To rotate certificates, follow one of these procedures:
 
 ### <a id='rotate-ca'></a> Rotate CAs and Leaf Certificates
 
-<p class="note warning"><strong>Warning:</strong> The Services CA, <code>/services/tls_ca</code>,
-cannot be rotated using this procedure. See the tile-specific documentation for
-information about rotating these CAs.</p>
+<p class="note warning"><strong>Warning:</strong> The Services CA certificate, <code>/services/tls_ca</code>,
+cannot be rotated using this procedure. For information about how to rotate the <code>/services/tls_ca</code>
+certificate, see the MySQL, RabbitMQ, Redis, or VMware Tanzu GemFire (formerly Pivotal Cloud Cache) tile documentation.</p>
 
 This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA
 and non-configurable leaf certificates. When you rotate the <%= vars.ops_manager %> root CA, the
