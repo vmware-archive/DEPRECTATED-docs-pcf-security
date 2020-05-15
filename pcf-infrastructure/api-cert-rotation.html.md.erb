@@ -154,16 +154,16 @@ certificates.
 
 To rotate the <%= vars.ops_manager %> root CA and leaf certificates:
 
-1. Add a new <%= vars.ops_manager %> root CA. For more information, see [Add a New Root CA](#add-new-ca).
+1. Add a new <%= vars.ops_manager %> root CA. For more information, see [Step 1: Add a New Root CA](#add-new-ca).
 
-1. Activate the <%= vars.ops_manager %> root CA. For more information, see [Activate the Root CA](#activate-new-ca).
+1. Activate the <%= vars.ops_manager %> root CA. For more information, see [Step 2: Activate the Root CA](#activate-new-ca).
 
 1. Rotate leaf configurable certificates.
-   For more information, see [Rotate Configurable Leaf Certificates](#rotate-config-after-new-root).
+   For more information, see [Step 3: Rotate Configurable Leaf Certificates](#rotate-config-after-new-root).
 
-1. Rotate non-configurable leaf certificates. For more information, see [Rotate Non-Configurable Leaf Certificates from the New Root](#regenerate-from-new-root).
+1. Rotate non-configurable leaf certificates. For more information, see [Step 4: Rotate Non-Configurable Leaf Certificates from the New Root](#regenerate-from-new-root).
 
-1. (Optional) Delete the old CA. For more information, see [Delete the Old CA](#delete).
+1. Delete the old root CA. For more information, see [Step 5: Delete the Old Root CA](#delete).
 
 #### <a id='add-new-ca'></a> Step 1: Add a New Root CA
 
@@ -330,9 +330,9 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
     1. Click **Review Pending Changes**.
     1. Click **Apply Changes**.
 
-1. When the deploy finishes and you have completed all necessary tasks to update service instances, continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
+1. When the deploy finishes and you have completed all necessary tasks to update service instances, continue to the next section, [Step 2: Activate the Root CA](#activate-new-ca).
 
-#### <a id='activate-new-ca'></a> Step 2: Activate Root CA
+#### <a id='activate-new-ca'></a> Step 2: Activate the Root CA
 
 To activate the new root CA:
 
