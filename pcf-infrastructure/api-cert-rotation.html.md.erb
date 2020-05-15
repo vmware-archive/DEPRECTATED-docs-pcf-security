@@ -483,9 +483,27 @@ To delete the old <%= vars.ops_manager %> root CA and mark the old CredHub CAs a
 
 1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Click **Review Pending Changes**.
+1. If you have service tiles installed, for each service tile:
+    1. Click the tile.
+    1. Click the **Errands** tab.
+    1. Enable the **Upgrade all service instances** errand. Running this errand is necessary to push CredHub certificate updates to each service instance.
+    1. If the service tile has the **Recreate all service instances** errand:
+        1. Enable the **Recreate all service instances** errand. Running this errand pushes BOSH agent certificate updates to service instances.
+        1. Click **Review Pending Changes**.
+        1. Click **Apply Changes**.
+    1. If the service tile does not have the **Recreate all service instances** errand:
+        1. Click **Review Pending Changes**.
+        1. Click **Apply Changes**.
+        1. When the deploy finishes, manually push BOSH agent certificate updates to each service instance. For each service instance, run:
 
-1. Click **Apply Changes**.
+            ```
+            bosh -d SERVICE-INSTANCE-DEPLOYMENT recreate
+            ```
+            Where `SERVICE-INSTANCE-DEPLOYMENT` is the BOSH deployment name for the service instance.
+
+1. If you do not have any service tiles installed:
+    1. Click **Review Pending Changes**.
+    1. Click **Apply Changes**.
 
 ### <a id='regenerate'></a> Rotate Non-Configurable Leaf Certificates
 
