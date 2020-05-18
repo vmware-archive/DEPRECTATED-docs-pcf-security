@@ -9,7 +9,7 @@ This includes the <%= vars.ops_manager %> root CA, BOSH NATS CA, and other CAs a
 certificates stored in <%= vars.ops_manager %> and CredHub that are visible to the
 <%= vars.ops_manager %> API.
 
-<p class='note warning'><strong>Warning:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
+<p class='note warning'><strong>Warning:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <%= vars.support_link %> for guidance.</p>
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/credentials.html).
 
@@ -94,11 +94,11 @@ This section explains how to rotate certificates in <%= vars.platform_name %>, i
 
 You can determine which rotation procedure to follow based on the types of certificates in your foundation that must be rotated.
 
-<p class='note warning'><strong>Warning:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
+<p class='note warning'><strong>Warning:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <%= vars.support_link %> for guidance.</p>
 
 To rotate certificates, follow one of these procedures:
 
-* To rotate non-rotatable certificates, contact [Pivotal Support](http://support.pivotal.io).
+* To rotate non-rotatable certificates, contact <%= vars.support_link %>.
 
 * To rotate CAs stored in <%= vars.ops_manager %> and CredHub, see [Rotate CAs and Leaf Certificates](#rotate-ca).
   This procedure also rotates the BOSH NATS CA.
