@@ -59,7 +59,7 @@ To check and rotate certificates:
 1. Do the following to rotate certificates as necessary:
   1. If you have any non-rotatable certificates expiring soon, call [Pivotal Support](http://support.pivotal.io).
   1. If your root CA expires soon, follow the [Rotate Root and Leaf Certificates](#rotate-ca) procedure.
-    <p class='note'><strong>Note:</strong> If you also have configurable leaf certificates expiring soon, Pivotal recommends that you follow the procedure in <em>Step 3: Rotate Configurable Certificates</em>. You can also rotate your configurable certificates separately and re-deploy later.</p>
+    <p class='note'><strong>Note:</strong> If you also have configurable leaf certificates expiring soon, Pivotal recommends that you follow the procedure in <a href="#rotate-config-after-new-root">Rotate Configurable Certificates</a>. You can also rotate your configurable certificates separately and re-deploy later.</p>
   1. If you have non-configurable leaf certificates expiring soon, but not your root CA, follow the [Rotate Non-Configurable Certificates](#regenerate) procedure.
   1. If you have configurable leaf certificates expiring soon, but not your root CA, follow the [Rotate Configurable Certificates](#rotate-config) procedure.
 
@@ -312,7 +312,7 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
     1. Click **Review Pending Changes**.
     1. Click **Apply Changes**.
 
-1. When the deploy finishes and you have completed all necessary tasks to update service instances, continue to the next section, [Step 2: Activate the CAs](#activate-new-ca).
+1. When the deploy finishes and you have completed all necessary tasks to update service instances, continue to the next section, [Activate Root CA](#activate-new-ca).
 
 #### <a id='activate-new-ca'></a> Step 2: Activate Root CA
 
@@ -416,7 +416,7 @@ To rotate non-configurable leaf certificates from the new root CA:
     1. Click **Review Pending Changes**.
     1. Click **Apply Changes**.
 
-1. When the deploy finishes and you have completed all necessary tasks to update service instances, continue to the next section, [Step 5: Delete the Old Root CA](#delete).
+1. When the deploy finishes and you have completed all necessary tasks to update service instances, continue to the next section, [Delete the Old Root CA](#delete).
 
 #### <a id='delete'></a> Step 5: Delete the Old Root CA
 
@@ -424,7 +424,7 @@ After activating new CAs and rotating leaf certificates from the new CAs, you sh
 
 If your old root CA or leaf certificates have been compromised, you must delete the old root CA immediately. Otherwise, the old root CA and its leaf certificates may still be trusted, which compromises your foundation's security. If your old root CA or leaf certificates have not been compromised, <%= vars.recommended_by %> recommends that you delete the old root CA as soon as possible, but you can also delete it at a later time, such as in conjunction with another deploy.
 
-<p class="note warning"><strong>Warning:</strong> Before you delete the old CA, ensure that you reviewed the <strong>Review Pending Changes</strong> page and clicked <strong>Apply Changes</strong> as part of <a href="#regenerate-from-new-root">Step 4: Rotate Non-Configurable Leaf Certificates from the New CAs</a>.</p>
+<p class="note warning"><strong>Warning:</strong> Before you delete the old CA, ensure that you reviewed the <strong>Review Pending Changes</strong> page and clicked <strong>Apply Changes</strong> as part of <a href="#regenerate-from-new-root">Rotate Non-Configurable Leaf Certificates from the New CAs</a>.</p>
 
 To delete the old <%= vars.ops_manager %> root CA:
 
