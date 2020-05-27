@@ -145,6 +145,7 @@ The following rules identify the type of each leaf certificate requiring rotatio
 * **Configurable Certificates**: Configurable leaf certificates have the following property value:
   - `configurable` is `true`
 
+
 ## <a id='rotate'></a> Rotate CAs and Leaf Certificates
 
 The following procedures rotate the Ops Manager root CA, BOSH NATS CA, and leaf certificates that are listed or managed by the Ops Manager API.
@@ -155,7 +156,7 @@ The following procedures rotate the Ops Manager root CA, BOSH NATS CA, and leaf 
 
 This procedure uses the Ops Manager API to rotate the Ops Manager root CA, the BOSH NATS CA, and the intermediate CAs and non-configurable leaf certificates underneath them.
 
-<p class="note"><b>Note:</b> The BOSH NATS CA is automatically rotated when you rotate the Ops Manager root CA. For more information, see <a href="#types">Certificate Types</a>.</p>
+<p class="note"><strong>Note:</strong> The BOSH NATS CA is automatically rotated when you rotate the Ops Manager root CA. For more information, see <a href="#types">Certificate Types</a>.</p>
 
 Rotating the Ops Manager root CA automatically rotates all configurable leaf certificates. You can also rotate configurable leaf certificates separately from rotating the root CA. For information about rotating configurable leaf certificates without also rotating the root CA, see [Rotate Configurable Certificates](#rotate-config).
 
@@ -163,7 +164,9 @@ PCF users never need to manually rotate intermediate CAs, because they rotate au
 
 To prevent system downtime, this procedure includes two BOSH redeploys. When you click **Apply Changes** for the first time, BOSH applies new certificates to PCF components alongside the old ones. The second **Apply Changes** then deletes the old certificates. Each successful redeploy verifies that the certificate rotation process is proceeding correctly.
 
-<p class="note warning"><strong>Warning:</strong> You must complete these steps in the exact order specified. Otherwise, you risk damaging your deployment.</p>
+<p class='note'><strong>Note:</strong> The names of the <strong>Upgrade All Service Instances</strong> and <strong>Recreate All Service Instances</strong> errands may be slightly different between services.</p>
+
+<p class="note warning"><strong>Warning:</strong> You must complete these steps in the exact order specified. Otherwise, you may damage your deployment.</p>
 
 <p class="note warning"><strong>Warning:</strong> If you use mutual TLS for route integrity, do not attempt to rotate certificate authorities (CAs). Instead, contact <a href="https://support.pivotal.io">Pivotal Support</a>. For more information, see <a href="https://docs.pivotal.io/pivotalcf/2-4/pcf-release-notes/runtime-rn.html#cert-rotation-with-mutual-tls-route-integrity">Certificate Authority Rotation is Not Working in Some PAS Configurations</a>.</p>
 
@@ -289,6 +292,7 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
 1. If you have service tiles installed, for each service tile:
     1. Click the tile.
     1. Click the **Errands** tab.
+    1. Enable the **Upgrade All Service Instances** errand. Running this errand is necessary to push CredHub certificate updates to each service instance.
     1. If the service tile has the **Recreate All Service Instances** errand:
         1. Enable the **Recreate All Service Instances** errand.
         1. Click **Review Pending Changes**.
@@ -392,6 +396,7 @@ To rotate non-configurable leaf certificates from the new root CA:
 1. If you have service tiles installed, for each service tile:
     1. Click the tile.
     1. Click the **Errands** tab.
+    1. Enable the **Upgrade All Service Instances** errand. Running this errand is necessary to push CredHub certificate updates to each service instance.
     1. If the service tile has the **Recreate All Service Instances** errand:
         1. Enable the **Recreate All Service Instances** errand.
         1. Click **Review Pending Changes**.
@@ -462,12 +467,12 @@ To delete the old <%= vars.ops_manager %> root CA:
 1. If you have service tiles installed, for each service tile:
     1. Click the tile.
     1. Click the **Errands** tab.
-    1. Enable the **Upgrade all service instances** errand. Running this errand is necessary to push CredHub certificate updates to each service instance.
-    1. If the service tile has the **Recreate all service instances** errand:
-        1. Enable the **Recreate all service instances** errand. Running this errand pushes BOSH agent certificate updates to service instances.
+    1. Enable the **Upgrade All Service Instances** errand. Running this errand is necessary to push CredHub certificate updates to each service instance.
+    1. If the service tile has the **Recreate All Service Instances** errand:
+        1. Enable the **Recreate All Service Instances** errand. Running this errand pushes BOSH agent certificate updates to service instances.
         1. Click **Review Pending Changes**.
         1. Click **Apply Changes**.
-    1. If the service tile does not have the **Recreate all service instances** errand:
+    1. If the service tile does not have the **Recreate All Service Instances** errand:
         1. Click **Review Pending Changes**.
         1. Click **Apply Changes**.
         1. When the deploy finishes, manually push BOSH agent certificate updates to each service instance. For each service instance, run:
