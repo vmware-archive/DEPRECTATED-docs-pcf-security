@@ -13,7 +13,7 @@ For information about rotating IPsec certificates, see [Rotating IPsec Certifica
 
 For information about using trusted third-party certificates for both apps hosted on <%= vars.platform_name %> and internal <%= vars.platform_name %> components, see [Setting Trusted Certificates](../../customizing/trusted-certificates.html).
 
-For information about how to rotate certificates managed by CredHub, including the Services TLS CA (`/services/tls_ca`), see [Advanced Certificate Rotation with CredHub Maestro](./advanced-certificate-rotation.html).
+For information about how to rotate certificates managed by CredHub, including the Services TLS CA (`/services/tls_ca`), see [Advanced Certificate Rotation with CredHub Maestro](advanced-certificate-rotation.html).
 
 
 ## <a id='overview'></a> Overview
@@ -132,7 +132,7 @@ procedure instructs you to rotate the configurable leaf certificates by regenera
 
 To prevent system downtime, this procedure includes two BOSH deploys. The first BOSH deploy applies new certificates to <%= vars.platform_name %> components. The second BOSH deploy deletes the old certificates.
 
-<p class='note'><strong>Note:</strong> The names of the <strong>Recreate all service instances</strong> and the <strong>Upgrade all service instances</strong> errands may be slightly different between services.</p>
+<p class='note'><strong>Note:</strong> The names of the <strong>Upgrade all service instances</strong> and <strong>Recreate all service instances</strong> errands may be slightly different between services.</p>
 
 <p class="note warning"><strong>Warning:</strong> You must complete these steps in the exact order specified. Otherwise, you may damage your deployment.</p>
 
