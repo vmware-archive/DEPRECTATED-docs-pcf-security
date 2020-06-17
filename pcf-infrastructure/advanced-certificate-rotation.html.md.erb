@@ -233,6 +233,7 @@ To rotate the Services TLS CA and its leaf certificates:
     maestro topology --name /services/tls_ca
     ```
     Record the `certificate_id` and the `version_id` of the version with `signing: true`. Then run:
+
     ```
     credhub curl -p /api/v1/certificates/{certificate_id}/update_transitional_version -i -d '{"version": "{version_id}"}'
     ```
