@@ -292,11 +292,20 @@ To rotate the Services TLS CA and its leaf certificates:
 1. Restage any apps that rely on services.
     <p class='note'><strong>Note:</strong> The bg-restage plugin enables zero-downtime blue-green restaging without access to the app source code. For more information, see <a href="https://github.com/orange-cloudfoundry/cf-plugin-bg-restage">bg-restage</a> on GitHub.</p>
 
-1. Mark the signing version of the Services TLS CA as transitional by running:
+1. Mark the signing version of the Services TLS CA as transitional:
 
-    ```
-    maestro update-transitional signing --name "/services/tls_ca"
-    ```
+    1. If you are on TAS 2.9.3 or earlier run:
+        ```
+        maestro topology --name /services/tls_ca
+        ```
+       Record the `certificate_id` and the `version_id` of the version with `signing: true`. Then run:
+        ```
+        credhub curl -p /api/v1/certificates/{certificate_id}/update_transitional_version -i -d '{"version": "{version_id}"}'
+        ```
+    1. Otherwise, you will need to run:
+        ```
+        maestro update-transitional signing --name "/services/tls_ca"
+        ```
 
 1. Regenerate all service instance certificates signed by the Services TLS CA by running:
 
