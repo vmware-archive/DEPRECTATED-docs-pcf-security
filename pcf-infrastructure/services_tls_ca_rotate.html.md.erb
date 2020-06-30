@@ -1,0 +1,265 @@
+---
+title: Rotating the Services TLS CA and Its Leaf Certificates
+owner: Ops Manager
+---
+
+This topic provides the procedure for rotating the Services TLS CA and its leaf certificates.
+
+##<a id='services-tls-ca-overview'></a> Overview
+
+In an <%= vars.ops_manager %> and <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %> ) deployment, the Services TLS Certificate Authority (CA) is the certificate that service brokers use to sign leaf certificates for TLS-enabled service instances. 
+
+These service instances may include instances created by MySQL for PCF, Pivotal Cloud Cache, Redis for PCF or RabbitMQ for PCF. You may have one or more of these service tiles installed in your deployment. All deployed service tiles in a foundation use the same Services TLS CA certificate.
+
+The Services TLS Certificate Authority (CA) certificate is stored in BOSH CredHub with the name `/services/tls_ca`.
+
+##<a id='prerequisites'></a> Prerequisites
+
+Before you begin the rotation procedure, ensure that you have the following:
+
+* Access to the <%= vars.ops_manager %> VM.
+* Access to BOSH CredHub. To access BOSH CredHub, you can retrieve
+credentials from the BOSH Director. 
+* Access to the `credhub` CLI, which is available on the <%= vars.ops_manager %> VM.
+* Verification that the Services TLS CA and leaf certificates are not already expired.
+* Only one <%= vars.ops_manager %> foundation and not a Wide Area Network (WAN) setup.
+For a WAN setup, you must perform the <bold>Apply Changes</bold> steps across your entire WAN.
+* All certificates must include Subject Alternate Name (SAN) and Common Name (CN) entries.
+* Understanding that for apps that use MySQL for PCF services, only apps that rely on the `jdbcURL` or consume CA certs from `/etc/ssl/certs/ca-certificate.crt`. If you have non-Java MySQL apps that rely on `VCAP_SERVICES` for TLS, you will experience app downtime when performing the CA rotation.
+* Set up your services for high availability to minimize potential app impact during CA rotation. Rotating the Services TLS CA requires an upgrade all on-demand service instances, which can cause service downtime.
+
+##<a id='tls'></a> Procedure: Rotate the Services TLS CA Certificate
+
+To rotate the Services TLS CA certificate:
+
+1. [Obtain or Generate a New CA Certificate](#obtainorgenerate)
+1. [Add New Certificates to <%= vars.ops_manager %>](#addnewandold)
+1. [Apply Changes](#applychanges)
+1. [Set New CA Certificate](#setnew)
+1. [Remove the Old CA Certificate](#remove)
+1. [Apply Changes](#applychanges2)
+
+### <a id="obtainorgenerate"></a> Obtain or Generate a New Services TLS CA Certificate
+
+To obtain or generate a new Services TLS CA certificate:
+
+1. Check if a certificate already exists by running:
+    <pre><code>credhub get -n NEW-CERT</code></pre>
+    Where `NEW-CERT` is your chosen CredHub path or name for the new certificate.
+
+1. If a certificate already exists, delete the certificate by running:
+  <pre><code>credhub delete -n NEW-CERT</code></pre>
+
+1. Do one of the following:
+  * **If you have a TLS cluster:** Obtain the CA that signs its certificate. You add this to the <%= vars.ops_manager %> settings in the next high-level step.
+  * **If you use self-signed certificates:** Generate a new self-signed certificate with a separate name or path
+in CredHub:
+
+        ```
+        credhub generate \
+        --name="NEW-CERT" \
+        --type="certificate" \
+        --no-overwrite \
+        --is-ca \
+        --duration=1825
+        --common-name="COMMON-NAME"
+        ```
+        Where:
+        - `NEW-CERT` is your chosen CredHub path or name to the new certificate.
+        - `COMMON-NAME` is the common name of the generated certificate.
+
+        For example:
+        <pre class="terminal">$ credhub generate \
+          --name="/services/new_ca" \
+          --type="certificate" \
+          --no-overwrite \
+          --is-ca \
+          --duration=1825 \
+          --common-name="opsmgr-services-tls-ca"</pre>
+  * **If you use an intermediate certificate signed by a root CA in CredHub:** Generate a new certificate signed by the CredHub root CA by running:
+          <pre><code>credhub generate \
+          --name="NEW-CERT" \
+          --type="certificate" \
+          --no-overwrite \
+          --is-ca \
+          --duration=1825 \
+          --common-name="COMMON-NAME" \
+          --ca=PATH-TO-ROOT-CA</code></pre>
+          Where:
+          - `COMMON-NAME` is the common name of the generated certificate.
+          - `PATH-TO-ROOT-CA` is the name of CA used to sign the generated certificate.
+
+            For example:
+            <pre class="terminal">
+            $ credhub generate \
+              --name="/services/new_ca" \
+              --type="certificate" \
+              --no-overwrite \
+              --is-ca \
+              --duration=1825 \
+              --common-name="opsmgr-services-tls-ca" \
+              --ca=/path-to-root-ca</pre>
+
+### <a id="addnewandold" class="no-quick-link"></a> Add Certificates to <%= vars.ops_manager %>
+
+To add your new and current Services TLS CA certificate to <%= vars.ops_manager %>:
+
+1. Log in to CredHub by following the procedure in [Access BOSH CredHub](#credhub) above.
+
+1. Get the current CA by running:
+
+    ```
+    credhub get --name=OLD-CERT -k ca
+    ```
+    Where `OLD-CERT` is the CredHub name or path to the certificate to later replace.<br><br>
+    For example:
+    <pre class="terminal">
+    credhub get --name=/services/tls_ca -k ca
+    </pre>
+
+1. Get the new CA, either from a pre-existing file, or from your new CredHub location by running:
+
+    ```
+    credhub get --name=NEW-CERT -k ca
+    ```
+    Where `NEW-CERT` is the CredHub generated or pre-existing certificate created in the previous section.<br><br>
+    For example:
+    <pre class="terminal">
+    credhub get --name=/services/new_ca -k ca
+    </pre>
+1. In <%= vars.ops_manager %>, paste both CA values into the **BOSH Director > Security > Trusted Certificates** field.
+1. Click **Save**.
+1. In the **<%= vars.app_runtime_abbr %>** and Pivotal Isolation Segment tiles, paste both CA values into the **Networking > Certificate Authorities Trusted by Router and HAProxy** field.
+1. Click **Save**.
+
+### <a id="applychanges" class="no-quick-link"></a> Apply Changes for the First Time
+
+<p class="note warning"><strong>Warning</strong>: This procedure involves restarting
+all of the VMs in your <%= vars.ops_manager %> deployment to apply a CA certificate. The
+operation can take a long time to complete.</p>
+
+To apply these changes:
+
+1. Navigate back to the **Installation Dashboard**.
+1. Click **Review Pending Changes**.
+1. Ensure that all product tiles are selected.
+1. For each on-demand service tile, such as MySQL, PCC, RabbitMQ, and Redis:
+    1. Expand the errands for each tile. 
+    1. Enable the errand to upgrade all service instances.
+        <p class="note"><strong>Note:</strong> The names of upgrade all service instances errand may differ slightly between services.</p>
+1. Click **Apply Changes**.
+
+### <a id="setnew" class="no-quick-link"></a> Set New Services TLS CA Certificate
+
+To have all instances use the new Services TLS CA certificate:
+
+1. Do one of the following:
+  * **If you have an existing certificate:** Obtain the CA certificate and private key file corresponding
+  to the CA that you applied in the previous step. Then, run:
+
+        ```
+        credhub set \
+        --name="OLD-CERT" \
+        --type="certificate" \
+        --certificate=PEM-PATH/root.pem \
+        --private=CERT-KEY
+        ```
+        Where:
+        - `OLD-CERT` is the CredHub name or path to the certificate to replace.
+        - `PEM-PATH` is the path to the `root.pem` file.
+        - `CERT-KEY` is the private key for the new certificate.
+
+        For example:
+        <pre class="terminal">
+        $ credhub set \
+          --name="/services/tls_ca" \
+          --type="certificate" \
+          --certificate=PEM-PATH/root.pem \
+          --private=CERT-KEY
+        </pre>
+  * **If you have created a new self-signed or intermediary certificate:**
+Set `OLD-CERT` to the new CredHub value `NEW-CERT` that you generated in the previous step:
+
+        ```
+        credhub get -n NEW-CERT -k ca > new_ca.ca
+        credhub get -n NEW-CERT -k certificate > new_ca.certificate
+        credhub get -n NEW-CERT -k private_key > new_ca.private_key
+        credhub set -n OLD-CERT \
+        --type=certificate \
+        --root=new_ca.ca \
+        --certificate=new_ca.certificate \
+        --private=new_ca.private_key
+        ```
+        For example:
+        <pre class="terminal">
+        $ credhub get -n /services/new\_ca -k ca > new\_ca.ca
+        $ credhub get -n /services/new\_ca -k certificate > new\_ca.certificate
+        $ credhub get -n /services/new\_ca -k private_key > new\_ca.private\_key
+        $ credhub set -n /services/tls\_ca \
+          --type=certificate \
+          --root=new\_ca.ca \
+          --certificate=new\_ca.certificate \
+          --private=new\_ca.private\_key
+        </pre>
+
+### <a id="applychanges2" class="no-quick-link"></a> Apply Changes for the Second Time
+
+<p class="note warning"><strong>Warning: </strong> This procedure involves restarting
+  all of the VMs in your <%= vars.ops_manager %> deployment to apply a CA certificate. The
+  operation can take a long time to complete.</p>
+
+To apply these changes:
+
+1. Navigate back to the **Installation Dashboard**.
+1. Click **Review Pending Changes**.
+1. Ensure that all product tiles are unchecked.
+1. Select only the on-demand services tiles such as MySQL, Pivotal Cloud Cache, RabbitMQ, and Redis tiles.
+1. For each on-demand service tile, such as MySQL, PCC, RabbitMQ, and Redis:
+    1. Expand the errands for each tile. 
+    1. Enable the errand to upgrade all service instances.
+        <p class="note"><strong>Note:</strong> The names of upgrade all service instances errand may differ slightly between services.</p>
+1. Click **Apply Changes**.
+
+### <a id="remove" class="no-quick-link"></a> Remove the Old Services TLS CA Certificate
+
+After your apps have reconnected to service instances with certificates generated
+by the new CA, remove the old CA certificate:
+
+1. Navigate to the **Installation Dashboard** in <%= vars.ops_manager %> and click the **BOSH
+Director** tile.
+
+1. Click **Security**.
+
+1. Delete the old CA certificate in **Trusted Certificates**.
+
+1. Click **Save**.
+
+1. Navigate to the **Installation Dashboard** in <%= vars.ops_manager %> and click the **<%= vars.app_runtime_abbr %>** tile.
+
+1. Click **Networking**.
+
+1. Delete the old CA certificate in **Certificate Authorities Trusted by Router and HAProxy**
+
+1. Click **Save**.
+
+### <a id="applychanges3" class="no-quick-link"></a> Apply Changes for the Third Time
+
+As a security best practice, you should remove outdated certificates as soon as possible from your foundation. 
+However, in terms of certificate functionality, you do not need to perform this step immediately. 
+If desired, you can choose to wait until a future date.  
+
+<p class="note warning"><strong>Warning: </strong> This procedure involves restarting
+  all of the VMs in your <%= vars.ops_manager %> deployment to apply a CA certificate. The
+  operation can take a long time to complete.</p>
+
+To apply these changes:
+
+1. Navigate back to the **Installation Dashboard**.
+1. Click **Review Pending Changes**.
+1. Ensure that all product tiles are unchecked.
+1. Select only the on-demand services tiles such as MySQL, Pivotal Cloud Cache, RabbitMQ, and Redis tiles.
+1. For each on-demand service tile, such as MySQL, Pivotal Cloud Cache, RabbitMQ, and Redis:
+    1. Expand the errands for each tile. 
+    1. Enable the errand to upgrade all service instances.
+        <p class="note"><strong>Note:</strong> The names of upgrade all service instances errand may differ slightly between services.</p>
+1. Click **Apply Changes**.
