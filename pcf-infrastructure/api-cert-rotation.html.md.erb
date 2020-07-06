@@ -377,7 +377,7 @@ After activating the new <%= vars.ops_manager %> root CA, you must rotate non-co
 
 To rotate non-configurable leaf certificates from the new root CA:
 
-1. Make a call to the <%= vars.ops_manager %> API to regenerate all non-configurable certificates and apply the new root CA to your existing BOSH Director. Run:
+1. Make a call to the <%= vars.ops_manager %> API to regenerate all non-configurable certificates. Run:
 
     ```
       curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/active/regenerate" \
@@ -505,7 +505,7 @@ This procedure rotates non-configurable leaf certificates visible to the <%= var
 
 To rotate non-configurable leaf certificates:
 
-1. Make a call to the <%= vars.ops_manager %> API to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director. Run:
+1. Make a call to the <%= vars.ops_manager %> API to regenerate all non-configurable certificates. Run:
 
     ```
     curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/active/regenerate" \
