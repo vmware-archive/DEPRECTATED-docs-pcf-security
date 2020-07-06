@@ -1,0 +1,33 @@
+---
+title: Rotating the Services TLS CA and Its Leaf Certificates
+owner: Ops Manager
+---
+
+<div class="quick-links">
+<ul>
+  <li>
+    <a href="#services-tls-ca-overview">Overview</a>
+  </li>
+  <li>
+    <a href="#prerequisites">Prerequisites</a>
+  </li>
+  <li>
+    <a href="#tls">Procedure</a>
+  </li>
+  <ul>
+    <li><a href="#check-expiration-date">Check Certificate Expiration Dates</a></li>
+    <li><a href="#obtainorgenerate">Obtain or Generate a New Services TLS CA Certificate</a></li>
+    <li><a href="#addnewandold">Add Certificates to <%= vars.ops_manager %> and <%= vars.app_runtime_abbr %></a>
+    <li><a href="#applychanges1">Apply Changes for the First Time</a>
+    </li>
+    <li><a href="#setnew">Set New Services TLS CA Certificate</a>
+    </li>
+    <li><a href="#applychanges2">Apply Changes for the Second Time</a></li>
+    <li><a href="#remove">Remove the Old Services TLS CA Certificate</a></li>
+    <li><a href="#applychanges3">Apply Changes for the Third Time</a>
+    </li>
+  </ul>
+</ul>
+</div>
+
+ <%= partial "/pcf/certs/rotating_services_tls_ca.html.md.erb" %>
