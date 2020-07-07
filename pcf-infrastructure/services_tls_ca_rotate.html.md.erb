@@ -9,7 +9,7 @@ This topic describes the procedure for rotating the Services TLS CA and its leaf
 
 In an <%= vars.ops_manager %> and <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %> ) deployment, the Services TLS CA is the certificate that service brokers use to sign leaf certificates for TLS-enabled service instances.
 
-Service instances include instances created by on-demand services such as <%= vars.on_demand_service_tiles %>. You may have one or more of these service tiles installed in your deployment. All deployed service tiles in a foundation use the same Services TLS CA certificate, which is stored in BOSH CredHub with the name `/services/tls_ca`. 
+Service instances include instances created by on-demand services such as VMware Tanzu SQL [MySQL], VMware Tanzu GemFire [VMs], Redis for VMware Tanzu, and RabbitMQ for VMware Tanzu. You may have one or more of these service tiles installed in your deployment. All deployed service tiles in a foundation use the same Services TLS CA certificate, which is stored in BOSH CredHub with the name `/services/tls_ca`. 
 
 When an operator creates an on-demand TLS enabled service instance or updates an existing non-TLS on-demand service instance to use TLS, the following takes place:
 
