@@ -101,6 +101,7 @@ or consume CA certificates from <code>/etc/ssl/certs/ca-certificate.crt</code>.
 Mark the signing version of the Services TLS CA as transitional.
 
 Depending on your <%= vars.app_runtime_abbr %> version, do one of the following:
+
 - If you are on <%= vars.app_runtime_abbr %> v2.9.3 or earlier, run:
 
     ```
@@ -178,7 +179,7 @@ To apply these changes:
     1. Expand the errands for each tile. 
     1. Enable the errand to upgrade all service instances.
         <p class="note"><strong>Note:</strong> The names of upgrade all service instances errand may differ slightly between services.</p>
-1. Click **Apply Change
+1. Click **Apply Changes**.
 
 ### <a id="rebind-restage3"></a> Rebind and Restage Apps for the Third Time (MySQL Only)
 
