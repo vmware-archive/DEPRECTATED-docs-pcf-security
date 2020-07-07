@@ -3,13 +3,15 @@ title: Rotating the Services TLS CA and Its Leaf Certificates
 owner: Ops Manager
 ---
 
-This topic describes the procedure for rotating the Services TLS CA and its leaf certificates.
+This topic describes the procedure for rotating the Services TLS CA and its leaf certificates without using CredHub Maestro.
 
-##<a id='services-tls-ca-overview'></a> Overview
+<p class="note"><strong>Note</strong>: The preferred procedure for rotating the Services TLS CA and its leaf certificates in Ops Manager v2.9 and later is to use CredHub Maestro. If all the service tiles in your deployment are [compatible with Maestro](maestro-tile-compatibility.html), then you can use the procedure documented in [Advanced Certificate Rotation with CredHub Maestro](advanced-certificate-rotation.html) instead of this procedure.</p>
+
+##<a id='services-tls-ca-overview'></a> Services TLS CA Overview
 
 In an <%= vars.ops_manager %> and <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %> ) deployment, the Services TLS CA is the certificate that service brokers use to sign leaf certificates for TLS-enabled service instances.
 
-Service instances include instances created by on-demand services such as VMware Tanzu SQL [MySQL], VMware Tanzu GemFire [VMs], Redis for VMware Tanzu, and RabbitMQ for VMware Tanzu. You may have one or more of these service tiles installed in your deployment. All deployed service tiles in a foundation use the same Services TLS CA certificate, which is stored in BOSH CredHub with the name `/services/tls_ca`. 
+Service instances include instances created by on-demand services such as MySQL for VMware Tanzu, VMware Tanzu GemFire, Redis for VMware Tanzu, and RabbitMQ for VMware Tanzu. You may have one or more of these service tiles installed in your deployment. All deployed service tiles in a foundation use the same Services TLS CA certificate, which is stored in BOSH CredHub with the name `/services/tls_ca`. 
 
 When an operator creates an on-demand TLS enabled service instance or updates an existing non-TLS on-demand service instance to use TLS, the following takes place:
 
@@ -17,11 +19,7 @@ When an operator creates an on-demand TLS enabled service instance or updates an
 1. BOSH then stores this new leaf certificate in BOSH CredHub with the format `/p-bosh/service-instance_SERVICE-GUID/unique-name-per-service-type`. 
 1. BOSH supplies the private key and certificates to the VMs of that service instance.
 
-In this procedure, you use the CredHub Maestro CLI to regenerate the Services TLS CA and 
-its leaf certificates. When you run the upgrade all service instances errand, 
-BOSH pushes the updated certificates to the on-demand service instances.
-
-##<a id='prerequisites'></a> Prerequisites
+##<a id='prerequisites'></a> Prerequisites for Rotating the Services TLS CA
 
 Before you begin this rotation procedure, ensure that you have the following:
 
@@ -31,7 +29,7 @@ For a mutli-site or WAN setup, you must perform the <bold>Apply Changes</bold> s
 * All certificates must include Subject Alternate Name (SAN) and Common Name (CN) entries.
 * Set up your services for high availability to minimize potential app impact during CA rotation. Rotating the Services TLS CA requires an upgrade all on-demand service instances, which can cause service downtime.
 
-##<a id='tls'></a> Procedure
+##<a id='tls'></a> Procedure for Rotating the Services TLS CA
 
 This section describes the procedure for rotating the Services TLS CA and its leaf certificates.
  
@@ -42,6 +40,8 @@ to ensure that all services versions currently deployed are compatible with Cred
 
 <p class="note warning"><strong>Warning:</strong> If you have any service tiles that are not compatible with CredHub Maestro, then do not follow this procedure.
 If you do, you might experience extended downtime or data loss.</p>
+
+### <a id="check-expiration"></a> Check Expiration Dates
 
 ### <a id="regen-services-tls-ca"></a> Regenerate the Services TLS CA
 
@@ -57,7 +57,6 @@ To regenerate a Services TLS CA certificate:
 
     ```
     maestro regenerate ca --name "/services/tls_ca" --force
-  
     ```
 
 ### <a id="mark-transitional-latest"></a> Mark the Latest Services TLS CA as Transitional
@@ -86,24 +85,39 @@ To apply these changes:
 
 ### <a id="rebind-restage1"></a> Rebind and Restage Apps for the First Time (MySQL Only)
 
-If you are not using MySQL for <%= vars.product_name %>, skip this step.
+If you are not using VMware Tanzu SQL [MySQL] or MySQL for Pivotal Platform, skip this step.
 
-You must rebind and restage any apps that bind to MySQL for 
-<%= vars.product_name %> service instances and rely on <code>VCAP_SERVICES</code> for TLS.
+You must rebind and restage any apps that bind to 
+MySQL service instances and rely on <code>VCAP_SERVICES</code> for TLS.
 
-You do not need to rebind and restage MySQL for <%= vars.product_name %> apps 
+You do not need to rebind and restage MySQL apps 
 that use <code>jdbcURL</code>
 or consume CA certificates from <code>/etc/ssl/certs/ca-certificate.crt</code>.
 
 <p class='note'><strong>Note:</strong> The bg-restage plugin enables zero-downtime blue-green restaging without access to the app source code. For more information, see <a href="https://github.com/orange-cloudfoundry/cf-plugin-bg-restage">bg-restage</a> on GitHub.</p>
 
-### <a id="mark-transitional-signed"></a> Mark the Signing Version of Services TLS CA as Transitional
+### <a id="mark-transitional-signed"></a> Mark the Signing Version of the Services TLS CA as Transitional
 
-Mark the signing version of the Services TLS CA as transitional by running:
+Mark the signing version of the Services TLS CA as transitional.
 
-```
-maestro update-transitional signing --name "/services/tls_ca"
-```
+Depending on your <%= vars.app_runtime_abbr %> version, do one of the following:
+
+- If you are on <%= vars.app_runtime_abbr %> v2.9.3 or earlier, run:
+
+    ```
+    maestro topology --name /services/tls_ca
+    ```
+
+    Then, record the `certificate_id` and the `version_id` of the version with `signing: true` and run:
+
+    ```
+    credhub curl -p /api/v1/certificates/{certificate_id}/update_transitional_version -i -d '{"version": "{version_id}"}'
+    ```
+- If you are on <%= vars.app_runtime_abbr %> v2.9.4 or later, run:
+
+    ```
+    maestro update-transitional signing --name "/services/tls_ca"
+    ```
 
 ### <a id="regenerate-leaf-certs"></a> Regenerate Leaf Certificates
 
@@ -133,12 +147,11 @@ To apply these changes:
 
 ### <a id="rebind-restage2"></a> Rebind and Restage Apps for the Second Time (MySQL Only)
 
-If you are not using MySQL for <%= vars.product_name %>, skip this step.
+If you are not using VMware Tanzu SQL [MySQL] or MySQL for Pivotal Platform, skip this step.
 
-You must rebind and restage any apps that bind to MySQL for 
-<%= vars.product_name %> service instances and rely on <code>VCAP_SERVICES</code> for TLS.
+You must rebind and restage any apps that bind to MySQL service instances and rely on <code>VCAP_SERVICES</code> for TLS.
 
-You do not need to rebind and restage MySQL for <%= vars.product_name %> apps 
+You do not need to rebind and restage MySQL apps 
 that use <code>jdbcURL</code>
 or consume CA certificates from <code>/etc/ssl/certs/ca-certificate.crt</code>.
 
@@ -166,15 +179,14 @@ To apply these changes:
     1. Expand the errands for each tile. 
     1. Enable the errand to upgrade all service instances.
         <p class="note"><strong>Note:</strong> The names of upgrade all service instances errand may differ slightly between services.</p>
-1. Click **Apply Change
+1. Click **Apply Changes**.
 
 ### <a id="rebind-restage3"></a> Rebind and Restage Apps for the Third Time (MySQL Only)
 
-If you are not using MySQL for <%= vars.product_name %>, skip this step.
+If you are not using VMware Tanzu SQL [MySQL] or MySQL for Pivotal Platform, skip this step., skip this step.
 
-You must rebind and restage any apps that bind to MySQL for 
-<%= vars.product_name %> service instances and rely on <code>VCAP_SERVICES</code> for TLS.
+You must rebind and restage any apps that bind to MySQL service instances and rely on <code>VCAP_SERVICES</code> for TLS.
 
-You do not need to rebind and restage MySQL for <%= vars.product_name %> apps 
+You do not need to rebind and restage MySQL apps 
 that use <code>jdbcURL</code>
 or consume CA certificates from <code>/etc/ssl/certs/ca-certificate.crt</code>.
