@@ -117,13 +117,13 @@ To rotate certificates, follow one of these procedures:
 
 * To rotate configurable leaf certificates, but not the <%= vars.ops_manager %> root CA or BOSH NATS CA, see [Rotate Configurable Leaf Certificates](#rotate-config).
 
-* To rotate the <code>/services/tls_ca</code> certificate, see the MySQL, RabbitMQ, Redis, or Pivotal Cloud Cache tile documentation.
+* To rotate the <code>/services/tls_ca</code> certificate, see <a href="services_tls_ca_rotate.html">Rotating the Services TLS CA and Its Leaf Certificates</a>.
 
 ### <a id='rotate-ca'></a> Rotate the Root CA and Leaf Certificates
 
 <p class="note warning"><strong>Warning:</strong> The Services CA certificate, <code>/services/tls_ca</code>,
 cannot be rotated using this procedure. For information about how to rotate the <code>/services/tls_ca</code>
-certificate, see the MySQL, RabbitMQ, Redis, or Pivotal Cloud Cache tile documentation.</p>
+certificate, see <a href="services_tls_ca_rotate.html">Rotating the Services TLS CA and Its Leaf Certificates</a>.</p>
 
 This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA
 and non-configurable leaf certificates. When you rotate the <%= vars.ops_manager %> root CA, the
