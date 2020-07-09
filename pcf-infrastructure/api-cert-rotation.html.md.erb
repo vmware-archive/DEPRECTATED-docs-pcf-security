@@ -15,8 +15,7 @@ For information about rotating IPsec certificates, see [Rotating IPsec Certifica
 
 For information about using trusted third-party certificates for both apps hosted on <%= vars.platform_name %> and internal <%= vars.platform_name %> components, see [Setting Trusted Certificates](../../customizing/trusted-certificates.html).
 
-For information about how to rotate certificates managed by CredHub and the Services TLS CA, see [Advanced Certificate Rotation with CredHub Maestro](./advanced-certificate-rotation.html).
-
+For information about how to rotate certificates managed by CredHub, see [Advanced Certificate Rotation with CredHub Maestro](./advanced-certificate-rotation.html).
 
 ## <a id='overview'></a> Overview
 
@@ -111,7 +110,7 @@ To rotate certificates, follow one of these procedures:
 
 <p class="note warning"><strong>Warning:</strong> The Services CA certificate, <code>/services/tls_ca</code>,
 cannot be rotated using this procedure. For information about how to rotate the <code>/services/tls_ca</code>
-certificate, see the MySQL, RabbitMQ, Redis, or VMware Tanzu GemFire (formerly Pivotal Cloud Cache) tile documentation.</p>
+certificate, see <a href="services_tls_ca_rotate.html">Rotating the Services TLS CA and Its Leaf Certificates</a>.</p>
 
 This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA
 and non-configurable leaf certificates. When you rotate the <%= vars.ops_manager %> root CA, the
