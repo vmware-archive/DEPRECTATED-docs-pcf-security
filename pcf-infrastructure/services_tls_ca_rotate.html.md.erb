@@ -3,190 +3,33 @@ title: Rotating the Services TLS CA and Its Leaf Certificates
 owner: Ops Manager
 ---
 
-This topic describes the procedure for rotating the Services TLS CA and its leaf certificates without using CredHub Maestro.
+<p class="note"><strong>Note</strong>: The preferred method for rotating the Services TLS CA and its leaf certificates in Ops Manager v2.9 and later is to use CredHub Maestro. If all of the service tiles in your deployment are <a href="maestro-tile-compatibility.html">compatible with Maestro</a>, then you can use the procedure documented in <a href="advanced-certificate-rotation.html">Advanced Certificate Rotation with CredHub Maestro</a> instead of this procedure.</p>
 
-<p class="note"><strong>Note</strong>: The preferred procedure for rotating the Services TLS CA and its leaf certificates in Ops Manager v2.9 and later is to use CredHub Maestro. If all the service tiles in your deployment are [compatible with Maestro](maestro-tile-compatibility.html), then you can use the procedure documented in [Advanced Certificate Rotation with CredHub Maestro](advanced-certificate-rotation.html) instead of this procedure.</p>
+<div class="quick-links">
+<ul>
+  <li>
+    <a href="#services-tls-ca-overview">Services TLS CA Overview</a>
+  </li>
+  <li>
+    <a href="#prerequisites">Prerequisites for Rotating the Services TLS CA</a>
+  </li>
+  <li>
+    <a href="#tls">Procedure for Rotating the Services TLS CA</a>
+  </li>
+  <ul>
+    <li><a href="#checkexpdate">Check Certificate Expiration Dates</a></li>
+    <li><a href="#obtainorgenerate">Obtain or Generate a New Services TLS CA Certificate</a></li>
+    <li><a href="#addnewandold">Add Certificates to <%= vars.ops_manager %> and <%= vars.app_runtime_abbr %></a>
+    <li><a href="#applychanges1">Apply Changes for the First Time</a>
+    </li>
+    <li><a href="#setnew">Set New Services TLS CA Certificate</a>
+    </li>
+    <li><a href="#applychanges2">Apply Changes for the Second Time</a></li>
+    <li><a href="#remove">Remove the Old Services TLS CA Certificate</a></li>
+    <li><a href="#applychanges3">Apply Changes for the Third Time</a>
+    </li>
+  </ul>
+</ul>
+</div>
 
-##<a id='services-tls-ca-overview'></a> Services TLS CA Overview
-
-In an <%= vars.ops_manager %> and <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %> ) deployment, the Services TLS CA is the certificate that service brokers use to sign leaf certificates for TLS-enabled service instances.
-
-Service instances include instances created by on-demand services such as MySQL for VMware Tanzu, VMware Tanzu GemFire, Redis for VMware Tanzu, and RabbitMQ for VMware Tanzu. You may have one or more of these service tiles installed in your deployment. All deployed service tiles in a foundation use the same Services TLS CA certificate, which is stored in BOSH CredHub with the name `/services/tls_ca`. 
-
-When an operator creates an on-demand TLS enabled service instance or updates an existing non-TLS on-demand service instance to use TLS, the following takes place:
-
-1. BOSH generates a leaf certificate signed by the Services TLS CA. 
-1. BOSH then stores this new leaf certificate in BOSH CredHub with the format `/p-bosh/service-instance_SERVICE-GUID/unique-name-per-service-type`. 
-1. BOSH supplies the private key and certificates to the VMs of that service instance.
-
-##<a id='prerequisites'></a> Prerequisites for Rotating the Services TLS CA
-
-Before you begin this rotation procedure, ensure that you have the following:
-
-* Access to the <%= vars.ops_manager %> VM and the CredHub Maestro CLI. For more information about CredHub Maestro, see [Getting Started with CredHub Maestro](getting-started-with-maestro-cli.html).
-* Only one <%= vars.ops_manager %> foundation and not a multi-site or Wide Area Network (WAN) setup.
-For a mutli-site or WAN setup, you must perform the <bold>Apply Changes</bold> steps across all your sites or WAN.
-* All certificates must include Subject Alternate Name (SAN) and Common Name (CN) entries.
-* Set up your services for high availability to minimize potential app impact during CA rotation. Rotating the Services TLS CA requires an upgrade all on-demand service instances, which can cause service downtime.
-
-##<a id='tls'></a> Procedure for Rotating the Services TLS CA
-
-This section describes the procedure for rotating the Services TLS CA and its leaf certificates.
- 
-###<a id='check-tile-compatibility'></a> Check Tile Compatibility
-
-Review the [CredHub Maestro Tile Compatibility](maestro-tile-compatibility.html) 
-to ensure that all services versions currently deployed are compatible with CredHub Maestro.
-
-<p class="note warning"><strong>Warning:</strong> If you have any service tiles that are not compatible with CredHub Maestro, then do not follow this procedure.
-If you do, you might experience extended downtime or data loss.</p>
-
-### <a id="check-expiration"></a> Check Expiration Dates
-
-### <a id="regen-services-tls-ca"></a> Regenerate the Services TLS CA
-
-To regenerate a Services TLS CA certificate:
-
-1. On the Services TLS CA, see if your Services TLS CA was CredHub-set by running:
-
-    ```
-    maestro list
-    ```
-    After running this command, you see one Services TLS CA listed per deployment, but it is the same certificate.
-1. If the Services TLS CA was CredHub-set, run:
-
-    ```
-    maestro regenerate ca --name "/services/tls_ca" --force
-    ```
-
-### <a id="mark-transitional-latest"></a> Mark the Latest Services TLS CA as Transitional
-
-Mark the latest version of the Services TLS CA as transitional by running:
-
-```
-maestro update-transitional latest --name "/services/tls_ca"
-```
-
-### <a id="applychanges1"></a> Apply Changes for the First Time
-
-<p class="note warning"><strong>Warning</strong>: This procedure involves redeploying
-all of the VMs in your <%= vars.ops_manager %> deployment to apply a CA certificate. The
-operation can take a long time to complete.</p>
-
-To apply these changes:
-
-1. Navigate back to the **Installation Dashboard**.
-1. On the **Review Pending Changes** page, enable the **Select All Products** checkbox. Ensure that all product tiles, including including <%= vars.app_runtime_abbr %>, <%= vars.windows_runtime_abbr %>, Isolation Segment and partner tiles, are selected.
-1. For each on-demand service tile that uses TLS:
-    1. Expand the errands.
-    1. Enable the errand to upgrade all service instances.
-        <p class="note"><strong>Note:</strong> The name of the upgrade all service instances errand may differ slightly between services.</p>
-1. Click **Apply Changes**.
-
-### <a id="rebind-restage1"></a> Rebind and Restage Apps for the First Time (MySQL Only)
-
-If you are not using VMware Tanzu SQL [MySQL] or MySQL for Pivotal Platform, skip this step.
-
-You must rebind and restage any apps that bind to 
-MySQL service instances and rely on <code>VCAP_SERVICES</code> for TLS.
-
-You do not need to rebind and restage MySQL apps 
-that use <code>jdbcURL</code>
-or consume CA certificates from <code>/etc/ssl/certs/ca-certificate.crt</code>.
-
-<p class='note'><strong>Note:</strong> The bg-restage plugin enables zero-downtime blue-green restaging without access to the app source code. For more information, see <a href="https://github.com/orange-cloudfoundry/cf-plugin-bg-restage">bg-restage</a> on GitHub.</p>
-
-### <a id="mark-transitional-signed"></a> Mark the Signing Version of the Services TLS CA as Transitional
-
-Mark the signing version of the Services TLS CA as transitional.
-
-Depending on your <%= vars.app_runtime_abbr %> version, do one of the following:
-
-- If you are on <%= vars.app_runtime_abbr %> v2.9.3 or earlier, run:
-
-    ```
-    maestro topology --name /services/tls_ca
-    ```
-
-    Then, record the `certificate_id` and the `version_id` of the version with `signing: true` and run:
-
-    ```
-    credhub curl -p /api/v1/certificates/{certificate_id}/update_transitional_version -i -d '{"version": "{version_id}"}'
-    ```
-- If you are on <%= vars.app_runtime_abbr %> v2.9.4 or later, run:
-
-    ```
-    maestro update-transitional signing --name "/services/tls_ca"
-    ```
-
-### <a id="regenerate-leaf-certs"></a> Regenerate Leaf Certificates
-
-Regenerate all service instance leaf certificates signed by the Services TLS CA by running:
-
-```
-maestro regenerate leaf --signed-by "/services/tls_ca"
-```
-
-### <a id="applychanges2"></a> Apply Changes for the Second Time
-
-<p class="note warning"><strong>Warning: </strong> This procedure involves redeploying
-  all of the VMs in your <%= vars.ops_manager %> deployment to apply a CA certificate. The
-  operation can take a long time to complete.</p>
-
-To apply these changes:
-
-1. Navigate back to the **Installation Dashboard**.
-1. Click **Review Pending Changes**.
-1. Ensure that all product tiles, including including <%= vars.app_runtime_abbr %>, <%= vars.windows_runtime_abbr %>, Isolation Segment and partner tiles, are unchecked.
-1. Select only the on-demand services tiles that use TLS, such as <%= vars.on_demand_service_tiles %>.
-1. For each on-demand service tile that uses TLS:
-    1. Expand the errands for each tile. 
-    1. Enable the errand to upgrade all service instances.
-        <p class="note"><strong>Note:</strong> The name of the upgrade all service instances errand may differ slightly between services.</p>
-1. Click **Apply Changes**.
-
-### <a id="rebind-restage2"></a> Rebind and Restage Apps for the Second Time (MySQL Only)
-
-If you are not using VMware Tanzu SQL [MySQL] or MySQL for Pivotal Platform, skip this step.
-
-You must rebind and restage any apps that bind to MySQL service instances and rely on <code>VCAP_SERVICES</code> for TLS.
-
-You do not need to rebind and restage MySQL apps 
-that use <code>jdbcURL</code>
-or consume CA certificates from <code>/etc/ssl/certs/ca-certificate.crt</code>.
-
-### <a id="remove-transitional"></a> Remove Transitional Flag
-
-Remove the transitional flag from the Services TLS CA. This removes the old, inactive version of the Services TLS CA on the next deployment. Run:
-
-```
-maestro update-transitional remove --name "/services/tls_ca"
-```
-
-### <a id="applychanges3"></a> Apply Changes for the Third Time
-
-<p class="note warning"><strong>Warning:</strong> This procedure involves redeploying
-  all of the VMs in your <%= vars.ops_manager %> deployment to apply a CA certificate. The
-  operation can take a long time to complete.</p>
-
-To apply these changes:
-
-1. Navigate back to the **Installation Dashboard**.
-1. Click **Review Pending Changes**.
-1. Ensure that all product tiles, including <%= vars.app_runtime_abbr %>, <%= vars.windows_runtime_abbr %>, Isolation Segment and partner tiles, are unchecked.
-1. Select only the on-demand services tiles that use TLS, such as <%= vars.on_demand_service_tiles %>.
-1. For each on-demand service tile that uses TLS:
-    1. Expand the errands for each tile. 
-    1. Enable the errand to upgrade all service instances.
-        <p class="note"><strong>Note:</strong> The names of upgrade all service instances errand may differ slightly between services.</p>
-1. Click **Apply Changes**.
-
-### <a id="rebind-restage3"></a> Rebind and Restage Apps for the Third Time (MySQL Only)
-
-If you are not using VMware Tanzu SQL [MySQL] or MySQL for Pivotal Platform, skip this step., skip this step.
-
-You must rebind and restage any apps that bind to MySQL service instances and rely on <code>VCAP_SERVICES</code> for TLS.
-
-You do not need to rebind and restage MySQL apps 
-that use <code>jdbcURL</code>
-or consume CA certificates from <code>/etc/ssl/certs/ca-certificate.crt</code>.
+<%= partial "/pcf/certs/rotating_services_tls_ca.html.md.erb" %>
