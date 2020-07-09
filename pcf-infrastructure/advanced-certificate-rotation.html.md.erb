@@ -187,14 +187,18 @@ To rotate a single CA and its leaf certificates:
 
 This section describes the procedure for rotating the Services TLS CA and its leaf certificates.
 
-<p class="note warning"><strong>Warning:</strong> Upgrading your on-demand service instances is required in order to complete a rotation of the Services TLS CA. <%= vars.company_name %> recommends that you set up your services for high availability to minimize any service downtime.</p>
+Before you begin this rotation procedure, ensure that you have the following:
+
+* Only one <%= vars.ops_manager %> foundation and not a multi-site or Wide Area Network (WAN) setup.
+For a multi-site or WAN setup, you must perform the <bold>Apply Changes</bold> steps across all your sites or WAN.
+* All certificates must include Subject Alternate Name (SAN) and Common Name (CN) entries.
+* Set up your services for high availability to minimize potential app impact during CA rotation. Rotating the Services TLS CA requires an upgrade all on-demand service instances, which can cause service downtime.
+* Determined whether your deployment contains non-Java MySQL apps that rely on <code>VCAP_SERVICES</code> for TLS. You must rebind and restage these apps during the rotation. You do not need to rebind and restage MySQL apps that use <code>jdbcURL</code> or consume CA certificates from <code>/etc/ssl/certs/ca-certificate.crt</code>. For more information about determining which apps are affected, see this [Knowlegebase Article](https://community.pivotal.io/s/article/Rotating-services-tls-ca-certificate-using-credhub-transitional-certificate-rotation-feature?language=en_US).
 
 To rotate the Services TLS CA and its leaf certificates:
 
-1. Before proceeding, check [CredHub Maestro Tile Compatibility](maestro-tile-compatibility.html) to ensure that all services versions currently deployed are compatible with Maestro.
-    <p class="note warning"><strong>Warning:</strong> If you have any service tiles
-       that are not compatible with CredHub Maestro do not follow this procedure.
-       If you do, you might experience extended downtime or data loss.</p>
+1. Check the [CredHub Maestro Tile Compatibility](maestro-tile-compatibility.html) document to ensure that all service tile versions currently deployed are compatible with Maestro.
+    <p class="note warning"><strong>Warning:</strong> If you have any service tiles that are not compatible with CredHub Maestro, do not follow this procedure. If you do, you might experience extended downtime or data loss. Use the procedure documented in <a href="services_tls_ca_rotate.html">Rotating the Services TLS CA and Its Leaf Certificates</a> instead.</p>
 
 1. Regenerate the Services TLS CA.
     1. On the Services TLS CA, see if your Services TLS CA was CredHub-set by running:
@@ -222,21 +226,28 @@ To rotate the Services TLS CA and its leaf certificates:
        <p class='note'><strong>Note:</strong> The name of the <strong>Upgrade all service instances</strong> errand may be slightly different between services.</p>
     1. Click **Apply Changes**.
 
-1. Rebind any apps that rely on services.
+1. For deployments that use MySQL for Pivotal Platform, rebind and restage all non-Java MySQL apps that rely on <code>VCAP_SERVICES</code> for TLS.
 
-1. Restage any apps that rely on services.
     <p class='note'><strong>Note:</strong> The bg-restage plugin enables zero-downtime blue-green restaging without access to the app source code. For more information, see <a href="https://github.com/orange-cloudfoundry/cf-plugin-bg-restage">bg-restage</a> on GitHub.</p>
 
-1. Mark the signing version of the Services TLS CA as transitional:
+1. Mark the signing version of the Services TLS CA as transitional.
+Depending on your <%= vars.app_runtime_abbr %> version, do one of the following:
+    - If you are on <%= vars.app_runtime_abbr %> v2.9.3 or earlier, run:
 
-    ```
-    maestro topology --name /services/tls_ca
-    ```
-    Record the `certificate_id` and the `version_id` of the version with `signing: true`. Then run:
+        ```
+        maestro topology --name /services/tls_ca
+        ```
 
-    ```
-    credhub curl -p /api/v1/certificates/{certificate_id}/update_transitional_version -i -d '{"version": "{version_id}"}'
-    ```
+        Then, record the `certificate_id` and the `version_id` of the version with `signing: true` and run:
+
+        ```
+        credhub curl -p /api/v1/certificates/{certificate_id}/update_transitional_version -i -d '{"version": "{version_id}"}'
+        ```
+    - If you are on <%= vars.app_runtime_abbr %> v2.9.4 or later, run:
+
+        ```
+        maestro update-transitional signing --name "/services/tls_ca"
+        ```
 
 1. Regenerate all service instance certificates signed by the Services TLS CA by running:
 
@@ -251,9 +262,7 @@ To rotate the Services TLS CA and its leaf certificates:
     <p class='note'><strong>Note:</strong> The name of the <strong>Upgrade all service instances</strong> errand may be slightly different between services.</p>
     1. Click **Apply Changes**.
 
-1. Rebind any apps that rely on services.
-
-1. Restage any apps that rely on services.
+1. For deployments that use MySQL for Pivotal Platform, rebind and restage all non-Java MySQL apps that rely on <code>VCAP_SERVICES</code> for TLS.
 
 1. Remove the transitional flag from the Services TLS CA. This removes the old, inactive version of the Services TLS CA on the next deployment. Run:
 
@@ -268,9 +277,7 @@ To rotate the Services TLS CA and its leaf certificates:
     <p class='note'><strong>Note:</strong> The name of the <strong>Upgrade all service instances</strong> errand may be slightly different between services.</p>
     1. Click **Apply Changes**.
 
-1. Rebind any apps that rely on services.
-
-1. Restage any apps that rely on services.
+1. For deployments that use MySQL for Pivotal Platform, rebind and restage all non-Java MySQL apps that rely on <code>VCAP_SERVICES</code> for TLS.
 
 ### <a id='set-certificate-rotation'></a> Rotate Manually Set Certificates
 
