@@ -47,6 +47,7 @@ The following table lists network communication paths for Log Cache:
 | gorouter | log-cache (Auth Proxy) | 8083 | TCP | HTTP | OAuth |
 | log-cache (Auth Proxy) | uaa | 8443 | TCP | HTTPS | TLS |
 | log-cache (Auth Proxy) | cloud_controller | 9024 | TCP | HTTPS | TLS |
+| Any&#42; | doppler ( Log-Cache Syslog Server) | 6067 | TCP | TCP | TLS |
 
 <sup>&#42;</sup>Any source VM can send requests to the specified destination within its subnet.
 
