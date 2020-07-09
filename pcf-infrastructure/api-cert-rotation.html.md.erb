@@ -121,7 +121,7 @@ To rotate certificates, follow one of these procedures:
 
 <p class="note warning"><strong>Warning:</strong> The Services CA certificate, <code>/services/tls_ca</code>,
 cannot be rotated using this procedure. For information about how to rotate the <code>/services/tls_ca</code>
-certificate, see the MySQL, RabbitMQ, Redis, or VMware Tanzu GemFire tile documentation.</p>
+certificate, see <a href="advanced-certificate-rotation.html#services-rotation">Advanced Certificate Rotation with CredHub Maestro</a>.</p>
 
 This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA
 and non-configurable leaf certificates. When you rotate the <%= vars.ops_manager %> root CA, the
