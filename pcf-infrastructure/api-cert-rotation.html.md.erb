@@ -145,7 +145,7 @@ To rotate certificates, follow one of these procedures:
 
 <p class="note warning"><strong>Warning:</strong> The Services CA certificate, <code>/services/tls_ca</code>,
 cannot be rotated using this procedure. For information about how to rotate the <code>/services/tls_ca</code>
-certificate, see the MySQL, RabbitMQ, Redis, or VMware Tanzu GemFire tile documentation.</p>
+certificate, see <a href="advanced-certificate-rotation.html#services-rotation">Advanced Certificate Rotation with CredHub Maestro</a>.</p>
 
 This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA
 and non-configurable leaf certificates. When you rotate the <%= vars.ops_manager %> root CA, the
@@ -404,7 +404,7 @@ information about rotating these CAs.</p>
 
 To rotate non-configurable leaf certificates:
 
-1. Make a call to the <%= vars.ops_manager %> API to regenerate all non-configurable certificates and apply the new root CA to your existing BOSH Director. Run:
+1. Make a call to the <%= vars.ops_manager %> API to regenerate all non-configurable certificates. Run:
 
     ```
       curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/active/regenerate" \
@@ -539,7 +539,7 @@ This procedure rotates non-configurable leaf certificates visible to the <%= var
 
 To rotate non-configurable leaf certificates:
 
-1. Use `curl` to make an API call to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director. Run:
+1. Use `curl` to make an API call to regenerate all non-configurable certificates. Run:
 
     ```
     curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/active/regenerate" \
