@@ -38,13 +38,37 @@ Before you rotate certificates in <%= vars.ops_manager %> <%= vars.v_major_versi
 
 ## <a id='checks'></a> Check Expiration Dates and Certificate Types
 
-This section describes how to manually check the expiration dates of the CAs and leaf certificates that the <%= vars.ops_manager %> API lists and manages. It also explains how to identify the types of certificates that require manual rotation.
+This section describes two ways to check the expiration dates of the CAs and leaf certificates that the <%= vars.ops_manager %> API manages:
+
+* Through the <%= vars.ops_manager %> UI. For more information, see [Check Expiration Dates and Certificate Types Through the <%= vars.ops_manager %> UI](#check-ui).
+
+* Through the <%= vars.ops_manager %> API. For more information, see [Check Expiration Dates and Certificate Types Through the <%= vars.ops_manager %> API](#check-api).
+
+It also explains how to identify the types of certificates that require manual rotation.
 
 To configure Concourse to automatically monitor expiring certificates, you can use Platform Automation. For more information, see  [expiring-certificates](https://docs.pivotal.io/platform-automation/v4.1/tasks.html#expiring-certificates) in the Platform Automation documentation.
 
 After identifying the types of certificates that expire soon, you can determine which certificate rotation procedure to follow.
 
-To check certificate expiration dates and types:
+### <a id='check-ui'></a> Check Expiration Dates and Certificate Types Through the <%= vars.ops_manager %> UI
+
+To check certificate expiration dates and types through the <%= vars.ops_manager %> UI:
+
+1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
+
+1. In the top menu, select **Certificates**.
+
+1. In the list of certificates that you rotate using the <%= vars.ops_manager %> API, check the following columns for each certificate:
+    * **Type:** Whether the certificate is a leaf certificate or a CA.
+    * **Valid until:** The expiration date of the certificate and the number of days before expiration.
+
+1. At the bottom of the **Certificates** pane, check the **Excluded certificates** section for a list of certificates that require manual rotation, as well as the **Type** and **Valid until** columns for each certificate.
+
+1. After you identify the list of certificates that expire soon, follow the procedure in [Rotate Certificates](#rotate) below.
+
+### <a id='check-api'></a> Check Expiration Dates and Certificate Types Through the <%= vars.ops_manager %> API
+
+To check certificate expiration dates and types through the <%= vars.ops_manager %> API:
 
 1. Follow the procedure in [Using <%= vars.ops_manager %> API](../../customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> User Account and Authentication (UAA) server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the steps below.
   <p class="note"><strong>Note:</strong> When you record your <%= vars.ops_manager %> access token, remove any newline characters such as <code>\n</code>.</p>
@@ -95,7 +119,7 @@ To check certificate expiration dates and types:
           * `is_ca` is `true`.
           * `location` is `ops_manager` or `credhub`.
 
-1. After you identify the list of certificates that expire soon, complete the [Rotate Certificates](#rotate) procedure below.
+1. After you identify the list of certificates that expire soon, follow the procedure in [Rotate Certificates](#rotate) below.
 
 
 ## <a id='rotate'></a> Rotate Certificates
@@ -108,7 +132,7 @@ You can determine which rotation procedure to follow based on the types of certi
 
 To rotate certificates, follow one of these procedures:
 
-* To rotate non-rotatable certificates, contact <%= vars.support_link %>
+* To rotate non-rotatable certificates, contact <%= vars.support_link %>.
 
 * To rotate CAs stored in <%= vars.ops_manager %> and CredHub, see [Rotate CAs and Leaf Certificates](#rotate-ca).
   This procedure also rotates the BOSH NATS CA.
