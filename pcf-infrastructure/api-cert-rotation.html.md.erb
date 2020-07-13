@@ -58,13 +58,15 @@ To check certificate expiration dates and types through the <%= vars.ops_manager
 
 1. In the top menu, select **Certificates**.
 
-1. In the list of certificates that you rotate using the <%= vars.ops_manager %> API, check the following columns for each certificate:
-    * **Type:** Whether the certificate is a leaf certificate or a CA.
-    * **Valid until:** The expiration date of the certificate and the number of days before expiration.
+1. In the list of certificates, check the **Valid until** column for the expiration dates of each certificate and the number of days before expiration.
 
-1. At the bottom of the **Certificates** pane, check the **Excluded certificates** section for a list of certificates that require manual rotation, as well as the **Type** and **Valid until** columns for each certificate.
+1. For any certificates expiring soon, use the following columns to identify their types:
+    * **Location:** Whether the certificate is stored in Ops Manager or CredHub.
+    * **Type:** Whether the certificate is a leaf certificate or a CA.
+    * **Configurable:** Whether the certificate is configurable.
 
 1. After you identify the list of certificates that expire soon, follow the procedure in [Rotate Certificates](#rotate) below.
+    <p class='warning'><strong>Warning:</strong> The <strong>Excluded certificates</strong> section at the bottom of the <strong>Certificates</strong> pane lists certificates that you cannot safely rotate using the methods described in this topic. To rotate the Services CA certificate, <code>/services/tls_ca</code>, see <a href="advanced-certificate-rotation.html#services-rotation">Rotate the Services TLS CA and Its Leaf Certificates</a> in <em>Advanced Certificate Rotation with CredHub Maestro</em>. For all other non-rotatable certificates, contact <a href="https://tanzu.vmware.com/support">Support</a> for guidance.</p>
 
 ### <a id='check-api'></a> Check Expiration Dates and Certificate Types Through the <%= vars.ops_manager %> API
 
@@ -435,7 +437,7 @@ To rotate non-configurable leaf certificates:
     1. Click the tile.
     1. Click the **Errands** tab.
     1. Enable the **Upgrade all service instances** errand. Running this errand is necessary to push CredHub certificate updates to each service instance.
-    1. If the service tile has the **Recreate all service instances** errand: 
+    1. If the service tile has the **Recreate all service instances** errand:
         1. Enable the **Recreate all service instances** errand. Running this errand pushes BOSH agent certificate updates to service instances.
         1. Click **Review Pending Changes**.
         1. Click **Apply Changes** to perform a second deploy.
