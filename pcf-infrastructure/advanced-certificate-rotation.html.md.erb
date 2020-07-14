@@ -256,8 +256,8 @@ Before you begin this rotation procedure, ensure that you have the following:
 * Only one <%= vars.ops_manager %> foundation and not a multi-site or Wide Area Network (WAN) setup.
 For a multi-site or WAN setup, you must perform the <bold>Apply Changes</bold> steps across all your sites or WAN.
 * All certificates must include Subject Alternate Name (SAN) and Common Name (CN) entries.
-* Set up your services for high availability to minimize potential app impact during CA rotation. Rotating the Services TLS CA requires an upgrade all on-demand service instances, which can cause service downtime.
-* Determined whether your deployment contains non-Java MySQL apps that rely on <code>VCAP_SERVICES</code> for TLS. You must rebind and restage these apps during the rotation. You do not need to rebind and restage MySQL apps that use <code>jdbcURL</code> or consume CA certificates from <code>/etc/ssl/certs/ca-certificate.crt</code>. For more information about determining which apps are affected, see this [Knowlegebase Article](https://community.pivotal.io/s/article/Rotating-services-tls-ca-certificate-using-credhub-transitional-certificate-rotation-feature?language=en_US).
+* Your services are configured for high availability to minimize potential app impact during CA rotation. Rotating the Services TLS CA requires an upgrade all on-demand service instances, which can cause service downtime.
+* Knowledge whether your deployment contains non-Java MySQL apps that rely on <code>VCAP_SERVICES</code> for TLS. You must rebind and restage these apps during the procedure, which can require additional time and coordination for the rotation. You do not need to rebind and restage MySQL apps that use <code>jdbcURL</code> or consume CA certificates from <code>/etc/ssl/certs/ca-certificate.crt</code>. For more information about determining which apps are affected, see this [Knowlegebase Article](https://community.pivotal.io/s/article/Rotating-services-tls-ca-certificate-using-credhub-transitional-certificate-rotation-feature?language=en_US).
 
 To rotate the Services TLS CA and its leaf certificates:
 
