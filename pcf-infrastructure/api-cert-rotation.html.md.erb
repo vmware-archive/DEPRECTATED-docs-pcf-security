@@ -61,8 +61,7 @@ To check certificate expiration dates and types through the <%= vars.ops_manager
 1. In the list of certificates, check the **Valid until** column for the expiration dates of each certificate and the number of days before expiration.
 
 1. For any certificates expiring soon, use the following rules to identify their types:
-    * **Non-rotatable certificates:** The rows for non-rotatable certificates contain the following information:
-      * **Certificate name:** includes `/service-instance_*/pxc_*`, `/service-instance_*/tls_certificate`, or `/service-instance_*/redis_certificate`
+    * **Non-rotatable certificates:** Non-rotatable certificates are listed in the **Excluded certificates** section at the bottom of the **Certificates** pane.
     * **Non-configurable certificates:** The rows for non-configurable leaf certificates contain the following information:
       * **Location:** Ops Manager or CredHub
       * **Type:** Leaf
