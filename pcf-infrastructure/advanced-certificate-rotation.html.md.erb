@@ -91,16 +91,10 @@ The process for rotating the Services TLS CA requires additional steps to ensure
 
 To rotate all CAs and leaf certificates in CredHub:
 
-1. Regenerate all CAs. This creates a new version of every CA. Run:
+1. Regenerate all CAs and mark the latest version of each CA as transitional. This creates a new version of every CA and indicates that the latest version is inactive, so that all leaf certificates trust the new CA. Run:
 
     ```
     maestro regenerate ca --all
-    ```
-
-1. Mark the latest version of each CA as transitional. This indicates that the certificate is inactive, so that all leaf certificates trust the new CA version. Run:
-
-    ```
-    maestro update-transitional latest --all
     ```
 
 1. Redeploy:
@@ -181,20 +175,13 @@ This section describes the procedure for rotating a single CA and its leaf certi
 
 To rotate a single CA and its leaf certificates:
 
-1. Regenerate the CA you want to rotate. This creates a new version of this CA. Run:
+1. Regenerate the CA you want to rotate and mark the latest version of the CA as transitional. This creates a new version of the CA and indicates that the latest version is inactive, so that all leaf certificates trust the new CA. Run:
 
     ```
     maestro regenerate ca --name "CA-NAME"
     ```
     Where `CA-NAME` is the name of the CA you want to rotate.
     <p class="note"><strong>Note:</strong> The CA name you provide must be the full path to the credential.</p>
-
-1. Mark the latest version of the single CA as transitional by running:
-
-    ```
-    maestro update-transitional latest --name "CA-NAME"
-    ```
-    Where `CA-NAME` is the name of the CA you want to mark as transitional.
 
 1. Redeploy:
     1. Return to the <%= vars.ops_manager %> Installation Dashboard.
@@ -264,7 +251,7 @@ To rotate the Services TLS CA and its leaf certificates:
 1. Check the [CredHub Maestro Tile Compatibility](maestro-tile-compatibility.html) document to ensure that all service tile versions currently deployed are compatible with Maestro.
     <p class="note warning"><strong>Warning:</strong> If you have any service tiles that are not compatible with CredHub Maestro, do not follow this procedure. If you do, you might experience extended downtime or data loss. Use the procedure documented in <a href="services_tls_ca_rotate.html">Rotating the Services TLS CA and Its Leaf Certificates</a> instead.</p>
 
-1. Regenerate the Services TLS CA.
+1. Regenerate the Services TLS CA and mark the latest version of the CA as transitional. This creates a new version of the Services TLS CA and indicates that the latest version is inactive, so that all leaf certificates trust the new CA.
     1. On the Services TLS CA, see if your Services TLS CA was CredHub-set by running:
 
         ```
@@ -276,12 +263,6 @@ To rotate the Services TLS CA and its leaf certificates:
         ```
         maestro regenerate ca --name "/services/tls_ca" --force
         ```
-        
-1. Mark the latest version of the Services TLS CA as transitional by running:
-
-    ```
-    maestro update-transitional latest --name "/services/tls_ca"
-    ```
 
 1. Redeploy:
     1. Return to the <%= vars.ops_manager %> Installation Dashboard.
@@ -339,13 +320,6 @@ To rotate a manually set certificate:
 1. Create a new CA using the same parameters you used for the original CA.
 
 1. Use the CredHub CLI or CredHub API to set the new CA at the same path as the original. To download and install the CredHub CLI, see the [CredHub CLI](https://github.com/cloudfoundry-incubator/credhub-cli) repository on GitHub. For more information about the CredHub API, see the [CredHub API documentation](https://credhub-api.cfapps.io/).
-
-1. Mark the latest version of the single CA as transitional. This indicates that the certificate is inactive. Run:
-
-    ```
-    maestro update-transitional latest --name "CA-NAME"
-    ```
-    <p class="note"><strong>Note:</strong> The CA name you provide must be the full path to the credential.</p>
 
 1. Redeploy:
     1. Return to the <%= vars.ops_manager %> Installation Dashboard.
