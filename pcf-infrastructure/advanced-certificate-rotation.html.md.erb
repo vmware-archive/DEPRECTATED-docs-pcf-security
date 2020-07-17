@@ -91,7 +91,7 @@ The process for rotating the Services TLS CA requires additional steps to ensure
 
 To rotate all CAs and leaf certificates in CredHub:
 
-1. Regenerate all CAs and mark the latest version of each CA as transitional. This creates a new version of every CA and indicates that the latest version is inactive, so that all leaf certificates trust the new CA. Run:
+1. Regenerate all CAs and mark the latest version of each CA as transitional. This creates a new version of every CA and indicates that the latest version is inactive, so that all leaf certificates trust the new CAs. Run:
 
     ```
     maestro regenerate ca --all
