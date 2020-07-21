@@ -24,6 +24,8 @@ For more information about the CAs and leaf certificates visible to the <%= vars
 
 Rotate CAs and leaf certificates before they expire to avoid downtime for your foundation. To rotate certificates in <%= vars.platform_name %>, first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, follow a certificate rotation procedure to replace expiring certificates and deploy BOSH to apply changes.
 
+When rotating certificates, you may encounter safety violation errors if you attempt to perform an unsafe operation, such as running a step out of order. For information on how to troubleshoot these errors, see [
+Troubleshooting Safety Violations During Certificate Rotation](troubleshoot-cert-errors.html).
 
 ## <a id='prerequisite'></a> Prerequisites
 
