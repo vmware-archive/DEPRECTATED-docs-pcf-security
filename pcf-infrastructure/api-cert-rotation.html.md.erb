@@ -518,9 +518,22 @@ To rotate non-configurable leaf certificates:
 
 1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Click **Review Pending Changes**.
+1. If you have any on-demand service tiles installed, for each on-demand service tile:
+    1. Click the tile.
+    
+    1. Click the **Errands** tab.
+    
+    1. Enable the **Upgrade All Service Instances** errand. Running this errand is necessary to push CredHub certificate updates to each service instance.
+    
+    1. Click **Review Pending Changes**.
+    
+    1. Click **Apply Changes**.           
 
-1. Click **Apply Changes** to perform a second redeploy.
+1. If you do not have any on-demand service tiles installed:
+    
+    1. Click **Review Pending Changes**.
+    
+    1. Click **Apply Changes**.
 
 ### <a id='rotate-config'></a> Rotate Configurable Leaf Certificates
 
