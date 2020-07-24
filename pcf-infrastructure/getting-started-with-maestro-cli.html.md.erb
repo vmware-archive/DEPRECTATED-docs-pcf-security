@@ -16,7 +16,7 @@ CredHub Maestro is a command-line interface (CLI) that facilitates rotations of 
 
 * Clean up inactive certificate versions so that CredHub does not run out of disk space
 
-To use CredHub Maestro outside <%= vars.ops_manager %> environments, contact [Support](https://pivotal.io/support).
+To use CredHub Maestro outside <%= vars.ops_manager %> environments, contact [Support](https://tanzu.vmware.com/support).
 
 
 ## <a id='setup-usage'></a> Set Up Environment Variables
@@ -206,3 +206,11 @@ You can use the following flags with `maestro garbage-collect ca`:
 * `dry-run`: List CA versions to be removed.
 
 * `force`: Remove all inactive CAs.
+
+## <a id="safety-checks"></a> Safety Checks
+
+CredHub Maestro performs basic safety checks when rotating certificates to prevent unsafe operations. 
+
+To skip CredHub Maestro safety checks, you can pass the `--skip-safety-check` flag to CredHub Maestro certificate rotation commands.
+
+For more information, see [Troubleshooting Safety Violations During Certificate Rotation](troubleshoot-cert-errors.html).
