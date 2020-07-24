@@ -33,6 +33,12 @@ Before you rotate CredHub-managed certificates:
 
 * To ensure that there is no app availability downtime during a rotation, <%= vars.recommended_by %> recommends that you scale up all instance groups and use an external blobstore.
 
+* Check which tiles in your installation support certificate rotation with CredHub Maestro.
+  Not every tile currently supports certificate rotation, so there is a potential for downtime.
+  For more information about which tiles support certificate rotation,
+  see [CredHub Maestro Tile Compatibility](maestro-tile-compatibility.html).
+  <p class='note'><strong>Note:</strong> Using CredHub Maestro to rotate CredHub-managed certificates might cause downtime for your deployment. However, you must use CredHub Maestro in a deployment with <%= vars.k8s_runtime_abbr %> installed, since you cannot rotate CredHub-managed certificates using the <%= vars.ops_manager %> API. You can still use the <%= vars.ops_manager %> API to rotate certificates stored in <%= vars.ops_manager %>.</p>
+
 
 ## <a id='check-expiration'></a> Check Expiration Dates and Certificate Types
 
@@ -212,7 +218,7 @@ To rotate the Services TLS CA and its leaf certificates:
         ```
         maestro regenerate ca --name "/services/tls_ca" --force
         ```
-        
+
 1. Mark the latest version of the Services TLS CA as transitional by running:
 
     ```
