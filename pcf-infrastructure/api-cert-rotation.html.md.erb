@@ -24,7 +24,7 @@ For more information about the CAs and leaf certificates visible to the <%= vars
 
 Rotate CAs and leaf certificates before they expire to avoid downtime for your foundation. To rotate certificates in <%= vars.platform_name %>, first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, follow a certificate rotation procedure to replace expiring certificates and deploy BOSH to apply changes.
 
-When rotating certificates, you may encounter safety violation errors if you attempt to perform an unsafe operation, such as running a step out of order. For information on how to troubleshoot these errors, see [
+When possible, the Ops Manager API invokes CredHub Maestro to rotate certificates. You may encounter CredHub Maestro safety violation errors if you attempt to perform an unsafe operation, such as running a rotation step out of order. For more information about troubleshooting these errors, see [
 Troubleshooting Safety Violations During Certificate Rotation](troubleshoot-cert-errors.html).
 
 ## <a id='prerequisite'></a> Prerequisites
@@ -35,8 +35,7 @@ Before you rotate certificates in <%= vars.ops_manager %> <%= vars.v_major_versi
 
 * You must have both <%= vars.ops_manager %> <%= vars.v_major_version %> and <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) <%= vars.v_major_version %> or later to rotate CredHub-managed certificates with this procedure. If you have a version of <%= vars.app_runtime_abbr %> earlier than <%= vars.v_major_version %>, you can follow this procedure to rotate certificates managed by <%= vars.ops_manager %>. Then, to rotate certificates managed in CredHub, see [Advanced Certificate Rotation with CredHub Maestro](advanced-certificate-rotation.html).
 
-* You cannot have <%= vars.k8s_runtime_full %> (<%= vars.k8s_runtime_abbr %>) installed to rotate CredHub-managed certificates with this procedure. If you have <%= vars.k8s_runtime_abbr %>, you can follow this procedure to rotate certificates managed by <%= vars.ops_manager %>. Then, to rotate certificates managed in CredHub, see [Advanced Certificate Rotation with CredHub Maestro](advanced-certificate-rotation.html).
-
+* You cannot have a version of Pivotal Application Service (PAS) earlier than v2.8.3 or any version of <%= vars.k8s_runtime_full %> (<%= vars.k8s_runtime_abbr %>) installed to rotate CredHub-managed certificates with this Ops Manager API-based procedure. Instead, you can follow this procedure to rotate certificates managed by <%= vars.ops_manager %>. Then, to rotate certificates managed in CredHub, see [Advanced Certificate Rotation with CredHub Maestro](advanced-certificate-rotation.html).
 
 ## <a id='checks'></a> Check Expiration Dates and Certificate Types
 

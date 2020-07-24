@@ -3,7 +3,7 @@ title: Troubleshooting Safety Violations During Certificate Rotation
 owner: CredHub
 ---
 
-This topic provides operators with information on how to troubleshoot any errors that are returned when rotating certificates with either the Ops Manager API or CredHub Maestro CLI.
+This topic provides operators with information on how to troubleshoot safety violation errors that are returned when rotating certificates with either the Ops Manager API or CredHub Maestro CLI.
 
 ## <a id="overview"></a> Overview of CredHub Maestro Safety Checks
 
@@ -11,23 +11,21 @@ CredHub Maestro performs basic safety checks when rotating certificates to preve
 
 The Ops Manager API invokes CredHub Maestro when rotating certificates. If a certificate rotation API command is unsafe, CredHub Maestro stops the command and returns one or more safety violations.
 
+<p class="note"><strong>Note</strong>: The Ops Manager API does not invoke CredHub Maestro during certificate rotation if it detects Pivotal Application Service (PAS) earlier than v2.8.3 or any version of Tanzu Kubernetes Grid Integrated Edition (TKGI) installed.</p>
+
 CredHub Maestro returns safety violations if a rotation step is run out of order. For example, you generate a new root certificate authority (CA) but attempt to activate it before clicking **Apply Changes**. Performing steps out of the correct order during certificate rotations can make your deployment unstable or risk downtime.
 
-### <a id="reqs"></a> Safety Checks in Ops Manager API Calls
+For information about certificate rotation using the Ops Manager API, see [Rotating Certificates](api-cert-rotation.html).
 
-To activate the CredHub Maestro safety checks in Ops Manager API calls, you need:
-
-* Ops Manager v2.10 or later 
-* Pivotal Application Service (PAS) v2.8 or TAS for VMs v2.9 or later 
-* No installation of Pivotal Container Service (PKS) or Tanzu Kubernetes Grid Integrated Edition (TKGI)
-
-If you are using an earlier version of PAS or have any version of PKS or TKGI installed, Ops Manager still runs safety checks, but they are not as comprehensive as the CredHub Maestro safety checks.
+For information about using the CredHub Maestro CLI, see [Getting Started with CredHub Maestro](getting-started-with-maestro-cli.html).
 
 ### <a id="skip-checks"></a> Skip Safety Checks
 
-To skip CredHub Maestro safety checks, you can pass the `skip_safety_check` parameter to the Ops Manager API endpoints for certificate rotation. This parameter automatically appends the `--skip-safety-check` flag to the CredHub Maestro CLI commands that Ops Manager runs during the certificate rotation. 
+To skip CredHub Maestro safety checks in Ops Manager API calls, you can pass `skip_safety_check=true` as a parameter to certificate rotation API endpoints. 
 
-Skipping the safety checks allows you to rotate your certificates if absolutely necessary. For example, if your CA has already expired and your apps are experiencing downtime, skipping safety checks allows you to bring your apps back faster.
+To skip CredHub Maestro safety checks in the CredHub Maestro CLI, specify the `--skip-safety-check` flag when running certificate rotation commands. 
+
+<p class="note warning">Warning</strong> Skipping safety checks is strongly discouraged. Use the option only if absolutely necessary. For example, you might need to skip safety checks if your CA has already expired and your apps are experiencing downtime. Skipping safety checks can help bring your apps back online faster.</p>
 
 ## <a id="error_ref"></a> Certificate Rotation Safety Violations
 
@@ -45,13 +43,20 @@ This section lists known safety violations that may occur when using the Ops Man
   <col width="20%">
   <col width="80%">
   <tr>
-  <th colspan="2" style="text-align: left;"> <br>
+  <th> Safety Violation </th>
+  <th style="text-align: left;"> <br>
    <code>there is more than one signing version of a certificate authority</code>
   <br><br></th>
   </tr>
   <tr>
-    <th>Symptom</th>
-    <td>Violation appears after calling the <code>/api/v0/certificate_authorities</code> Ops Manager API endpoint or after running one of the following Maestro commands:
+    <th> Related Commands </th>
+    <td>This safety violation may appear after calling the following Ops Manager API endpoints:
+      <ul><li><code>POST /api/v0/certificate_authorities/generate</code></li>
+      <li><code>POST /api/v0/certificate_authorities/{certificate_authority_guid}/activate</code></li>
+      <li><code>POST /api/v0/certificate_authorities/active/regenerate</code></li>
+      <li><code> DELETE /api/v0/certificate_authorities/{certificate_authority_guid}</code>
+      </li>
+      </ul>Or after running one of the following commands:
       <ul><li><code>maestro regenerate ca</code></li>
           <li><code>maestro update-transitional signing</code></li>
           <li><code>maestro regenerate leaf</code></li>
@@ -61,21 +66,24 @@ This section lists known safety violations that may occur when using the Ops Man
   </tr>
   <tr>
     <th>Cause</th>
-    <td>Maestro expects that only one version of the CA is used to sign active leaf certificates. During the rotation process, Maestro moves forward from one CA version to another in bulk, but is not equipped to handle mixed-mode operations where multiple CA versions are actively in use.
+    <td>CredHub Maestro expects that only one version of a CA is used to sign active leaf certificates. During the rotation process, Maestro moves forward from one CA version to another in bulk, but is not equipped to handle mixed-mode operations where multiple CA versions are actively in use.
 </td>
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
     <td>There are two possible problems with different solutions. To identify and resolve the root issue: 
       <ol>
-      <li>Run <code>maestro topology --name CERTIFICATE-NAME</code> where <code>CERTIFICATE-NAME</code> is the name of the certificate returned in the error message.</li>
-      <li>In the command line output, if the <code>signs</code> field contains a child certificate that has two versions set to <code>active: true</code> with different product tile deployment names, then do the following:
+      <li>Run <code>maestro topology --name CERTIFICATE-NAME</code> where <code>CERTIFICATE-NAME</code> is the name and full path of the certificate returned in the error message.</li>
+      <li>Check the command line output for the following:
+        <ul>
+        <li>
+        If the <code>signs</code> field contains a child certificate that has two versions set to <code>active: true</code> with different product tile deployment names:
          <ol><li> Navigate to the <strong>Ops Manager Installation Dashboard</strong>.</li>
          <li> Click <strong>Review Pending Changes</strong>.</li> 
          <li> Select the product tile that is associated with the older certificate version.</li>
          <li> Click <strong>Apply Changes</strong>.</li>
-       </ol></li>
-      <li>If there are multiple child certificates and their active versions have different signed-by versions, then do the following:
+       </ol></li></li>
+      <li>If there are multiple child certificates and their active versions have different signed-by versions:
       <ol>
          <li> Run <code>maestro regenerate leaf --signed-by PARENT-CA-NAME</code> where <code>PARENT-CA-NAME</code> is the name of the signing CA.</li>
          <li> Navigate to the <strong>Ops Manager Installation Dashboard</strong>.</li>
@@ -84,6 +92,7 @@ This section lists known safety violations that may occur when using the Ops Man
          <li> Click <strong>Apply Changes</strong>.</li>
       </ol>
       </li>
+      </ul>
     </ol>
 </td>
   </tr>
@@ -102,15 +111,14 @@ This section lists known safety violations that may occur when using the Ops Man
   <col width="20%">
   <col width="80%">
   <tr>
-  <th colspan="2" style="text-align: left;"> <br>
+  <th> Safety Violation </th>
+  <th style="text-align: left;"> <br>
    <code>certificate authorities can not have a transitional version</code>
   <br><br></th>
   </tr>
   <tr>
-    <th>Symptom</th>
-    <td>Violation appears after calling the <code>/api/v0/certificate_authorities</code> Ops Manager API endpoint or after running the following Maestro command:
-      <ul><li><code>maestro regenerate ca</code></li>
-      </ul>
+    <th>Related Commands</th>
+    <td>This safety violation may appear after calling the <code>POST /api/v0/certificate_authorities/generate</code> Ops Manager API endpoint or after running the <code>maestro regenerate ca</code> command.
     </td>
   </tr>
   <tr>
@@ -137,13 +145,17 @@ This section lists known safety violations that may occur when using the Ops Man
   <col width="20%">
   <col width="80%">
   <tr>
-  <th colspan="2" style="text-align: left;"> <br>
+  <th> Safety Violation </th>
+  <th style="text-align: left;"> <br>
    <code>active child certificate version is not the latest non-transitional version or more than one active version exists</code>
   <br><br></th>
   </tr>
   <tr>
-    <th>Symptom</th>
-    <td>Violation appears after calling the <code>/api/v0/certificate_authorities</code> Ops Manager API endpoint or after running the following Maestro commands:
+    <th>Related Commands</th>
+    <td>This safety violation may appear after calling the following Ops Manager API endpoints:
+      <ul><li><code>POST /api/v0/certificate_authorities/generate</code></li>
+      <li><code>POST /api/v0/certificate_authorities/{certificate_authority_guid}/activate</code></li>
+      </ul> Or after running the following commands:
       <ul><li><code>maestro regenerate ca</code></li>
         <li><code>maestro update-transitional signing</code></li>
       </ul>
@@ -156,7 +168,7 @@ This section lists known safety violations that may occur when using the Ops Man
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
-    <td>To resolve this error:
+    <td>To resolve this error:<br/><br/>
       <ol>
          <li> Navigate to the <strong>Ops Manager Installation Dashboard</strong>.</li>
          <li> Click <strong>Review Pending Changes</strong>.</li>
@@ -181,15 +193,14 @@ This section lists known safety violations that may occur when using the Ops Man
   <col width="20%">
   <col width="80%">
   <tr>
-  <th colspan="2" style="text-align: left;"> <br>
+  <th> Safety Violation </th>
+  <th style="text-align: left;"> <br>
    <code> certificate authorities latest version is not transitional</code>
   <br><br></th>
   </tr>
   <tr>
-    <th>Symptom</th>
-    <td>Violation appears after calling the <code>/api/v0/certificate_authorities</code> Ops Manager API endpoint or after running the following Maestro command:
-      <ul><li><code>maestro update-transitional signing</code></li>
-      </ul>
+    <th>Related Commands</th>
+    <td>This safety violation may appear after calling the <code>POST /api/v0/certificate_authorities/{certificate_authority_guid}/activate</code> Ops Manager API endpoint or after running the <code>maestro update-transitional signing</code> command.
     </td>
   </tr>
   <tr>
@@ -206,9 +217,8 @@ This section lists known safety violations that may occur when using the Ops Man
       <br/><br/>
       To work around this situation, take one of the following actions: 
       <ul>
-      <li>If the CA is new, exclude this CA in the <code>maestro update-transitional signing</code> step and future steps until the rotation is complete.
-      <li>If you need to rotate the CA now, re-run the earlier Maestro rotation steps, but only include the CAs that were not originally present. This will get all targeted CAs into the same state. Then, run the <code>maestro update-transitional signing</code> step again.</li>
-      <li></li>
+      <li>If the CA is new, exclude this CA by adding the <code>--exclude=CA-NAME</code> option for future commands during this rotation. For example, <code>maestro update-transitional signing --exclude=CA-NAME</code>.
+      <li>If you need to rotate the CA now, re-run the earlier CredHub Maestro rotation steps, but only include the CAs that were not originally present. This gets all targeted CAs into the same state. Then, run the <code>maestro update-transitional signing</code> step again.</li>
     </td>
   </tr>
 </table>
@@ -226,15 +236,14 @@ This section lists known safety violations that may occur when using the Ops Man
   <col width="20%">
   <col width="80%">
   <tr>
-  <th colspan="2" style="text-align: left;"> <br>
+  <th> Safety Violation </th>
+  <th style="text-align: left;"> <br>
    <code>signing version has to be transitional if there is a transitional certificate authority</code>
   <br><br></th>
   </tr>
   <tr>
-    <th>Symptom</th>
-    <td>Violation appears after calling the <code>/api/v0/certificate_authorities</code> Ops Manager API endpoint or after running the following Maestro command:
-      <ul><li><code>maestro regenerate leaf</code></li>
-      </ul>
+    <th>Related Commands</th>
+    <td>This safety violation may appear after calling the <code>POST /api/v0/certificate_authorities/active/regenerate</code>Ops Manager API endpoint or after running the <code>maestro regenerate leaf</code> command.
     </td>
   </tr>
   <tr>
@@ -246,7 +255,7 @@ This section lists known safety violations that may occur when using the Ops Man
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
     <td>Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.
     <br/><br/>
-    If you believe you are running the steps in the correct order, it is possible that a new leaf has been issued during the rotation process. You may also receive the <a href="#multiple-signing-cas"><code>there is more than one signing version</code></a> error. If this safety violation error appears, follow the mitigation steps for that error.
+    If you believe you are running the steps in the correct order, it is possible that a new leaf was issued while the rotation process was in progress. You may also receive the <a href="#multiple-signing-cas"><code>there is more than one signing version</code></a> error. If this safety violation error appears, follow the mitigation steps for that error.
     </td>
   </tr>
 </table>
@@ -264,21 +273,19 @@ This section lists known safety violations that may occur when using the Ops Man
   <col width="20%">
   <col width="80%">
   <tr>
-  <th colspan="2" style="text-align: left;"> <br>
+  <th> Safety Violation </th>
+  <th style="text-align: left;"> <br>
    <code>active child certificate version is signed by a certificate authority that is not the latest version</code>
   <br><br></th>
   </tr>
   <tr>
-    <th>Symptom</th>
-    <td>Violation appears after calling the <code>/api/v0/certificate_authorities</code> Ops Manager API endpoint or after running the following Maestro CLI command:
-      <ul><li><code>maestro update-transitional remove</code></li>
-      </ul>
+    <th>Related Commands</th>
+    <td>This safety violation may appear after calling the <code> DELETE /api/v0/certificate_authorities/{certificate_authority_guid}</code> Ops Manager API endpoint or after running the <code>maestro update-transitional remove</code> command.
     </td>
   </tr>
   <tr>
     <th>Cause</th>
-    <td>There are still active intermediate CAs or leaf certificates that are not signed by the latest CA version. 
-.</td>
+    <td>There are still active intermediate CAs or leaf certificates that are not signed by the latest CA version.</td>
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
@@ -300,15 +307,14 @@ This section lists known safety violations that may occur when using the Ops Man
   <col width="20%">
   <col width="80%">
   <tr>
-  <th colspan="2" style="text-align: left;"> <br>
+  <th> Safety Violation </th>
+  <th style="text-align: left;"> <br>
    <code>active certificate version is not the latest non transitional version</code>
   <br><br></th>
   </tr>
   <tr>
-    <th>Symptom</th>
-    <td>Violation appears after calling the <code>/api/v0/certificate_authorities</code> Ops Manager API endpoint or after running the following Maestro CLI command:
-      <ul><li><code>maestro update-transitional remove</code></li>
-      </ul>
+    <th>Related Commands</th>
+    <td>This safety violation may appear after calling the <code> DELETE /api/v0/certificate_authorities/{certificate_authority_guid}</code> Ops Manager API endpoint or after running the <code>maestro update-transitional remove</code> command.
     </td>
   </tr>
   <tr>
@@ -335,21 +341,20 @@ This section lists known safety violations that may occur when using the Ops Man
   <col width="20%">
   <col width="80%">
   <tr>
-  <th colspan="2" style="text-align: left;"> <br>
+  <th> Safety Violation </th>
+  <th style="text-align: left;"> <br>
    <code>transitional certificate authority is the latest version
 </code>
   <br><br></th>
   </tr>
   <tr>
-    <th>Symptom</th>
-    <td>Violation appears after calling the <code>/api/v0/certificate_authorities</code> Ops Manager API endpoint or after running the following Maestro command:
-      <ul><li><code>maestro update-transitional remove</code></li>
-      </ul>
+    <th>Related Commands</th>
+    <td>This safety violation may appear after calling the <code> DELETE /api/v0/certificate_authorities/{certificate_authority_guid}</code> Ops Manager API endpoint or after running the <code>maestro update-transitional remove</code> command.
     </td>
   </tr>
   <tr>
     <th>Cause</th>
-    <td>The latest version of one of more CAs is transitional, when CredHub Maestro is expecting the transitional version to be an older version.
+    <td>The latest version of one or more CAs is transitional, when CredHub Maestro is expecting the transitional version to be an older version.
 </td>
   </tr>
   <tr>
