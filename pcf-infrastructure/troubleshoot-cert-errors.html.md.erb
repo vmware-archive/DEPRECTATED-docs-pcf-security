@@ -31,7 +31,7 @@ Skipping the safety checks allows you to rotate your certificates if absolutely 
 
 ## <a id="error_ref"></a> Certificate Rotation Safety Violations
 
-This section lists known safety violations that might occur when using the Ops Manager API or CredHub Maestro CLI to rotate certificates. Each table includes the literal safety violation message, describes the safety violation, and presents possible solutions to resolving the underyling cause. 
+This section lists known safety violations that may occur when using the Ops Manager API or CredHub Maestro CLI to rotate certificates. Each table includes the literal safety violation message, describes the safety violation, and presents possible solutions to resolving the underyling cause. 
 
 ### <a id="multiple-signing-cas"></a> Multiple Signing Versions of a CA
 
@@ -66,11 +66,25 @@ This section lists known safety violations that might occur when using the Ops M
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
-    <td>There are two potential root problems with different solutions: 
-      <ul>
-      <li>The leaf certificate has multiple versions and two versions from separate deployments are active at once. Keep deploying until all deployments are only using the latest version of the leaf certificate.</li>
-      <li>There are multiple leaf certificates with only the latest version of each in use, but they are signed by different versions of the CA. Consolidate the leaf certificates to use a single version of the CA by regenerating the older version of the leaf certificate against the newer CA. 
+    <td>There are two possible problems with different solutions. To identify and resolve the root issue: 
+      <ol>
+      <li>Run <code>maestro topology --name CERTIFICATE-NAME</code> where <code>CERTIFICATE-NAME</code> is the name of the certificate returned in the error message.</li>
+      <li>In the command line output, if the <code>signs</code> field contains a child certificate that has two versions set to <code>active: true</code> with different product tile deployment names, then do the following:
+         <ol><li> Navigate to the <strong>Ops Manager Installation Dashboard</strong>.</li>
+         <li> Click <strong>Review Pending Changes</strong>.</li> 
+         <li> Select the product tile that is associated with the older certificate version.</li>
+         <li> Click <strong>Apply Changes</strong>.</li>
+       </ol></li>
+      <li>If there are multiple child certificates and their active versions have different signed-by versions, then do the following:
+      <ol>
+         <li> Run <code>maestro regenerate leaf --signed-by PARENT-CA-NAME</code> where <code>PARENT-CA-NAME</code> is the name of the signing CA.</li>
+         <li> Navigate to the <strong>Ops Manager Installation Dashboard</strong>.</li>
+         <li> Click <strong>Review Pending Changes</strong>.</li>
+         <li> Select all products.</li>
+         <li> Click <strong>Apply Changes</strong>.</li>
+      </ol>
       </li>
+    </ol>
 </td>
   </tr>
 </table>
@@ -101,13 +115,12 @@ This section lists known safety violations that might occur when using the Ops M
   </tr>
   <tr>
     <th>Cause</th>
-    <td>Maestro has detected an existing transitional CA version. This means that the certificate rotation process has already been started.
+    <td>Maestro has detected an existing transitional CA version. This means that the certificate rotation process has already started.
 </td>
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
-    <td>Continue with the certificate rotation procedure. Do not run earlier commands after the rotation process has started.
-</td>
+    <td>Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.</td>
   </tr>
 </table>
 </div>
@@ -125,7 +138,7 @@ This section lists known safety violations that might occur when using the Ops M
   <col width="80%">
   <tr>
   <th colspan="2" style="text-align: left;"> <br>
-   <code>active child certificate version is not the latest non transitional version or more than one active version exists</code>
+   <code>active child certificate version is not the latest non-transitional version or more than one active version exists</code>
   <br><br></th>
   </tr>
   <tr>
@@ -138,12 +151,19 @@ This section lists known safety violations that might occur when using the Ops M
   </tr>
   <tr>
     <th>Cause</th>
-    <td>This error usually occurs if you have not applied your changes to any or all deployments that are required to propagate the latest version of the certificate.
+    <td>This error usually occurs if you have not applied your changes to all the deployments that are required to propagate the latest version of the child certificate. A child certificate can refer to a leaf certificate or an intermediate certificate.
 </td>
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
-    <td>To resolve this error, apply changes on all of your deployments. You can confirm that the latest version is active using <code>maestro topology --name {certificate_name}</code>.
+    <td>To resolve this error:
+      <ol>
+         <li> Navigate to the <strong>Ops Manager Installation Dashboard</strong>.</li>
+         <li> Click <strong>Review Pending Changes</strong>.</li>
+         <li> Select all products.</li>
+         <li> Click <strong>Apply Changes</strong>.</li>
+         <li> After the deployment completes, confirm that the latest version is propagated by running <code>maestro topology --name CERTIFICATE-NAME</code> where <code>CERTIFICATE-NAME</code> is the name of the certificate returned in the error message.</li>
+      </ol>
     </td>
   </tr>
 </table>
@@ -162,7 +182,7 @@ This section lists known safety violations that might occur when using the Ops M
   <col width="80%">
   <tr>
   <th colspan="2" style="text-align: left;"> <br>
-   <code>certificate authorities latest version is not transitional</code>
+   <code> certificate authorities latest version is not transitional</code>
   <br><br></th>
   </tr>
   <tr>
@@ -180,20 +200,21 @@ This section lists known safety violations that might occur when using the Ops M
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
     <td>
-      Continue with the certificate rotation procedure. Do not run earlier commands after the rotation process has started.
+      Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.
       <br/><br/>
       If you believe you are running the steps in the correct order, it is possible that a new CA has been created in CredHub after the rotation process has begun. 
       <br/><br/>
-      To work around this situation, take one of the these actions: 
+      To work around this situation, take one of the following actions: 
       <ul>
-      <li>Re-run the earlier rotation maestro steps, only including these CAs that were not originally present in order to get all targeted CAs into the same state. Then run this step again, or</li>
-      <li>Exclude this CA in this and future steps until the rotation is complete.</li>
+      <li>If the CA is new, exclude this CA in the <code>maestro update-transitional signing</code> step and future steps until the rotation is complete.
+      <li>If you need to rotate the CA now, re-run the earlier Maestro rotation steps, but only include the CAs that were not originally present. This will get all targeted CAs into the same state. Then, run the <code>maestro update-transitional signing</code> step again.</li>
+      <li></li>
     </td>
   </tr>
 </table>
 </div>
 
-### <a id="multiple-active-child-certs"></a> Signing Version Must Be Transitional
+### <a id="signing-version-transitional-req"></a> Signing Version Must Be Transitional
 
 <div>
   <table class="nice">
@@ -218,21 +239,56 @@ This section lists known safety violations that might occur when using the Ops M
   </tr>
   <tr>
     <th>Cause</th>
-    <td>The leaf certificates are expected to be signed only by older versions of their appropriate CAs. At this point in the rotation, the older signing version for each CA should be transitional so that new leaf certificates are issued from the latest version.
+    <td>The leaf certificates must be only signed by older versions of their appropriate CAs. At this point in the rotation, the older signing version for each CA should be transitional so that new leaf certificates are issued from the latest version.
 </td>
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
-    <td>
-   Continue with the certificate rotation procedure. Do not run earlier commands after the rotation process has started.
+    <td>Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.
     <br/><br/>
-    If you believe you are running the steps in the correct order, it is possible that a new leaf has been issued during the rotation process. You may also receive the <a href="#multiple-signing-cas"><code>there is more than one signing version</code></a> error. If received, follow the mitigation steps for that error.
+    If you believe you are running the steps in the correct order, it is possible that a new leaf has been issued during the rotation process. You may also receive the <a href="#multiple-signing-cas"><code>there is more than one signing version</code></a> error. If this safety violation error appears, follow the mitigation steps for that error.
     </td>
   </tr>
 </table>
 </div>
 
-### <a id="signed-by-non-latest"></a> Stale Leaf Certificates Detected
+### <a id="active-not-latest"></a> Active Certificates Not Signed By Latest CA Detected
+
+<div>
+  <table class="nice">
+    <style>
+      main table {
+        table-layout: fixed;
+      }
+    </style>
+  <col width="20%">
+  <col width="80%">
+  <tr>
+  <th colspan="2" style="text-align: left;"> <br>
+   <code>active child certificate version is signed by a certificate authority that is not the latest version</code>
+  <br><br></th>
+  </tr>
+  <tr>
+    <th>Symptom</th>
+    <td>Violation appears after calling the <code>/api/v0/certificate_authorities</code> Ops Manager API endpoint or after running the following Maestro CLI command:
+      <ul><li><code>maestro update-transitional remove</code></li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <th>Cause</th>
+    <td>There are still active intermediate CAs or leaf certificates that are not signed by the latest CA version. 
+.</td>
+  </tr>
+  <tr>
+    <th style="vertical-align: top; padding-top: 1em;">Solution</th>
+    <td>Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.
+</td>
+  </tr>
+</table>
+</div>
+
+### <a id="active-not-latest"></a> Stale Leaf Certificates Detected
 
 <div>
   <table class="nice">
@@ -257,17 +313,17 @@ This section lists known safety violations that might occur when using the Ops M
   </tr>
   <tr>
     <th>Cause</th>
-    <td>There are still stale leaf certificates in use, with new versions ready to be deployed.</td>
+    <td>There are still stale leaf certificates in use with new versions ready to be deployed.</td>
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
-    <td>Continue with the certificate rotation procedure. Do not run earlier commands after the rotation process has started.
+    <td>Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.
 </td>
   </tr>
 </table>
 </div>
 
-### <a id="signed-by-non-latest"></a> Transitional CA Detected as Latest CA
+### <a id="transitional-ca-latest"></a> Transitional CA Detected as Latest CA
 
 <div>
   <table class="nice">
@@ -298,10 +354,10 @@ This section lists known safety violations that might occur when using the Ops M
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
-    <td>Continue with the certificate rotation procedure. Do not run earlier commands after the rotation process has started.
+    <td>Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.
     <br/><br/>
-    It is possible that you are attempting to halt a rotation in the early stages, likely after new transitional CAs have been issued but not yet used. Continue with the rotation at this point. If continuing with the rotation is impossible, reach out to <a href="https://tanzu.vmware.com/support">Support</a> for guidance.
-</td>
+    It is possible that you are attempting to halt a rotation in the early stages, likely after new transitional CAs have been issued but not yet used. Continue with the rotation at this point. If continuing with the rotation is impossible due to other deployment needs, reach out to <a href="https://tanzu.vmware.com/support">Support</a> for guidance.
+  </td>
   </tr>
 </table>
 </div>
