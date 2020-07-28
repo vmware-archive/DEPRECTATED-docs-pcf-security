@@ -77,6 +77,14 @@ To rotate certificates, follow one of the following procedures:
 
 <p class="note"><strong>Note:</strong> All CredHub Maestro rotation commands have a dry-run flag that can be used to preview the certificates to be modified.</p>
 
+### <a id="safety-checks"></a> Safety Checks
+
+CredHub Maestro performs basic safety checks when rotating certificates to prevent unsafe operations. 
+
+To skip CredHub Maestro safety checks, you can pass the `--skip-safety-check` flag to CredHub Maestro certificate rotation commands.
+
+For more information, see [Troubleshooting CredHub Maestro Safety Violations During Certificate Rotation](troubleshoot-cert-errors.html).
+
 ### <a id='bulk-rotation'></a> Rotate All CAs and Leaf Certificates
 
 This section describes the procedure for bulk rotating all CAs and leaf certificates using CredHub Maestro.
