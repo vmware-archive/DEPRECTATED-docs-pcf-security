@@ -11,7 +11,7 @@ CredHub Maestro performs basic safety checks when rotating certificates to preve
 
 The Ops Manager API invokes CredHub Maestro when rotating certificates. If a certificate rotation API command is unsafe, CredHub Maestro stops the command and returns one or more safety violations.
 
-<p class="note"><strong>Note</strong>: The Ops Manager API does not invoke CredHub Maestro during certificate rotation if it detects Pivotal Application Service (PAS) earlier than v2.8.3 or any version of Tanzu Kubernetes Grid Integrated Edition (TKGI) installed.</p>
+The Ops Manager API does not invoke CredHub Maestro and subsequently Maestro-related safety checks during certificate rotation if it detects Pivotal Application Service (PAS) earlier than v2.8.2 or any version of Tanzu Kubernetes Grid Integrated Edition (TKGI) or Pivotal Container Service (PKS) installed.
 
 CredHub Maestro returns safety violations if a rotation step is run out of order. For example, you generate a new root certificate authority (CA) but attempt to activate it before clicking **Apply Changes**. Performing steps out of the correct order during certificate rotations can make your deployment unstable or risk downtime.
 
@@ -19,17 +19,17 @@ For information about certificate rotation using the Ops Manager API, see [Rotat
 
 For information about using the CredHub Maestro CLI, see [Getting Started with CredHub Maestro](getting-started-with-maestro-cli.html).
 
-### <a id="skip-checks"></a> Skip Safety Checks
+## <a id="skip-checks"></a> Skip Safety Checks
 
 To skip CredHub Maestro safety checks in Ops Manager API calls, you can pass `skip_safety_check=true` as a parameter to certificate rotation API endpoints. 
 
 To skip CredHub Maestro safety checks in the CredHub Maestro CLI, specify the `--skip-safety-check` flag when running certificate rotation commands. 
 
-<p class="note warning"><strong>Warning</strong> Skipping safety checks is strongly discouraged. Use the option only if absolutely necessary. For example, you might need to skip safety checks if your CA has already expired and your apps are experiencing downtime. Skipping safety checks can help bring your apps back online faster.</p>
+<p class="note warning"><strong>Warning</strong> Skipping safety checks is strongly discouraged. Use the option only if absolutely necessary. For example, you might want to skip safety checks if your CA has already expired and your apps are experiencing downtime. Skipping safety checks can help bring your apps back online faster. If certificates have expired, contact <%= vars.support_link %> for guidance.</p>
 
-## <a id="error_ref"></a> Certificate Rotation Safety Violations
+## <a id="error_ref"></a> Troubleshoot Certificate Rotation Safety Violations
 
-This section lists known safety violations that may occur when using the Ops Manager API or CredHub Maestro CLI to rotate certificates. Each table includes the literal safety violation message, describes the safety violation, and presents possible solutions to resolving the underyling cause. 
+This section lists known safety violations that may occur when using the Ops Manager API or CredHub Maestro CLI to rotate certificates. Each table includes the literal safety violation message, describes the safety violation, and presents possible solutions to resolve the underlying cause. 
 
 ### <a id="multiple-signing-cas"></a> Multiple Signing Versions of a CA
 
@@ -128,7 +128,7 @@ This section lists known safety violations that may occur when using the Ops Man
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
-    <td>Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.</td>
+    <td>Continue with the certificate rotation procedure. In most cases, this means clicking <strong>Apply Changes</strong> in the Ops Manager Installation Dashboard. Do not run earlier commands after the rotation process has started.</td>
   </tr>
 </table>
 </div>
@@ -211,14 +211,14 @@ This section lists known safety violations that may occur when using the Ops Man
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
     <td>
-      Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.
+      Continue with the certificate rotation procedure. In most cases, this means clicking <strong>Apply Changes</strong> in the Ops Manager Installation Dashboard. Do not run earlier commands after the rotation process has started.
       <br/><br/>
       If you believe you are running the steps in the correct order, it is possible that a new CA has been created in CredHub after the rotation process has begun. 
       <br/><br/>
       To work around this situation, take one of the following actions: 
       <ul>
       <li>If the CA is new, exclude this CA by adding the <code>--exclude=CA-NAME</code> option for future commands during this rotation. For example, <code>maestro update-transitional signing --exclude=CA-NAME</code>.
-      <li>If you need to rotate the CA now, re-run the earlier CredHub Maestro rotation steps, but only include the CAs that were not originally present. This gets all targeted CAs into the same state. Then, run the <code>maestro update-transitional signing</code> step again.</li>
+      <li>If you need to rotate the CA now, re-run the earlier CredHub Maestro rotation steps <code>maestro regenerate ca CA-NAME</code> where <code>CA-NAME</code> is the name of a CA that was not originally present. Repeat this step for all CAs not originally present. This gets all targeted CAs into the same state. Then, run the <code>maestro update-transitional signing</code> step again.</li>
     </td>
   </tr>
 </table>
@@ -248,12 +248,12 @@ This section lists known safety violations that may occur when using the Ops Man
   </tr>
   <tr>
     <th>Cause</th>
-    <td>The leaf certificates must be only signed by older versions of their appropriate CAs. At this point in the rotation, the older signing version for each CA should be transitional so that new leaf certificates are issued from the latest version.
+    <td>The leaf certificates must only be signed by older versions of their appropriate CAs. At this point in the rotation, the older signing version for each CA should be transitional so that new leaf certificates are issued from the latest version.
 </td>
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
-    <td>Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.
+    <td>Continue with the certificate rotation procedure. In most cases, this means clicking <strong>Apply Changes</strong> in the Ops Manager Installation Dashboard. Do not run earlier commands after the rotation process has started.
     <br/><br/>
     If you believe you are running the steps in the correct order, it is possible that a new leaf was issued while the rotation process was in progress. You may also receive the <a href="#multiple-signing-cas"><code>there is more than one signing version</code></a> error. If this safety violation error appears, follow the mitigation steps for that error.
     </td>
@@ -289,7 +289,7 @@ This section lists known safety violations that may occur when using the Ops Man
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
-    <td>Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.
+    <td>Continue with the certificate rotation procedure. In most cases, this means clicking <strong>Apply Changes</strong> in the Ops Manager Installation Dashboard. Do not run earlier commands after the rotation process has started.
 </td>
   </tr>
 </table>
@@ -323,7 +323,7 @@ This section lists known safety violations that may occur when using the Ops Man
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
-    <td>Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.
+    <td>Continue with the certificate rotation procedure. In most cases, this means clicking <strong>Apply Changes</strong> in the Ops Manager Installation Dashboard. Do not run earlier commands after the rotation process has started.
 </td>
   </tr>
 </table>
@@ -359,7 +359,7 @@ This section lists known safety violations that may occur when using the Ops Man
   </tr>
   <tr>
     <th style="vertical-align: top; padding-top: 1em;">Solution</th>
-    <td>Continue with the certificate rotation procedure. In most cases, this means applying changes. Do not run earlier commands after the rotation process has started.
+    <td>Continue with the certificate rotation procedure. In most cases, this means clicking <strong>Apply Changes</strong> in the Ops Manager Installation Dashboard. Do not run earlier commands after the rotation process has started.
     <br/><br/>
     It is possible that you are attempting to halt a rotation in the early stages, likely after new transitional CAs have been issued but not yet used. Continue with the rotation at this point. If continuing with the rotation is impossible due to other deployment needs, reach out to <a href="https://tanzu.vmware.com/support">Support</a> for guidance.
   </td>
