@@ -18,7 +18,7 @@ The following describes when to use CredHub Maestro instead of the <%= vars.ops_
 
 * You have <%= vars.k8s_runtime_full %> (<%= vars.k8s_runtime_abbr %>) installed and therefore cannot use the <%= vars.ops_manager %> API to rotate CredHub-managed certificates.
 
-* You have a version of <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) earlier than <%= vars.v_major_version %> installed and therefore cannot use the <%= vars.ops_manager %> API to rotate CredHub-managed certificates.
+* You have a version of <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>) earlier than v2.8.2 installed and therefore cannot use the <%= vars.ops_manager %> API to rotate CredHub-managed certificates.
 
 * You need to rotate one or more specific CredHub-managed certificates and do not want to rotate any other certificates managed by <%= vars.ops_manager %> or CredHub.
 
@@ -36,8 +36,6 @@ Before you rotate CredHub-managed certificates with CredHub Maestro:
   For more information about which tiles support certificate rotation,
   see [CredHub Maestro Tile Compatibility](maestro-tile-compatibility.html).
   <p class='note'><strong>Note:</strong> Using CredHub Maestro to rotate CredHub-managed certificates might cause downtime for your deployment. However, you must use CredHub Maestro in a deployment with <%= vars.k8s_runtime_abbr %> installed, since you cannot rotate CredHub-managed certificates using the <%= vars.ops_manager %> API. You can still use the <%= vars.ops_manager %> API to rotate certificates stored in <%= vars.ops_manager %>.</p>
-
-<p class="note warning"><strong>Warning:</strong> <%= vars.company_name %> recommends that you rotate certificates with both <%= vars.ops_manager %> <%= vars.v_major_version %> and <%= vars.app_runtime_abbr %> <%= vars.v_major_version %> already installed. You can follow this procedure if you are using an earlier version of <%= vars.app_runtime_abbr %>, but you may experience app downtime.</p>
 
 ## <a id='check-expiration'></a> Check Expiration Dates and Certificate Types
 
