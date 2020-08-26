@@ -5,12 +5,12 @@ owner: Ops Manager
 
 This topic describes how to check the expiration date of and rotate certificate authorities (CAs) and leaf certificates in <%= vars.product_name_full %> (<%= vars.product_name %>).
 
-This includes the <%= vars.ops_manager %> root CA, BOSH NATS CA, and leaf certificates
-in <%= vars.product_name %>) that are visible to the <%= vars.ops_manager %> API.
+This includes the <%= vars.ops_manager %> root CA, BOSH NATS CA, and leaf certificates in <%= vars.product_name %> that are visible to the <%= vars.ops_manager %> API.
 
 <p class='note warning'><strong>Warning:</strong> The rotation procedures described in this topic do not work if the certificates have already expired. If the certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/credentials.html).
+
 
 ## <a id='overview'></a> Overview
 
@@ -25,15 +25,15 @@ Rotate CAs and leaf certificates before they expire to avoid downtime for your f
 
 This section explains how to rotate the <%= vars.ops_manager %> root CA, BOSH NATS CA, and leaf certificates in <%= vars.product_name %>.
 
-<p class="note"><strong>Note:</strong> The BOSH NATS CA is automatically rotated when you rotate the <%= vars.ops_manager %> root CA. For more information, see <a href="./certificate-types.html">Certificate Types</a>.</p>
+<p class="note"><strong>Note:</strong> The BOSH NATS CA is automatically rotated when you rotate the <%= vars.ops_manager %> root CA. For more information, see <a href="certificate-types.html">Certificate Types</a>.</p>
 
-To rotate certificates in <%= vars.platform_name %>, you first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, you follow a certificate rotation procedure to replace expiring certificates and redeploy BOSH to apply changes.
+To rotate certificates in <%= vars.product_name %>, you first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, you follow a certificate rotation procedure to replace expiring certificates and redeploy BOSH to apply changes.
 
 To rotate CAs and leaf certificates:
 
-1. Check the expiration dates of the <%= vars.ops_manager %> root CA and leaf certificates, and identify the types of leaf certificates that require rotation. For more information, see [Check Expiration Dates and Certificate Types](#checks).
+1. Check the expiration dates of the <%= vars.ops_manager %> root CA and leaf certificates, and identify the types of leaf certificates that require rotation. For more information, see [Check Expiration Dates and Certificate Types](#checks) below.
 
-1. Rotate the certificates that expire soon. For more information, see [Rotate Certificates](#rotate).
+1. Rotate the certificates that expire soon. For more information, see [Rotate Certificates](#rotate) below.
 
 
 ## <a id='checks'></a> Check Expiration Dates and Certificate Types
@@ -114,26 +114,26 @@ To check the expiration dates of leaf certificates and identify the types of lea
   * **Configurable certificates:** Configurable leaf certificates have the following property value:
       * `configurable` is `true`.
 
-1. Continue to [Rotate Certificates](#rotate) with your list of certificate types that expire soon.
+1. After you identify the list of certificates that expire soon, follow one of the procedures in [Rotate Certificates](#rotate) below.
 
 
 ## <a id='rotate'></a> Rotate Certificates
 
 This section includes procedures for rotating CAs and leaf certificates. There are different rotation procedures for each type of certificate that requires rotation.
 
-You can determine which rotation procedure to follow based on the types of certificates in your foundation that must be rotated. For more information about identifying the types of certificates in your foundation that expire soon, see [Check Expiration Dates and Certificate Types](#checks).
+You can determine which rotation procedure to follow based on the types of certificates in your foundation that must be rotated. For more information about identifying the types of certificates in your foundation that expire soon, see [Check Expiration Dates and Certificate Types](#checks) above.
 
 To rotate certificates, follow one of these procedures:
 
 * To rotate non-rotatable certificates, contact [Pivotal Support](http://support.pivotal.io).
 
-* To rotate CAs stored in <%= vars.ops_manager %>, see [Rotate the Root CA and Leaf Certificates](#rotate-ca). This procedure also rotates the BOSH NATS CA.
+* To rotate CAs stored in <%= vars.ops_manager %>, see [Rotate the Root CA and Leaf Certificates](#rotate-ca) below. This procedure also rotates the BOSH NATS CA.
 
-* To rotate non-configurable leaf certificates, but not the <%= vars.ops_manager %> root CA or BOSH NATS CA, see [Rotate Non-Configurable Leaf Certificates](#regenerate).
+* To rotate non-configurable leaf certificates, but not the <%= vars.ops_manager %> root CA or BOSH NATS CA, see [Rotate Non-Configurable Leaf Certificates](rotate-non-configurable-certs.html).
 
-* To rotate configurable leaf certificates, but not the <%= vars.ops_manager %> root CA or BOSH NATS CA, see [Rotate Configurable Leaf Certificates](#rotate-config).
+* To rotate configurable leaf certificates, but not the <%= vars.ops_manager %> root CA or BOSH NATS CA, see [Rotate Configurable Leaf Certificates](rotate-configurable-certs.html).
 
-* To rotate the <code>/services/tls_ca</code> certificate, see <a href="services_tls_ca_rotate.html">Rotating the Services TLS CA and Its Leaf Certificates</a>.
+* To rotate the `/services/tls_ca` certificate, see [Rotating the Services TLS CA and Its Leaf Certificates](services_tls_ca_rotate.html).
 
 ### <a id='rotate-ca'></a> Rotate the Root CA and Leaf Certificates
 
@@ -158,16 +158,15 @@ certificates.
 
 To rotate the <%= vars.ops_manager %> root CA and leaf certificates:
 
-1. Add a new <%= vars.ops_manager %> root CA. For more information, see [Add a New Root CA](#add-new-ca).
+1. Add a new <%= vars.ops_manager %> root CA. For more information, see [Add a New Root CA](#add-new-ca) below.
 
-1. Activate the <%= vars.ops_manager %> root CA. For more information, see [Activate the Root CA](#activate-new-ca).
+1. Activate the <%= vars.ops_manager %> root CA. For more information, see [Activate the Root CA](#activate-new-ca) below.
 
-1. Rotate leaf configurable certificates.
-   For more information, see [Rotate Configurable Leaf Certificates](#rotate-config-after-new-root).
+1. Rotate leaf configurable certificates. For more information, see [Rotate Configurable Leaf Certificates](#rotate-config-after-new-root) below.
 
-1. Rotate non-configurable leaf certificates. For more information, see [Rotate Non-Configurable Leaf Certificates from the New Root CA](#regenerate-from-new-root).
+1. Rotate non-configurable leaf certificates. For more information, see [Rotate Non-Configurable Leaf Certificates from the New Root CA](#regenerate-from-new-root) below.
 
-1. Delete the old root CA. For more information, see [Delete the Old Root CA](#delete).
+1. Delete the old root CA. For more information, see [Delete the Old Root CA](#delete) below.
 
 #### <a id='add-new-ca'></a> Step 1: Add a New Root CA
 
@@ -176,8 +175,8 @@ This section describes how to add a new root CA for <%= vars.ops_manager %>. The
 This procedure also automatically regenerates the BOSH NATS CA.
 
 <p class="note warning"><strong>Warning:</strong>The CAs for certain versions of the MySQL, Redis,
-RabbitMQ, and Pivotal Cloud Cache tiles are excluded from rotation. See the tile-specific documentation for
-information about rotating these CAs.</p>
+RabbitMQ, and Pivotal Cloud Cache tiles are excluded from rotation. For more information about
+rotating these CAs, see the tile-specific documentation.</p>
 
 To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA:
 
@@ -303,9 +302,9 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
 
 1. Navigate to `https://OPS-MANAGER-FQDN` in a browser, where `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
 
-1. Log in to <%= vars.ops_manager %>.
+1. Log in to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Click the BOSH Director tile.
+1. Click the **BOSH Director** tile.
 
 1. Select **Director Config**.
 
@@ -378,9 +377,9 @@ Any configurable certificates generated from the <%= vars.ops_manager %> root CA
 
 To regenerate and rotate configurable leaf certificates, do the following for each configurable certificate that expires soon:
 
-1. Find the text field where the certificate is configured within the <%= vars.ops_manager %> interface. You might need to look through multiple configuration panes to identify the location of the certificate configuration text field. Use the following fields to identify the location of the certificate configuration text field:
-  * The `product_guid` field in the <%= vars.ops_manager %> API output can help identify in which tile the certificate is configured. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the <%= vars.product_runtime %> (<%= vars.product_short %>) tile.
-  * The `property_reference` field in the API output can help identify in which **Settings** pane the certificate is configured. For example, the `uaa.service_provider_key_credentials` property is configured in the **UAA** pane of the <%= vars.product_short %> tile.
+1. Find the text field where the certificate is configured within the <%= vars.ops_manager %> UI. You might need to look through multiple configuration panes to identify the location of the certificate configuration text field. Use the following fields to identify the location of the certificate configuration text field:
+  * The `product_guid` field in the <%= vars.ops_manager %> API output can help identify the tile in which the certificate is configured. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the <%= vars.product_runtime %> (<%= vars.product_short %>) tile.
+  * The `property_reference` field in the <%= vars.ops_manager %> API output can help identify the configuration pane in which the certificate is configured. For example, the `uaa.service_provider_key_credentials` property is configured in the **UAA** pane of the <%= vars.product_short %> tile.
 
 1. Copy a new value for the certificate into the text field or generate a new certificate using the **Generate RSA Certificate** button.
 
@@ -411,7 +410,7 @@ To rotate non-configurable leaf certificates from the new root CA:
 
 1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Click the BOSH Director tile.
+1. Click the **BOSH Director** tile.
 
 1. Select **Director Config**.
 
@@ -447,9 +446,9 @@ To rotate non-configurable leaf certificates from the new root CA:
 
 After activating new CAs and rotating leaf certificates from the new CAs, you should delete the old <%= vars.ops_manager %> root CA from your foundation.
 
-If your old root CA or leaf certificates have been compromised, you must delete the old root CA immediately. Otherwise, the old root CA and its leaf certificates may still be trusted, which compromises your foundation's security. If your old root CA or leaf certificates have not been compromised, <%= vars.recommended_by %> recommends that you delete the old root CA as soon as possible, but you can also delete it at a later time, such as in conjunction with another deploy.
+If your old root CA or leaf certificates have been compromised, you must delete the old root CA immediately. Otherwise, the old root CA and its leaf certificates may still be trusted, which compromises your foundation's security. If your old root CA or leaf certificates have not been compromised, <%= vars.company_name %> recommends that you delete the old root CA as soon as possible, but you can also delete it at a later time, such as in conjunction with another deploy.
 
-<p class="note warning"><strong>Warning:</strong> Before you delete the old CA, ensure that you reviewed the <strong>Review Pending Changes</strong> page and clicked <strong>Apply Changes</strong> as part of <a href="#regenerate-from-new-root">Rotate Non-Configurable Leaf Certificates from the New CAs</a>.</p>
+<p class="note warning"><strong>Warning:</strong> Before you delete the old CA, ensure that you reviewed the <strong>Review Pending Changes</strong> page and clicked <strong>Apply Changes</strong> as part of <a href="#regenerate-from-new-root">Rotate Non-Configurable Leaf Certificates from the New CAs</a> above.</p>
 
 To delete the old <%= vars.ops_manager %> root CA:
 
@@ -482,13 +481,13 @@ To delete the old <%= vars.ops_manager %> root CA:
 
 1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
 
-1. Click the BOSH Director tile.
+1. Click the **BOSH Director** tile.
 
 1. Select **Director Config**.
 
 1. Enable the **Recreate VMs deployed by the BOSH Director** checkbox.
 
-1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
+1. Return to the <%= vars.ops_manager %> Installation Dashboard.
 
 1. If you have service tiles installed, for each service tile:
     1. Click the tile.
@@ -511,82 +510,3 @@ To delete the old <%= vars.ops_manager %> root CA:
 1. If you do not have any service tiles installed:
     1. Click **Review Pending Changes**.
     1. Click **Apply Changes**.
-
-### <a id='regenerate'></a> Rotate Non-Configurable Leaf Certificates
-
-This procedure rotates non-configurable leaf certificates visible to the <%= vars.ops_manager %> API, whether they are managed and stored by <%= vars.ops_manager %> directly, or by CredHub at <%= vars.ops_manager %>'s request.
-
-<p class='note warning'><strong>Warning:</strong> This procedure does not rotate the <%= vars.ops_manager %> root CA. To rotate both the root CA and non-configurable leaf certificates, see <a href="#rotate-ca">Rotate CAs and Leaf Certificates</a>.</p>
-
-To rotate non-configurable leaf certificates:
-
-1. Make a call to the <%= vars.ops_manager %> API to regenerate all non-configurable certificates and apply the new CA to your existing BOSH Director. Run:
-
-    ```
-    curl "https://OPS-MANAGER-FQDN/api/v0/certificate_authorities/active/regenerate" \
-          -X POST \
-          -H "Authorization: Bearer UAA-ACCESS-TOKEN" \
-          -H "Content-Type: application/json" \
-          -d '{}'
-    ```
-    Where:
-    * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
-    * `UAA-ACCESS-TOKEN` is your UAA access token.
-    </br>
-    </br>
-    The API returns a successful response:
-    <pre class="terminal">HTTP/1.1 200 OK</pre>
-
-1. Navigate to the <%= vars.ops_manager %> Installation Dashboard.
-
-1. If you have any on-demand service tiles installed, for each on-demand service tile:
-    1. Click the tile.
-
-    1. Click the **Errands** tab.
-
-    1. Enable the **Upgrade All Service Instances** errand. Running this errand is necessary to push CredHub certificate updates to each service instance.
-
-    1. Click **Review Pending Changes**.
-
-    1. Click **Apply Changes**.
-
-1. If you do not have any on-demand service tiles installed:
-
-    1. Click **Review Pending Changes**.
-
-    1. Click **Apply Changes**.
-
-### <a id='rotate-config'></a> Rotate Configurable Leaf Certificates
-
-Configurable certificates are generated by the user and pasted into <%= vars.ops_manager %> configuration panes where needed. Examples include certificates that terminate SSL traffic into <%= vars.product_short %>, or authenticate a Single Sign-On (SSO) for <%= vars.product_name %> service plan to an external SAML server.
-
-For instructions on how to rotate SAML certificates for both <%= vars.product_short %> and the SSO service, see [Rotate Identity Provider SAML Certificates](rotate-saml-ca.html).
-
-<p class="note warning"><strong>Warning:</strong> This procedure does not rotate the <%= vars.ops_manager %> root CA. To rotate both the root CA and non-configurable leaf certificates, see <a href="#rotate-ca">Rotate CAs and Leaf Certificates</a>.</p>
-
-To rotate configurable leaf certificates:
-
-1. If you have not already done so, use the <%= vars.ops_manager %> API `deployed/certificates` endpoint to retrieve information about your expiring configurable certificates, as described in the procedures in [Check Expiration Dates and Certificate Types](#checks). The information for each configurable certificate looks like the following example:
-  <pre class="terminal">
-    {
-      "configurable": true,
-      "property_reference": ".properties.networking_poe_ssl_certs[0].certificate",
-      "property_type": "rsa_cert_credentials",
-      "product_guid": "cf-36066831c119c39736d3",
-      ...
-      "valid_until": "2019-01-25T22:07:58Z"
-    },
-  </pre>
-
-1. For each configurable certificate that expires soon:
-  1. Find the text field the certificate is configured within the <%= vars.ops_manager %> interface.
-      * The `product_guid` field in the API output can help identify which tile the certificate is configured in. For example, the prefix `p-bosh-` refers to the BOSH Director tile, and the prefix `cf-` refers to the <%= vars.product_short %> tile.
-      * The `property_reference` field in the API output can often help identify which **Settings** pane the certificate is configured in. For example, the `uaa.service_provider_key_credentials` property is configured in the **UAA** pane of the <%= vars.product_short %> tile.
-      * You might need to look through multiple configuration panes to identify where a certificate is configured.
-  1. Paste a new value for the certificate into the field.
-  1. Click **Save** at the bottom of each pane in which you have provided new certificates.
-
-1. If you are rotating configurable certificates within the [Rotate CAs and Leaf Certificates](#rotate-ca) procedure, continue to the next step. Otherwise, if you are rotating configurable leaf certificates only:
-  1. Return to the <%= vars.ops_manager %> Installation Dashboard.
-  1. Click **Review Pending Changes**.
-  1. Click **Apply Changes**.
