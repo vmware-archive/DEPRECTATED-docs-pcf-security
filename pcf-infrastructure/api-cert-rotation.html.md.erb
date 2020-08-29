@@ -116,7 +116,7 @@ To rotate certificates, follow one of these procedures:
 
 * To rotate configurable leaf certificates, but not the <%= vars.ops_manager %> root CA or BOSH NATS CA, see [Rotating Configurable Leaf Certificates](rotate-configurable-certs.html).
 
-* To rotate the <code>/services/tls_ca</code> certificate, see <a href="services_tls_ca_rotate.html">Rotating the Services TLS CA and Its Leaf Certificates</a>.
+* To rotate the `/services/tls_ca` certificate, see [Rotating the Services TLS CA and Its Leaf Certificates](services_tls_ca_rotate.html).
 
 ### <a id='rotate-ca'></a> Rotate the Root CA and Leaf Certificates
 
@@ -212,8 +212,8 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
         Where:
         * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
         * `UAA-ACCESS-TOKEN` is your UAA access token.
-        </br>
-        </br>
+        <br>
+        <br>
         If the command succeeds, the API returns a response that includes the new CA certificate. For example:
         <pre class="terminal">
             HTTP/1.1 200 OK
@@ -254,8 +254,8 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
     Where:
     * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
     * `UAA-ACCESS-TOKEN` is your UAA access token.
-    </br>
-    </br>
+    <br>
+    <br>
     The API call returns the GUID of the newly added CA. For example:
     <pre class="terminal">
       HTTP/1.1 200 OK
@@ -336,8 +336,8 @@ To activate the new root CA:
     * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
     * `CERTIFICATE-GUID` is the GUID of your CA that you retrieved in the previous section.
     * `UAA-ACCESS-TOKEN` is your UAA access token.
-    </br>
-    </br>
+    <br>
+    <br>
     The API returns a successful response:
     <pre class="terminal">HTTP/1.1 200 OK</pre>
 
@@ -458,8 +458,8 @@ To delete the old <%= vars.ops_manager %> root CA:
     * `OPS-MANAGER-FQDN` is the FQDN of your <%= vars.ops_manager %> deployment.
     * `OLD-CERTIFICATE-GUID` is the GUID of the old <%= vars.ops_manager %> root CA.
     * `UAA-ACCESS-TOKEN` is your UAA access token.
-    </br>
-    </br>
+    <br>
+    <br>
     The API returns a successful response:
     <pre class="terminal">HTTP/1.1 200 OK</pre>
 
