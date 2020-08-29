@@ -24,6 +24,8 @@ The <%= vars.ops_manager %> API manages and lists internal CAs and leaf certific
 
 For more information about the CAs and leaf certificates visible to the <%= vars.ops_manager %> API, see [Certificate Types](certificate-types.html).
 
+Rotate CAs and leaf certificates before they expire to avoid downtime for your foundation. To rotate certificates in <%= vars.platform_name %>, first check the expiration dates of all certificates. Then, based on the types of certificates that expire soon, follow a certificate rotation procedure to replace expiring certificates and deploy BOSH to apply changes.
+
 
 ## <a id='checks'></a> Check Expiration Dates and Certificate Types
 
