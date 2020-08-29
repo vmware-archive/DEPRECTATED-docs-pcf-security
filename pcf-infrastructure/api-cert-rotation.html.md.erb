@@ -170,7 +170,7 @@ This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_m
 
 <p class="note"><strong>Note:</strong> The BOSH NATS CA is automatically rotated when you rotate the <%= vars.ops_manager %> root CA. For more information, see <a href="#types">Certificate Types</a> below.</p>
 
-Rotating the <%= vars.ops_manager %> root CA automatically rotates all configurable leaf certificates. You can also rotate configurable leaf certificates separately from rotating the root CA. For information about rotating configurable leaf certificates without also rotating the root CA, see [Rotate Configurable Leaf Certificates](rotate-configurable-leaf-certs.html).
+Rotating the <%= vars.ops_manager %> root CA automatically rotates all configurable leaf certificates. You can also rotate configurable leaf certificates separately from rotating the root CA. For information about rotating configurable leaf certificates without also rotating the root CA, see [Rotate Configurable Leaf Certificates](rotate-configurable-certs.html).
 
 <%= vars.product_name %> users never need to manually rotate intermediate CAs, because they rotate automatically when the root CA is rotated.
 
