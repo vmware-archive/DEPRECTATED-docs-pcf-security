@@ -12,7 +12,7 @@ This includes the <%= vars.ops_manager %> root CA, BOSH NATS CA, and leaf certif
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/credentials.html).
 
-For information about using trusted third-party certificates for both apps hosted on <%= vars.platform_name %> and internal <%= vars.platform_name %> components, see [Setting Trusted Certificates](../../customizing/trusted-certificates.html).
+For information about using trusted third-party certificates for both apps hosted on <%= vars.platform_name %> and internal <%= vars.platform_name %> components, see [Setting Trusted Certificates](https://docs.pivotal.io/platform/<%= product_info['local_product_version'].to_s.sub('.','-') %>/customizing/trusted-certificates.html).
 
 
 ## <a id='overview'></a> Overview
@@ -45,7 +45,7 @@ This section describes how to check the expiration dates of the CAs and leaf cer
 
 After identifying the types of certificates that expire soon, you can determine which certificate rotation procedure to follow.
 
-1. Follow the procedure in [Using <%= vars.ops_manager %> API](../../customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> User Account and Authentication (UAA) server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the steps below.
+1. Follow the procedure in [Using <%= vars.ops_manager %> API](https://docs.pivotal.io/platform/<%= product_info['local_product_version'].to_s.sub('.','-') %>/customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> User Account and Authentication (UAA) server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the steps below.
   <p class="note"><strong>Note:</strong> When you record your <%= vars.ops_manager %> access token, remove any newline characters such as <code>\n</code>.</p>
 
 1.  To retrieve the <%= vars.ops_manager %> certificates, use `curl` to call the `/deployed/certificates` endpoint of the <%= vars.ops_manager %> API. Run:
@@ -163,7 +163,7 @@ rotating these CAs, see the tile-specific documentation.</p>
 
 To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA:
 
-1. If you have not already done so, follow the procedure in [Using <%= vars.ops_manager %> API](../../customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> UAA server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the following steps.
+1. If you have not already done so, follow the procedure in [Using <%= vars.ops_manager %> API](https://docs.pivotal.io/platform/<%= product_info['local_product_version'].to_s.sub('.','-') %>/customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> UAA server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the following steps.
   <p class="note"><strong>Note:</strong> When you record your <%= vars.ops_manager %> access token, remove any newline characters such as <code>\n</code>.</p>
 
 1. Use <%= vars.ops_manager %> to generate a new CA, or add your own custom CA:
