@@ -13,7 +13,7 @@ certificates stored in <%= vars.ops_manager %> and CredHub that are visible to t
 
 For information about rotating IPsec certificates, see [Rotating IPsec Certificates](https://docs.pivotal.io/addon-ipsec/credentials.html).
 
-For information about using trusted third-party certificates for both apps hosted on <%= vars.platform_name %> and internal <%= vars.platform_name %> components, see [Setting Trusted Certificates](../../customizing/trusted-certificates.html).
+For information about using trusted third-party certificates for both apps hosted on <%= vars.platform_name %> and internal <%= vars.platform_name %> components, see [Setting Trusted Certificates](https://docs.pivotal.io/platform/<%= product_info['local_product_version'].to_s.sub('.','-') %>/customizing/trusted-certificates.html).
 
 For information about how to rotate certificates managed by CredHub, see [Advanced Certificate Rotation with CredHub Maestro](advanced-certificate-rotation.html).
 
@@ -37,7 +37,7 @@ After identifying the types of certificates that expire soon, you can determine 
 
 To check certificate expiration dates and types:
 
-1. Follow the procedure in [Using <%= vars.ops_manager %> API](../../customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> User Account and Authentication (UAA) server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the steps below.
+1. Follow the procedure in [Using <%= vars.ops_manager %> API](https://docs.pivotal.io/platform/<%= product_info['local_product_version'].to_s.sub('.','-') %>/customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> User Account and Authentication (UAA) server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the steps below.
   <p class="note"><strong>Note:</strong> When you record your <%= vars.ops_manager %> access token, remove any newline characters such as <code>\n</code>.</p>
 
 1.  To retrieve the certificates, use `curl` to call the `/deployed/certificates` endpoint of the <%= vars.ops_manager %> API. Run:
@@ -151,7 +151,7 @@ See the tile-specific documentation for information about rotating these CAs.</p
 
 To add new CAs:
 
-1. If you have not already done so, follow the procedure in [Using <%= vars.ops_manager %> API](../../customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> UAA server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the following steps.
+1. If you have not already done so, follow the procedure in [Using <%= vars.ops_manager %> API](https://docs.pivotal.io/platform/<%= product_info['local_product_version'].to_s.sub('.','-') %>/customizing/ops-man-api.html) to target and authenticate with the <%= vars.ops_manager %> UAA server. Record your <%= vars.ops_manager %> access token, and use it for `UAA-ACCESS-TOKEN` in the following steps.
   <p class="note"><strong>Note:</strong> When you record your <%= vars.ops_manager %> access token, remove any newline characters such as <code>\n</code>.</p>
 
 1. Use <%= vars.ops_manager %> to generate a new CA, or add your own custom CA:
