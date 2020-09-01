@@ -5,7 +5,7 @@ owner: Security
 
 
 
-This topic provides an overview of Cloud Foundry (CF) security. For an overview of container security, see [Container Security](https://docs.pivotal.io/pivotalcf/<%= product_info['local_product_version'].to_s.sub('.','-') %>/concepts/container-security.html).
+This topic provides an overview of Cloud Foundry (CF) security. For an overview of container security, see [Container Security](../../concepts/container-security.html).
 
 Cloud Foundry implements the following measures to mitigate against security threats:
 
@@ -46,7 +46,7 @@ BOSH performs the following functions for security:
 
 ## <a id='auth'></a>Authentication and Authorization ##
 
-[User Account and Authentication](https://docs.pivotal.io/pivotalcf/<%= product_info['local_product_version'].to_s.sub('.','-') %>/concepts/architecture/uaa.html) (UAA) is the central identity management service for Cloud Foundry and its various components.
+[User Account and Authentication](../../concepts/architecture/uaa.html) (UAA) is the central identity management service for Cloud Foundry and its various components.
 
 UAA acts as an [OAuth2](https://oauth.io/) Authorization Server and issues access tokens for applications that request platform resources. The tokens are based on the [JSON Web Token](http://jwt.io/) and are digitally signed by UAA.
 
@@ -54,7 +54,7 @@ Operators can configure the identity store in UAA. If users register an account 
 
 ### <a id='rbac'></a>Managing User Access with Role-Based Access Control ###
 
-Applications that users deploy to Cloud Foundry exist within a space. Spaces exist within orgs. To view and access an org or a space, a user must be a member of it. Cloud Foundry uses role-based access control (RBAC), with each role granted permissions to either an org or a specified space. For more information about roles and permissions, refer to the [Orgs, Spaces, Roles, and Permissions](https://docs.pivotal.io/pivotalcf/<%= product_info['local_product_version'].to_s.sub('.','-') %>/concepts/roles.html) topic.
+Applications that users deploy to Cloud Foundry exist within a space. Spaces exist within orgs. To view and access an org or a space, a user must be a member of it. Cloud Foundry uses role-based access control (RBAC), with each role granted permissions to either an org or a specified space. For more information about roles and permissions, refer to the [Orgs, Spaces, Roles, and Permissions](../../concepts/roles.html) topic.
 
 <%=vars.console_links%>
 
@@ -62,7 +62,7 @@ Applications that users deploy to Cloud Foundry exist within a space. Spaces exi
 
 The Cloud Controller authenticates every request with the Service Broker API using HTTP or HTTPS, depending on which protocol that you specify during broker registration. The Cloud Controller rejects any broker registration that does not contain a username and password.
 
-Service instances bound to an app contain credential data. Users specify the binding credentials for [user-provided service instances](https://docs.pivotal.io/pivotalcf/<%= product_info['local_product_version'].to_s.sub('.','-') %>/devguide/services/user-provided.html), while third-party brokers specify the binding credentials for managed service instances. The VCAP_SERVICES environment variable contains credential information for any service bound to an app. Cloud Foundry constructs this value from encrypted data that it stores in the Cloud Controller Database (CCDB).
+Service instances bound to an app contain credential data. Users specify the binding credentials for [user-provided service instances](../../devguide/services/user-provided.html), while third-party brokers specify the binding credentials for managed service instances. The VCAP_SERVICES environment variable contains credential information for any service bound to an app. Cloud Foundry constructs this value from encrypted data that it stores in the Cloud Controller Database (CCDB).
 
 <p class="note"><strong>Note</strong>: The selected third-party broker controls how securely to communicate managed service credentials.</p>
 
