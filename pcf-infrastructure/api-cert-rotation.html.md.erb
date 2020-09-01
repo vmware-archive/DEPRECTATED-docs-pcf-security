@@ -164,7 +164,8 @@ The following procedures rotate the <%= vars.ops_manager %> root CA, BOSH NATS C
 
 <p class='note'><strong>Note:</strong> The rotation procedures described in this topic does not work when your certificates have already expired.  If your certificates have expired, contact <a href="https://support.pivotal.io/">Pivotal Support</a> for guidance.</p>
 
-### <a id='rotate-ca'></a> Rotate Root and Leaf Certificates
+
+## <a id='rotate-ca'></a> Rotate Root and Leaf Certificates
 
 This procedure uses the <%= vars.ops_manager %> API to rotate the <%= vars.ops_manager %> root CA, the BOSH NATS CA, and the intermediate CAs and non-configurable leaf certificates underneath them.
 
@@ -182,7 +183,7 @@ To prevent system downtime, this procedure includes two BOSH redeploys. When you
 
 <p class="note warning"><strong>Warning:</strong> If you use mutual TLS for route integrity, do not attempt to rotate certificate authorities (CAs). Instead, contact <a href="https://support.pivotal.io">Pivotal Support</a>. For more information, see <a href="https://docs.pivotal.io/pivotalcf/2-4/pcf-release-notes/runtime-rn.html#cert-rotation-with-mutual-tls-route-integrity">Certificate Authority Rotation is Not Working in Some <%= vars.product_short %> Configurations</a> in <em><%= vars.product_runtime %> v2.4 Release Notes</em>.</p>
 
-#### <a id='add-new-ca'></a> Step 1: Add a New Root CA
+### <a id='add-new-ca'></a> Step 1: Add a New Root CA
 
 This section describes how to add a new root CA for <%= vars.ops_manager %>. The new root CA can be a Pivotal-generated CA or your own custom CA.
 
@@ -343,7 +344,7 @@ To add a new root CA for <%= vars.ops_manager %> and regenerate the BOSH NATS CA
 
 1. When the deploy finishes and you have completed all necessary tasks to update service instances, continue to the next section, [Activate Root CAs](#activate-new-ca).
 
-#### <a id='activate-new-ca'></a> Step 2: Activate Root CA
+### <a id='activate-new-ca'></a> Step 2: Activate Root CA
 
 To activate the new root CA:
 
@@ -378,7 +379,7 @@ To activate the new root CA:
 
 1. Examine the response to ensure that your new CA has the `active` property set to `true`.
 
-#### <a id='rotate-config-after-new-root'></a> Step 3: Rotate Configurable Leaf Certificates
+### <a id='rotate-config-after-new-root'></a> Step 3: Rotate Configurable Leaf Certificates
 
 Any configurable certificates generated from the <%= vars.ops_manager %> root CA must be rotated. These are the certificates that you generated using **Generate RSA Certificate** in the <%= vars.ops_manager %> UI. For example, see [Providing a Certificate for Your TLS Termination Point](https://docs.pivotal.io/pivotalcf/2-4/opsguide/security_config.html).
 
@@ -392,7 +393,7 @@ To regenerate and rotate configurable leaf certificates, do the following for ea
 
 1. Click **Save** at the bottom of each pane in which you added new certificates.
 
-#### <a id='regenerate-from-new-root'></a> Step 4: Rotate Non-Configurable Leaf Certificates from the New CAs
+### <a id='regenerate-from-new-root'></a> Step 4: Rotate Non-Configurable Leaf Certificates from the New CAs
 
 After activating the new <%= vars.ops_manager %> root CA, you must rotate non-configurable leaf certificates from the root CA.
 
@@ -449,7 +450,7 @@ To rotate non-configurable leaf certificates from the new root CA:
 
 1. When the deploy finishes and you have completed all necessary tasks to update service instances, continue to the next section, [Delete the Old Root CA](#delete).
 
-#### <a id='delete'></a> Step 5: Delete the Old Root CA
+### <a id='delete'></a> Step 5: Delete the Old Root CA
 
 After activating new CAs and rotating leaf certificates from the new CAs, you should delete the old <%= vars.ops_manager %> root CA from your foundation.
 
